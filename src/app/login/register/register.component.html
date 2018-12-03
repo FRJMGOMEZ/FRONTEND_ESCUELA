@@ -1,0 +1,54 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <img class='img-fluid p-5' src="../../../assets/cargo2.jpg" alt="">
+        </div>
+        <div class="col-md-4 col-md-offset-4 mt-5">
+            <div class="text-center ">
+                <div class="">
+                    <h3 class="panel-title">Regístrate</h3>
+                </div>
+                <div class="panel-body">
+                    <form ngNativeValidate *ngIf="form" [formGroup]='form' id="loginform" (ngSubmit)='registrarUsuario()'>
+                        <fieldset>
+                            <div class="form-group">
+                                <input formControlName='nombre' name='nombre' class="form-control" placeholder="Name" type="text" autofocus="" required>
+                            </div>
+                            <div class="form-group">
+                                <input formControlName='email' name='email' class="form-control" placeholder="Email" type="email" autofocus="" required>
+                            </div>
+                            <div class="form-group">
+                                <input formControlName='password' name='password' class="form-control" placeholder="Password1" type="password" required>
+                            </div>
+                            <div class="form-group">
+                                <input formControlName='password2' name='password2' class="form-control" placeholder="Password2" type="password" required>
+                            </div>
+                            <div *ngIf="form.errors?.sonIguales && !form.pristine" class='form-group'>
+                                <p class='text-danger'>Las contraseñas deben de ser iguales</p>
+                            </div>
+                            <div class="checkbox">
+                                <label name='terms' type="checkbox">
+                                    <input formControlName='condiciones' name='conditions' id="checkbox-signup" type="checkbox">Estoy de
+                                    acuerdo <a href="#">Términos de uso</a></label>
+                            </div>
+                            <br>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                </label>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button class='btn btn-lg btn-warning btn-block' type='submit'>REGISTRARSE</button>
+                            <br>
+                            <a href="/login">Login</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

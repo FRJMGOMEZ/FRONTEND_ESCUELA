@@ -1,0 +1,21 @@
+<div class="container p-2" style='background:rgb(216, 200, 192)'>
+    <div class='row'>
+        <div class='col-12 text-center'>
+            <h4>MIS PROYECTOS</h4>
+        </div>
+        <div class="card-group">
+            <div class="col-3 p-2" *ngFor=" let project of projects">
+                <div class='card'>
+                    <div class="card-header text-center">{{project.nombre.toUpperCase()}}</div>
+                    <img class='card-img-top img-fluid' [src]="project.img | imgPipe" alt="">
+                    <div class='card-body'>
+                        <p class='card-text'>{{project.descripcion}}</p>
+                        <div class='text-center'>
+                            <button class='btn btn-warning'>IR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

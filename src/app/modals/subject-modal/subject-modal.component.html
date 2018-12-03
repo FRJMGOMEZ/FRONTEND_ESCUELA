@@ -1,0 +1,38 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Materias</h5>
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <table class='table table-hover'>
+                        <thead>
+                            <tr>
+                                <th class='text-center'>MATERIAS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let subject of subjects">
+                                <td class='text-center'>
+                                    <div>
+                                        <a (click)='addSubject(subject._id)'><strong style='cursor: pointer;'>{{subject.nombre}}</strong></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <form *ngIf="subjects === []" ngNativeValidate #form='ngForm' role="form" (ngSubmit)='createSubject(form)'>
+                        <div class="form-group">
+                            <input [ngModel]="subjectName" class=form-control name='subjectName' placeholder='nombre de la materia' type="text">
+                            <button class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Guardar</strong></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

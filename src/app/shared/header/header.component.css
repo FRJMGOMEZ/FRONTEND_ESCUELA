@@ -1,0 +1,40 @@
+.barra_lateral {
+    background: black;
+    color: white;
+    min-width: 220px;
+    min-height: 150vh;
+    padding: 0
+}
+
+.barra_lateral a {
+    color: white
+}
+
+.barra_lateral .logo {
+    margin-bottom: 2px
+}
+
+.barra_lateral img {
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+}
+
+.barra_lateral .menu a {
+    display: block;
+    padding: 20px
+}
+
+.barra_lateral .menu .footer {
+    background: black;
+    height: 22px;
+    display: block;
+    padding: 20px
+}
+
+.barra_lateral .menu a:hover {
+    background: #B03F0E;
+    text-decoration: none
+}

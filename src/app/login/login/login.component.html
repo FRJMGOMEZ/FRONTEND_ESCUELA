@@ -1,0 +1,43 @@
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <img class='img-fluid p-5' src="../../../assets/cargo2.jpg" alt="">
+        </div>
+        <div class="col-md-4 col-md-offset-4 mt-5">
+            <div class="text-center ">
+                <div class="">
+                    <h3 class="panel-title">Logéate</h3>
+                </div>
+                <div class="panel-body">
+                    <form ngNativeValidate #form='ngForm' role="form" (ngSubmit)='login(form)'>
+                        <fieldset>
+                            <div class="form-group">
+                                <input [ngModel] name='email' class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
+                            </div>
+                            <div class="form-group">
+                                <input ngModel name='password' class="form-control" placeholder="Password" name="password" type="password" value="">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input  name="recuerdame" type="checkbox" value="Remember Me">Remember
+                                    Me
+                                </label>
+                            </div>
+                            <br>
+                            <br>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button class='btn btn-lg btn-warning btn-block' type='submit'><strong>LOGIN</strong></button>
+                            <br>
+                            <a routerLink='/register'>Registrarse</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

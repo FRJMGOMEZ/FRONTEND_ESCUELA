@@ -1,0 +1,27 @@
+<div class="barra_lateral col-md-12 col-sm-auto">
+    <div class="logo text-center">
+        <img class='img-fluid' src="../../assets/cargo.jpg" alt="">
+    </div>
+    <nav class='menu d-flex d-sm-block justify-content-center text-center flex-column flex-md-row '>
+
+        <a [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI PERFIL</span></a>
+        <a [routerLink]="['/calendar']" routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1"></i><span>MI CALENDARIO</span></a>
+        <a [routerLink]="['/projects',1]" routerLinkActive="router-link-active"><i class="fal fa-project-diagram m-1 "></i><span>MIS PROYECTOS</span></a>
+        <a href=" "><i class="far fa-file-contract m-1 "></i><span>MI CONTRATO</span></a>
+        <a href=" "><i class="fas fa-poll-people m-1 "></i><span>MIS ALUMNOS</span></a>
+        <div class="nav-item dropdown">
+            <a href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup="true" aria-expanded="false">
+                    MANTENIMIENTO
+                </a>
+            <div class="dropdown-menu" style='background:#D77040'>
+                <div class='d-flex justify-content-end flex-column'>
+                    <a class='dropdown-item' [routerLink]="['/userM']" routerLinkActive="router-link-active">USUARIOS</a>
+                    <a class='dropdown-item' [routerLink]="['/alumniM']" routerLinkActive="router-link-active" href="">ALUMNOS</a>
+                    <a class='dropdown-item' [routerLink]="['/professorM']" routerLinkActive="router-link-active">PROFESORES</a>
+                    <a class='dropdown-item' [routerLink]="['/subjectM']" routerLinkActive="router-link-active">MATERIAS</a>
+                </div>
+            </div>
+        </div>
+        <a (click)='_userServices.logout()' routerLinkActive='active'><i class="far fa-toolbox m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
+    </nav>
+</div>

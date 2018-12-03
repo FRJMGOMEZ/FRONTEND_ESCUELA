@@ -1,0 +1,66 @@
+<div class="row main">
+    <div class="col-12">
+        <div class='list-group'>
+            <h3 class='list-group-item-heading text-center mt-3'>MANTENIMIENTO DE MATERIAS</h3>
+            <input #input placeholder="Buscar materia" class='pb-2 mt-2' type="text" name="" id="">
+            <button class='btn btn-warning mb-2' (click)='searchSubjects(input.value)'>BUSCAR MATERIAS</button>
+            <button (click)='openSubjectModal()' class='btn btn-warning m-2'>CREAR MATERIA</button>
+            <div *ngIf="!cargando" class="row animated fadeIn">
+                <div *ngFor="let subject of subjects let i=index" class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class='text-center'>{{subject.nombre.toUpperCase()}}</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div>
+                                        <h5 class='text-center'>PROFESORES</h5>
+                                    </div>
+                                    <div>
+                                        <button (click)='addProfessor(subject)' class='btn btn-block btn-warning'>Añadir</button>
+                                    </div>
+                                    <div *ngFor="let profesor  of subjects[i].profesores" class='p-2 d-flex justify-content-between'>
+                                        <div class="row">
+                                            <div class='col-10'><a href="">{{profesor.nombre}}</a></div>
+                                            <div class='col-2'><button class='btn btn-danger'>x</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div>
+                                        <h5 class='text-center'>ALUMNOS</h5>
+                                    </div>
+                                    <div>
+                                        <button (click)='addAlumni(subject)' class='btn btn-block btn-warning'>Añadir</button>
+                                    </div>
+                                    <div class="row">
+                                        <div *ngFor="let alumno  of subjects[i].alumnos" class="col-6 pt-2">
+                                            <div class="row d-flex flex-row justify-content-around">
+                                                <div><a href="">{{alumno.nombre}}</a></div>
+                                                <div><button class='btn btn-danger'>x</button></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <strong>Información útil:</strong>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam laboriosam excepturi corrupti natus dolorum quos ratione nostrum earum officiis, quae ipsam culpa libero ut illo beatae obcaecati necessitatibus officia
+                                        neque.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mb-5">
+                    <div class='d-flex justify-content-around'>
+                        <button (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
+                        <button (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='w-100'></div>
+</div>
