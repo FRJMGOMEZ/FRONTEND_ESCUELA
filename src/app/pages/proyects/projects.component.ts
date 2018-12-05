@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectServices } from '../../providers/project.service';
-import { Project } from '../../models/project.model';
 import { UserServices } from '../../providers/user.service';
+import { ProjectModalController } from '../../modals/project-modal/projectModalController';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-projects',
@@ -10,19 +10,42 @@ import { UserServices } from '../../providers/user.service';
 })
 export class ProyectsComponent implements OnInit {
 
-  projects:any[]
+  projects:any[] = []
   token:string
+  userOnline:User
 
-  constructor(private _userServices:UserServices, private _projectServices:ProjectServices) {
+  constructor(private _userServices:UserServices,
+              private _projectModalController:ProjectModalController,) {
 
+    this.userOnline = this._userServices.userOnline
     this.token = this._userServices.token;
-    this.projects = this._userServices.userOnline.proyectos;
 
    }
 
   ngOnInit() {
 
-    console.log(this.projects)
+    this.searchProjects()
+
+    this._projectModalController.notification.subscribe((res)=>{
+
+      if(!res){
+
+        this.searchProjects()
+      }
+    })
   }
 
+  newProject(){
+
+    this._projectModalController.showModal(this._userServices.userOnline._id)
+  }
+
+  searchProjects(){
+
+    this._userServices.searchUsersById(this.userOnline._id).subscribe((user) => {
+
+      this.projects = user.proyectos;
+
+    })
+  }
 }

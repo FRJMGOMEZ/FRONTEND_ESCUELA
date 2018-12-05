@@ -7,7 +7,8 @@ import { Injectable, EventEmitter } from '@angular/core';
 export class SubjectModalController {
 
     public hidden: string = 'hidden';
-    public id:string
+    public id:string;
+    public type:string
     public notification = new EventEmitter<any>()
 
     constructor() { }
@@ -15,10 +16,12 @@ export class SubjectModalController {
     hideModal() {
         this.hidden = "hidden";
         this.id='';
+        this.type=''
     }
 
-   showModal(id?:string) {
+   showModal(type:string,id?:string) {
         this.hidden = "";
-        this.id = id
+        this.id = id;
+        this.type = type
     }
 }

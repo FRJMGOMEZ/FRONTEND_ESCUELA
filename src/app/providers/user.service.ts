@@ -104,7 +104,16 @@ export class UserServices {
            return res
         }))
     }
+    
+    deleteUser(id:string){
 
+        let url = `${URL_SERVICES}/usuario/${id}`
+
+        let headers = new HttpHeaders().set("token", this.token);
+
+        return this.http.delete(url,{headers})
+    }
+    
     login(user:User,rememberMe:boolean=false){
 
         if (rememberMe) {
@@ -117,9 +126,10 @@ export class UserServices {
 
          return this.http.post(url,user).pipe(map((res:any)=>{
 
+            console.log(res)
+
         this.saveInStorage(res.id,res.usuarioDb,res.token)
-        
-        return res.usuarioDb
+    
      }))
      }
 

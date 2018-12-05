@@ -3,28 +3,25 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Alumnos</h5>
+                    <h5 class="modal-title text-center">Alumnos</h5>
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    <table class='table table-hover'>
-                        <thead>
-                            <tr>
-                                <th class='text-center'>ALUMNOS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let alumni of alumnis">
-                                <td class='text-center'>
-                                    <div>
-                                        <a (click)='addAlumni(alumni._id)'><strong style='cursor: pointer;'>{{alumni.nombre}}</strong></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class='row'>
+                        <div class='col-12 d-flex justify-content-center mb-3'>
+                            <input #input type="text">
+                            <button (click)='searchAlumnis(input.value)' class='btn btn-warning'>BUSCAR</button>
+                        </div>
+                        <div class='col d-flex flex-column'>
+                            <div class='text-center' *ngFor="let alumni of alumnis">
+                                <div>
+                                    <a (click)='addAlumni(alumni._id)'><strong style='cursor: pointer;'>{{alumni.nombre}}</strong></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

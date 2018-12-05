@@ -1,3 +1,28 @@
-<p>
-  proyect-modal works!
-</p>
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form ngNativeValidate *ngIf="form" [formGroup]='form' (ngSubmit)='newProject()'>
+                        <div class="form-group">
+                            <input formControlName='nombre' name='nombre' type="text" class="form-control" placeholder="Nombre">
+                        </div>
+                        <div class="form-group ">
+                            <textarea formControlName="descripcion" class='form-control' name='descripcion' placeholder="Descripcion"></textarea>
+                        </div>
+                        <div class='d-flex justify-content-center'>
+                            <button type="submit" class="btn btn-primary">CREAR</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

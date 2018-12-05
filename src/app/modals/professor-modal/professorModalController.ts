@@ -5,15 +5,18 @@ import { Injectable, EventEmitter } from "@angular/core";
 })
 export class ProfessorModalController {
   public hidden: string = "hidden";
+  public id:string
   public notification = new EventEmitter<any>();
 
   constructor() {}
 
-  ocultarModalProfesor() {
+  hideModal() {
     this.hidden = "hidden";
+    this.id = ''
   }
 
-  mostrarModalProfesor() {
+  showModal(id:string) {
     this.hidden = "";
+    this.id = id
   }
 }

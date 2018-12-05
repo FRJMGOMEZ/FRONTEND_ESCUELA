@@ -68,12 +68,11 @@ export class AlumniComponent implements OnInit {
     });
   }
 
-  openSubjectsModal(alumni: Alumni) {
-    
+  openSubjectsModal(alumni: Alumni) {    
 
     this._subjectModalController.notification.emit({subjects:alumni.materias});
 
-    this._subjectModalController.showModal(alumni._id);
+    this._subjectModalController.showModal("alumni", alumni._id);
   }
 
   deleteSubject(alumniId: string, subjectId: string) {
@@ -85,7 +84,7 @@ export class AlumniComponent implements OnInit {
   }
 
   openIndexCardModal(id?: string) {
-    this._indexCardModalController.showModal();
+    this._indexCardModalController.showModal('alumni');
 
     this._indexCardModalController.notification.emit(id);
   }

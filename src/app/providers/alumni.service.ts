@@ -42,7 +42,7 @@ export class AlumniServices {
       }))
   }
 
-  searchAlumnis (input:string,from:number,token:string){
+  searchAlumnis(input: string, token: string, from: number=0){
 
      let url = `${URL_SERVICES}/search/alumnos/${input}?desde=${from}`
 

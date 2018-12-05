@@ -24,7 +24,7 @@ export class ProjectServices {
 
       swal('PROYECT SUCCESFULLY CREATED',response.proyectoGuardado.nombre,'success')
 
-     return  response.proyectoGuardado
+     return  {project:response.proyectoGuardado,user:response.usuarioActualizado}
     }))
   }
 
@@ -38,5 +38,21 @@ export class ProjectServices {
 
        return response.proyecto
     }))
+  }
+
+
+  addUser(projectId:string,participanteId:string,token:string){
+
+    let url = `${URL_SERVICES}/anadirParticipante/${projectId}`
+
+    let body = {participante:participanteId};
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.put(url,body,{headers}).pipe(map((res:any)=>{
+
+      return res.usuarioActualizado
+    }))
+     
   }
 }

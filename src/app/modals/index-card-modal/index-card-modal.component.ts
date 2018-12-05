@@ -6,6 +6,8 @@ import { IndexCard } from '../../models/indexCard.model';
 import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { AlumniServices } from 'src/app/providers/alumni.service';
 import { Alumni } from '../../models/alumni.model';
+import { Professor } from '../../models/professor.model';
+import { ProfessorsServices } from '../../providers/professor.service';
 
 @Component({
   selector: 'app-index-card-modal',
@@ -22,7 +24,9 @@ export class IndexCardModalComponent implements OnInit {
   constructor(private _userServices:UserServices,
               public _modalController:IndexCardModalController,
               private _indexCardServices:IndexCardServices,
-              private _alumniServices:AlumniServices) {
+              private _alumniServices:AlumniServices,
+              private _professorServices:ProfessorsServices) {
+
     this.token = this._userServices.token;
    }
 
@@ -61,9 +65,9 @@ export class IndexCardModalComponent implements OnInit {
       else {
 
         this.form.setValue({
-          nombre: 'alumno',
-          apellido: 'alumnez',
-          email: 'alumnez@gmail.com',
+          nombre: 'profesor',
+          apellido: 'profesorez',
+          email: 'profesor@gmail.com',
           movil:'',
           telefonoCasa:'',
           domicilio:''
@@ -100,15 +104,29 @@ export class IndexCardModalComponent implements OnInit {
           return
         }
 
-         let alumni = new Alumni(res.fichaSaved.nombre,res.fichaSaved._id)
+        if(this._modalController.type==='professor' ){
 
-         this._alumniServices.createAlumni(alumni,this.token).subscribe((res)=>{
+          let professor = new Professor(res.fichaSaved.nombre, res.fichaSaved._id)
 
-           this._modalController.hideModal()
+          this._professorServices.createProfessor(professor, this.token).subscribe(() => {
+
+            this._modalController.hideModal()
 
             this._modalController.notification.emit()
-         })
+          })
+        }
 
+        else if(this._modalController.type==='alumni'){
+
+          let alumni = new Alumni(res.fichaSaved.nombre, res.fichaSaved._id)
+
+          this._alumniServices.createAlumni(alumni, this.token).subscribe((res) => {
+
+            this._modalController.hideModal()
+
+            this._modalController.notification.emit()
+          })
+        }
       })     
     }
   }

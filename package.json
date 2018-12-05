@@ -22,9 +22,9 @@
         "@angular/router": "^6.1.0",
         "core-js": "^2.5.4",
         "rxjs": "~6.2.0",
-        "zone.js": "~0.8.26",
         "socket.io-client": "^2.1.1",
-        "sweetalert": "^2.1.2"
+        "sweetalert": "^2.1.2",
+        "zone.js": "~0.8.26"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.8.0",

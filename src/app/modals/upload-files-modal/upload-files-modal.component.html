@@ -8,18 +8,17 @@
             <span aria-hidden="true">&times;</span>
           </button>
                 </div>
-                <div class="modal-body">
-
-                    <img *ngIf="temporaryImg" [src]=" temporaryImg | imgPipe" alt="" class='w150'>
+                <div class="modal-body text-center">
+                    <img *ngIf="temporaryImg" [src]=" temporaryImg | imgPipe" class='img-fluid' style='height:250px;width: 250px'>
                     <br>
                     <br>
-                    <input (change)='selectImg($event.target.files[0])' type="file">
+                    <input (change)=' selectImg($event.target.files[0]) ' type="file">
 
                 </div>
                 <div class="modal-footer">
                     <button (click)="hideModal()" type="button" class="btn btn-secondary">Close</button>
-                    <button (click)='uploadImg()' [disabled]='!imgUpload' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
-            <i class='fa fa-save'></i>
+                    <button (click)='uploadImg() ' [disabled]='!imgUpload ' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+            <i class='fa fa-save '></i>
             Update photo</button>
                 </div>
             </div>

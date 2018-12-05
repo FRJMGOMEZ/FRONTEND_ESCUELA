@@ -20,10 +20,12 @@
                                     <div>
                                         <button (click)='addProfessor(subject)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <div *ngFor="let profesor  of subjects[i].profesores" class='p-2 d-flex justify-content-between'>
-                                        <div class="row">
-                                            <div class='col-10'><a href="">{{profesor.nombre}}</a></div>
-                                            <div class='col-2'><button class='btn btn-danger'>x</button></div>
+                                    <div class="row">
+                                        <div *ngFor="let professor  of subjects[i].profesores" class='col-12 p-2 '>
+                                            <div class="row d-flex felx-row justify-content-center">
+                                                <div class='pr-2'><a href="">{{professor.nombre}}</a></div>
+                                                <div class='pl-5'><button (click)='deleteProfessor(subject._id,professor._id)' class='btn btn-danger'>x</button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -35,10 +37,10 @@
                                         <button (click)='addAlumni(subject)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
                                     <div class="row">
-                                        <div *ngFor="let alumno  of subjects[i].alumnos" class="col-6 pt-2">
+                                        <div *ngFor="let alumni  of subjects[i].alumnos" class="col-6 pt-2">
                                             <div class="row d-flex flex-row justify-content-around">
-                                                <div><a href="">{{alumno.nombre}}</a></div>
-                                                <div><button class='btn btn-danger'>x</button></div>
+                                                <div><a href="">{{alumni.nombre}}</a></div>
+                                                <div><button (click)='deleteAlumni(subject._id,alumni._id)' class='btn btn-danger'>x</button></div>
                                             </div>
                                         </div>
                                     </div>

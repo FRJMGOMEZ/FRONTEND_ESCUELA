@@ -61,13 +61,9 @@ export class AlumniModalComponent implements OnInit {
 
   this._subjectServices.addOrDeleteAlumni(this._modalController.id,id,this.token).subscribe((res:any)=>{
 
-    console.log(res)
-
     let id = res.alumnoActualizado._id;
 
     this.alumnis = this.alumnis.filter((alumni) => { return alumni._id != id });
-
-    console.log(this.alumnis)
 
     if (this.alumnis === []) { this._modalController.hideModal() }
 
@@ -75,6 +71,15 @@ export class AlumniModalComponent implements OnInit {
     
   })
   }
+
+  searchAlumnis(input: string) {
+
+    this._alumniServices.searchAlumnis(input, this.token).subscribe((alumnis) => {
+
+      this.alumnis = alumnis
+    })
+  }
+  
 
   hideModal(){
     this.alumnis = []

@@ -5,15 +5,18 @@ import { Injectable, EventEmitter } from "@angular/core";
 })
 export class ProjectModalController {
   public hidden: string = "hidden";
+  public id: string
   public notification = new EventEmitter<any>();
 
   constructor() {}
 
-  ocultarModalProyecto() {
+  hideModal() {
     this.hidden = "hidden";
+    this.id=''
   }
 
-  mostrarModalProyecto() {
+  showModal(id:string) {
     this.hidden = "";
+    this.id = id
   }
 }

@@ -14,11 +14,13 @@ export class SubjectModalComponent implements OnInit {
 
   token:string
   alumniSubjects:string[]
-  subjects:Subject[]
+  subjects:Subject[]=[]
   
   subjectName:string
 
-  constructor(private _userServices:UserServices, public _modalController:SubjectModalController,private _subjectServices:SubjectServices) {
+  constructor(private _userServices:UserServices,
+              public _modalController:SubjectModalController,
+              private _subjectServices:SubjectServices) {
 
     this.token= this._userServices.token
   }
@@ -79,16 +81,33 @@ export class SubjectModalComponent implements OnInit {
 
   addSubject(subjectId:string){
 
-    this._subjectServices.addOrDeleteAlumni(subjectId,this._modalController.id,this.token).subscribe((res:any)=>{
-        
-     let id = res.materiaGuardada._id;
+    if(this._modalController.type === 'alumni'){
 
-     this.subjects = this.subjects.filter((subject)=>{return subject._id != id});
+      this._subjectServices.addOrDeleteAlumni(subjectId, this._modalController.id, this.token).subscribe((res: any) => {
 
-      if (this.subjects === []) { this._modalController.hideModal() }
-      
-         this._modalController.notification.emit()
-  })
+        let id = res.materiaGuardada._id;
+
+        this.subjects = this.subjects.filter((subject) => { return subject._id != id });
+
+        if (this.subjects === []) { this._modalController.hideModal() }
+
+        this._modalController.notification.emit()
+      })
+    }
+
+    else if(this._modalController.type === 'professor'){
+
+      this._subjectServices.addOrDeleteProfessor(subjectId, this._modalController.id, this.token).subscribe((res: any) => {
+
+        let id = res.materiaGuardada._id;
+
+        this.subjects = this.subjects.filter((subject) => { return subject._id != id });
+
+        if (this.subjects === []) { this._modalController.hideModal() }
+
+        this._modalController.notification.emit()
+      })
+    }
 }
 
 
