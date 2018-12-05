@@ -13,8 +13,10 @@ import { ProjectServices } from '../../providers/project.service';
 export class ProjectModalComponent implements OnInit {
 
   form:FormGroup
-
+  
   token:string
+
+  project:Project
 
   constructor(private _userServices:UserServices,
               public _modalController:ProjectModalController,
@@ -29,11 +31,29 @@ export class ProjectModalComponent implements OnInit {
       nombre:new FormControl('',Validators.required),
       descripcion:new FormControl('',Validators.required)
     })
+
+      this._modalController.notification.subscribe((res)=>{
+
+        if(res){
+          if (res.id) {
+
+            this._projectServices.searchProjectById(res.id, this.token).subscribe((project) => {
+
+              this.project = project;
+
+              this.form.setValue({
+                nombre: project.nombre,
+                descripcion: project.descripcion
+              })
+            })
+          }
+        }
+    })
   }
 
   hideModal(){
     this._modalController.hideModal()
-  }
+  }  
 
   newProject(){
 
@@ -50,6 +70,23 @@ export class ProjectModalComponent implements OnInit {
            this._modalController.hideModal()
 
         })
+    }
+  }
+
+  updateProject(){
+
+    if(this.form.valid){
+
+      let project = new Project(this.form.value.nombre, this.form.value.descripcion)
+
+      this._projectServices.updateProject(this.project._id, project, this.token).subscribe(()=>{
+
+          this._modalController.notification.emit()
+
+          this._modalController.hideModal()
+
+        }
+      })
     }
   }
 }

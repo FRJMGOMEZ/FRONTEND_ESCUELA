@@ -15,7 +15,7 @@ export class ProjectModalController {
     this.id=''
   }
 
-  showModal(id:string) {
+  showModal(id:string='') {
     this.hidden = "";
     this.id = id
   }

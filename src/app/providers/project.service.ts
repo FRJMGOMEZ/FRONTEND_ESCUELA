@@ -53,6 +53,18 @@ export class ProjectServices {
 
       return res.usuarioActualizado
     }))
-     
+  }
+
+  updateProject(id:string,project:Project,token:string){
+
+    let url = `${URL_SERVICES}/proyecto/${id}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.put(url,project,{headers}).pipe(map((res:any)=>{
+
+      return res.proyectoActualizado
+
+    }))
   }
 }

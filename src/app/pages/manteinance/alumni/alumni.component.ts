@@ -50,7 +50,7 @@ export class AlumniComponent implements OnInit {
 
   searchAlumnis(input: string) {
     this._alumniServices
-      .searchAlumnis(input, this.from, this.token)
+      .searchAlumnis(input,this.token, this.from)
       .subscribe(alumnis => {
         this.alumnis = alumnis;
       });

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
 import { ProjectModalController } from '../../modals/project-modal/projectModalController';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-projects',
@@ -15,7 +16,8 @@ export class ProyectsComponent implements OnInit {
   userOnline:User
 
   constructor(private _userServices:UserServices,
-              private _projectModalController:ProjectModalController,) {
+              private _projectModalController:ProjectModalController,
+              private router:Router) {
 
     this.userOnline = this._userServices.userOnline
     this.token = this._userServices.token;
@@ -47,5 +49,11 @@ export class ProyectsComponent implements OnInit {
       this.projects = user.proyectos;
 
     })
+  }
+
+  toProject(id:string){
+     
+    this.router.navigate(['/project',id])
+
   }
 }

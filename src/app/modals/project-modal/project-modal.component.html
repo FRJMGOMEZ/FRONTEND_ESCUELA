@@ -16,9 +16,10 @@
                             <textarea formControlName="descripcion" class='form-control' name='descripcion' placeholder="Descripcion"></textarea>
                         </div>
                         <div class='d-flex justify-content-center'>
-                            <button type="submit" class="btn btn-primary">CREAR</button>
+                            <button *ngIf="!project" type="submit" class="btn btn-primary">CREAR</button>
                         </div>
                     </form>
+                    <button *ngIf="project" (click)='updateProject()' class="btn btn-primary text-center">GUARDAR CAMBIOS</button>
                 </div>
                 <div class="modal-footer">
                 </div>

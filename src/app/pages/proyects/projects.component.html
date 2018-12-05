@@ -15,7 +15,7 @@
                         <div class='card-body'>
                             <p class='card-text'>{{project.descripcion}}</p>
                             <div class='text-center'>
-                                <button class='btn btn-warning'>IR</button>
+                                <button (click)='toProject(project._id)' routerLinkActive="router-link-active" class='btn btn-warning'>IR</button>
                             </div>
                         </div>
                     </div>
