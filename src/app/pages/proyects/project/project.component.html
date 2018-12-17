@@ -2,10 +2,15 @@
     <div class="row">
         <div class=' col-12 nav justify-content-around align-items-center ' style='background:black;color:white;height: 40px '>
             <div>
-                <a class='dropdown-toggle dropdown-toggle-split' id='dp-categorias' data-toggle="dropdown" style='cursor: pointer'>PROYECTOS</a>
-                <div class="dropdown-menu" aria-labelledby="dp-categorias">
+                <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown" style='cursor: pointer'>MIS PROYECTOS</a>
+                <div *ngIf="projects" class="dropdown-menu" aria-labelledby="dp-proyectos">
                     <div *ngFor="let oneProject of projects">
                         <a (click)='changeProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>{{oneProject.nombre}}</a>
+                    </div>
+                </div>
+                <div *ngIf="!projects" class="dropdown-menu" aria-labelledby="dp-proyectos">
+                    <div>
+                        <a routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>No existen más proyectos</a>
                     </div>
                 </div>
             </div>
@@ -13,58 +18,51 @@
                 <a [routerLink]="['/projects']" routerLinkActive="router-link-active">VOLVER</a>
             </div>
             <div>
-                <a (click)='editProject(project._id)' style='cursor: pointer'>EDITAR PROYECTO</a>
+                <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown" style='cursor: pointer'>CONFIGURACION</a>
+                <div class="dropdown-menu" aria-labelledby="dp-config">
+                    <div *ngIf="admin">
+                        <a (click)='editProject(project._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>EDITAR PROYECTO</a>
+                    </div>
+                    <div *ngIf="admin">
+                        <a (click)='changeAdmin()' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>CAMBIAR ADMINISTRADOR</a>
+                    </div>
+                    <div>
+                        <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>SALIR DE PROYECTO</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-12 mt-2" style='background:#1F0968;color:white '>
             <h5 class='text-center '>{{project.nombre}}</h5>
         </div>
         <div class="col-4 d-flex justify-content-center">
-            <img class='img-fluid m-1 ' [src]='project.img | imgPipe' alt="" style='height:200px;border: 1px solid black;cursor: pointer '>
+            <img class='img-fluid m-1' [src]="project.img | imgPipe:'proyectos'" (click)='openFilesUploadModal(project._id)' style='height:200px;border: 1px solid black;cursor: pointer'>
         </div>
-        <div class='col-8 d-flex justify-content-start '>
-            <div class="row ">
-                <div class="col-12 d-flex justify-content-center">
-                    <h5 class='mr-2 '>PARTICIPANTES:</h5>
+        <div *ngIf="admin" class='col-8 d-flex justify-content-start flex-column'>
+            <div class="d-flex justify-content-center">
+                <h5 class='mr-2 '>PARTICIPANTES:</h5>
+            </div>
+            <div class="d-flex align-items-center row justify-content-start">
+                <div *ngFor="let user of project['participantes']" class="col-4 user d-flex justify-content-between">
+                    <div> <a>{{user.nombre}}</a></div>
+                    <div><button (click)='deleteUser(user._id)' class='btn btn-danger'>X</button></div>
                 </div>
-                <div *ngFor="let user of project.participantes" class="col-6 d-flex justify-content-center">
-                    <a href="">{{user.nombre}}</a>
-                </div>
-                <div class='col-12 d-flex justify-content-center mt-2 '>
-                    <button class='btn btn-warning '>Añadir participante</button>
-                    <button class='btn btn-danger '>Eliminar participante</button>
-                </div>
+            </div>
+            <div class='d-flex justify-content-center mt-2 '>
+                <button (click)='addUser(project._id)' class='btn btn-warning '>Añadir participante</button>
             </div>
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-2 p-2 d-flex justify-content-around flex-column" style='background:#1F0968;color:white '>
-            <div><a class='d-block text-center ' href="">IMAGENES</a></div>
-            <div><a class='d-block text-center ' href="">ARCHIVOS</a></div>
+    <div class="row mb-4" style='border: 1px solid black'>
+        <div class=" col-10 d-flex justify-content-around flex-column " style='background:#1F0968;color:white '>
+            <app-images></app-images>
         </div>
-        <div class="col-10 p-2" style='background:#1F0968 '>
-            <div class="app-mensajes" id='app-mensajes ' style='background: white '>
-                <div>
-                    <span class="badge ">nombre</span>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, harum? Itaque iusto error quas veniam voluptatibus aliquid odio nostrum expedita inventore incidunt. Quibusdam totam ipsam suscipit corrupti molestias ratione omnis?</p>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="input-group col-12">
-                    <input class='form-control ' type="text" name="message" value="" [(ngModel)]="message" placeholder="Send Message" (keyup.enter)='sendMessage() '>
-                    <div class='input-group d-flex justify-content-around mt-2'>
-                        <div>
-                            <button class='btn btn-warning'><i class="fas fa-smile-beam"></i></button>
-                        </div>
-                        <div>
-                            <button class='btn btn-warning'>SUBIR IMAGEN</button>
-                            <button class='btn btn-warning'>SUBIR ARCHIVO</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class=" col-2 d-flex justify-content-around flex-column " style='background:#1F0968;color:white '>
+            <app-files></app-files>
+        </div>
+        <div class="col-12 " style='background:#1F0968'>
+            <app-messages></app-messages>
         </div>
     </div>
 </div>

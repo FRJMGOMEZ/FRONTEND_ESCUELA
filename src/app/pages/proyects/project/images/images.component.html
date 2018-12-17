@@ -1,0 +1,8 @@
+<div class='row d-flex justify-content-center'>
+    <div class="col-12">
+        <a (click)='downloadImg()' class='d-block text-center' style='cursor: pointer'> IMAGENES COMPARTIDAS</a>
+    </div>
+    <div *ngFor="let image of images" class="text-center p-2">
+        <img #img (click)='downloadImg(img)' [src]="image | imgPipe:'imgProyectos'" alt="" style='height:50px;width:50px'>
+    </div>
+</div>

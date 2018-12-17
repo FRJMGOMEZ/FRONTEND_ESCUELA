@@ -1,0 +1,36 @@
+<div *ngIf="usersAdm" class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Participantes</h5>
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class='col-6 d-flex flex-column align-items-center'>
+                            <div class='text-center' *ngFor="let userAdm of usersAdm">
+                                <div><a href="">{{userAdm.nombre}}</a></div>
+                                <div><button (click)='addOrRemoveAdmin(userAdm)'>Add</button></div>
+                            </div>
+                        </div>
+                        <div class='col-6 d-flex flex-column align-items-center'>
+                            <div *ngFor="let userNoAdm of usersNoAdm">
+                                <div><a href="">{{userNoAdm.nombre}}</a></div>
+                                <div><button (click)='addOrRemoveAdmin(userNoAdm)'>Remove</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form *ngIf="subjects === []" ngNativeValidate #form='ngForm' role="form" (ngSubmit)='createSubject(form)'>
+                    <div class="form-group">
+                        <input [ngModel]="subjectName" class=form-control name='subjectName' placeholder='nombre de la materia' type="text">
+                        <button class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Guardar</strong></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

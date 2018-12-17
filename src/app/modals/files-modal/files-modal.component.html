@@ -1,0 +1,37 @@
+<div class='animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div *ngIf="progress === 100" class='col-12 mb-2'><button (click)='toMyFiles()' class='btn btn-warning'>IR A ARCHIVOS</button></div>
+                    <div *ngIf="file">
+                        <span class='text-center' *ngIf="progress!== 100 ">Archivo cargandose...</span>
+                        <span class='text-center' *ngIf="progress ===100">Carga completada</span>
+
+                        <div *ngIf="file" class="progress">
+                            <div class="progress-bar" role="progressbar" [ngStyle]="{'width': progress + '%' }"></div>
+                        </div>
+                        <div *ngIf="file" class="scroll-box">
+                            <pdf-viewer #myPdf [src]="file | filesPipe" [render-text]="true" style="display: block;" [autoresize]="true" [original-size]="false" (page-rendered)="pageRendered($event)" (after-load-complete)="pdfLoaded($event)">
+                            </pdf-viewer>
+                        </div>
+                    </div>
+                    <div *ngIf="!file && messages" class='row'>
+                        <div *ngFor="let message of messages" class="col-2">
+                            <img #file (click)="showDocument(message['file'])" class='img-fluid' [src]="message['img'] | imgPipe:'icons'" alt="">
+                            <span>{{message['titulo']}}</span>
+                        </div>
+                    </div>
+                    <button *ngIf="file && progress === 100" (click)='downloadFile()' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+                      <i class='fa fa-save '></i>
+                      Descargar archivo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

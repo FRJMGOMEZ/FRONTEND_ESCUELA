@@ -44,10 +44,19 @@ export class ProyectsComponent implements OnInit {
 
   searchProjects(){
 
+    this.projects = []
+
     this._userServices.searchUsersById(this.userOnline._id).subscribe((user) => {
 
-      this.projects = user.proyectos;
+      for(let project of user.proyectos){
 
+        if(project.activo === true){
+
+          this.projects.push(project)
+        }
+
+
+      }
     })
   }
 

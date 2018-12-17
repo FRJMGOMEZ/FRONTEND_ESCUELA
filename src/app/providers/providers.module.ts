@@ -14,6 +14,11 @@ import { ProfessorsServices } from './professor.service';
 import { ChatServices } from './chat.service';
 import { AlumniServices } from './alumni.service';
 import { ClassesServices } from './classes.service';
+import { MessagesService } from './messages.service';
+import { CalendarService } from './calendar.service';
+import { FacilitiesService } from './facilities.service';
+import { EventsService } from './events.service';
+
 
 
 @NgModule({
@@ -29,7 +34,11 @@ import { ClassesServices } from './classes.service';
        ProfessorsServices,
        ChatServices,
        AlumniServices,
-       ClassesServices
+       ClassesServices,
+       MessagesService,
+       CalendarService,
+       FacilitiesService,
+       EventsService
     ],
 
     exports: [],

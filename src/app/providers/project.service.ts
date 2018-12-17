@@ -41,9 +41,9 @@ export class ProjectServices {
   }
 
 
-  addUser(projectId:string,participanteId:string,token:string){
+  addOrRemoveUser(projectId:string,participanteId:string,token:string){
 
-    let url = `${URL_SERVICES}/anadirParticipante/${projectId}`
+    let url = `${URL_SERVICES}/anadirOExpulsarParticipante/${projectId}`
 
     let body = {participante:participanteId};
 
@@ -53,6 +53,21 @@ export class ProjectServices {
 
       return res.usuarioActualizado
     }))
+  }
+
+  addOrRemoveAdmin(projectId:string,userId:string,token:string){
+
+    let url = `${URL_SERVICES}/anadirEliminarAdmin/${projectId}`;
+
+    let body = {participante:userId};
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.put(url,body,{headers}).pipe(map((res:any)=>{
+
+      return res.proyectoGuardado
+    }))
+
   }
 
   updateProject(id:string,project:Project,token:string){
@@ -65,6 +80,18 @@ export class ProjectServices {
 
       return res.proyectoActualizado
 
+    }))
+  }
+
+  changeStatus(id:string,token:string){
+
+    let url = `${URL_SERVICES}/cambiarEstado/${id}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.put(url,{headers}).pipe(map((res:any)=>{
+
+      return res.proyectoGuardado
     }))
   }
 }

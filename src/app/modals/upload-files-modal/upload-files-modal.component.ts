@@ -16,7 +16,9 @@ export class UploadFilesModalComponent implements OnInit {
   imgUpload: File
   temporaryImg: any
 
-  constructor(public _modalService: UploadFilesModalController, private _uploadFilesServices:UploadFilesServices, private _userServices:UserServices) {
+  constructor(public _modalService: UploadFilesModalController,
+              private _uploadFilesServices:UploadFilesServices,
+              private _userServices:UserServices) {
 
     this.userOnline = this._userServices.userOnline;
     this.token = this._userServices.token;
@@ -27,19 +29,26 @@ export class UploadFilesModalComponent implements OnInit {
   uploadImg() {
 
     let id = this._modalService.id;
+    let type = this._modalService.type;
     //let token = this._userServices.token;
 
-    this._uploadFilesServices.updateImage(this.imgUpload, 'usuarios', id)
+    this._uploadFilesServices.updateFile(this.imgUpload, type, id)
       .then((res: any) => {
 
-        if (res.usuarioActualizado._id === this.userOnline._id) {
-          this._userServices.saveInStorage(res.usuarioActualizado._id, res.usuarioActualizado, this.token);
-        }
-        
+        if(res.usuarioActualizado){
+          if (res.usuarioActualizado._id === this.userOnline._id) {
+            this._userServices.saveInStorage(res.usuarioActualizado._id, res.usuarioActualizado, this.token);
+          } 
+        }       
           this.hideModal();
-          this._modalService.notification.emit(res);
-          swal('IMAGEN SUBIDA!', res.usuarioActualizado.img, "success");
-            
+          this._modalService.notification.emit();
+
+          if(type==='usuarios'){
+            swal("IMAGEN SUBIDA!", res.usuarioActualizado.img, "success");
+          } 
+          if (type === 'proyectos') {
+          swal("IMAGEN SUBIDA!", res.proyectoActualizado.img, "success");
+           } 
       })
       .catch(res => { console.log(res) })
   }

@@ -9,6 +9,7 @@ import { SubjectComponent } from './manteinance/subject/subject.component';
 import { UsersComponent } from './manteinance/users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
 import { ProjectComponent } from './proyects/project/project.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const pagesRoutes: Routes = [
   {
@@ -56,6 +57,11 @@ const pagesRoutes: Routes = [
         component: UsersComponent,
         data: { title: "USER", description: "User manteinance" }
     },
+      {
+        path: "calendar/:id",
+        component:CalendarComponent,
+        data: { title: "CALENDAR", description: "Calendar" }
+      },
 
     { path: "", redirectTo: "/dashboard", pathMatch: "full" }
 

@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule,Routes } from "@angular/router";
 
 
+
 //My modules//
 import { ProvidersModule } from "../providers/providers.module";
 import { ModalsModule } from "../modals/modals.module";
@@ -29,11 +30,24 @@ import { ProjectComponent } from "./proyects/project/project.component";
 
 //Routes//
 import { PAGESROUTES } from './pages.routes';
+import { ImagesComponent } from './proyects/project/images/images.component';
+import { MessagesComponent } from './proyects/project/messages/messages.component';
+import { FilesComponent } from './proyects/project/files/files.component';
+import { CalendarComponent } from './calendar/calendar.component';
+
+import {ScrollingModule} from  '@angular/cdk/scrolling'
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DayComponent } from './calendar/day/day.component';
+import { FacilitiesComponent } from './manteinance/facilities/facilities.component'
+
+
+import { AvoidCloseDirective } from '../directives/avoid-close.directive';
+
 
 
 
 @NgModule({
-    declarations: [
+  declarations: [
     PagesComponent,
     AlumniComponent,
     ProfessorComponent,
@@ -42,32 +56,31 @@ import { PAGESROUTES } from './pages.routes';
     DashboardComponent,
     ProfileComponent,
     ProyectsComponent,
-    ProjectComponent       
-    ],
-    imports: [
-        BrowserModule,
-        PAGESROUTES,
-        FormsModule,
-        ReactiveFormsModule,
-        CommonModule,
-        RouterModule,
-        ProvidersModule,
-        ModalsModule,
-        PipesModule,
-        SharedModule
-    ],
-    exports:[
-    PagesComponent,
-    AlumniComponent,
-    ProfessorComponent,
-    SubjectComponent,
-    UsersComponent,
-    DashboardComponent,
-    ProfileComponent,
-    ProyectsComponent 
-    ],
-
-    providers: [],
-    bootstrap: []
+    ProjectComponent,
+    ImagesComponent,
+    MessagesComponent,
+    FilesComponent,
+    CalendarComponent,
+    DayComponent,
+    FacilitiesComponent,
+    AvoidCloseDirective
+  ],
+  imports: [
+    BrowserModule,
+    PAGESROUTES,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    RouterModule,
+    ProvidersModule,
+    ModalsModule,
+    PipesModule,
+    SharedModule,
+    ScrollingModule,
+    DragDropModule
+  ],
+  exports: [],
+  providers: [],
+  bootstrap: []
 })
-export class PagesModule { }
+export class PagesModule {}

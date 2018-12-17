@@ -1,0 +1,85 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form ngNativeValidate *ngIf="event" #form='ngForm' role='form' (ngSubmit)='createEvent(form)'>
+                        <div class="row">
+                            <div class="col-3 d-flex flex-column justify-content-around">
+                                <div class="form-group">
+                                    <input [(ngModel)]='event.nombre' name='nombre' type="text" class="form-control" placeholder="Nombre">
+                                </div>
+                                <div class="form-group ">
+                                    DURACION
+                                    <select [(ngModel)]="time.hour" name="time.hour" class='form-control'>
+                                    <option *ngIf="timeAvailable >= 1" value=1>{{timeAvailable-(timeAvailable-1)}}</option>
+                                    <option *ngIf="timeAvailable >= 2"value=2>{{timeAvailable-(timeAvailable-2)}}</option>
+                                    <option *ngIf="timeAvailable >= 3"value=3>{{timeAvailable-(timeAvailable-3)}}</option>
+                                    <option *ngIf="timeAvailable >= 4"value=4>{{timeAvailable-(timeAvailable-4)}}</option>
+                                    <option *ngIf="timeAvailable >= 5"value=5>{{timeAvailable-(timeAvailable-5)}}</option>
+                                    <option *ngIf="timeAvailable >= 6"value=6>{{timeAvailable-(timeAvailable-6)}}</option>
+                                    <option *ngIf="timeAvailable >= 7"value=7>{{timeAvailable-(timeAvailable-7)}}</option>
+                                    <option *ngIf="timeAvailable >= 8"value=8>{{timeAvailable-(timeAvailable-8)}}</option>
+                                    <option *ngIf="timeAvailable >= 9"value=9>{{timeAvailable-(timeAvailable-9)}}</option>
+                                    <option *ngIf="timeAvailable >= 10"value=10>{{timeAvailable-(timeAvailable-10)}}</option>
+                                    <option *ngIf="timeAvailable >= 11"value=11>{{timeAvailable-(timeAvailable-11)}}</option>
+                                    <option *ngIf="timeAvailable >= 12" value=12>{{timeAvailable-(timeAvailable-11)}}</option>
+                                </select>
+                                    <select [(ngModel)]="time.minutes" name="time.minutes" class='form-control'>
+                                    <option  value=25>15 minutos</option>
+                                    <option  value=50>30 minutos</option>
+                                    <option  value=75>45 minutos</option>
+                                </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input [(ngModel)]="event.repeticion" name='event.repeticion' type="checkbox" class="custom-control-input" id='customCheck1'>
+                                        <label class="custom-control-label" for="customCheck1">Repetir todas las semanas</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-3 ">
+                                <textarea [(ngModel)]="event.descripcion" name="event.descripcion"></textarea>
+                            </div>
+                            <div class=' col-6 form-group'>
+                                <div class="row">
+                                    <div class="col-12">MATERIAS</div>
+                                    <div class="col-10">
+                                        <select #valueSubject class='form-control'>
+                                           <option value=""></option>
+                                           <option *ngFor="let subject of subjects" [value]="subject._id">{{subject.nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2 pl-1">
+                                        <button class='btn btn-warning' (click)='addSubject(valueSubject.value)'>ADD</button>
+                                    </div>
+                                    <div class='col-12' *ngFor="let subject of selectedSubjects" class=''>
+                                        <a>{{subject.nombre}}</a>
+                                    </div>
+                                    <div class="col-12">PROFESORES</div>
+                                    <div class="col-10">
+                                        <select #valueProfessor class='form-control'>
+                                            <option value=""></option>
+                                            <option *ngFor="let professor of professors" [value]="professor._id">{{professor.nombre}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2 pl-1"><button class='btn btn-warning' (click)='addProfessor(valueProfessor.value)'>ADD</button></div>
+                                    <div class='col-12' *ngFor="let professor of selectedProfessors" class=''>
+                                        <a>{{professor.nombre}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type='submit' class='btn btn-warning'>CREAR EVENTO</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

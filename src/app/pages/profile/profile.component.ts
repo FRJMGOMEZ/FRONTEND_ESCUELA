@@ -14,18 +14,22 @@ export class ProfileComponent implements OnInit {
 
   userOnline:User
 
-  constructor(private _userServices:UserServices, private _uploadFilesModal:UploadFilesModalController, private _passwordModalController:PasswordModalController) {
+  constructor(private _userServices:UserServices,
+              private _uploadFilesModal:UploadFilesModalController,
+              private _passwordModalController:PasswordModalController) {
    }
 
   ngOnInit() {
 
     this.userOnline = this._userServices.userOnline;
 
-    this._uploadFilesModal.notification.subscribe(()=>{
+    this._uploadFilesModal.notification.subscribe((res)=>{
 
-      console.log(this._userServices.userOnline)
+      if(!res){
 
-      this.userOnline = this._userServices.userOnline;
+        this.userOnline = this._userServices.userOnline;
+        
+      }
     })
   }
 
@@ -43,7 +47,7 @@ export class ProfileComponent implements OnInit {
   }
 
   openImgModal(){
-    this._uploadFilesModal.showModal(this.userOnline._id)
+    this._uploadFilesModal.showModal(this.userOnline._id,'usuarios')
 
   }
 

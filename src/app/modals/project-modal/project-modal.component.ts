@@ -63,12 +63,11 @@ export class ProjectModalComponent implements OnInit {
 
       this._projectServices.createProject(project,this.token).subscribe((res:any)=>{
 
+        this._modalController.hideModal();
+
          this._userServices.saveInStorage(res.user._id,res.user,this.token)
 
            this._modalController.notification.emit()
-
-           this._modalController.hideModal()
-
         })
     }
   }
@@ -85,8 +84,7 @@ export class ProjectModalComponent implements OnInit {
 
           this._modalController.hideModal()
 
-        }
-      })
+        })
     }
   }
 }

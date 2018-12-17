@@ -26,13 +26,26 @@ export class ImgPipe implements PipeTransform {
     }
 
     switch (type) {
-      case 'alumnos': url += `alumnos/${img}`;
+      case "alumnos":
+        url += `alumnos/${img}`;
         break;
-      case 'profesores': url += `profesores/${img}`;
+      case "profesores":
+        url += `profesores/${img}`;
         break;
-      case 'usuarios': url += `usuarios/${img}`;
+      case "usuarios":
+        url += `usuarios/${img}`;
         break;
-      default: url += `x/x`;
+      case "proyectos":
+        url += `proyectos/${img}`;
+        break;
+      case "imgProyectos":
+        url += `imgProyectos/${img}`;
+        break;
+      case 'icons':
+       url +=  `icons/${img}`;
+        break;
+      default:
+        url += `x/x`;
     }
 
     return url;

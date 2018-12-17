@@ -6,6 +6,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 export class UploadFilesModalController {
     
     public id: string;
+    public type:string;
     public hidden: string = "hidden";
     public notification = new EventEmitter<any>();
 
@@ -14,9 +15,11 @@ export class UploadFilesModalController {
     hideModal() {
         this.hidden = "hidden";
         this.id = '';
+        this.type=''
     }
-    showModal(id) {
+    showModal(id:string,type:string) {
         this.hidden = "";
         this.id = id;
+        this.type= type
     }
 }

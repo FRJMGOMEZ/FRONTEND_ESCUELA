@@ -5,21 +5,21 @@ import { User } from "src/app/models/user.model";
   providedIn: "root"
 })
 export class UserModalController {
-  public usuario: User;
+  public id:string
   public hidden: string = "hidden";
-  public notificationUsuario = new EventEmitter<any>();
+  public notification = new EventEmitter<any>();
 
 
   constructor() {}
 
-  ocultarModalUsuario() {
+  hideModal() {
     this.hidden = "hidden";
-    this.usuario = null;
+    this.id = '';
   }
 
-  mostrarModalUsuario(usuario) {
+  showModal(id:string) {
     this.hidden = "";
-    this.usuario = usuario;
+    this.id = id;
   }
 
 }

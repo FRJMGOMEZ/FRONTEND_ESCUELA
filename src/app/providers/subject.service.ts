@@ -29,11 +29,13 @@ export class SubjectServices {
         }))
      }
 
-    getSubjects(desde:number=0,limite: number = 5){
+    getSubjects(token: string,desde:number=0,limite: number = 5){
 
         let url = `${URL_SERVICES}/materia?desde=${desde}&limite=${limite}`;
 
-        return this.http.get(url).pipe(map((response:any)=>{
+        let headers = new HttpHeaders().set('token', token)
+
+        return this.http.get(url, {headers}).pipe(map((response:any)=>{
 
             return response.materias            
         }))

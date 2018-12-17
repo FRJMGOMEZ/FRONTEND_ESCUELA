@@ -28,6 +28,13 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
 
     this.getUsers()
+    this._modalUploadFilesController.notification.subscribe((res)=>{
+
+       if(!res){
+         
+        this.getUsers()
+       }
+    })
   }
 
   getUsers(){
@@ -98,6 +105,6 @@ export class UsersComponent implements OnInit {
 
   openUploadFilesModule(id:string){
 
-    this._modalUploadFilesController.showModal(id)
+    this._modalUploadFilesController.showModal(id,'usuarios')
   }
 }

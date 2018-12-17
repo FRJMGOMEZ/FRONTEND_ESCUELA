@@ -3,6 +3,8 @@ import * as io from "socket.io-client";
 
 import { Observable } from 'rxjs';
 import { URL_SERVICES } from '../config/config';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 
 
@@ -14,22 +16,27 @@ export class ChatServices {
     private url = URL_SERVICES;
     private socket;
 
-    constructor() { }
+    constructor(private http:HttpClient) {
+        this.socket = io(this.url)
+     }
 
     sendMessage(message) {
-        this.socket.emit('mensaje', message);
+        this.socket.emit('mensaje', message)
     }
 
     getMessages() {
-        let observable = new Observable(observer => {
-            this.socket = io(this.url);
-            this.socket.on('mensaje', (data) => {
-                observer.next(data);
+        return Observable.create((observer) => {
+            this.socket.on('mensaje', (mensaje) => {
+
+                observer.next(mensaje);
             });
-            return () => {
-                this.socket.disconnect();
-            };
-        })
-        return observable;
-    }  
+        });
+    } 
+    
+    getFile(url: string) {
+        return this.http.get(url, { observe: 'response', responseType: 'blob' })
+            .pipe(map((res) => {
+                return new Blob([res.body], { type: res.headers.get('Content-Type') });
+            }))
+    }
 }
