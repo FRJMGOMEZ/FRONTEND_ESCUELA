@@ -1,137 +1,177 @@
-import { Component, OnInit } from '@angular/core';
-import { SubjectServices } from '../../providers/subject.service';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { CalendarService } from '../../providers/calendar.service';
 import { UserServices } from '../../providers/user.service';
-import { FacilitiesService } from '../../providers/facilities.service';
-import { ActivatedRoute } from '@angular/router';
-import { EventModalController } from 'src/app/modals/events-modal/eventsModal.controller';
-import { Calendar } from 'src/app/models/calendar.model';
-
+import { ActivatedRoute, Router, Route } from '@angular/router';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.less']
+  selector: "app-calendar",
+  templateUrl: "./calendar.component.html",
+  styleUrls: ["./calendar.component.less"]
 })
 export class CalendarComponent implements OnInit {
-
-
-  persist = true;
   
+  token: string;
+  public calendar: any;
+  week: number[] = []
 
-  token: string
+  public notification = new EventEmitter<any>();
 
-  facilities:any[]=[]
-  rowsWidth: string
+  calendars:any[]
 
-  calendars: any[] = []
-
-  calendar:Calendar[]
-
-  week:number[]
-
-  days:number[]
-
-  constructor(private _userServices:UserServices,
-              private _subjectsService:SubjectServices,
-              private _calendarServices:CalendarService,
-              private _facilitiesService:FacilitiesService,
-              private ar:ActivatedRoute,
-              public _eventModalController:EventModalController) { 
-
-    this.token = this._userServices.token;            
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private _calendarServices: CalendarService,
+    private _userServices: UserServices,
+    private router: Router,
+  ) {
+    this.token = this._userServices.token;   
   }
 
   ngOnInit() {
 
-    this.ar.params.subscribe((params) => {
+    this.activatedRoute.params.subscribe(params => {
 
-      let id = params['id'];
+      let id = params["id"];
 
-      this._calendarServices.getCalendarById(id, this.token).subscribe((calendar) => {
+      if (id != 'no-calendars') {
+        this._calendarServices
+          .getCalendarById(id, this.token)
+          .subscribe((calendar) => {
 
-        this.calendar = calendar;
+            this.calendar = calendar;
+            let date = new Date(calendar.fecha);
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            let daysInMonth = 32 - new Date(year,month,32).getDate();
 
-        let date = new Date(calendar.fecha)
+            let calendarDate = date.getDate();
 
-        let calendarDate = date.getDate();
+            let calendarDay = date.getDay();
 
-        let calendarDay = date.getDay();
+            let week =[];
 
-        switch (calendarDay) {
-          case 1: this.week = [calendarDate, calendarDate + 1, calendarDate + 2, calendarDate + 3,calendarDate + 4, calendarDate + 5, calendarDate + 6];
-            break;
-          case 2: this.week = [calendarDate - 1, calendarDate, calendarDate + 1, calendarDate + 2, calendarDate + 3, calendarDate + 4, calendarDate + 5];
-            break;
-          case 3: this.week = [calendarDate - 2, calendarDate - 1, calendarDate, calendarDate + 1, calendarDate + 2, calendarDate + 3, calendarDate + 4];
-            break;
-          case 4: this.week = [calendarDate - 3, calendarDate - 2, calendarDate - 1, calendarDate, calendarDate + 1, calendarDate + 2, calendarDate + 3];
-            break;
-          case 5: this.week = [calendarDate - 4, calendarDate - 3, calendarDate - 2, calendarDate - 1, calendarDate, calendarDate + 1, calendarDate + 2];
-            break;
-          case 6: this.week = [calendarDate - 5, calendarDate - 4, calendarDate - 3, calendarDate - 2, calendarDate - 1, calendarDate, calendarDate + 1];
-            break;
-          case 7: this.week = [calendarDate - 6, calendarDate - 5, calendarDate - 4, calendarDate - 3, calendarDate - 2, calendarDate - 1, calendarDate];
-            break;
-        }
-      })
-    })
+            switch (calendarDay) {
+              case 0:
+                week = [
+                  calendarDate + 1,
+                  calendarDate + 2,
+                  calendarDate + 3,
+                  calendarDate + 4,
+                  calendarDate + 5,
+                  calendarDate + 6,
+                  calendarDate + 7
+                ];
+                break;
+              case 1:
+                week = [
+                  calendarDate ,
+                  calendarDate + 1,
+                  calendarDate + 2,
+                  calendarDate + 3,
+                  calendarDate + 4,
+                  calendarDate + 5,
+                  calendarDate + 6
+                ];
+                break;
+              case 2:
+                week = [
+                  calendarDate - 1,
+                  calendarDate ,
+                  calendarDate + 1 ,
+                  calendarDate + 2,
+                  calendarDate + 3,
+                  calendarDate + 4,
+                  calendarDate + 5
+                ];
+                break;
+              case 3:
+                week = [
+                  calendarDate - 2,
+                  calendarDate - 1,
+                  calendarDate ,
+                  calendarDate + 1,
+                  calendarDate + 2,
+                  calendarDate + 3,
+                  calendarDate + 4
+                ];
+                break;
+              case 4:
+                week = [
+                  calendarDate - 3,
+                  calendarDate - 2,
+                  calendarDate - 1,
+                  calendarDate ,
+                  calendarDate + 1,
+                  calendarDate + 2,
+                  calendarDate + 3
+                ];
+                break;
+              case 5:
+                week = [
+                  calendarDate - 4,
+                  calendarDate - 3,
+                  calendarDate - 2,
+                  calendarDate - 1,
+                  calendarDate ,
+                  calendarDate + 1,
+                  calendarDate + 2
+                ];
+                break;
+              case 6:
+                week = [
+                  calendarDate - 5,
+                  calendarDate - 4,
+                  calendarDate - 3,
+                  calendarDate - 2,
+                  calendarDate - 1,
+                  calendarDate ,
+                  calendarDate + 1
+                ];
+                break;
+            }
+            for(let day of week ){
+              if(day>daysInMonth){
+                day = day-daysInMonth;
+                this.week.push(day)
+              }else{
+                this.week.push(day)
+              }}
 
-    this._facilitiesService.getFacilities(this.token).subscribe((facilities)=>{
+            this._calendarServices.getCalendars(this.token).subscribe((calendars) => {
 
-      this.facilities = facilities;
+                this.calendars = calendars;
 
-      this.rowsWidth = `${100/this.facilities.length}%`; 
-    })
+                let lapso = 604800000;
 
-    this._calendarServices.getCalendars(this.token).subscribe((calendars)=>{
+                let lastDate = new Date(this.calendars[this.calendars.length - 1].fecha)
 
-      if(calendars.length === 0){
+                lapso = lapso - (lapso / 7) * lastDate.getDay() + 1;
 
-        this._calendarServices.postCalendar(this.token).subscribe((calendar)=>{
+                let now = new Date()
 
-           this.calendars.push = calendar
+                if (now.getTime() - lastDate.getTime() > lapso) {
 
-           this.calendar = calendar;            
-        })
-
-        return
-
-      }else{
-
-        this.calendars = calendars;
-
-        let lapso = 604800000;
-
-        let lastDate = new Date(this.calendars[this.calendars.length - 1].fecha)
-
-        lapso = lapso - (lapso/7)*lastDate.getDay()+1; 
-
-        let now = new Date()
-       
-        if (now.getTime() - lastDate.getTime() > lapso) {
-
-            this._calendarServices.postCalendar(this.token).subscribe((calendar)=>{
-
-              this.calendars.push(calendar)
+                 this.postCalendar()
+                }
             })
+          })
         } 
-     }
-  })
-  
+      else if(id === 'no-calendars') {
+        this.postCalendar()
+      }
+    }); 
   }
-   event(position:number, day:string){
 
-    this._eventModalController.showModal(day,this.calendar['_id'])
+  postCalendar(){
 
-    this._eventModalController.notification.emit(position)
+    this._calendarServices.postCalendar(this.token).subscribe((calendar) => {
 
-    this._eventModalController.notification.subscribe((res)=>{
-
-
+      this.router.navigate(['/calendar',calendar._id])
     })
-    }
-
   }
-    
-   
+
+  toDay(day) {
+
+    this.router.navigate(['./day', day, this.calendar._id])   
+  }
+}

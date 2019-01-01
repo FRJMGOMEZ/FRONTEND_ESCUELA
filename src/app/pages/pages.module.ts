@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { RouterModule,Routes } from "@angular/router";
-
+import { RouterModule} from "@angular/router";
 
 
 //My modules//
@@ -11,7 +10,6 @@ import { ProvidersModule } from "../providers/providers.module";
 import { ModalsModule } from "../modals/modals.module";
 import { PipesModule } from "../pipes/pipes.module";
 import { SharedModule } from "../shared/shared.module";
-
 import { PagesComponent } from './pages.component';
 
 ///Manteinance//
@@ -38,10 +36,8 @@ import { CalendarComponent } from './calendar/calendar.component';
 import {ScrollingModule} from  '@angular/cdk/scrolling'
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { DayComponent } from './calendar/day/day.component';
-import { FacilitiesComponent } from './manteinance/facilities/facilities.component'
-
-
-import { AvoidCloseDirective } from '../directives/avoid-close.directive';
+import { FacilitiesComponent } from './manteinance/facilities/facilities.component';
+import { EventComponent } from './calendar/day/event/event.component'
 
 
 
@@ -63,7 +59,7 @@ import { AvoidCloseDirective } from '../directives/avoid-close.directive';
     CalendarComponent,
     DayComponent,
     FacilitiesComponent,
-    AvoidCloseDirective
+    EventComponent
   ],
   imports: [
     BrowserModule,

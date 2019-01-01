@@ -10,6 +10,7 @@ import { UsersComponent } from './manteinance/users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
 import { ProjectComponent } from './proyects/project/project.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { DayComponent } from './calendar/day/day.component';
 
 const pagesRoutes: Routes = [
   {
@@ -60,9 +61,20 @@ const pagesRoutes: Routes = [
       {
         path: "calendar/:id",
         component:CalendarComponent,
-        data: { title: "CALENDAR", description: "Calendar" }
+        data: { title: "CALENDAR", description: "Calendar" },
+        children:[
+          {
+            path: "day/:day",
+            component: DayComponent,
+            data: { title: "DAY", description: "Day" }
+          }
+        ]
       },
-
+      {
+        path: "day/:day/:calendarId",
+        component: DayComponent,
+        data: { title: "DAY", description: "Day" }
+      },
     { path: "", redirectTo: "/dashboard", pathMatch: "full" }
 
     ]

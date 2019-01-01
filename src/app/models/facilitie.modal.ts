@@ -1,4 +1,7 @@
+
+
+
 export class Facilitie {
 
-    constructor (public nombre:string) {}
+    constructor (public nombre:string,public events:any[],public _id:string) {}
 }

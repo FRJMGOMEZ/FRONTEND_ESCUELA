@@ -1,3 +1,91 @@
-<p>
-  day works!
-</p>
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-10 d-flex flex-row card-group ">
+        <div *ngFor="let facilitie of facilities" class="card">
+            <div class="card-body">
+                {{facilitie.nombre}}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2" style='height:720px'>
+        <div class="row d-flex flex-column card-group">
+            <div class="card">
+                <div class="card-body">
+                    8-9
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    9-10
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    10-11
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    11-12
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    12-13
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    13-14
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    14-15
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    15-16
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    16-17
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    17-18
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    18-19
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    19-20
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-10 d-flex flex-row justify-content-around">
+        <div *ngFor="let facilitie  of facilities" class="d-flex flex-column card-group">
+            <app-event [facilitie]='facilitie' [position]=1></app-event>
+            <app-event [facilitie]='facilitie' [position]='2'></app-event>
+            <app-event [facilitie]='facilitie' [position]='3'></app-event>
+            <app-event [facilitie]='facilitie' [position]='4'></app-event>
+            <app-event [facilitie]='facilitie' [position]='5'></app-event>
+            <app-event [facilitie]='facilitie' [position]='6'></app-event>
+            <app-event [facilitie]='facilitie' [position]='7'></app-event>
+            <app-event [facilitie]='facilitie' [position]='8'></app-event>
+            <app-event [facilitie]='facilitie' [position]='9'></app-event>
+            <app-event [facilitie]='facilitie' [position]='10'></app-event>
+            <app-event [facilitie]='facilitie' [position]='11'></app-event>
+            <app-event [facilitie]='facilitie' [position]='12'></app-event>
+        </div>
+    </div>

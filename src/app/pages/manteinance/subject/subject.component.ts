@@ -76,7 +76,7 @@ export class SubjectComponent implements OnInit {
   }
 
   getSubjects() {
-    this._subjectServices.getSubjects(this.from).subscribe((subjects: Subject[]) => {
+    this._subjectServices.getSubjects(this.token,this.from).subscribe((subjects: Subject[]) => {
       this.subjects = subjects;
     });
   }

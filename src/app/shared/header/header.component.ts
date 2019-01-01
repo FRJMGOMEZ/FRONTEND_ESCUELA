@@ -22,16 +22,19 @@ export class HeaderComponent implements OnInit {
                }
 
   ngOnInit() {
-
     this._calendarServices.getCalendars(this.token).subscribe((calendars)=>{
-
-      this.calendar = calendars[calendars.length-1]
+      if(calendars){
+        this.calendar = calendars[calendars.length - 1]
+      }
     })
   }
 
   toLastCalendar(){
-
-   this.route.navigate(['/calendar',this.calendar._id])
+    if(this.calendar){
+      this.route.navigate(['/calendar', this.calendar._id])
+    }else{
+      this.route.navigate(['/calendar', 'no-calendars'])
+    }
   }
 
 }

@@ -24,7 +24,7 @@ export class CalendarService {
    
   getCalendars(token:string){
 
-    let url = `${URL_SERVICES}/calendario`;
+    let url = `${URL_SERVICES}/calendarios`;
 
     return this.http.get(url).pipe(map((res: any) => {
 
@@ -32,7 +32,7 @@ export class CalendarService {
     }))
   }
 
-  getCalendarById(id:string,token:string){
+  getCalendarById(id:string,token:string,day?:string){
 
     let url = `${URL_SERVICES}/searchById/calendario/${id}`
 
@@ -40,7 +40,26 @@ export class CalendarService {
 
     return this.http.get(url,{headers}).pipe(map((res:any)=>{
 
-      return res.calendario
+      if(!day){
+        return res.calendario
+      }
+      switch(day){
+
+        case'lunes': return res.calendario.lunes;
+        break;
+        case 'martes': return res.calendario.martes;
+          break;
+        case 'miercoles': return res.calendario.miercoles;
+          break;
+        case 'jueves': return res.calendario.jueves;
+          break;
+        case 'viernes': return res.calendario.viernes;
+          break;
+        case 'sabado': return res.calendario.sabado;
+          break;
+        case 'domingo': return res.calendario.domingo;
+          break; 
+      }
     })) 
   }
 
@@ -53,4 +72,16 @@ export class CalendarService {
     return this.http.put(url,{evento:eventId,dia:day},{headers})
   }
 
+
+  getCalendarDay(calendarId:string,day:string,token:string){
+
+    let url = `${URL_SERVICES}/calendario/${calendarId}/${day}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url,{headers}).pipe(map((res:any)=>{
+
+      return res.eventosDb      
+    }))
+  }
 }

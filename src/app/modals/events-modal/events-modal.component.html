@@ -8,7 +8,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form ngNativeValidate *ngIf="event" #form='ngForm' role='form' (ngSubmit)='createEvent(form)'>
+                    <form ngNativeValidate *ngIf="event" #form='ngForm' role='form'>
                         <div class="row">
                             <div class="col-3 d-flex flex-column justify-content-around">
                                 <div class="form-group">
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="col-12 text-center">
-                                <button type='submit' class='btn btn-warning'>CREAR EVENTO</button>
+                                <button (click)='createEvent()' class='btn btn-warning'>CREAR EVENTO</button>
                             </div>
                         </div>
                     </form>

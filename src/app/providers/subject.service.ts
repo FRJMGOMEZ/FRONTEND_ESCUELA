@@ -29,7 +29,7 @@ export class SubjectServices {
         }))
      }
 
-    getSubjects(token: string,desde:number=0,limite: number = 5){
+    getSubjects(token:string,desde:number=0,limite: number = 5){
 
         let url = `${URL_SERVICES}/materia?desde=${desde}&limite=${limite}`;
 

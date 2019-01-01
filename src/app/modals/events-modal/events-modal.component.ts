@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventModalController } from './eventsModal.controller';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Event } from '../../models/event.model';
 import { UserServices } from '../../providers/user.service';
 import { User } from 'src/app/models/user.model';
 import { ProfessorsServices } from '../../providers/professor.service';
@@ -10,6 +9,7 @@ import { Professor } from '../../models/professor.model';
 import { Subject } from '../../models/subject.model';
 import { EventsService } from '../../providers/events.service';
 import { CalendarService } from '../../providers/calendar.service';
+import { Event } from '../../models/event.model';
 
 @Component({
   selector: 'app-events-modal',
@@ -31,7 +31,8 @@ export class EventsModalComponent implements OnInit {
 
   timeAvailable:number=12;
 
-  event:Event
+  event:any
+  
 
   constructor(public _modalController:EventModalController,
              private _userServices:UserServices,
@@ -47,42 +48,68 @@ export class EventsModalComponent implements OnInit {
 
   ngOnInit() {
     
-    this._modalController.notification.subscribe((number)=>{
+    this._modalController.notification.subscribe((res)=>{
 
-      this.timeAvailable = this.timeAvailable - (number - 1);
+      if(res){
 
-      this.event = new Event('', '', undefined, number, false, '')
+        this.timeAvailable = this.timeAvailable - (res.position - 1);
 
-      this.event.materias = [] 
-      this.event.profesores = [] 
+        this.event = new Event('', '', undefined, res.position, false, '',res.facilitieId, [], [])
 
-      this._calendarServices.getCalendarById(this._modalController.id,this.token).subscribe((calendar)=>{
+        switch (this._modalController.day) {
 
-        if(this._modalController.day === 'lunes'){
+          case 'lunes': this.getCalendarDay('lunes');
+            break;
+          case 'martes': this.getCalendarDay('martes');
+            break;
+          case 'miercoles': this.getCalendarDay('miercoles');
+            break;
+          case 'jueves': this.getCalendarDay('jueves');
+            break;
+          case 'viernes': this.getCalendarDay('viernes');
+            break;
+          case 'sabado': this.getCalendarDay('sabado');
+            break;
+          case 'domingo': this.getCalendarDay('domingo');
+            break;
+        }
+        
+        this.getProfessors()
+        this.getSubjects()
 
-          //////Obtenemos todos los eventos del lunes////////
-
-
-        }        
-      })                      
-
-    })
-
-    this._professorServices.getProfessors(this.token).subscribe((professors)=>{
-
-      this.professors = professors;
-    })
-
-    this._subjectServices.getSubjects(this.token).subscribe((subjects)=>{
-
-      this.subjects = subjects;
-    })
+      }   
+      })
   }
 
 
   hideModal() {
 
     this._modalController.hideModal()
+  }
+
+
+  getProfessors(){
+
+    this._professorServices.getProfessors(this.token).subscribe((professors) => {
+
+      this.professors = professors;
+    })
+  }
+
+  getSubjects(){
+     this._subjectServices.getSubjects(this.token).subscribe((subjects) => {
+
+      this.subjects = subjects;
+    })
+  }
+
+  getCalendarDay(day:string){
+
+       this._calendarServices.getCalendarDay(this._modalController.id,day,this.token).subscribe((events)=>{
+
+
+             
+       })      
   }
 
   addProfessor(id:string){
@@ -119,7 +146,8 @@ export class EventsModalComponent implements OnInit {
 
     this._eventServices.postEvent(this.event, this.token).subscribe((event:any)=>{
 
-      this._calendarServices.addEvent(this._modalController.id,this._modalController.day,event._id,this.token)
+      this._calendarServices.addEvent(this._modalController.id,this._modalController.day,event._id,this.token).subscribe((res)=>{            
+      })
        
     })
   }

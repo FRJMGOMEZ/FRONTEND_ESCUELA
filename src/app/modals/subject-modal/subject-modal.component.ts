@@ -62,7 +62,7 @@ export class SubjectModalComponent implements OnInit {
 
   getSubjects() {
 
-    this._subjectServices.getSubjects().subscribe((subjects)=>{
+    this._subjectServices.getSubjects(this.token).subscribe((subjects)=>{
 
       if(!subjects){
 
