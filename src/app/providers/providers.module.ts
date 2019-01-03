@@ -17,7 +17,7 @@ import { ClassesServices } from './classes.service';
 import { MessagesService } from './messages.service';
 import { CalendarService } from './calendar.service';
 import { FacilitiesService } from './facilities.service';
-import { EventsService } from './events.service';
+
 
 
 
@@ -38,7 +38,7 @@ import { EventsService } from './events.service';
        MessagesService,
        CalendarService,
        FacilitiesService,
-       EventsService
+      
     ],
 
     exports: [],

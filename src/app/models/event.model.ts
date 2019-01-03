@@ -8,6 +8,7 @@ export class Event{
                 public instalacion:string,
                 public profesores?: string[],
                 public materias?: string[],
+                public _id?:string
                 ){}
 }
 

@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { EventModalController } from './eventsModal.controller';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { UserServices } from '../../providers/user.service';
 import { User } from 'src/app/models/user.model';
 import { ProfessorsServices } from '../../providers/professor.service';
 import { SubjectServices } from '../../providers/subject.service';
 import { Professor } from '../../models/professor.model';
 import { Subject } from '../../models/subject.model';
-import { EventsService } from '../../providers/events.service';
 import { CalendarService } from '../../providers/calendar.service';
 import { Event } from '../../models/event.model';
+
 
 @Component({
   selector: 'app-events-modal',
@@ -21,70 +20,107 @@ export class EventsModalComponent implements OnInit {
   userOnline: User
   token:string
 
+  day:any
+  hour:any
+
   professors:Professor[]
   selectedProfessors:Professor[]=[]
-
   subjects:Subject[]
   selectedSubjects:Subject[]=[]
 
-  time:any={hour:0,minutes:0}
+  time:any={minutes:0,hour:0}
+  event: Event
+  facilitie: any = { id: undefined, events: [] }
+  position: string
 
   timeAvailable:number=12;
-
-  event:any
-  
 
   constructor(public _modalController:EventModalController,
              private _userServices:UserServices,
              private _professorServices:ProfessorsServices,
              private _subjectServices:SubjectServices,
-             private _eventServices:EventsService,
-             private _calendarServices:CalendarService ) {
+             private _calendarServices:CalendarService) {
 
               this.token = this._userServices.token;
 
               this.userOnline = this._userServices.userOnline;
               }
 
-  ngOnInit() {
+  ngOnInit() { 
     
-    this._modalController.notification.subscribe((res)=>{
+      this._calendarServices.daySource$.subscribe((day)=>{
+        this.day = day
+      })
+    
+     this._modalController.notification.subscribe((res)=>{
 
       if(res){
 
-        this.timeAvailable = this.timeAvailable - (res.position - 1);
+        this.facilitie.id = res.facilitieId;
+        console.log(this.facilitie.id)
+        this.position = res.position;
+        this.hour = this.day[this.position];
 
-        this.event = new Event('', '', undefined, res.position, false, '',res.facilitieId, [], [])
+        if (this.day[this.position + 11]){
+          for (let event of this.day[this.position + 11]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 11 }}}
 
-        switch (this._modalController.day) {
+        if(this.day[this.position +10]){
+          for (let event of this.day[this.position + 10]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 10;}}}
 
-          case 'lunes': this.getCalendarDay('lunes');
-            break;
-          case 'martes': this.getCalendarDay('martes');
-            break;
-          case 'miercoles': this.getCalendarDay('miercoles');
-            break;
-          case 'jueves': this.getCalendarDay('jueves');
-            break;
-          case 'viernes': this.getCalendarDay('viernes');
-            break;
-          case 'sabado': this.getCalendarDay('sabado');
-            break;
-          case 'domingo': this.getCalendarDay('domingo');
-            break;
-        }
-        
-        this.getProfessors()
-        this.getSubjects()
+        if (this.day[this.position + 9]) {
+          for (let event of this.day[this.position + 9]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 9;}}}
 
-      }   
-      })
+        if (this.day[this.position + 8]) {
+          for (let event of this.day[this.position + 8]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 8;}}}
+
+        if (this.day[this.position + 7]) {
+          for (let event of this.day[this.position + 7]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 7;}}}
+
+        if (this.day[this.position + 6]) {
+          for (let event of this.day[this.position + 6]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 6;}}}
+
+        if (this.day[this.position + 5]) {
+          for (let event of this.day[this.position + 5]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 5;}}}
+
+        if (this.day[this.position + 4]) {
+          for (let event of this.day[this.position + 4]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 4;}}}
+
+        if (this.day[this.position + 3]) {
+          for (let event of this.day[this.position + 3]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 3;}}}
+
+        if (this.day[this.position + 2]) {
+          for (let event of this.day[this.position + 2]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 2}}} 
+
+        if (this.day[this.position + 1]) {
+          for (let event of this.day[this.position + 1]) {
+            if (event.instalacion === this.facilitie.id) {this.timeAvailable = 1;}}}
+
+        let percent = res.minutes/100;
+
+        this.timeAvailable = this.timeAvailable - (Number(this.position) - 1 + percent); 
+
+        console.log(this.timeAvailable)
+
+        this.event = new Event("", "", undefined, res.position, false, this.userOnline._id, this.facilitie.id, [], []);
+
+        this.getProfessors();
+        this.getSubjects();
+          }   
+      })   
   }
-
-
   hideModal() {
-
     this._modalController.hideModal()
+    this.timeAvailable = 12;
   }
 
 
@@ -103,15 +139,7 @@ export class EventsModalComponent implements OnInit {
     })
   }
 
-  getCalendarDay(day:string){
-
-       this._calendarServices.getCalendarDay(this._modalController.id,day,this.token).subscribe((events)=>{
-
-
-             
-       })      
-  }
-
+  
   addProfessor(id:string){
 
     if(id){
@@ -144,11 +172,15 @@ export class EventsModalComponent implements OnInit {
 
     this.event.duracion = Number(this.time.minutes / 100) + Number(this.time.hour) ;
 
-    this._eventServices.postEvent(this.event, this.token).subscribe((event:any)=>{
+    console.log(this.event)
 
-      this._calendarServices.addEvent(this._modalController.id,this._modalController.day,event._id,this.token).subscribe((res)=>{            
+    this._calendarServices.postEvent(this.event,this.token).subscribe((event:Event)=>{
+
+      this._calendarServices.pushEvent(event,this.day._id,this.token).subscribe((day)=>{
+
+         console.log(day)
       })
-       
-    })
+    })        
   }
 }
+

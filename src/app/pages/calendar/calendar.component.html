@@ -1,66 +1,62 @@
+<!--
+
+    
+-->
 <div *ngIf="week" class='row card-group d-flex flex-column'>
-
     <div class="card text-center">
         <div class="card-header">
-            Lunes {{week[0]}}
+            Lunes {{week[0].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('lunes')" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[0].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            Martes {{week[1]}}
+            Martes {{week[1].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('martes')" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[1].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            Miércoles {{week[2]}}
+            Miércoles {{week[2].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('miercoles')" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[2].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            Jueves {{week[3]}}
+            Jueves {{week[3].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('jueves')" class="btn btn-primary">Show</a>
-        </div>
-
-    </div>
-
-    <div class="card text-center">
-        <div class="card-header">
-            Viernes {{week[4]}}
-        </div>
-        <div class="card-body">
-            <a (click)="toDay('viernes')" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[3].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            Sábado {{week[5]}}
+            Viernes {{week[4].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('sabado')" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[4].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
-
     <div class="card text-center">
         <div class="card-header">
-            Domingo {{week[6]}}
+            Sábado {{week[5].date.getDate()}}
         </div>
         <div class="card-body">
-            <a (click)="toDay('domingo')" class="btn btn-primary">Show</a>
+            <a (click)="toDay(week[5].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            Domingo {{week[6].date.getDate()}}
+        </div>
+        <div class="card-body">
+            <a (click)="toDay(week[6].id)" routerLinkActive="router-link-active" class="btn btn-primary">Show</a>
         </div>
     </div>
 </div>

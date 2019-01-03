@@ -2,86 +2,103 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICES } from '../config/config';
 import { map } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Event } from '../models/event.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
 
+  private daySource = new Subject<void>();
+  public daySource$ = this.daySource.asObservable()
+
   constructor(private http:HttpClient) { }
 
-  postCalendar(token:string){
+  postCalendar(days:string[],token:string){
 
-    let headers = new HttpHeaders().set('token',token)
+        let url = `${URL_SERVICES}/calendario`;
 
-    let url = `${URL_SERVICES}/calendario`
+        let headers = new HttpHeaders().set('token', token)
+        
+        return this.http.post(url,{days},{headers}).pipe(map((res:any)=>{
 
-    return  this.http.post(url,{headers}).pipe(map((res:any)=>{
-
-    return res.calendarioGuardado
-    }))
+          return res.calendarSaved
+        }))     
   }
    
   getCalendars(token:string){
 
     let url = `${URL_SERVICES}/calendarios`;
 
-    return this.http.get(url).pipe(map((res: any) => {
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url,{headers}).pipe(map((res: any) => {
 
       return res.calendariosDb
     }))
   }
 
-  getCalendarById(id:string,token:string,day?:string){
+  getCalendarById(id: string, token: string, day?: string) {
 
     let url = `${URL_SERVICES}/searchById/calendario/${id}`
 
     let headers = new HttpHeaders().set('token', token)
 
-    return this.http.get(url,{headers}).pipe(map((res:any)=>{
+    return this.http.get(url, { headers }).pipe(map((res: any) => {
 
-      if(!day){
-        return res.calendario
-      }
-      switch(day){
+      return res.calendario
 
-        case'lunes': return res.calendario.lunes;
-        break;
-        case 'martes': return res.calendario.martes;
-          break;
-        case 'miercoles': return res.calendario.miercoles;
-          break;
-        case 'jueves': return res.calendario.jueves;
-          break;
-        case 'viernes': return res.calendario.viernes;
-          break;
-        case 'sabado': return res.calendario.sabado;
-          break;
-        case 'domingo': return res.calendario.domingo;
-          break; 
-      }
-    })) 
+    }))
   }
 
-  addEvent(calendarId:string,day:string,eventId:string, token:string){
+  postDaysOfTheWeek(date: Date, token: string) {
 
-     let url = `${URL_SERVICES}/anadirEvento/${calendarId}`
-     
-    let headers = new HttpHeaders().set('token', token)
+    let url = `${URL_SERVICES}/days`;
 
-    return this.http.put(url,{evento:eventId,dia:day},{headers})
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.post(url, { date }, { headers }).pipe(map((res: any) => {
+
+      return res.daysSaved
+    }))
   }
 
+  getDayById(id:string,token:string){
 
-  getCalendarDay(calendarId:string,day:string,token:string){
-
-    let url = `${URL_SERVICES}/calendario/${calendarId}/${day}`
+    let url = `${URL_SERVICES}/searchById/day/${id}`
 
     let headers = new HttpHeaders().set("token", token);
 
     return this.http.get(url,{headers}).pipe(map((res:any)=>{
 
-      return res.eventosDb      
+      this.daySource.next(res.day)
+
+       return res.day
     }))
+  }
+
+  postEvent(event:Event,token:string){
+
+    let url = `${URL_SERVICES}/event`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.post(url,event,{headers}).pipe(map((res:any)=>{
+
+      return res.eventSaved
+    }))
+  }
+
+  pushEvent(event:Event,dayId:string,token:string){
+
+    console.log(event)
+
+    let url = `${URL_SERVICES}/day/${dayId}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.put(url,{position:event.posicion,id:event._id},{headers})
+
   }
 }

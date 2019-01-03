@@ -33,50 +33,42 @@ const pagesRoutes: Routes = [
         component: ProyectsComponent,
         data: { title: "PROYECTS", description: "Proyects" }
       },
-    {
+      {
         path: "project/:id",
         component: ProjectComponent,
         data: { title: "PROYECT", description: "Proyect" }
-    },
-     {
+      },
+      {
         path: "alumniM",
         component: AlumniComponent,
         data: { title: "ALUMNI M", description: "Alumni manteinance" }
-    },
-    {
+      },
+      {
         path: "professorM",
         component: ProfessorComponent,
         data: { title: "PROFESOR M", description: "Professor manteinance" }
-    },
-    {
+      },
+      {
         path: "subjectM",
         component: SubjectComponent,
         data: { title: "SUBJECT", description: "Subkect manteinance" }
-        },
-    {
+      },
+      {
         path: "userM",
         component: UsersComponent,
         data: { title: "USER", description: "User manteinance" }
-    },
-      {
-        path: "calendar/:id",
-        component:CalendarComponent,
-        data: { title: "CALENDAR", description: "Calendar" },
-        children:[
-          {
-            path: "day/:day",
-            component: DayComponent,
-            data: { title: "DAY", description: "Day" }
-          }
-        ]
       },
       {
-        path: "day/:day/:calendarId",
+        path: "calendar/:id",
+        component: CalendarComponent,
+        data: { title: "CALENDAR", description: "Calendar" }
+      },
+      {
+        path: "day/:calendarId/:day",
         component: DayComponent,
         data: { title: "DAY", description: "Day" }
       },
-    { path: "", redirectTo: "/dashboard", pathMatch: "full" }
-
+      { path: "", redirectTo: "/dashboard", pathMatch: "full" }
     ]
   }
 ];

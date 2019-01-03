@@ -1,13 +1,25 @@
-.card {
-    padding: 0px;
-    margin: 0px
-}
-
 .empty {
     background-color: azure
 }
 
-.card-body {
+.link {
+    cursor: pointer;
+}
+
+.card {
+    padding: 0px;
     margin: 0px;
-    padding: 0px
+    border: none
+}
+
+.card-body {
+    height: 60px;
+    padding: 0px;
+    margin: 0px;
+    border: none
+}
+
+.card-group {
+    margin: 0px;
+    padding: 0px;
 }
