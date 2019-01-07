@@ -21,8 +21,7 @@ export class EventsModalComponent implements OnInit {
   token:string
 
   day:any
-  hour:any
-
+  
   professors:Professor[]
   selectedProfessors:Professor[]=[]
   subjects:Subject[]
@@ -57,9 +56,7 @@ export class EventsModalComponent implements OnInit {
       if(res){
 
         this.facilitie.id = res.facilitieId;
-        console.log(this.facilitie.id)
         this.position = res.position;
-        this.hour = this.day[this.position];
 
         if (this.day[this.position + 11]){
           for (let event of this.day[this.position + 11]) {
@@ -105,9 +102,12 @@ export class EventsModalComponent implements OnInit {
           for (let event of this.day[this.position + 1]) {
             if (event.instalacion === this.facilitie.id) {this.timeAvailable = 1;}}}
 
-        let percent = res.minutes/100;
 
-        this.timeAvailable = this.timeAvailable - (Number(this.position) - 1 + percent); 
+            console.log(res.percent)
+
+
+        if (res.percent < 1) { this.timeAvailable = (this.timeAvailable - (Number(this.position)) - (1- res.percent)) }
+        else { this.timeAvailable = (this.timeAvailable) - Number(this.position);}
 
         console.log(this.timeAvailable)
 
@@ -172,13 +172,15 @@ export class EventsModalComponent implements OnInit {
 
     this.event.duracion = Number(this.time.minutes / 100) + Number(this.time.hour) ;
 
-    console.log(this.event)
-
     this._calendarServices.postEvent(this.event,this.token).subscribe((event:Event)=>{
+
+      console.log(event)
 
       this._calendarServices.pushEvent(event,this.day._id,this.token).subscribe((day)=>{
 
-         console.log(day)
+        this._modalController.notification.emit()
+
+         this.hideModal()
       })
     })        
   }

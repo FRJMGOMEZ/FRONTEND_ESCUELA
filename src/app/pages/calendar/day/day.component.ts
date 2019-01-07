@@ -22,7 +22,6 @@ export class DayComponent implements OnInit {
 
   hours:Event[]
 
-  calendarId:string;
 
   public events:Event[]
 
@@ -34,19 +33,28 @@ export class DayComponent implements OnInit {
               private _calendarServices:CalendarService,
               private _userServices:UserServices,
               private _facilitiesServices:FacilitiesService,
+              private _eventModalController:EventModalController
               ) {
 
     this.token = this._userServices.token;            
 
     this.activatedRoute.params.subscribe((params)=>{      
       this.day = params['day']
-      this.calendarId = params['calendarId']
     })
   }
 
   ngOnInit() {
+
     this.getDay()
-    this.getFacilities()  
+    this.getFacilities() 
+
+    this._eventModalController.notification.subscribe((res)=>{
+
+      if(!res){
+
+        this.getDay()
+      }
+    })   
   }
   
   
@@ -64,7 +72,7 @@ export class DayComponent implements OnInit {
 
   getDay(){
     this._calendarServices.getDayById(this.day,this.token).subscribe((day)=>{
-      this.hours = [day['1'], day['2'], day['3'], day['4'], day['5'], day['6'], day['7'], day['8'], day['9'], day['10'], day['11'], day['12']]
+      this.hours = [day['0'], day['1'], day['2'], day['3'], day['4'], day['5'], day['6'], day['7'], day['8'], day['9'], day['10'], day['11']]
     })
   }
 }

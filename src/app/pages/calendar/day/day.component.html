@@ -1,92 +1,92 @@
-<div *ngIf="facilities" class="row">
-    <div class="col-2 p-0 m-0 bg-white"></div>
-    <div class="col-10 d-flex flex-row card-group ">
+<div *ngIf="facilities" class="row mt-2 ml-2 mr-2" style='height:30px; border:1px solid black'>
+    <div class="col-1 p-0 m-0 bg-white"></div>
+    <div class="col-11 d-flex flex-row card-group">
         <div *ngFor="let facilitie of facilities" class="card">
-            <div class="card-body">
+            <div class="card-body text-center">
                 {{facilitie.nombre}}
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-2 p-0 m-0">
-        <div class="row d-flex flex-column card-group" style='height:720px'>
+<div class="row mr-2 ml-2" style='border:1px solid black'>
+    <div class="col-1 p-0 m-0">
+        <div class="row d-flex flex-column card-group " style='height:720p'>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     8-9
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     9-10
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     10-11
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     11-12
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     12-13
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     13-14
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     14-15
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     15-16
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     16-17
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     17-18
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     18-19
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-body pl-2">
                     19-20
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="hours && facilities" class="col-10 d-flex flex-row justify-content-around" style='height:720px'>
+    <div *ngIf="hours && facilities" class="col-11 d-flex flex-row justify-content-around" style='height:720px'>
         <div *ngFor="let facilitie  of facilities" class="d-flex flex-column card-group">
-            <app-event [facilitie]='facilitie' [position]='1' [hour]='hours[0]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='2' [hour]='hours[1]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='3' [hour]='hours[2]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='4' [hour]='hours[3]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='5' [hour]='hours[4]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='6' [hour]='hours[5]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='7' [hour]='hours[6]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='8' [hour]='hours[7]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='9' [hour]='hours[8]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='10' [hour]='hours[9]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='11' [hour]='hours[10]'></app-event>
-            <app-event [facilitie]='facilitie' [position]='12' [hour]='hours[11]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='0' [hour]='hours[0]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='1' [hour]='hours[1]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='2' [hour]='hours[2]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='3' [hour]='hours[3]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='4' [hour]='hours[4]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='5' [hour]='hours[5]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='6' [hour]='hours[6]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='7' [hour]='hours[7]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='8' [hour]='hours[8]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='9' [hour]='hours[9]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='10' [hour]='hours[10]'></app-event>
+            <app-event [facilitie]='facilitie' [position]='11' [hour]='hours[11]'></app-event>
         </div>
     </div>
 </div>

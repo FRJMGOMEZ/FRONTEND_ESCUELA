@@ -11,9 +11,10 @@ import { ActivatedRoute, Router} from '@angular/router';
 export class CalendarComponent implements OnInit {
   
   token: string;
+
   calendar: any;
   week: any[];
-  days:any[]
+  
 
   public notification = new EventEmitter<any>();
 
@@ -100,6 +101,7 @@ export class CalendarComponent implements OnInit {
     }
 
     observable.subscribe((week) => {
+      
       let days = []
 
       week.forEach(day => { days.push(day._id) });
@@ -112,6 +114,8 @@ export class CalendarComponent implements OnInit {
     }
   
   toDay(day) {
-    this.router.navigate(['./day', this.calendar._id, day])   
+
+    this.router.navigate(['./day', this.calendar._id, day])  
+     
   }
 }

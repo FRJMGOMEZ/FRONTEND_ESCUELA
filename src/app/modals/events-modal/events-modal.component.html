@@ -16,24 +16,26 @@
                                 </div>
                                 <div class="form-group ">
                                     DURACION
-                                    <select [(ngModel)]="time.hour" name="time.hour" class='form-control'>
-                                    <option *ngIf="timeAvailable >= 1" value=1>{{timeAvailable-(timeAvailable-1)}}</option>
-                                    <option *ngIf="timeAvailable >= 2"value=2>{{timeAvailable-(timeAvailable-2)}}</option>
-                                    <option *ngIf="timeAvailable >= 3"value=3>{{timeAvailable-(timeAvailable-3)}}</option>
-                                    <option *ngIf="timeAvailable >= 4"value=4>{{timeAvailable-(timeAvailable-4)}}</option>
-                                    <option *ngIf="timeAvailable >= 5"value=5>{{timeAvailable-(timeAvailable-5)}}</option>
-                                    <option *ngIf="timeAvailable >= 6"value=6>{{timeAvailable-(timeAvailable-6)}}</option>
-                                    <option *ngIf="timeAvailable >= 7"value=7>{{timeAvailable-(timeAvailable-7)}}</option>
-                                    <option *ngIf="timeAvailable >= 8"value=8>{{timeAvailable-(timeAvailable-8)}}</option>
-                                    <option *ngIf="timeAvailable >= 9"value=9>{{timeAvailable-(timeAvailable-9)}}</option>
-                                    <option *ngIf="timeAvailable >= 10"value=10>{{timeAvailable-(timeAvailable-10)}}</option>
-                                    <option *ngIf="timeAvailable >= 11"value=11>{{timeAvailable-(timeAvailable-11)}}</option>
-                                    <option *ngIf="timeAvailable >= 12" value=12>{{timeAvailable-(timeAvailable-12)}}</option>
+                                    <select *ngIf="timeAvailable - (time.minutes/100) >= 1" [(ngModel)]="time.hour" name="time.hour" class='form-control'>
+                                    <option  value=0></option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 1" value=1>{{timeAvailable-(timeAvailable-1)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 2"value=2>{{timeAvailable-(timeAvailable-2)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 3"value=3>{{timeAvailable-(timeAvailable-3)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 4"value=4>{{timeAvailable-(timeAvailable-4)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 5"value=5>{{timeAvailable-(timeAvailable-5)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 6"value=6>{{timeAvailable-(timeAvailable-6)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 7"value=7>{{timeAvailable-(timeAvailable-7)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 8"value=8>{{timeAvailable-(timeAvailable-8)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 9"value=9>{{timeAvailable-(timeAvailable-9)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 10"value=10>{{timeAvailable-(timeAvailable-10)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 11"value=11>{{timeAvailable-(timeAvailable-11)}}</option>
+                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 12" value=12>{{timeAvailable-(timeAvailable-12)}}</option>
                                 </select>
-                                    <select *ngIf="timeAvailable > 1" [(ngModel)]=" time.minutes " name="time.minutes " class='form-control'>
-                                    <option  value=15>15 minutos</option>
-                                    <option  value=30>30 minutos</option>
-                                    <option  value=75>45 minutos</option>
+                                    <select *ngIf="time.hour < timeAvailable && time.hour != timeAvailable" [(ngModel)]=" time.minutes " name="time.minutes " class='form-control'>
+                                    <option value=0></option>
+                                    <option *ngIf="timeAvailable >= 0.25"  value=25>15 minutos</option>
+                                    <option *ngIf="timeAvailable >= 0.50" value=50>30 minutos</option>
+                                    <option *ngIf="timeAvailable >= 0.75" value=75>45 minutos</option>
                                 </select>
                                 </div>
                                 <div class="form-group ">
