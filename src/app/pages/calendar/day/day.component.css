@@ -9,7 +9,8 @@
     height: 60px;
     padding: 0px;
     margin: 0px;
-    border: none
+    border: none;
+    cursor: pointer;
 }
 
 .card-group {

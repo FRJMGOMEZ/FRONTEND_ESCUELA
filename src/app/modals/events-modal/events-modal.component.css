@@ -1,0 +1,15 @@
+.modal {
+    top: 0px;
+    right: 500px;
+    bottom: 0px;
+    left: 5px;
+    overflow: auto;
+    overflow-y: auto;
+    width: 280px;
+    z-index: 10040;
+}
+
+.hidden {
+    visibility: hidden;
+    display: none;
+}

@@ -12,7 +12,7 @@ export class CalendarComponent implements OnInit {
   
   token: string;
 
-  calendar: any;
+  currentCalendar: any;
   week: any[];
   
 
@@ -40,7 +40,7 @@ export class CalendarComponent implements OnInit {
           .getCalendarById(id, this.token)
           .subscribe((calendar) => {
 
-            this.calendar = calendar;
+            this.currentCalendar = calendar;
 
             this.week = [ { date: new Date(calendar.monday.date),  id:calendar.monday._id},
                           { date: new Date(calendar.tuesday.date), id: calendar.tuesday._id },
@@ -101,7 +101,7 @@ export class CalendarComponent implements OnInit {
     }
 
     observable.subscribe((week) => {
-      
+
       let days = []
 
       week.forEach(day => { days.push(day._id) });
@@ -114,8 +114,23 @@ export class CalendarComponent implements OnInit {
     }
   
   toDay(day) {
+    this.router.navigate(['./day', this.currentCalendar._id, day])  
+  }
 
-    this.router.navigate(['./day', this.calendar._id, day])  
-     
+  navigateToCalendar(id:string){
+
+    this._calendarServices.getCalendarById(id,this.token).subscribe((calendar)=>{
+
+      this.currentCalendar = calendar;
+
+      this.week = [{ date: new Date(calendar.monday.date), id: calendar.monday._id },
+      { date: new Date(calendar.tuesday.date), id: calendar.tuesday._id },
+      { date: new Date(calendar.wednesday.date), id: calendar.wednesday._id },
+      { date: new Date(calendar.thursday.date), id: calendar.thursday._id },
+      { date: new Date(calendar.friday.date), id: calendar.friday._id },
+      { date: new Date(calendar.saturday.date), id: calendar.saturday._id },
+      { date: new Date(calendar.sunday.date), id: calendar.sunday._id },
+      ];
+    })
   }
 }
