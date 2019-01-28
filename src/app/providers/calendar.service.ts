@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICES } from '../config/config';
 import { map } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { Event } from '../models/event.model';
+import { Calendar } from '../models/calendar.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,9 @@ export class CalendarService {
 
   private daySource = new Subject<void>();
   public daySource$ = this.daySource.asObservable()
+
+  public calendarsSource = new Subject<Calendar>();
+  public calendars$ = this.calendarsSource.asObservable()
 
   constructor(private http:HttpClient) { }
 
@@ -92,13 +96,35 @@ export class CalendarService {
 
   pushEvent(event:Event,dayId:string,token:string){
 
-    console.log(event)
-
     let url = `${URL_SERVICES}/day/${dayId}`
 
     let headers = new HttpHeaders().set("token", token);
 
     return this.http.put(url,{position:event.posicion,id:event._id},{headers})
 
+  }
+
+  getDayByDate (date:Date,token:string) {
+
+      let url = `${URL_SERVICES}/dayByDate/${date}`
+
+      let headers = new HttpHeaders().set("token", token);
+
+      return this.http.get(url,{headers}).pipe(map((res:any)=>{
+
+         return res.day
+      }))
+  }
+
+  getCalendarByDay(dayId:string,dayOfTheWeek:number,token:string){
+
+    let url = `${URL_SERVICES}/calendarByDay/${dayId}/${dayOfTheWeek}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url,{headers}).pipe(map((res:any)=>{
+
+      return res.calendar[0]
+    }))
   }
 }

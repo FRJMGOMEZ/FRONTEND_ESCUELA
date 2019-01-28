@@ -33,13 +33,10 @@ import { MessagesComponent } from './proyects/project/messages/messages.componen
 import { FilesComponent } from './proyects/project/files/files.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
-import {ScrollingModule} from  '@angular/cdk/scrolling'
-import {DragDropModule} from '@angular/cdk/drag-drop';
+
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './manteinance/facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component'
-
-
 
 
 @NgModule({
@@ -71,12 +68,10 @@ import { EventComponent } from './calendar/day/event/event.component'
     ProvidersModule,
     ModalsModule,
     PipesModule,
-    SharedModule,
-    ScrollingModule,
-    DragDropModule
+    SharedModule
   ],
   exports: [],
-  providers: [],
+  providers: [CalendarComponent],
   bootstrap: []
 })
 export class PagesModule {}

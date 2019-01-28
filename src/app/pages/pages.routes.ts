@@ -59,11 +59,6 @@ const pagesRoutes: Routes = [
         data: { title: "USER", description: "User manteinance" }
       },
       {
-        path: "calendar/:id",
-        component: CalendarComponent,
-        data: { title: "CALENDAR", description: "Calendar" }
-      },
-      {
         path: "day/:calendarId/:day",
         component: DayComponent,
         data: { title: "DAY", description: "Day" }

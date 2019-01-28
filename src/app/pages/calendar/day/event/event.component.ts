@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterContentInit, AfterViewInit, Pipe, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
 import { UserServices } from '../../../../providers/user.service';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
-import { DayComponent } from '../day.component';
-
 
 @Component({
   selector: "app-event",
@@ -36,7 +34,6 @@ export class EventComponent implements OnInit,AfterViewInit{
     private _userServices: UserServices,
     private renderer: Renderer2,
     private _modalEventController: EventModalController,
-    private dayComponent:DayComponent
   ) {
 
     this.token = this._userServices.token;
@@ -46,12 +43,10 @@ export class EventComponent implements OnInit,AfterViewInit{
     this.child1.appendChild(plus);
     this.child1.setAttribute("id", "#child");
     this.renderer.setStyle(this.child1, "cursor", "pointer");
-
   }
 
   ngAfterViewInit(): void {
     this.render()
-   
   }
   
   async render() {
@@ -99,86 +94,72 @@ export class EventComponent implements OnInit,AfterViewInit{
         );
         this.facilitie.space -= 60;
         return
-      } else {
-
+      } else if ((Number(this.facilitie.space) != spaceMustBe)) {
+      
         setTimeout(() => {
-
+            console.log(this.facilitie.space)
           if (spaceMustBe - this.facilitie.space >= 60) {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", "0");
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0");     
           } else {
+          
             this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceMustBe - this.facilitie.space)}px`);
             this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceMustBe) / 60));
-            this.facilitie.space -= 60 - (spaceMustBe-this.facilitie.space)
-                              
+            this.facilitie.space -= 60 - (spaceMustBe-this.facilitie.space)            
             this.renderer.appendChild(this.eventCard.nativeElement, this.child1);
             this.renderer.listen(this.eventCard.nativeElement, "click", () => {
               this.createEvent(this.position);
             });
             this.renderer.setStyle(this.eventCard.nativeElement, "background-color", "#c4afa1");
-                      
           }       
         })       
       } return
     } else {
       if (this.ourEvents["0"] != undefined) {
-
-           await this.placeEvent('0', this.facilitie.space);
-           this.facilitie.space-= 60*this.ourEvents['0'].duracion;
-           
-           let res = await this.checkSpace('0')             
-           let height = res['height'];
-           this.position += res['position'];
-           this.facilitie.space -= height;
-          
-           await this.setSpace('newDiv1',height,this.position)
+        
+        await this.placeEvent('0', this.facilitie.space);
+        await this.fixHeight(60*this.ourEvents['0'].duracion);
+        let res = await this.checkSpace('0');
+        if(res){
+          await this.fixPosition(res['position'])
+          await this.fixHeight(res["height"])
+          await this.setSpace('newDiv1', res['height'], this.position)
+        }
         }
        else {
-
-        let res = await this.checkSpace(null,spaceMustBe)
-
+        let res = await this.checkSpace(null,spaceMustBe);
         if(res){
-          let height = res['height'];
-          this.position += res['position'];
-          this.facilitie.space -= height
-          await this.setSpace('newDiv', height,this.position)
+          await this.fixPosition(res['position'])
+          await this.fixHeight(res["height"])
+          await this.setSpace('newDiv', res['height'], this.position) 
         }
-          }
+          }  
                    
       if (this.ourEvents["0.25"] != undefined) {
         await this.placeEvent('0.25', this.facilitie.space);
-
-        this.facilitie.space -= 60 * this.ourEvents['0.25'].duracion;
+        await this.fixHeight(60 * this.ourEvents['0.25'].duracion) 
         let res = await this.checkSpace('0.25');
-         if(res){ 
-           let height = res['height'];
-           this.position += res['position'];
-           this.facilitie.space -= height;
-           this.setSpace("newDiv2", height,this.position);
-         }        
+        if(res){
+          await this.fixPosition(res['position'])
+          await this.fixHeight(res["height"])
+          await this.setSpace('newDiv2', res['height'], this.position)
+        }       
       }
 
       if (this.ourEvents["0.50"] != undefined) {
-        console.log(2)
         await this.placeEvent('0.50', this.facilitie.space);
         this.facilitie.space -= 60 * this.ourEvents['0.50'].duracion;
-
         let res = await this.checkSpace("0.50");
         if(res){
-          let height = res['height'];
-          this.position += res['position'];
-
-          console.log(res['position'])
-          this.facilitie.space -= height;
-         await  this.setSpace('newDiv3', height,this.position)
+          await this.fixPosition(res['position'])
+          await this.fixHeight(res["height"])
+          await this.setSpace('newDiv3', res['height'], this.position)
         }
       }
 
       if(this.ourEvents['0.75']!=undefined){
-
         await this.placeEvent('0.75', this.facilitie.space);
-        this.facilitie.space -= 60 * this.ourEvents['0.75'].duracion; 
-      
+        await this.fixHeight(60*this.ourEvents['0.75'].duracion) 
       }
 
      }
@@ -255,28 +236,40 @@ export class EventComponent implements OnInit,AfterViewInit{
               
             if (this.ourEvents["0.75"] === undefined) {
 
-              if(this.ourEvents['0'].duracion < 75){resolve({height:45,position:0.25})}
-              else { resolve({ height: 45, position: 0.75 })}
-              
+              if(this.ourEvents['0'].duracion < 0.50){ resolve({height:45,position:0.25})}
+              if (this.ourEvents['0'].duracion === 0.50){resolve({ height: 30, position: 0.50 }) }
+              if (this.ourEvents['0'].duracion === 0.75) { resolve({ height: 15, position: 0.75 }) }
+              if (this.ourEvents['0'].duracion > 0.75) { resolve()}
+               
              } else {
-
-              if(this.ourEvents['0'].duracion < 50){resolve({height:15,position:0.25})}
-              else { resolve({ height: 30, position: 0.50 })}
+              if(this.ourEvents['0'].duracion < 0.50){resolve({height:30,position:0.25})}
+              if (this.ourEvents['0'].duracion === 0.50) { resolve({ height: 15, position: 0.50}) }
+              else { resolve()}
              }
            } else {
-             resolve({height:15,position:0.25})
+             if (this.ourEvents["0"].duracion < 0.50){resolve({height:15,position:0.25})}
+             else{resolve()}
            }
          }
        }
        else if (reference === "0.25") {
          if (this.ourEvents["0.50"] === undefined && this.ourEvents["0.25"].duracion >= 0.25) {
            if (this.ourEvents["0.75"] === undefined) {
-             if (this.ourEvents['0.25'].duracion < 0.50) { resolve({ height: 30, position: 0.50 })}
+
+             if (this.ourEvents['0.25'].duracion < 0.50) { 
+              resolve({ height: 30, position: 0.50 })}
+             if (this.ourEvents['0.25'].duracion === 0.50) {
+               resolve({ height: 15, position: 0.75 })
+             }
+             if (this.ourEvents['0.25'].duracion > 0.50) {
+               resolve()
+             }
              else {
-               resolve({ height: 15, position: 0.75 })}
+               resolve()
+             }
            }
              else{resolve({height:15,position:0.50})}
-         }
+         }resolve()
        }
        else if (reference === "0.50") {     
          if (this.ourEvents["0.75"] === undefined && this.ourEvents["0.50"].duracion === 0.25) {
@@ -286,35 +279,39 @@ export class EventComponent implements OnInit,AfterViewInit{
      } else {
        setTimeout(() => {
          if (Number(this.facilitie.space) === spaceMustBe) {
-           console.log("aquí");
            if (this.ourEvents["0.25"] === undefined) {
              if (this.ourEvents["0.50"] === undefined) {
                resolve({ height: 45, position: 0 });
-             } else {
-               resolve({ height: 30, position: 0 });
+             } else {resolve({ height: 30, position: 0 });
              }
-           } else {
-             resolve({ height: 15, position: 0 });
+            } else {resolve({ height: 15, position: 0 });
            }
          } else {
-           let spaceLeft = spaceMustBe - this.facilitie.space;
-           if (this.ourEvents["0.25"] === undefined) {
-             if (this.ourEvents["0.50"] === undefined && spaceLeft >= 15) {
-               if (this.ourEvents["0.75"] === undefined && spaceLeft >= 30) {
-                 resolve({ height: 30, position: 0.75 });
-               } else {
-                 resolve({ height: 15, position: 0.5 });
-               }
-             } else {
-               resolve({ height: 0, position: 0.25 });
-             }
-           } else {
-             resolve();
+           let spaceLeft = (this.facilitie.space+60) - spaceMustBe;
+           if(spaceLeft === 15){
+                if(this.ourEvents['0.75']===undefined){
+                  resolve({height:15,position:0.75})
+                } else { resolve()}           
            }
+           if (spaceLeft === 30) {
+               if (this.ourEvents['0.50'] === undefined) {
+                 if (this.ourEvents['0.75'] === undefined) {
+                   resolve({ height: 30, position: 0.50 })
+                 } else { resolve({ height: 15, position: 0.50 }) }
+               } else { resolve() }
+             }
+           if (spaceLeft === 45) {
+               if (this.ourEvents['0.25'] === undefined) {
+                 if(this.ourEvents['0.50']===undefined){
+                   if(this.ourEvents['0.75']){
+                        resolve({height:45,position:0.25})
+                   }else{resolve({height:30,position:0.25})}
+                 }else{resolve({height:15,position:0.25})}
+               } else { resolve() }
+             }        
          }
        });
-     }
-       
+     }      
   }) }
 
   setSpace(div:string,height?:number,position?:number){
@@ -351,20 +348,33 @@ export class EventComponent implements OnInit,AfterViewInit{
        this.createEvent(position);
      });
   
-
     if (div === 'newDiv') { this.renderer.insertBefore(parent2, division, parent);console.log('Aquí estamos')}
     if (div === 'newDiv1') { this.renderer.appendChild(parent2, division)}
     if (div === 'newDiv2') { this.renderer.appendChild(parent2, division)}
     if (div === 'newDiv3') { this.renderer.appendChild(parent2, division)}
    }
 
+
   createEvent(position) {
-    console.log(position)
 
     this._modalEventController.notification.emit({position, facilitieId:this.facilitie._id })
 
     this._modalEventController.showModal()
-  }  
+  }
+  
+  fixPosition(position:number){
+    return new Promise((resolve,reject)=>{
+      this.position += position;
+      resolve()
+
+    })
+  }
+  fixHeight(height:number){
+    return new Promise ((resolve,reject)=>{
+      this.facilitie.space -= height;
+      resolve()
+    })
+  }
 }
 
 

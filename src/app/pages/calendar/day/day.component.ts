@@ -1,13 +1,11 @@
 
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CalendarService } from '../../../providers/calendar.service';
-import { UserServices } from '../../../providers/user.service';
-import { FacilitiesService } from '../../../providers/facilities.service';
 import { EventModalController } from '../../../modals/events-modal/eventsModal.controller';
 import { Event } from 'src/app/models/event.model';
-import { Calendar } from '../../../models/calendar.model';
-
+import { CalendarComponent } from '../calendar.component';
+import { CalendarService } from '../../../providers/calendar.service';
+import { CalendarModalController } from '../../../modals/calendar-modal/calendar-modal.controller';
 
 @Component({
   selector: "app-day",
@@ -18,11 +16,9 @@ export class DayComponent implements OnInit{
 
   @ViewChild('calendarPlace') calendarPlace : ElementRef
 
-  token: string;
-
   currentDay: any;
-
   calendarId:string
+
   week:any[]
 
   hours: Event[] = [];
@@ -31,109 +27,144 @@ export class DayComponent implements OnInit{
 
   cardWidth:string
 
+  inProgress:boolean = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
-    private _calendarServices: CalendarService,
-    private _userServices: UserServices,
-    private _facilitiesServices: FacilitiesService,
     private _eventModalController: EventModalController,
-    private router:Router
+    private router:Router,
+    public calendarComponent:CalendarComponent,
+    private _calendarServices:CalendarService,
+    private _calendarModalController:CalendarModalController
+  ) { }
 
-  ) {
-    this.token = this._userServices.token;
+  ngOnInit() {
+
+    this.inProgress = true;
 
     this.activatedRoute.params.subscribe(params => {
       this.currentDay = params["day"];
       this.calendarId = params['calendarId']
-    });
-  }
+  
+    if (this.calendarId === 'no-calendar') {
 
-  ngOnInit() {
+      this.calendarComponent.postCalendar(new Date()).then((calendar:any)=>{
 
-    this.render()
+        this._calendarServices.calendarsSource.next(calendar);
+        
+        let day = new Date();
+        let dayId;
 
-    this.getCalendar()
+        switch(day.getDay()){
+          case 1 : dayId = calendar.monday._id;
+          break;
+          case 2: dayId = calendar.tuesday._id;
+            break;
+          case 3: dayId = calendar.wednesday._id;
+            break;
+            case 4: dayId = calendar.thursday._id ;
+          break;
+          case 5: dayId = calendar.friday._id;
+            break;
+          case 6: dayId = calendar.saturday._id;
+            break;
+          case 0: dayId = calendar.sunday._id;
+            break;
+        }
+        this.router.navigate(['/day',calendar._id,dayId])
+      })
+
+    } else {
+        this.calendarComponent.getCalendar(this.calendarId).then(() => {
+         this.week = this.calendarComponent.week;
+          this.calendarComponent.checkCalendars().then((calendars)=>{
+            this.inProgress = false;
+            this.render()
+          })
+        })      
+    }
+    })
 
     this._eventModalController.notification.subscribe(res => {
       if (!res) {
         this.render()
       }
     });
+
+    this._calendarModalController.notification.subscribe((res)=>{
+     if(res){
+      let date = res;
+       this.calendarComponent.postCalendar(new Date(date)).then((calendar: any) => {
+         this._calendarServices.calendarsSource.next(calendar);
+         let day = new Date();
+         let dayId;
+
+         switch (day.getDay()) {
+           case 1: dayId = calendar.monday._id;
+             break;
+           case 2: dayId = calendar.tuesday._id;
+             break;
+           case 3: dayId = calendar.wednesday._id;
+             break;
+           case 4: dayId = calendar.thursday._id;
+             break;
+           case 5: dayId = calendar.friday._id;
+             break;
+           case 6: dayId = calendar.saturday._id;
+             break;
+           case 7: dayId = calendar.sunday._id;
+             break;
+         }
+         this.router.navigate(['/day', calendar._id, dayId])
+       })
+
+     
+     }
+    }) 
   }
 
   async render() {
-    await this.getDay()
-    await this.getFacilities()
-    await this.getWidth()
-  }
-
-
-  getDay() {
-    return new Promise((resolve, reject) => {
-      this._calendarServices
-        .getDayById(this.currentDay, this.token)
-        .subscribe(day => {
-          this.hours = [
-            day["0"],
-            day["1"],
-            day["2"],
-            day["3"],
-            day["4"],
-            day["5"],
-            day["6"],
-            day["7"],
-            day["8"],
-            day["9"],
-            day["10"],
-            day["11"]
-          ]; resolve()
-        })
-    })
-  }
-
-  getFacilities() {
-    return new Promise((resolve,reject)=>{
-      this._facilitiesServices.getFacilities(this.token).subscribe(facilities => {
-        if (facilities) {
-          facilities.forEach(facilitie => {
-            let space = 720;
-            facilitie.space = space;
-          });
-          this.facilities = facilities;
-          resolve()
-        }
-      }); 
-    })   
+   let res = await this.calendarComponent.getDay(this.currentDay);
+   this.hours = res['hours'];
+   let res2 = await this.calendarComponent.getFacilities();
+   this.facilities = res2['facilities'];
+   this.getWidth()
+  
   }
 
   getWidth(){
     this.cardWidth = `${Math.round(((this.calendarPlace.nativeElement.offsetWidth / 12) * 11) / (this.facilities.length + 1))}px`;
   }
 
-  getCalendar(){
-    this._calendarServices.getCalendarById(this.calendarId,this.token).subscribe((calendar)=>{
-
-      this.week = [{ date: new Date(calendar.monday.date), id: calendar.monday._id },
-      { date: new Date(calendar.tuesday.date), id: calendar.tuesday._id },
-      { date: new Date(calendar.wednesday.date), id: calendar.wednesday._id },
-      { date: new Date(calendar.thursday.date), id: calendar.thursday._id },
-      { date: new Date(calendar.friday.date), id: calendar.friday._id },
-      { date: new Date(calendar.saturday.date), id: calendar.saturday._id },
-      { date: new Date(calendar.sunday.date), id: calendar.sunday._id },
-      ];
-
-      console.log(this.week)
-    })
-  }
-
-  async toDay(day) {
-    console.log(day)
+  async toOtherDay(day) {
+    this.inProgress = true;
     this.router.navigate(['./day', this.calendarId, day])
-    await this.activatedRoute.params.subscribe(params => {
-      this.currentDay = params["day"];
-    })
-    this.render()
   }
-  
+
+  async toOtherWeek(calendarId:any){
+    this.inProgress = true;
+   let res = await this.calendarComponent.navigateToCalendar(calendarId);
+   let dayId = res['day'];
+   this.router.navigate(["/day", calendarId,dayId])
+  }
+
+  showCalendarModal(){
+    console.log(this.calendarId)
+    this._calendarModalController.showModal(this.calendarId,this.currentDay)
+  }
+
+ // swipeCalendars(calendar:any){
+   // this.inProgress = true;
+    //this.calendarComponent.checkCalendars(calendar).then(()=>{
+     // this.inProgress = false;
+    //})
+ // } 
+ // swipeCalendarsBack(calendar){ 
+   // let monday = new Date(calendar.monday.date);
+   // monday.setDate(monday.getDate()+7)
+   // calendar.monday.date = monday;
+   // this.calendarComponent.checkCalendars(calendar).then(()=>{
+   // })
+ // }
 }
 

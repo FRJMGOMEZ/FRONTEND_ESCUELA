@@ -32,6 +32,12 @@ import { AdminModalController } from "./admin/adminModal.controller";
 import { ImgModalController } from './img-modal/imgModal.controller';
 import { FilesModalController } from './files-modal/filesModal.controller';
 import { EventModalController } from './events-modal/eventsModal.controller';
+import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
+import { CalendarModalController } from './calendar-modal/calendar-modal.controller';
+
+
+
+
 
 
 @NgModule({
@@ -47,7 +53,8 @@ import { EventModalController } from './events-modal/eventsModal.controller';
     AdminComponent,
     ImgModalComponent,
     FilesModalComponent,
-    EventsModalComponent
+    EventsModalComponent,
+    CalendarModalComponent
   ],
 
   imports: [
@@ -71,7 +78,8 @@ import { EventModalController } from './events-modal/eventsModal.controller';
     AdminComponent,
     ImgModalComponent,
     FilesModalComponent,
-    EventsModalComponent
+    EventsModalComponent,
+    CalendarModalComponent
   ],
 
   providers: [
@@ -86,7 +94,8 @@ import { EventModalController } from './events-modal/eventsModal.controller';
     AdminModalController,
     ImgModalController,
     FilesModalController,
-    EventModalController
+    EventModalController,
+    CalendarModalController
   ],
 
   bootstrap: []

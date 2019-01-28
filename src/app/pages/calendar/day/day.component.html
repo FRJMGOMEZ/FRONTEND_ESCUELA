@@ -1,52 +1,99 @@
-<div class="row m-3">
-    <a [routerLink]="['/calendar',calendarId]" routerLinkActive="router-link-active">Volver al calendario</a>
-</div>
+<div *ngIf="!inProgress" class="row">
+    <div class="col-5 p-0 ">
+        <div class="row p-0 m-1">
+            <div class="col-1">
+            </div>
+            <div class="col-10 card-group">
+                <div *ngIf="calendarComponent.calendars[0] " (click)='toOtherWeek(calendarComponent.calendars[0]._id)' class="card">
+                    <div class="card-body text-center">
+                        {{calendarComponent.calendars[0].monday.date | date:'dd MM yy'}} - {{calendarComponent.calendars[0].sunday.date | date:'dd MM yy'}}
+                    </div>
+                </div>
+                <div *ngIf="calendarComponent.calendars[1] " (click)='toOtherWeek(calendarComponent.calendars[1]._id)' class="card ">
+                    <div class="card-body text-center ">
+                        {{calendarComponent.calendars[1].monday.date | date:'dd MM yy'}} - {{calendarComponent.calendars[1].sunday.date | date:'dd MM yy'}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+    </div>
+    <div class="col-2 m-0 p-0 d-flex flex-column text-center ">
+        <h4 *ngIf="calendarComponent.currentDate">{{calendarComponent.currentDate}}</h4>
+        <button (click)='showCalendarModal()'><i class="fas fa-search "></i></button>
 
-<div *ngIf="week" class="row card-group mt-3">
-    <div *ngIf="week[0].id != currentDay" class="card">
-        <div (click)='toDay(week[0].id)' class="card-body">
+    </div>
+    <div class="col-5 p-0 ">
+        <div class="row p-0 m-1 ">
+            <div class="col-1">
+            </div>
+            <div class="col-10 card-group ">
+                <div *ngIf="calendarComponent.calendars[2] && calendarComponent.calendars[2]._id != calendarId " (click)='toOtherWeek(calendarComponent.calendars[2]._id)' class="card ">
+                    <div class="card-body text-center ">
+
+                        {{calendarComponent.calendars[2].monday.date | date:'dd MM yy'}} - {{calendarComponent.calendars[2].sunday.date | date:'dd MM yy'}}
+                    </div>
+                </div>
+                <div *ngIf="calendarComponent.calendars[3] && calendarComponent.calendars[3]._id != calendarId " (click)='toOtherWeek(calendarComponent.calendars[3]._id)' class="card ">
+                    <div class="card-body text-center ">
+                        {{calendarComponent.calendars[3].monday.date | date:'dd MM yy'}} - {{calendarComponent.calendars[3].sunday.date | date:'dd MM yy'}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-1">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+</div>
+<div *ngIf="week" class="row card-group mt-3 ">
+    <div *ngIf="week[0].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[0].id)' class="card-body ">
             <p class='text-center'>
                 Lunes {{week[0].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[1].id != currentDay" class="card">
-        <div (click)='toDay(week[1].id)' class="card-body">
+    <div *ngIf="week[1].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[1].id)' class="card-body ">
             <p class='text-center'>
                 Martes {{week[1].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[2].id != currentDay" class="card">
-        <div (click)='toDay(week[2].id)' class="card-body">
+    <div *ngIf="week[2].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[2].id)' class="card-body ">
             <p class='text-center'>
                 Miércoles {{week[2].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[3].id != currentDay" class="card">
-        <div (click)='toDay(week[3].id)' class="card-body">
+    <div *ngIf="week[3].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[3].id)' class="card-body ">
             <p class='text-center'>
                 Jueves {{week[3].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[4].id != currentDay" class="card">
-        <div (click)='toDay(week[4].id)' class="card-body">
+    <div *ngIf="week[4].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[4].id)' class="card-body ">
             <p class='text-center'>
                 Viernes {{week[4].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[5].id != currentDay" class="card">
-        <div (click)='toDay(week[5].id)' class="card-body">
+    <div *ngIf="week[5].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[5].id)' class="card-body ">
             <p class='text-center'>
                 Sábado {{week[5].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[6].id != currentDay" class="card">
-        <div (click)='toDay(week[6].id)' class="card-body">
+    <div *ngIf="week[6].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(week[6].id)' class="card-body ">
             <p class='text-center'>
                 Domingo {{week[6].date.getDate()}}
             </p>
@@ -56,84 +103,84 @@
 
 </div>
 
-<div *ngIf="facilities" class="row mt-2 ml-5 mr-2" style='height:30px; border:1px solid black'>
-    <div class="col-1 p-0 m-0 bg-white"></div>
-    <div class="col-11 d-flex flex-row card-group">
-        <div *ngFor="let facilitie of facilities" class="card">
-            <div class="card-body text-center">
+<div *ngIf="facilities " class="row mt-2 ml-5 mr-2 " style='height:30px; border:1px solid black'>
+    <div class="col-1 p-0 m-0 bg-white "></div>
+    <div class="col-11 d-flex flex-row card-group ">
+        <div *ngFor="let facilitie of facilities " class="card ">
+            <div class="card-body text-center ">
                 {{facilitie.nombre}}
             </div>
         </div>
     </div>
 </div>
-<div #calendarPlace class="row mr-2 ml-5" style='border:1px solid black'>
-    <div class="col-1 p-0 m-0">
+<div #calendarPlace class="row mr-2 ml-5 " style='border:1px solid black'>
+    <div class="col-1 p-0 m-0 ">
         <div class="row d-flex flex-column card-group " style='height:720px'>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     8-9
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     9-10
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     10-11
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     11-12
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     12-13
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     13-14
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     14-15
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     15-16
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     16-17
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     17-18
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     18-19
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body pl-2">
+            <div class="card ">
+                <div class="card-body pl-2 ">
                     19-20
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="cardWidth" class="col-11 d-flex justify-content-around" style='height:720px'>
-        <div *ngFor="let facilitie of facilities" class="d-flex flex-column ">
-            <app-event #position0 [facilitie]='facilitie' [position]='0' [hour]="hours[0]" [ngStyle]="{'width': cardWidth}"></app-event>
+    <div *ngIf="cardWidth " class="col-11 d-flex justify-content-around " style='height:720px'>
+        <div *ngFor="let facilitie of facilities " class="d-flex flex-column ">
+            <app-event #position0 [facilitie]='facilitie' [position]='0' [hour]="hours[0] " [ngStyle]="{ 'width': cardWidth} "></app-event>
             <app-event #position1 [facilitie]='facilitie' [position]='1' [hour]='hours[1]'></app-event>
             <app-event #position2 [facilitie]='facilitie' [position]='2' [hour]='hours[2]'></app-event>
             <app-event #position3 [facilitie]='facilitie' [position]='3' [hour]='hours[3]'></app-event>
