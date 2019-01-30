@@ -49,53 +49,53 @@
 <div class="row">
     <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
 </div>
-<div *ngIf="week" class="row card-group mt-3 ">
-    <div *ngIf="week[0].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[0].id)' class="card-body ">
+<div *ngIf="calendarComponent.week" class="row card-group mt-3 ">
+    <div *ngIf="calendarComponent.week[0].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[0].id)' class="card-body ">
             <p class='text-center'>
-                Lunes {{week[0].date.getDate()}}
+                Lunes {{calendarComponent.week[0].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[1].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[1].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[1].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[1].id)' class="card-body ">
             <p class='text-center'>
-                Martes {{week[1].date.getDate()}}
+                Martes {{calendarComponent.week[1].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[2].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[2].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[2].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[2].id)' class="card-body ">
             <p class='text-center'>
-                Miércoles {{week[2].date.getDate()}}
+                Miércoles {{calendarComponent.week[2].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[3].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[3].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[3].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[3].id)' class="card-body ">
             <p class='text-center'>
-                Jueves {{week[3].date.getDate()}}
+                Jueves {{calendarComponent.week[3].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[4].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[4].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[4].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[4].id)' class="card-body ">
             <p class='text-center'>
-                Viernes {{week[4].date.getDate()}}
+                Viernes {{calendarComponent.week[4].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[5].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[5].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[5].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[5].id)' class="card-body ">
             <p class='text-center'>
-                Sábado {{week[5].date.getDate()}}
+                Sábado {{calendarComponent.week[5].date.getDate()}}
             </p>
         </div>
     </div>
-    <div *ngIf="week[6].id !=currentDay " class="card ">
-        <div (click)='toOtherDay(week[6].id)' class="card-body ">
+    <div *ngIf="calendarComponent.week[6].id !=currentDay " class="card ">
+        <div (click)='toOtherDay(calendarComponent.week[6].id)' class="card-body ">
             <p class='text-center'>
-                Domingo {{week[6].date.getDate()}}
+                Domingo {{calendarComponent.week[6].date.getDate()}}
             </p>
         </div>
     </div>
@@ -103,10 +103,10 @@
 
 </div>
 
-<div *ngIf="facilities " class="row mt-2 ml-5 mr-2 " style='height:30px; border:1px solid black'>
+<div *ngIf="calendarComponent.facilities " class="row mt-2 ml-5 mr-2 " style='height:30px; border:1px solid black'>
     <div class="col-1 p-0 m-0 bg-white "></div>
     <div class="col-11 d-flex flex-row card-group ">
-        <div *ngFor="let facilitie of facilities " class="card ">
+        <div *ngFor="let facilitie of calendarComponent.facilities " class="card ">
             <div class="card-body text-center ">
                 {{facilitie.nombre}}
             </div>
@@ -179,19 +179,21 @@
         </div>
     </div>
     <div *ngIf="cardWidth " class="col-11 d-flex justify-content-around " style='height:720px'>
-        <div *ngFor="let facilitie of facilities " class="d-flex flex-column ">
-            <app-event #position0 [facilitie]='facilitie' [position]='0' [hour]="hours[0] " [ngStyle]="{ 'width': cardWidth} "></app-event>
-            <app-event #position1 [facilitie]='facilitie' [position]='1' [hour]='hours[1]'></app-event>
-            <app-event #position2 [facilitie]='facilitie' [position]='2' [hour]='hours[2]'></app-event>
-            <app-event #position3 [facilitie]='facilitie' [position]='3' [hour]='hours[3]'></app-event>
-            <app-event #position4 [facilitie]='facilitie' [position]='4' [hour]='hours[4]'></app-event>
-            <app-event #position5 [facilitie]='facilitie' [position]='5' [hour]='hours[5]'></app-event>
-            <app-event #position6 [facilitie]='facilitie' [position]='6' [hour]='hours[6]'></app-event>
-            <app-event #position7 [facilitie]='facilitie' [position]='7' [hour]='hours[7]'></app-event>
-            <app-event #position8 [facilitie]='facilitie' [position]='8' [hour]='hours[8]'></app-event>
-            <app-event #position9 [facilitie]='facilitie' [position]='9' [hour]='hours[9]'></app-event>
-            <app-event #position10 [facilitie]='facilitie' [position]='10' [hour]='hours[10]'></app-event>
-            <app-event #position11 [facilitie]='facilitie' [position]='11' [hour]='hours[11]'></app-event>
+        <div *ngFor="let facilitie of calendarComponent.facilities " class="d-flex flex-column ">
+            <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="calendarComponent.hours[0] " [ngStyle]="{ 'width': cardWidth} "></app-event>
+            <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]='calendarComponent.hours[1]'></app-event>
+            <app-event *ngIf="position >=2" [facilitie]='facilitie' [position]='2' [hour]='calendarComponent.hours[2]'></app-event>
+            <app-event *ngIf="position >=3" [facilitie]='facilitie' [position]='3' [hour]='calendarComponent.hours[3]'></app-event>
+            <app-event *ngIf="position >=4" [facilitie]='facilitie' [position]='4' [hour]='calendarComponent.hours[4]'></app-event>
+            <app-event *ngIf="position >=5" [facilitie]='facilitie' [position]='5' [hour]='calendarComponent.hours[5]'></app-event>
+            <app-event *ngIf="position >=6" [facilitie]='facilitie' [position]='6' [hour]='calendarComponent.hours[6]'></app-event>
+            <app-event *ngIf="position >=7" [facilitie]='facilitie' [position]='7' [hour]='calendarComponent.hours[7]'></app-event>
+            <app-event *ngIf="position >=8" [facilitie]='facilitie' [position]='8' [hour]='calendarComponent.hours[8]'></app-event>
+            <app-event *ngIf="position >=9" [facilitie]='facilitie' [position]='9' [hour]='calendarComponent.hours[9]'></app-event>
+            <app-event *ngIf="position >=10" [facilitie]='facilitie' [position]='10' [hour]='calendarComponent.hours[10]'></app-event>
+            <app-event *ngIf="position >=11" [facilitie]='facilitie' [position]='11' [hour]='calendarComponent.hours[11]'></app-event>
         </div>
     </div>
+    <div #event></div>
+
 </div>

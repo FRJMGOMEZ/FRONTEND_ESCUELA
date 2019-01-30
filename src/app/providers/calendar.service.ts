@@ -104,6 +104,32 @@ export class CalendarService {
 
   }
 
+  putEvent(eventId:string,event:any,token:string){
+    
+    let url = `${URL_SERVICES}/day/${eventId}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+      return this.http.put(url,{event},{headers}).pipe(map((res:any)=>{
+
+      return res.event
+      }))
+  }
+
+  getEventById(eventId:string,token:string){
+
+    let url = `${URL_SERVICES}/searchById/event/${eventId}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url,{headers}).pipe(map((res:any)=>{
+
+      return res.event
+    }))
+
+
+  }
+
   getDayByDate (date:Date,token:string) {
 
       let url = `${URL_SERVICES}/dayByDate/${date}`

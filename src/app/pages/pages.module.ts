@@ -32,8 +32,6 @@ import { ImagesComponent } from './proyects/project/images/images.component';
 import { MessagesComponent } from './proyects/project/messages/messages.component';
 import { FilesComponent } from './proyects/project/files/files.component';
 import { CalendarComponent } from './calendar/calendar.component';
-
-
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './manteinance/facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component'
@@ -68,10 +66,12 @@ import { EventComponent } from './calendar/day/event/event.component'
     ProvidersModule,
     ModalsModule,
     PipesModule,
-    SharedModule
+    SharedModule,
+
   ],
   exports: [],
   providers: [CalendarComponent],
-  bootstrap: []
+  bootstrap: [],
+  entryComponents:[EventComponent]
 })
 export class PagesModule {}

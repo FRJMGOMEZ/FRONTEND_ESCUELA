@@ -12,10 +12,10 @@
                         <div *ngIf="page==='1'" class="d-flex justify-content-center form-group flex-column mb-2">
                             <p class='text-center'>Selecciona la hora de inicio del evento</p>
                             <select *ngIf="clock >= 0" [(ngModel)]="start" name=start class='form-control'>
-                                        <option value=0>{{position | timePipe:'0'}}</option>
-                                        <option *ngIf="timeAvailable >= 0.50 && clock < 0.75" value=0.25>{{position | timePipe:'25'}}</option>
-                                        <option *ngIf="timeAvailable >= 0.75 && clock < 0.50 " value=0.50>{{position | timePipe:'50'}}</option>
-                                        <option *ngIf="timeAvailable >= 1 && clock < 0.25" value=0.75>{{position | timePipe:'75'}}</option>
+                                        <option value=0>{{position | timeConversor:'0'}}</option>
+                                        <option *ngIf="timeAvailable >= 0.50 && clock < 0.75" value=0.25>{{position | timeConversor:'25'}}</option>
+                                        <option *ngIf="timeAvailable >= 0.75 && clock < 0.50 " value=0.50>{{position | timeConversor:'50'}}</option>
+                                        <option *ngIf="timeAvailable >= 1 && clock < 0.25" value=0.75>{{position | timeConversor:'75'}}</option>
                                     </select>
                             <div class='d-flex justify-content-around'>
                                 <button *ngIf="start" (click)="switch(page,'next')">NEXT</button>
@@ -91,12 +91,33 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-around">
                                     <button (click)="switch('4','prev')">PREV</button>
-                                    <button *ngIf="!eventId" (click)='createEvent()' class='btn btn-warning'>CREAR EVENTO</button>
-                                    <button *ngIf="eventId" (click)='changeEvent()' class='btn btn-warning'>MODIFICAR EVENTO</button>
+                                    <button *ngIf="!eventId && !eventCreated" (click)='createEvent()' class='btn btn-warning'>CREAR EVENTO</button>
+                                    <button *ngIf="eventCreated" (click)='changeEvent()' class='btn btn-warning'>MODIFICAR EVENTO</button>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    <div *ngIf="page === '5'" class="row">
+                        <div class="col-12 d-flex flex-column">
+                            <h6 class='text-center'>Event Succesfully created</h6>
+                            <p>nombre: {{eventCreated.nombre}}</p>
+                            <p>descripcion: {{eventCreated.descripcion}}</p>
+                            <div>
+                                <p>Profesores participantes :</p>
+                                <p *ngFor="let profesor of eventCreated.profesores">{{profesor.nombre}}</p>
+                            </div>
+                            <div>
+                                <p> Materias :</p>
+                                <p *ngFor="let materia of eventCreated.materias">{{materia.nombre}}</p>
+                            </div>
+                            <p>Empieza a las: {{eventCreated.posicion | timeConversor2: null }}</p>
+                            <p>Termina a las: {{eventCreated.posicion | timeConversor2: eventCreated.duracion }}</p>
+                            <p>instalacion : {{eventCreated.instalacion.nombre}}</p>
+                            <p>duracion : {{eventCreated.duracion | timeConversor1}}</p>
+                            <p>Repetir todas las semanas : {{eventCreated.repeticion}}</p>
+                            <button (click)="changeEvent()">MODIFICAR EVENTO</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

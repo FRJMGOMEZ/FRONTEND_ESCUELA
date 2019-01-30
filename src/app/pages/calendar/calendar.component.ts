@@ -1,32 +1,45 @@
-import { Component} from '@angular/core';
+import { Component, EventEmitter, OnInit} from '@angular/core';
 import { CalendarService } from '../../providers/calendar.service';
 import { UserServices } from '../../providers/user.service';
 import { FacilitiesService } from '../../providers/facilities.service';
 import * as _ from "underscore";
+import { EventModalController } from '../../modals/events-modal/eventsModal.controller';
 
 @Component({
   selector: "app-calendar",
   templateUrl: "./calendar.component.html",
   styleUrls: ["./calendar.component.less"]
 })
-export class CalendarComponent  {
-  
+export class CalendarComponent implements OnInit  {
+
   token: string;
 
   currentCalendar:any;
+  dayId:string;
   week:any[];
   currentDate:string
 
+  hours: Event[] 
+
+  facilities: any[];
+
   calendars:any[]=[null,null,null,null];
+
+  notification = new EventEmitter<any>();
 
   constructor(
     private _facilitieServices:FacilitiesService,
     private _calendarServices: CalendarService,
-    private _userServices: UserServices
+    private _userServices: UserServices,
   
   ) {
     this.token = this._userServices.token;   
-  }
+}
+
+ngOnInit() {
+  
+   
+}
 
   postCalendar(calendarDay: Date) {
     return new Promise((resolve, reject) => {
@@ -172,6 +185,7 @@ export class CalendarComponent  {
 
   navigateToCalendar(id: string) {
     return new Promise((resolve, reject) => {
+      this.dayId = id;
       let calendar = this.calendars.filter((calendar) => {
        return calendar._id === id
       })
@@ -216,7 +230,7 @@ export class CalendarComponent  {
             case 0: this.currentDate = `Domingo ${new Date(day.date).getDate()}/${new Date(day.date).getMonth() + 1}/${new Date(day.date).getFullYear()} `;
               break;
           }
-          let hours = [
+          this.hours = [
             day["0"],
             day["1"],
             day["2"],
@@ -229,7 +243,7 @@ export class CalendarComponent  {
             day["9"],
             day["10"],
             day["11"]
-          ]; resolve({hours})
+          ];resolve()
         })
     })
   }
@@ -242,7 +256,8 @@ export class CalendarComponent  {
             let space = 720;
             facilitie.space = space;
           });
-          resolve({facilities});
+          this.facilities = facilities;
+          resolve();
         }
       });
     })

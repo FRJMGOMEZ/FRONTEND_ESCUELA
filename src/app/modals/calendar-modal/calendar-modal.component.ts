@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { CalendarModalController } from './calendar-modal.controller';
 import { CalendarService } from '../../providers/calendar.service';
 import { UserServices } from '../../providers/user.service';
@@ -29,13 +29,15 @@ export class CalendarModalComponent implements OnInit {
 
   referenceDay:any
   firstDate:any
+
+  notification:EventEmitter<void>
   
   ngOnInit() {
     
     this._modalController.notification.subscribe((res)=>{
 
       if(!res){
-
+      
       let calendarId = this._modalController.currentCalendarId;
       let dayId = this._modalController.dayId;
 

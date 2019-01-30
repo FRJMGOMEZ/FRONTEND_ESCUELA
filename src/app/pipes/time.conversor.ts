@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { URL_SERVICES } from '../config/config';
-
 @Pipe({
-    name: 'timePipe'
+    name: 'timeConversor'
 })
-export class TimePipe implements PipeTransform {
+export class TimeConversorPipe implements PipeTransform {
 
     transform(position: any, time:string): any {
 
@@ -36,15 +34,6 @@ export class TimePipe implements PipeTransform {
             
               return `${parseInt(position) + 8}:45`;                      
         }
-
-
-
-
-
-
-
-
-
 
             if (position - parseInt(position) === 0.25) { return `${parseInt(position) + 8}:15` }
             if (position - parseInt(position) === 0.50) { return `${parseInt(position) + 8}:30` }

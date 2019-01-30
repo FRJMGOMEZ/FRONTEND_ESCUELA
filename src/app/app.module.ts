@@ -15,8 +15,6 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { LoginComponent } from './login/login/login.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,8 +31,10 @@ import { LoginComponent } from './login/login/login.component';
     ReactiveFormsModule
     
   ],
+
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 
 export class AppModule { }
