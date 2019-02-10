@@ -20,7 +20,6 @@ export class HeaderComponent implements OnInit {
   constructor(public _userServices:UserServices,
               private _calendarServices:CalendarService,
               private route:Router) {
-   
                 this.token = this._userServices.token;            
   }
 

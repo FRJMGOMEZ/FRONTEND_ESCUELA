@@ -13,10 +13,10 @@
                     <h3 class="panel-title">Regístrate</h3>
                 </div>
                 <div class="panel-body">
-                    <form ngNativeValidate *ngIf="form" [formGroup]='form' id="loginform" (ngSubmit)='registrarUsuario()'>
+                    <form ngNativeValidate *ngIf="form" [formGroup]='form' id="loginform" (ngSubmit)='registerUser()'>
                         <fieldset>
                             <div class="form-group">
-                                <input formControlName='nombre' name='nombre' class="form-control" placeholder="Name" type="text" autofocus="" required>
+                                <input formControlName='name' name='name' class="form-control" placeholder="Name" type="text" autofocus="" required>
                             </div>
                             <div class="form-group">
                                 <input formControlName='email' name='email' class="form-control" placeholder="Email" type="email" autofocus="" required>
@@ -27,12 +27,12 @@
                             <div class="form-group">
                                 <input formControlName='password2' name='password2' class="form-control" placeholder="Password2" type="password" required>
                             </div>
-                            <div *ngIf="form.errors?.sonIguales && !form.pristine" class='form-group'>
+                            <div *ngIf="form.errors && form.errors.areTheyEqual && !form.pristine" class='form-group'>
                                 <p class='text-danger'>Las contraseñas deben de ser iguales</p>
                             </div>
                             <div class="checkbox">
                                 <label name='terms' type="checkbox">
-                                    <input formControlName='condiciones' name='conditions' id="checkbox-signup" type="checkbox">Estoy de
+                                    <input formControlName='conditions' name='conditions' id="checkbox-signup" type="checkbox">Estoy de
                                     acuerdo <a href="#">Términos de uso</a></label>
                             </div>
                             <br>

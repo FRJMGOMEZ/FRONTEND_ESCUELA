@@ -1,15 +1,14 @@
 export class Project{
 
-    constructor(public nombre:string,
-                public descripcion:string,
-                public _id?:string,
-                public participantes?:Object[],
-                public administradores?:Object[],
+    constructor(public name:string,
+                public participants:Object[],
+                public administrators:Object[],
+                public description?: string,
                 public img?:string,
-                public mensajes?:string[],
-                public archivos?:string[],
-                public imagenes?:string[],
-                public activo?:boolean ){
-
+                public messages?:string[],
+                public files?:string[],
+                public images?:string[],
+                public active?:boolean,
+                public _id?: string, ){
     }
 }

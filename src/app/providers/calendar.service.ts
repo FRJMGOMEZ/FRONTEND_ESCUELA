@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { URL_SERVICES } from '../config/config';
 import { map } from 'rxjs/operators';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject} from 'rxjs';
 import { Event } from '../models/event.model';
 import { Calendar } from '../models/calendar.model';
 
@@ -56,6 +56,18 @@ export class CalendarService {
     }))
   }
 
+  getCalendarByDay(dayId: string, dayOfTheWeek: number, token: string) {
+
+    let url = `${URL_SERVICES}/calendarByDay/${dayId}/${dayOfTheWeek}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url, { headers }).pipe(map((res: any) => {
+
+      return res.calendar[0]
+    }))
+  }
+
   postDaysOfTheWeek(date: Date, token: string) {
 
     let url = `${URL_SERVICES}/days`;
@@ -82,6 +94,18 @@ export class CalendarService {
     }))
   }
 
+  getDayByDate(date: Date, token: string) {
+
+    let url = `${URL_SERVICES}/dayByDate/${date}`
+
+    let headers = new HttpHeaders().set("token", token);
+
+    return this.http.get(url, { headers }).pipe(map((res: any) => {
+
+      return res.day
+    }))
+  }
+
   postEvent(event:Event,token:string){
 
     let url = `${URL_SERVICES}/event`
@@ -90,7 +114,7 @@ export class CalendarService {
 
     return this.http.post(url,event,{headers}).pipe(map((res:any)=>{
 
-      return res.eventSaved
+      return res.event
     }))
   }
 
@@ -100,17 +124,17 @@ export class CalendarService {
 
     let headers = new HttpHeaders().set("token", token);
 
-    return this.http.put(url,{position:event.posicion,id:event._id},{headers})
+    return this.http.put(url,{position:event.position,id:event._id},{headers})
 
   }
 
   putEvent(eventId:string,event:any,token:string){
     
-    let url = `${URL_SERVICES}/day/${eventId}`
+    let url = `${URL_SERVICES}/event/${eventId}`
 
     let headers = new HttpHeaders().set("token", token);
 
-      return this.http.put(url,{event},{headers}).pipe(map((res:any)=>{
+      return this.http.put(url,event,{headers}).pipe(map((res:any)=>{
 
       return res.event
       }))
@@ -125,32 +149,6 @@ export class CalendarService {
     return this.http.get(url,{headers}).pipe(map((res:any)=>{
 
       return res.event
-    }))
-
-
-  }
-
-  getDayByDate (date:Date,token:string) {
-
-      let url = `${URL_SERVICES}/dayByDate/${date}`
-
-      let headers = new HttpHeaders().set("token", token);
-
-      return this.http.get(url,{headers}).pipe(map((res:any)=>{
-
-         return res.day
-      }))
-  }
-
-  getCalendarByDay(dayId:string,dayOfTheWeek:number,token:string){
-
-    let url = `${URL_SERVICES}/calendarByDay/${dayId}/${dayOfTheWeek}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.get(url,{headers}).pipe(map((res:any)=>{
-
-      return res.calendar[0]
     }))
   }
 }

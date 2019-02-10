@@ -57,8 +57,6 @@ export class ImgModalComponent implements OnInit {
       })
     }
     else{
-
-      console.log(this.image)
       this._chatServices.getFile(this.image).subscribe((res) => {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(res);

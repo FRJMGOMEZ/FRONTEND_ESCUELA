@@ -63,8 +63,6 @@ export class ProjectModalComponent implements OnInit {
 
       this._projectServices.createProject(project,this.token).subscribe((res:any)=>{
 
-        console.log(res)
-
         this._modalController.hideModal();
 
          this._userServices.saveInStorage(res.user._id,res.user,this.token)

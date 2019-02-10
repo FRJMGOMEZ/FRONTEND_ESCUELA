@@ -53,7 +53,6 @@ export class FilesModalComponent implements OnInit {
                 this.messages.push(message);
               }
             }
-            console.log(this.messages);
           });
       }
     });

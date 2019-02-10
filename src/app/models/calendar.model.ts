@@ -1,14 +1,14 @@
 export class Calendar {
 
     constructor(
-        public fecha?:Date,
-        public lunes?:string[],
-        public martes?: string[],
-        public miercoles?: string[],
-        public jueves?: string[],
-        public viernes?: string[],
-        public sabado?: string[],
-        public domingo?: string[],
+        public date:Date,
+        public monday:string[],
+        public tuesday: string[],
+        public wednesday: string[],
+        public thursday: string[],
+        public friday: string[],
+        public saturday: string[],
+        public sunday: string[],
         public _id?:string
     ){}
 }

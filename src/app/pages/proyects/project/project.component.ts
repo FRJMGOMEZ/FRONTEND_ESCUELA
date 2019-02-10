@@ -46,7 +46,6 @@ export class ProjectComponent implements OnInit {
     this.aRoute.params.subscribe(params => {
       
       this.getProject(params["id"])
-      console.log(params["id"]);
 
       this._userServices
         .searchUsersById(this.userOnline._id)
@@ -188,8 +187,6 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
 
               this._projectServices.changeStatus(this.project._id, this.token).subscribe((res) => {
-
-                console.log(res)
 
                 this._projectServices.addOrRemoveAdmin(this.project._id, this.userOnline._id, this.token).subscribe(() => {
 

@@ -9,40 +9,44 @@
                 </div>
                 <div class="modal-body pb-4">
                     <form ngNativeValidate #form='ngForm' role='form'>
+
+                        <!--  PAGE 1  -->
                         <div *ngIf="page==='1'" class="d-flex justify-content-center form-group flex-column mb-2">
                             <p class='text-center'>Selecciona la hora de inicio del evento</p>
-                            <select *ngIf="clock >= 0" [(ngModel)]="start" name=start class='form-control'>
+                            <select *ngIf="decimalsOfPosition >= 0" [(ngModel)]="startDecimals" name=startDecimals class='form-control'>
                                         <option value=0>{{position | timeConversor:'0'}}</option>
-                                        <option *ngIf="timeAvailable >= 0.50 && clock < 0.75" value=0.25>{{position | timeConversor:'25'}}</option>
-                                        <option *ngIf="timeAvailable >= 0.75 && clock < 0.50 " value=0.50>{{position | timeConversor:'50'}}</option>
-                                        <option *ngIf="timeAvailable >= 1 && clock < 0.25" value=0.75>{{position | timeConversor:'75'}}</option>
+                                        <option *ngIf="spaceAvailable >= 0.50 && decimalsOfPosition < 0.75" value=0.25>{{position | timeConversor:'25'}}</option>
+                                        <option *ngIf="spaceAvailable >= 0.75 && decimalsOfPosition < 0.50 " value=0.50>{{position | timeConversor:'50'}}</option>
+                                        <option *ngIf="spaceAvailable >= 1 && decimalsOfPosition < 0.25" value=0.75>{{position | timeConversor:'75'}}</option>
                                     </select>
                             <div class='d-flex justify-content-around'>
-                                <button *ngIf="start" (click)="switch(page,'next')">NEXT</button>
+                                <button *ngIf="startDecimals" (click)="switch(page,'next')">NEXT</button>
                             </div>
                         </div>
+
+                        <!--  PAGE 2  -->
                         <div *ngIf="page === '2'" class="d-flex form-group d-flex flex-column">
                             DURACION
-                            <select *ngIf="timeAvailable - (time.minutes/100) >= 1" [(ngModel)]="time.hour" name="time.hour" class='form-control'>
+                            <select *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 1" [(ngModel)]="timeRepresentation.integer" name="timeRepresentation.integer" class='form-control'>
                                     <option  value=0> </option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 1" value=1>{{timeAvailable-(timeAvailable-1)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 2"value=2>{{timeAvailable-(timeAvailable-2)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 3"value=3>{{timeAvailable-(timeAvailable-3)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 4"value=4>{{timeAvailable-(timeAvailable-4)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 5"value=5>{{timeAvailable-(timeAvailable-5)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 6"value=6>{{timeAvailable-(timeAvailable-6)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 7"value=7>{{timeAvailable-(timeAvailable-7)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 8"value=8>{{timeAvailable-(timeAvailable-8)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 9"value=9>{{timeAvailable-(timeAvailable-9)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 10"value=10>{{timeAvailable-(timeAvailable-10)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 11"value=11>{{timeAvailable-(timeAvailable-11)}}</option>
-                                    <option *ngIf="timeAvailable - (time.minutes/100) >= 12" value=12>{{timeAvailable-(timeAvailable-12)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 1" value=1>{{spaceAvailable-(spaceAvailable-1)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 2"value=2>{{spaceAvailable-(spaceAvailable-2)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 3"value=3>{{spaceAvailable-(spaceAvailable-3)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 4"value=4>{{spaceAvailable-(spaceAvailable-4)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 5"value=5>{{spaceAvailable-(spaceAvailable-5)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 6"value=6>{{spaceAvailable-(spaceAvailable-6)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 7"value=7>{{spaceAvailable-(spaceAvailable-7)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 8"value=8>{{spaceAvailable-(spaceAvailable-8)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 9"value=9>{{spaceAvailable-(spaceAvailable-9)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 10"value=10>{{spaceAvailable-(spaceAvailable-10)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 11"value=11>{{spaceAvailable-(spaceAvailable-11)}}</option>
+                                    <option *ngIf="spaceAvailable - (timeRepresentation.decimals/100) >= 12" value=12>{{spaceAvailable-(spaceAvailable-12)}}</option>
                                 </select>
-                            <select *ngIf="timeAvailable - time.hour >= 0.25" [(ngModel)]="time.minutes" name="time.minutes" class='form-control'>
+                            <select *ngIf="spaceAvailable - timeRepresentation.integer >= 0.25" [(ngModel)]="timeRepresentation.decimals" name="timeRepresentation.decimals" class='form-control'>
                                     <option value=0></option>
-                                    <option *ngIf="timeAvailable-time.hour >=0.25" value=25>15 minutos</option>
-                                    <option *ngIf="timeAvailable-time.hour >= 0.50" value=50>30 minutos</option>
-                                    <option *ngIf="timeAvailable-time.hour >= 0.75" value=75>45 minutos</option>
+                                    <option *ngIf="spaceAvailable-timeRepresentation.integer >=0.25" value=25>15 minutos</option>
+                                    <option *ngIf="spaceAvailable-timeRepresentation.integer >= 0.50" value=50>30 minutos</option>
+                                    <option *ngIf="spaceAvailable-timeRepresentation.integer >= 0.75" value=75>45 minutos</option>
                                 </select>
                             <div class="custom-control custom-checkbox">
                                 <input [(ngModel)]="repetition" name='repetition' type="checkbox" class="custom-control-input" id="customCheck1">
@@ -50,9 +54,11 @@
                             </div>
                             <div class='d-flex justify-content-around'>
                                 <button (click)="switch('2','prev')">PREV</button>
-                                <button *ngIf="time.minutes > 0 || time.hour > 0" (click)="switch('2','next')">NEXT</button>
+                                <button *ngIf="timeRepresentation.decimals > 0 || timeRepresentation.integer > 0" (click)="switch('2','next')">NEXT</button>
                             </div>
                         </div>
+
+                        <!--  PAGE 3  -->
                         <div *ngIf="page === '3'" #div3 class="row d-flex form-group flex-column align-content-center">
                             <input [(ngModel)]='name' name='name' type="text" class="form-control" placeholder="Nombre" required>
                             <textarea [(ngModel)]="description" type="text" name="description" class="form-control"></textarea>
@@ -61,6 +67,8 @@
                                 <button *ngIf="name" (click)="switch('3','next')">NEXT</button>
                             </div>
                         </div>
+
+                        <!--  PAGE 4  -->
                         <div *ngIf="page ==='4'" #div4 class="row d-flex justify-content-center">
                             <div class="row">
                                 <div class="col-6 d-flex flex-column">
@@ -91,12 +99,14 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-around">
                                     <button (click)="switch('4','prev')">PREV</button>
-                                    <button *ngIf="!eventId && !eventCreated" (click)='createEvent()' class='btn btn-warning'>CREAR EVENTO</button>
-                                    <button *ngIf="eventCreated" (click)='changeEvent()' class='btn btn-warning'>MODIFICAR EVENTO</button>
+                                    <button *ngIf="!eventId && !eventCreated" (click)='postEvent()' class='btn btn-warning'>CREAR EVENTO</button>
+                                    <button *ngIf="eventCreated" (click)='putEvent()' class='btn btn-warning'>MODIFICAR EVENTO</button>
                                 </div>
                             </div>
                         </div>
                     </form>
+
+                    <!--  PAGE 5  -->
                     <div *ngIf="page === '5'" class="row">
                         <div class="col-12 d-flex flex-column">
                             <h6 class='text-center'>Event Succesfully created</h6>
@@ -115,7 +125,7 @@
                             <p>instalacion : {{eventCreated.instalacion.nombre}}</p>
                             <p>duracion : {{eventCreated.duracion | timeConversor1}}</p>
                             <p>Repetir todas las semanas : {{eventCreated.repeticion}}</p>
-                            <button (click)="changeEvent()">MODIFICAR EVENTO</button>
+                            <button (click)="checkSpaceBack()">MODIFICAR EVENTO</button>
                         </div>
                     </div>
                 </div>

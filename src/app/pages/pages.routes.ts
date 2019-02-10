@@ -3,20 +3,19 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProyectsComponent } from './proyects/projects.component';
-import { AlumniComponent } from './manteinance/alumni/alumni.component';
-import { ProfessorComponent } from './manteinance/professor/professor.component';
-import { SubjectComponent } from './manteinance/subject/subject.component';
-import { UsersComponent } from './manteinance/users/users.component';
+import { UsersComponent } from './users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
 import { ProjectComponent } from './proyects/project/project.component';
-import { CalendarComponent } from './calendar/calendar.component';
 import { DayComponent } from './calendar/day/day.component';
+import { AddressBookComponent } from './addressBook/addressBook.component';
+import { FacilitiesComponent } from './facilities/facilities.component';
 
 const pagesRoutes: Routes = [
   {
     path: "",
     component: PagesComponent,
     canActivate: [LoginGuard],
+    
     children: [
       {
         path: "dashboard",
@@ -39,24 +38,19 @@ const pagesRoutes: Routes = [
         data: { title: "PROYECT", description: "Proyect" }
       },
       {
-        path: "alumniM",
-        component: AlumniComponent,
-        data: { title: "ALUMNI M", description: "Alumni manteinance" }
-      },
+        path: "addressBook/:item",
+        component: AddressBookComponent,
+        data: { title: "ADDRESSBOOK", description: "AddressBook" }
+      }, 
       {
-        path: "professorM",
-        component: ProfessorComponent,
-        data: { title: "PROFESOR M", description: "Professor manteinance" }
-      },
-      {
-        path: "subjectM",
-        component: SubjectComponent,
-        data: { title: "SUBJECT", description: "Subkect manteinance" }
-      },
-      {
-        path: "userM",
+        path: "users",
         component: UsersComponent,
         data: { title: "USER", description: "User manteinance" }
+      },
+      {
+        path: "facilities",
+        component: FacilitiesComponent,
+        data: { title: "FACILITIE", description: "Facilities" }
       },
       {
         path: "day/:calendarId/:day",

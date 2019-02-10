@@ -24,27 +24,14 @@ export class AdminComponent implements OnInit {
    }
 
   ngOnInit() {
-
     this._modalController.notification.subscribe((res)=>{
-
       if(res){
-
         if(res.id){
-
           this.projectId = res.id;
-         
           this._projectServices.searchProjectById(res.id,this.token).subscribe((project:any)=>{
-
-            console.log(project.administradores);
-
-            this.usersAdm = project.administradores;
-
-            let usersInIds = this.usersNoAdm.map((user)=>{return user._id})
-
-            for (let user of project.participantes){
-
-              if(usersInIds.indexOf(user._id)<0){
-
+            this.usersAdm = project.administrators;
+            for (let user of project.participants){
+              if(this.usersAdm.indexOf(user)<0){
                 this.usersNoAdm.push(user)
               }
             }
@@ -53,26 +40,17 @@ export class AdminComponent implements OnInit {
       }
     })
   }
-
   addOrRemoveAdmin(user:any){
-
     this._projectServices.addOrRemoveAdmin(this.projectId,user._id,this.token).subscribe((res)=>{
-
            if(this.usersAdm.indexOf(user)< 0){
-
             this.usersNoAdm = this.usersNoAdm.filter((userNoAdm)=>{return userNoAdm != user })
-
             this.usersAdm.push(user)
            }else{
-
             this.usersNoAdm.push(user)
-
              this.usersAdm = this.usersAdm.filter((userAdm) => { return userAdm != user })
            }        
     })
-
   }
-
   hideModal(){
     this._modalController.hideModal()
     this.usersAdm = [];

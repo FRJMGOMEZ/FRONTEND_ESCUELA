@@ -361,7 +361,6 @@ fixHeight(height: number) {
       if (div === 'newDiv2') { this.renderer.appendChild(parent2, division);resolve() }
       if (div === 'newDiv3') { this.renderer.appendChild(parent2, division);resolve() }
     })
-
   }
             
   createEvent(position:number) {
@@ -371,7 +370,7 @@ fixHeight(height: number) {
 
   showEventInfo(id:string,position:number){ 
     this._modalEventController.notification.emit({ position, facilitieId: this.facilitie._id })
-    this._modalEventController.notification.emit({id})
+    this._modalEventController.notification.emit({eventId:id})
     this._modalEventController.showModal() 
   }
 }

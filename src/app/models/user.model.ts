@@ -1,14 +1,14 @@
 export class User {
     constructor(
-        public nombre:string,
+        public name:string,
         public email:string,
         public password?:string,
-        public estado?:boolean,
+        public status?:boolean,
         public img?:string,
         public google?:boolean,
-        public rol?:string,
         public _id?: string,
-        public proyectos?:any[],
+        public projects?:any[],
+        public role?: string,
     ){
     }
 }

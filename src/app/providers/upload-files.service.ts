@@ -1,7 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { URL_SERVICES } from '../config/config';
-import { IndexCard } from '../models/indexCard.model';
-
 
 @Injectable({
   providedIn: 'root'

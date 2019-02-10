@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventModalController } from '../../../modals/events-modal/eventsModal.controller';

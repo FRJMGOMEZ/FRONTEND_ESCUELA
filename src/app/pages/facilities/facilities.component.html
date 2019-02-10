@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12">
+        <div class='list-group'>
+            <h3 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h3>
+            <button (click)='postFacilitie()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
+            <div *ngIf="!cargando" class="row animated fadeIn">
+                <div *ngIf="facilities" class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class='table table-hover'>
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let facilitie of facilities let i=index">
+                                    <tr>
+                                        <td>
+                                            <div><strong> {{facilitie.name}}</strong></div>
+                                        </td>
+                                        <td>
+                                            <label *ngIf="!facilitie.status">
+                                            <button (click)=changeStatus(facilitie) name="activador" value="Activar Usuario">Activar</button>
+                                            </label>
+                                            <label *ngIf="facilitie.status">
+                                             <button (click)=changeStatus(facilitie) name="desactivador" type="checkbox" value="Desactivar Usuario">Desactivar</button>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <button (click)='editFacilitie(facilitie._id)' class="btn btn-primary">
+                        <i class="fa fa-info"></i>
+                      </button>
+                                            <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-danger">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class='d-flex justify-content-around'>
+                                <button (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
+                                <button (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='w-100'></div>
+</div>

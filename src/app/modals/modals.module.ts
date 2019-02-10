@@ -34,6 +34,8 @@ import { FilesModalController } from './files-modal/filesModal.controller';
 import { EventModalController } from './events-modal/eventsModal.controller';
 import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
 import { CalendarModalController } from './calendar-modal/calendar-modal.controller';
+import { FacilitiesModalComponent } from './facilities-modal/facilities-modal.component';
+import { FacilitiesModalController } from './facilities-modal/facilities-modalController';
 
 
 
@@ -54,7 +56,8 @@ import { CalendarModalController } from './calendar-modal/calendar-modal.control
     ImgModalComponent,
     FilesModalComponent,
     EventsModalComponent,
-    CalendarModalComponent
+    CalendarModalComponent,
+    FacilitiesModalComponent
   ],
 
   imports: [
@@ -79,7 +82,8 @@ import { CalendarModalController } from './calendar-modal/calendar-modal.control
     ImgModalComponent,
     FilesModalComponent,
     EventsModalComponent,
-    CalendarModalComponent
+    CalendarModalComponent,
+    FacilitiesModalComponent
   ],
 
   providers: [
@@ -95,7 +99,8 @@ import { CalendarModalController } from './calendar-modal/calendar-modal.control
     ImgModalController,
     FilesModalController,
     EventModalController,
-    CalendarModalController
+    CalendarModalController,
+    FacilitiesModalController
   ],
 
   bootstrap: []

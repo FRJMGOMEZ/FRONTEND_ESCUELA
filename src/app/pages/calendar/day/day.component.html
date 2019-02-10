@@ -178,7 +178,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="cardWidth " class="col-11 d-flex justify-content-around " style='height:720px'>
+    <div *ngIf="cardWidth" class="col-11 d-flex justify-content-around " style='height:720px'>
         <div *ngFor="let facilitie of calendarComponent.facilities " class="d-flex flex-column ">
             <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="calendarComponent.hours[0] " [ngStyle]="{ 'width': cardWidth} "></app-event>
             <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]='calendarComponent.hours[1]'></app-event>

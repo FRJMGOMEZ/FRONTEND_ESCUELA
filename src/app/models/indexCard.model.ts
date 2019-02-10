@@ -1,12 +1,14 @@
-export class IndexCard {
+export class Indexcard {
 
-constructor(public nombre:string,
-            public apellido?:string,
+constructor(public role: string,
+            public name:string,
+            public surname?:string,
             public email?:string, 
-            public movil?:string,
-            public casa?:string,
-            public domicilio?:string,
-            public estado?:boolean){
+            public mobile?:string,
+            public home?:string,
+            public address?:string,
+            public status?:boolean,
+            public id?:string){
 }
 
 }

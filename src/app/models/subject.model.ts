@@ -1,6 +1,12 @@
 export class Subject {
-    constructor(public nombre:string,
-               public profesores?:string[],
-               public alumnos?:string[],
+    constructor(public name:string,
+               public professors?:string[],
+               public alumnis?:string[],
                public _id?:string){}
+}
+
+
+export class SubjectOrder{
+    constructor(public subject:Subject,
+                public order:string){}
 }

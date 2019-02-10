@@ -31,18 +31,18 @@
                                 <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='openUploadFilesModule(user._id)' [src]="user.img | imgPipe:'usuarios'" class='img100 img-circle'>
                             </td>
                             <td>{{user.email}}</td>
-                            <td>{{user.nombre}}</td>
+                            <td>{{user.name}}</td>
                             <td>
-                                <select [(ngModel)]='user.rol' name="role" class='form-control' (change)="changeRole(user)">
+                                <select [(ngModel)]='user.role' name="role" class='form-control' (change)="changeRole(user)">
                                         <option value="USER_ROLE">USER_ROLE</option>
                                         <option value="ADMIN_ROLE">ADMIN_ROLE</option>
                                    </select>
                             </td>
                             <td>
-                                <label *ngIf="!user.estado">
+                                <label *ngIf="!user.status">
                                   <button (click)=changeStatus(user._id) name="activador" value="Activar Usuario">Activar</button>
                                  </label>
-                                <label *ngIf="user.estado">
+                                <label *ngIf="user.status">
                                   <button (click)=changeStatus(user._id) name="desactivador" type="checkbox" value="Desactivar Usuario">Desactivar</button>
                                 </label>
                             </td>

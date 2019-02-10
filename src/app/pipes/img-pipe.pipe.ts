@@ -9,7 +9,7 @@ export class ImgPipe implements PipeTransform {
 
   transform(img: any, type: any): any {
 
-    let url = `${URL_SERVICES}/imagenes/`;
+    let url = `${URL_SERVICES}/images/`;
 
     if (!img) {
       /// Redirection to no image path
@@ -26,20 +26,26 @@ export class ImgPipe implements PipeTransform {
     }
 
     switch (type) {
-      case "alumnos":
-        url += `alumnos/${img}`;
+      case "alumnis":
+        url += `alumnis/${img}`;
         break;
-      case "profesores":
-        url += `profesores/${img}`;
+      case "professors":
+        url += `professors/${img}`;
         break;
-      case "usuarios":
-        url += `usuarios/${img}`;
+      case "users":
+        url += `users/${img}`;
         break;
-      case "proyectos":
-        url += `proyectos/${img}`;
+      case "projects":
+        url += `projects/${img}`;
         break;
-      case "imgProyectos":
-        url += `imgProyectos/${img}`;
+      case "imagesProject":
+        url += `imagesProject/${img}`;
+        break;
+      case "filesProject":
+        url += `filesProject/${img}`;
+        break;
+      case "files":
+        url += `files/${img}`;
         break;
       case 'icons':
        url +=  `icons/${img}`;

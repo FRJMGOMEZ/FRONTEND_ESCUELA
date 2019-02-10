@@ -4,6 +4,8 @@ import { ProfessorModalController } from './professorModalController';
 import { Professor } from '../../models/professor.model';
 import { ProfessorsServices } from '../../providers/professor.service';
 import { SubjectServices } from '../../providers/subject.service';
+import { Subject } from 'src/app/models/subject.model';
+
 
 @Component({
   selector: 'app-professor-modal',
@@ -14,8 +16,11 @@ export class ProfessorModalComponent implements OnInit {
 
   token:string
 
+  subject:Subject
+
   professors:Professor[] = []
-  subjectProfessorsIds:string[]= []
+
+  from:number=0
 
   constructor(private _userServices:UserServices,
               public _modalController:ProfessorModalController,
@@ -26,67 +31,56 @@ export class ProfessorModalComponent implements OnInit {
    }
 
   ngOnInit() {
-
+    
     this._modalController.notification.subscribe((res)=>{
-
-       if(res){
-
-         if (res.professorsIds) {
-
-          this.subjectProfessorsIds = res.professorsIds;
-
-          this.getProfessors()
-         }
-
-       }
+      if (res) {
+        if (res.message && res.message ==='addProfessors') {
+          this._subjectServices.getSubjectById(this._modalController.id,this.token).subscribe((subject:Subject)=>{
+            this.subject = subject;
+            this.getProfessors().then((res:any) => {
+              this.professors = [];
+              for (let professor of res.professors) {
+                if (subject.professors.indexOf(professor._id) < 0) {
+                  this.professors.push(professor);
+                }
+              }
+            });
+          })
+        }
+      }
     })
   }
 
   getProfessors(){
-
-    this._professorServices.getProfessors(this.token).subscribe((professors)=>{
-
-     for(let professor of professors){
-
-      if(this.subjectProfessorsIds.indexOf(professor._id)<0){
-
-        this.professors.push(professor)
-      }
-     }
+    return new Promise((resolve,reject)=>{
+      this._professorServices.getProfessors(this.token, this.from).subscribe((professors:any) => {
+        resolve({professors})
+      })
     })
   }
 
-  addProfessor(professorId:string){
-    
-    this._subjectServices.addOrDeleteProfessor(this._modalController.id,professorId,this.token).subscribe((res:any)=>{
-
-      console.log(res)
-
-      let id = res.profesorActualizado._id;
-
-      this.professors = this.professors.filter((professor)=>{ return professor._id != id })
-
-      if (this.professors === []) { this._modalController.hideModal() }
-
-      this._modalController.notification.emit()
-
+  addProfessor(professorId:string){ 
+    this._subjectServices.addOrDeleteProfessor(this._modalController.id,professorId,this.token).subscribe(()=>{
+      this.professors = this.professors.filter((professor)=>{ return professor._id != professorId })
+      if (this.professors === []) {
+        this._modalController.hideModal()
+      }
     })     
   }
 
-  hideModal(){
-
-    this.professors = [];
-    this.subjectProfessorsIds = []
-
-    this._modalController.hideModal()
-  }
-
-  searchProfessors(input:string){
-
-    this._professorServices.searchProfessors(input,this.token).subscribe((professors)=>{
-
-      this.professors = professors
+  searchProfessors(input: string) {
+    this._professorServices.searchProfessors(input, this.token).subscribe((professors:any) => {
+      this.professors = [];
+      professors.forEach(professor => {
+        if(this.subject.professors.indexOf(professor._id)<0){
+          this.professors.push(professor)
+        }
+      });;
     })
   }
 
+  hideModal(){
+    this.professors = [];
+    this._modalController.hideModal()
+  }
 }

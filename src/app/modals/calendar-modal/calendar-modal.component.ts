@@ -66,7 +66,6 @@ export class CalendarModalComponent implements OnInit {
     let date = this.firstDate.getDate();
     this.firstDate = new Date(year,newMonth,date) 
     this.referenceDay = new Date(this.firstDate);
-    console.log(this.referenceDay)
     this.getMonth(this.referenceDay)
     this.getStructure()
     
@@ -84,7 +83,6 @@ export class CalendarModalComponent implements OnInit {
 
  async getStructure(){
   this.frame = []
-  console.log(this.firstDate.getDay())
 
   if (this.firstDate.getDay() === 1) {
 
@@ -178,8 +176,6 @@ export class CalendarModalComponent implements OnInit {
        this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
        this.frame[i] = this.referenceDay;
      }
-
-     console.log(this.frame.length)
    }
 
    if (this.firstDate.getDay() === 6) {

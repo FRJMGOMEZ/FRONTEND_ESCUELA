@@ -2,10 +2,16 @@
 
 export class Professor{
 
-    constructor(public nombre:string,
+    constructor(public name:string,
+                public indexcard:string,
                 public img?:string,
-                public materias?:string[],
-                public ficha?:string,
+                public subjects?:string[],
                 public _id?:string){
     }
 }
+
+
+export class ProfessorOrder{
+    constructor(public professor:Professor,
+                public order:string){}
+} 

@@ -7,21 +7,21 @@
         <a [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI PERFIL</span></a>
         <a (click)='toLastCalendar()' routerLinkActive="router-link-active" style='cursor: pointer'><i class="far fa-calendar-alt m-1"></i><span>MI CALENDARIO</span></a>
         <a [routerLink]="['/projects']" routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1"></i><span>MIS PROYECTOS</span></a>
-        <a href=" "><i class="fas fa-file-contract m-1"></i><span>MI CONTRATO</span></a>
-        <a href=" "><i class="fas fa-book-reader m-1"></i><span>MIS ALUMNOS</span></a>
         <div class="nav-item dropdown">
             <a href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-key m-1"></i> <span>MANTENIMIENTO</span>
+                <i class="far fa-address-book m-1"></i> <span>AGENDA</span>
             </a>
             <div class="dropdown-menu" style='background:#D77040'>
                 <div class='d-flex justify-content-end flex-column'>
-                    <a class='dropdown-item' [routerLink]="['/userM']" routerLinkActive="router-link-active">USUARIOS</a>
-                    <a class='dropdown-item' [routerLink]="['/alumniM']" routerLinkActive="router-link-active" href="">ALUMNOS</a>
-                    <a class='dropdown-item' [routerLink]="['/professorM']" routerLinkActive="router-link-active">PROFESORES</a>
-                    <a class='dropdown-item' [routerLink]="['/subjectM']" routerLinkActive="router-link-active">MATERIAS</a>
+                    <a class='dropdown-item' [routerLink]="['/addressBook','alumnis']" routerLinkActive="router-link-active" href="">ALUMNOS</a>
+                    <a class='dropdown-item' [routerLink]="['/addressBook','professors']" routerLinkActive="router-link-active">PROFESORES</a>
                 </div>
             </div>
         </div>
+        <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card m-1"></i><span>USUARIOS</span></a>
+        <a><i class="fas fa-file-contract m-1"></i><span>CONTRATOS</span></a>
+        <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" "><i class="fas fa-door-open m-1"></i><span>INSTALACIONES</span></a>
+        <a [routerLink]="['/addressBook','subjects']" routerLinkActive="router-link-active" href=" "><i class="fas fa-guitar"></i><span>MATERIAS</span></a>
         <a (click)='_userServices.logout()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
     </nav>
 </div>

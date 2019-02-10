@@ -1,10 +1,10 @@
 export class Message {
-    constructor(public usuario: string,
-        public proyecto: string,
-        public mensaje: string,
+    constructor(public user: string,
+        public project: string,
+        public message: string,
         public img?:string,
         public file?:string,
-        public titulo?:string,
+        public title?:string,
         public date?:string,
         public _id?:string,
         )

@@ -3,7 +3,6 @@ import { CalendarService } from '../../providers/calendar.service';
 import { UserServices } from '../../providers/user.service';
 import { FacilitiesService } from '../../providers/facilities.service';
 import * as _ from "underscore";
-import { EventModalController } from '../../modals/events-modal/eventsModal.controller';
 
 @Component({
   selector: "app-calendar",

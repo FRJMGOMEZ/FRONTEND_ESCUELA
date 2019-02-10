@@ -8,7 +8,6 @@ import { ChatServices } from '../../../../providers/chat.service';
 import { UploadFilesModalController } from '../../../../modals/upload-files-modal/uploadFilesModalController';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
 import { ImgModalController } from '../../../../modals/img-modal/imgModal.controller';
-import { title } from 'process';
 import { FilesModalController } from '../../../../modals/files-modal/filesModal.controller';
 
 
