@@ -14,7 +14,10 @@ import { AlumniServices } from './alumni.service';
 export class SubjectServices {
 
     public subjectsSource = new Subject<SubjectOrder>();
-    public subjects$ = this.subjectsSource.asObservable()
+    public subjects$ = this.subjectsSource.asObservable();
+
+    public count:number
+
     constructor( private http:HttpClient,
                  private _professorServices:ProfessorsServices,
                  private _alumnniServices:AlumniServices) {}
@@ -23,6 +26,7 @@ export class SubjectServices {
         let url = `${URL_SERVICES}/subject`;
         let headers = new HttpHeaders().set('token',token)
         return this.http.post(url,subject,{headers}).pipe(map((res:any)=>{
+            this.count++
            let subjectOrder = new SubjectOrder(res.subject,'post');
            this.subjectsSource.next(subjectOrder)
            return res.subject
@@ -33,6 +37,7 @@ export class SubjectServices {
         let url = `${URL_SERVICES}/subject?from=${from}&limit=${limit}`;
         let headers = new HttpHeaders().set('token', token)
         return this.http.get(url, {headers}).pipe(map((res:any)=>{
+            this.count = res.count;
             res.subjects.forEach(subject => {
                 let subjectOrder = new SubjectOrder(subject,'get')
                 this.subjectsSource.next(subjectOrder)
@@ -45,6 +50,7 @@ export class SubjectServices {
         let url = `${URL_SERVICES}/subject/${id}`
         let headers = new HttpHeaders().set('token', token)
         return this.http.delete(url,{headers}).pipe(map((res:any)=>{
+            this.count--
             let subjectOrder = new SubjectOrder(res.subject, 'delete')
             this.subjectsSource.next(subjectOrder)
         }))

@@ -1,14 +1,15 @@
+import { Day } from './day.model';
 export class Calendar {
 
     constructor(
         public date:Date,
-        public monday:string[],
-        public tuesday: string[],
-        public wednesday: string[],
-        public thursday: string[],
-        public friday: string[],
-        public saturday: string[],
-        public sunday: string[],
+        public monday:Day,
+        public tuesday: Day,
+        public wednesday: Day,
+        public thursday: Day,
+        public friday: Day,
+        public saturday: Day,
+        public sunday: Day,
         public _id?:string
     ){}
 }

@@ -15,25 +15,13 @@ export class UploadFilesServices {
      this.zone.run( ()=>{
 
        let formData = new FormData();
-
        let xhr = new XMLHttpRequest();
 
-       let url;
+       let url;       
 
+         formData.append('file',file,file.name);
+         url = `${URL_SERVICES}/upload/${type}/${id}`
        
-
-       if(file.type.indexOf('image')>= 0){
-         formData.append("img", file, file.name);
-         url = `${URL_SERVICES}/uploadImg/${type}/${id}`
-       }
-       if(file.type.indexOf('pdf')>=0){
-
-         console.log(file.type)
-         
-         formData.append('files', file, file.name)
-         url = `${URL_SERVICES}/uploadFile/${type}/${id}`
-       }
-
        xhr.onreadystatechange = () => {
          if (xhr.readyState === 4) {
            if (xhr.status === 200) {
@@ -46,9 +34,7 @@ export class UploadFilesServices {
            }
          }
        };
-
        xhr.open('PUT', url, true);
-
        xhr.send(formData)
      })
     })

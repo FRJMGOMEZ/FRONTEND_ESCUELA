@@ -22,21 +22,20 @@ export class FacilitiesModalComponent implements OnInit {
   constructor(private _userServices:UserServices,
               public _modalController:FacilitiesModalController,
               private _facilitieServices:FacilitiesService) {
-                this.token = this._userServices.token;
-               }
+                this.token = this._userServices.token}
 
   ngOnInit() {
     this._modalController.notification.subscribe((res)=>{
    if(res){
-     if(res.id){
-      this._facilitieServices.getFacilitieById(res.id,this.token).subscribe((facilitie)=>{          
+     if(res.message && res.message === 'updateFacilitie'){
+      this._facilitieServices.getFacilitieById(this._modalController.id,this.token).subscribe((facilitie)=>{          
         this.facilitie = facilitie;
         this.edition = true;
         this.creation = false;
       })
      }
-   }
-    })
+    }
+  })
   }
 
   postFacilitie(form:NgForm){

@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
 import { UserServices } from '../../../../providers/user.service';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { CalendarComponent } from '../../calendar.component';
+import { DayComponent } from '../day.component';
 
 @Component({
   selector: "app-event",
   templateUrl: "./event.component.html",
-  styleUrls: ["./event.component.scss"]
+  styleUrls: ["./event.component.scss"],
 })
 export class EventComponent implements OnInit,AfterViewInit{
   
@@ -35,7 +36,7 @@ export class EventComponent implements OnInit,AfterViewInit{
     private _userServices: UserServices,
     private renderer: Renderer2,
     private _modalEventController: EventModalController,
-    public calendarComponent: CalendarComponent
+    private dayComponent:DayComponent
   ) {
 
     this.token = this._userServices.token;
@@ -48,28 +49,28 @@ export class EventComponent implements OnInit,AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    this.render().then(()=>{
-      this.calendarComponent.notification.emit({position:this.position})
-    })
+    this.render().then(() => {
+      this.dayComponent.notification.emit({ position: this.position });
+    });
   }
   
   async render() {
-
+   
     if(this.hour){
 
     let spaceMustBe = 720 - (this.position) * 60; 
     for (let event of this.hour) {
-      if (event.instalacion === this.facilitie._id) {
-        if (event.posicion === this.position) {
+      if (event.facilitie === this.facilitie._id) {
+        if (event.position === this.position) {
           this.ourEvents["0"] = event;
         }
-        if (event.posicion === this.position + 0.25) {
+        if (event.position === this.position + 0.25) {
           this.ourEvents["0.25"] = event;
         }
-        if (event.posicion === this.position + 0.5) {
+        if (event.position === this.position + 0.5) {
           this.ourEvents["0.50"] = event;         
         }
-        if (event.posicion === this.position + 0.75) {
+        if (event.position === this.position + 0.75) {
           this.ourEvents["0.75"] = event;
         }
       }
@@ -119,7 +120,7 @@ export class EventComponent implements OnInit,AfterViewInit{
           }               
       } 
     } else {
-             ////////SEGUNDO PROBLEMA: Necesitamos arreglar las posiciones cuando renderizamos un evento REVISAR TODO LOS RELACIONADO CON LAS POSICIONES ////
+             ////////SEGUNDO PROBLEMA: Necesitamos arreglar las positiones cuando renderizamos un evento REVISAR TODO LOS RELACIONADO CON LAS positionES ////
              await this.setEvent('0',spaceMustBe)
 
              await this.setEvent('0.25',null)
@@ -127,6 +128,9 @@ export class EventComponent implements OnInit,AfterViewInit{
              await this.setEvent('0.50',null)
 
              await this.setEvent('0.75',null)
+
+
+             return
            }}
   }
 
@@ -134,7 +138,7 @@ export class EventComponent implements OnInit,AfterViewInit{
  async setEvent(eventPosition:string,spaceMustBe:number){
     if (this.ourEvents[eventPosition] != undefined) {
       await this.placeEvent(eventPosition, this.facilitie.space);
-      await this.fixHeight(60 * this.ourEvents[eventPosition].duracion);
+      await this.fixHeight(60 * this.ourEvents[eventPosition].duration);
       let res = await this.checkSpace(eventPosition);
       if (res) {
         await this.fixPosition(res["position"]);
@@ -187,13 +191,13 @@ export class EventComponent implements OnInit,AfterViewInit{
       const name3 = document.createTextNode(`${this.ourEvents[position].nombre}`);
       child.append(name3);
       this.renderer.listen(cardBody, "click", () => {
-        this.showEventInfo(this.ourEvents[position]._id,this.ourEvents[position].posicion);
+        this.showEventInfo(this.ourEvents[position]._id,this.ourEvents[position].position);
       });
       this.renderer.appendChild(cardBody, child);
       this.renderer.setStyle(
         cardBody,
         "height",
-        `${60 * this.ourEvents[position].duracion}px`
+        `${60 * this.ourEvents[position].duration}px`
       );
      
       switch (position) {
@@ -229,38 +233,38 @@ fixHeight(height: number) {
 
        if (reference === "0") {
         
-         if (this.ourEvents["0.25"] === undefined && this.ourEvents["0"].duracion >= 0.25) {
+         if (this.ourEvents["0.25"] === undefined && this.ourEvents["0"].duration >= 0.25) {
   
            if (this.ourEvents["0.50"] === undefined) {
               
             if (this.ourEvents["0.75"] === undefined) {
 
-              if(this.ourEvents['0'].duracion < 0.50){ resolve({height:45,position:0.25})}
-              if (this.ourEvents['0'].duracion === 0.50){resolve({ height: 30, position: 0.50 }) }
-              if (this.ourEvents['0'].duracion === 0.75) { resolve({ height: 15, position: 0.75 }) }
-              if (this.ourEvents['0'].duracion > 0.75) { resolve()}
+              if(this.ourEvents['0'].duration < 0.50){ resolve({height:45,position:0.25})}
+              if (this.ourEvents['0'].duration === 0.50){resolve({ height: 30, position: 0.50 }) }
+              if (this.ourEvents['0'].duration === 0.75) { resolve({ height: 15, position: 0.75 }) }
+              if (this.ourEvents['0'].duration > 0.75) { resolve()}
                
              } else {
-              if(this.ourEvents['0'].duracion < 0.50){resolve({height:30,position:0.25})}
-              if (this.ourEvents['0'].duracion === 0.50) { resolve({ height: 15, position: 0.50}) }
+              if(this.ourEvents['0'].duration < 0.50){resolve({height:30,position:0.25})}
+              if (this.ourEvents['0'].duration === 0.50) { resolve({ height: 15, position: 0.50}) }
               else { resolve()}
              }
            } else {
-             if (this.ourEvents["0"].duracion < 0.50){resolve({height:15,position:0.25})}
+             if (this.ourEvents["0"].duration < 0.50){resolve({height:15,position:0.25})}
              else{resolve()}
            }
          }resolve()
        }
        else if (reference === "0.25") {
-         if (this.ourEvents["0.50"] === undefined && this.ourEvents["0.25"].duracion >= 0.25) {
+         if (this.ourEvents["0.50"] === undefined && this.ourEvents["0.25"].duration >= 0.25) {
            if (this.ourEvents["0.75"] === undefined) {
 
-             if (this.ourEvents['0.25'].duracion < 0.50) { 
+             if (this.ourEvents['0.25'].duration < 0.50) { 
               resolve({ height: 30, position: 0.50 })}
-             if (this.ourEvents['0.25'].duracion === 0.50) {
+             if (this.ourEvents['0.25'].duration === 0.50) {
                resolve({ height: 15, position: 0.75 })
              }
-             if (this.ourEvents['0.25'].duracion > 0.50) {
+             if (this.ourEvents['0.25'].duration > 0.50) {
                resolve()
              }
              else {
@@ -271,7 +275,7 @@ fixHeight(height: number) {
          }resolve()
        }
        else if (reference === "0.50") {     
-         if (this.ourEvents["0.75"] === undefined && this.ourEvents["0.50"].duracion === 0.25) {
+         if (this.ourEvents["0.75"] === undefined && this.ourEvents["0.50"].duration === 0.25) {
            resolve({ height: 15, position: 0.75 })
          }else{resolve()}
        }
@@ -369,6 +373,7 @@ fixHeight(height: number) {
   }
 
   showEventInfo(id:string,position:number){ 
+    console.log(position)
     this._modalEventController.notification.emit({ position, facilitieId: this.facilitie._id })
     this._modalEventController.notification.emit({eventId:id})
     this._modalEventController.showModal() 

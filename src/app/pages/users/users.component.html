@@ -5,9 +5,9 @@
             <div class='d-flex flex-row justify-content-center'>
                 <div class='d-flex d-block'>
                     <input #input placeholder="Buscar usuario" class=' list-group-item' type="text" name="" id="">
-                    <button class='btn btn-warning list-group-item' (click)='searchUsers(input.value)'>BUSCAR USUARIOS</button>
+                    <button class='btn btn-warning list-group-item' (click)='searchMode=true;getMode=false;from=0;_userServices.searchUsers(input.value).subscribe();users=[]'>BUSCAR USUARIOS</button>
                 </div>
-                <div><button class='btn btn-warning list-group-item' (click)='getUsers()'>TODOS</button></div>
+                <div><button class='btn btn-warning list-group-item' (click)='searchMode=false;getMode=true;from=0;_userServices.getUsers().subscribe();users=[]'>TODOS</button></div>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <tbody *ngFor="let user of users let i=index">
                         <tr>
                             <td>
-                                <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='openUploadFilesModule(user._id)' [src]="user.img | imgPipe:'usuarios'" class='img100 img-circle'>
+                                <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='openUploadFilesModule(user._id)' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
                             </td>
                             <td>{{user.email}}</td>
                             <td>{{user.name}}</td>
@@ -40,15 +40,15 @@
                             </td>
                             <td>
                                 <label *ngIf="!user.status">
-                                  <button (click)=changeStatus(user._id) name="activador" value="Activar Usuario">Activar</button>
+                                  <button (click)="_userServices.changeUserStatus(user._id).subscribe()" name="activador" value="Activar Usuario">Activar</button>
                                  </label>
                                 <label *ngIf="user.status">
-                                  <button (click)=changeStatus(user._id) name="desactivador" type="checkbox" value="Desactivar Usuario">Desactivar</button>
+                                  <button (click)="_userServices.changeUserStatus(user._id).subscribe()" name="desactivador" type="checkbox" value="Desactivar Usuario">Desactivar</button>
                                 </label>
                             </td>
                             <td>
                                 <div class="col-12 d-flex flex-row">
-                                    <button (click)='deleteUser(user._id)' class='btn btn-danger'>
+                                    <button (click)='_userServices.deleteUser(user._id).subscribe()' class='btn btn-danger'>
                                                  <i class="far fa-trash-alt"></i>
                                         </button>
                                 </div>
@@ -57,8 +57,8 @@
                     </tbody>
                 </table>
                 <div class='d-flex justify-content-around'>
-                    <button (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-                    <button (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+                    <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
+                    <button *ngIf="_userServices.count >= from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
                 </div>
             </div>
         </div>

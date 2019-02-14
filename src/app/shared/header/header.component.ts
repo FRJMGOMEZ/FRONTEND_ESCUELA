@@ -14,8 +14,7 @@ export class HeaderComponent implements OnInit {
   token:string
 
   currentCalendar:any
-
-  calendars:Calendar[]=[]
+  today:string
 
   constructor(public _userServices:UserServices,
               private _calendarServices:CalendarService,
@@ -24,62 +23,39 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._calendarServices.getCalendars(this.token).subscribe((calendars)=>{
-      if(calendars){
-        this.calendars = calendars;
-      }
-    })
-    this._calendarServices.calendars$.subscribe((calendar)=>{
-       this.calendars.push(calendar)
-    })
+    
+    let today = new Date()
+    let calendarDate;
+    switch(today.getDay()){
+      case 1: calendarDate = new Date(); this.today = 'monday';
+      break;
+      case 2: calendarDate = today.setDate(today.getDate() - 1); this.today = 'tuesday';
+      break;
+      case 3: calendarDate = today.setDate(today.getDate() - 2); this.today = 'wednesday';
+      break;
+      case 4: calendarDate = today.setDate(today.getDate() - 3); this.today = 'thursday';
+        break;
+      case 5: calendarDate = today.setDate(today.getDate() - 4); this.today = 'friday';
+        break;
+      case 6: calendarDate = today.setDate(today.getDate() - 5); this.today = 'saturday';
+        break;
+      case 7: calendarDate = today.setDate(today.getDate() - 6); this.today = 'sunday';
+        break;
+    }
+    this._calendarServices
+      .getCalendarByDate(new Date(calendarDate))
+      .subscribe((calendars:Calendar[]) => {
+        if (calendars) {
+          this.currentCalendar = calendars[0];
+        }
+      });
   }
 
  toLastCalendar(){
-      this.checkDay().then((today)=>{
-        if(today){
-          this.route.navigate(['/day', this.currentCalendar._id, today])
+        if(this.currentCalendar){
+          this.route.navigate(['/day', this.currentCalendar._id,this.currentCalendar[this.today]._id])
         }else{
           this.route.navigate(['/day','no-calendar', 'no-day'])
         }
-      })  
-  }
-
-  checkDay(){
-    return new Promise((resolve,reject)=>{
-      let today;
-      if(this.calendars.length > 0){
-      this.calendars.forEach((calendar: any) => {
-        if (new Date(calendar.monday.date).getDate() === new Date().getDate() && new Date(calendar.monday.date).getMonth() === new Date().getMonth() && new Date(calendar.monday.date).getFullYear() === new Date().getFullYear()) {
-          today = calendar.monday._id;
-          this.currentCalendar = calendar;
-          resolve(today);
-        } else if (new Date(calendar.tuesday.date).getDate() === new Date().getDate() && new Date(calendar.tuesday.date).getMonth() === new Date().getMonth() && new Date(calendar.tuesday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.tuesday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-        } else if (new Date(calendar.wednesday.date).getDate() === new Date().getDate() && new Date(calendar.wednesday.date).getMonth() === new Date().getMonth() && new Date(calendar.wednesday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.wednesday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-        } else if (new Date(calendar.thursday.date).getDate() === new Date().getDate() && new Date(calendar.thursday.date).getMonth() === new Date().getMonth() && new Date(calendar.thursday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.thursday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-        } else if (new Date(calendar.friday.date).getDate() === new Date().getDate() && new Date(calendar.friday.date).getMonth() === new Date().getMonth() && new Date(calendar.friday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.friday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-        } else if (new Date(calendar.saturday.date).getDate() === new Date().getDate() && new Date(calendar.saturday.date).getMonth() === new Date().getMonth() && new Date(calendar.saturday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.saturday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-        } else if (new Date(calendar.sunday.date).getDate() === new Date().getDate() && new Date(calendar.sunday.date).getMonth() === new Date().getMonth() && new Date(calendar.sunday.date).getFullYear() === new Date().getFullYear()) {
-                 today = calendar.sunday._id;
-                 this.currentCalendar = calendar;
-                 resolve(today);
-               }
-        })
-      }else{resolve()}
-    })
   }
 }

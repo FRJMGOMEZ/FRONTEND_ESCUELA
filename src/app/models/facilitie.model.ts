@@ -6,3 +6,9 @@ export class Facilitie {
                  public _id?:string
                  ) {}
 }
+
+
+export class FacilitieOrder{
+    constructor(public facilitie:Facilitie,
+                public order:string){}
+}

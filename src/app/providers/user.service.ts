@@ -7,7 +7,8 @@ import { URL_SERVICES } from "../config/config";
 import { map } from "rxjs/operators";
 import swal from "sweetalert";
 
-import { User } from '../models/user.model';
+import { User, UserOrder } from '../models/user.model';
+import { Subject } from 'rxjs';
 
 
 
@@ -19,6 +20,12 @@ export class UserServices {
 
     public  userOnline:User;
     public  token:string;
+
+    public usersSource = new Subject<UserOrder>();
+    public users$ = this.usersSource.asObservable();
+
+    public count:number
+
     constructor(private http:HttpClient, private router:Router) { 
         this.uploadFromStorage();
     }
@@ -28,41 +35,58 @@ export class UserServices {
         return this.http.post(url, user)
                         .pipe(map((res: any) => {
                             swal("USER SUCCESSFULLY REGISTERED", user.email, "success");
-                            return res.user;
                             })
                         );
     }
+
     updateUser(id:string, user:User){
         let url = `${URL_SERVICES}/user/${id}`
         let headers = new HttpHeaders().set('token', this.token);
         return this.http.put(url,user,{headers}).pipe((map((res:any)=>{
             if (res.user._id === this.userOnline._id) {
-                this.saveInStorage(res.user._id, res.user, this.token);
+                this.saveInStorage(res.user._id, res.user, this.token)
             }
+                let userOrder=new UserOrder(res.user,'update')
+                this.usersSource.next(userOrder)
+            
             swal("USER SUCCESSFULLY UPDATED", res.user.email, "success"); 
             return res.user  
             })))    
     }
 
-    getUsers(){
-        let url = `${URL_SERVICES}/users`;
-        return this.http.get(url).pipe(map((res:any)=>{
-            return res.users
+    updateUserfromOutside(user:User){
+        let userOrder = new UserOrder(user,'update')
+        this.usersSource.next(userOrder)
+    }
+
+    getUsers(from:number=0,limit:number=5){
+        let url = `${URL_SERVICES}/users?from=${from}&limit=${limit}`;
+        let headers = new HttpHeaders().set('token', this.token);
+        return this.http.get(url,{headers}).pipe(map((res:any)=>{
+            this.count = res.count;
+            res.users.forEach(user => {
+                let userOrder = new UserOrder(user,'get')
+                this.usersSource.next(userOrder)
+            });
         }))
     }
 
-    searchUsers(input:string){
-        let url = `${URL_SERVICES}/search/users/${input}`;
+    searchUsers(input: string, from: number = 0, limit: number = 5){
+        let url = `${URL_SERVICES}/search/users/${input}?from=${from}&limit=${limit}`;
         return this.http.get(url).pipe(map((res:any)=>{
-            return res.users
+            this.count = res.count
+            res.users.forEach(user => {
+                let userOrder = new UserOrder(user, 'get')
+                this.usersSource.next(userOrder)
+            });
         }))
     }
 
-    searchUsersById(id:string){
-        let url = `${URL_SERVICES}/searchById/users/${id}`
+    searchUserById(id:string){
+        let url = `${URL_SERVICES}/searchById/user/${id}`
         let headers = new HttpHeaders().set("token", this.token);
         return this.http.get(url,{headers}).pipe(map((res:any)=>{
-            return res.users
+            return res.user
         }))
     }
 
@@ -75,7 +99,8 @@ export class UserServices {
             }else{
                 swal("USER DISABLED", res.user.email, 'success');
             }
-           return res.user
+           let userOrder = new UserOrder(res.user,'update');
+           this.usersSource.next(userOrder)
         }))
     }
     
@@ -83,7 +108,9 @@ export class UserServices {
         let url = `${URL_SERVICES}/user/${id}`
         let headers = new HttpHeaders().set("token", this.token);
         return this.http.delete(url,{headers}).pipe(map((res:any)=>{
-            return res.user
+            this.count--
+            let userOrder = new UserOrder(res.user,'delete');
+            this.usersSource.next(userOrder)
         }))
     }
     

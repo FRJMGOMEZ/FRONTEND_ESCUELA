@@ -17,6 +17,8 @@ export class AlumniServices {
   public alumnisSource = new Subject<AlumniOrder>();
   public alumnis$ = this.alumnisSource.asObservable()
 
+  count:number
+
   constructor(private http:HttpClient) { }
 
   createAlumni(alumni:Alumni,token){
@@ -24,6 +26,7 @@ export class AlumniServices {
     let headers = new HttpHeaders().set('token', token);
     return this.http.post(url,alumni, {headers}).pipe(map((res:any)=>{
        swal('ALUMNI SUCCESFULLY CREATED',res.alumni.name,'success')
+       this.count++
        let alumniOrder = new AlumniOrder(res.alumni,'post')
        this.alumnisSource.next(alumniOrder);
        return
@@ -34,6 +37,7 @@ export class AlumniServices {
       let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
       let headers = new HttpHeaders().set('token',token);
       return this.http.get(url,{headers}).pipe(map((res:any)=>{
+        this.count = res.count;
         res.alumnis.forEach(alumni => {
           let alumniOrder = new AlumniOrder(alumni,'get')
           this.alumnisSource.next(alumniOrder)      
@@ -46,6 +50,7 @@ export class AlumniServices {
      let url = `${URL_SERVICES}/search/alumnis/${input}?from=${from}&limit=${limit}`
      let headers = new HttpHeaders().set('token', token);
      return this.http.get(url,{headers}).pipe(map((res:any)=>{
+       this.count = res.count
        res.alumnis.forEach(alumni => {
          let alumniOrder = new AlumniOrder(alumni,'get')
          this.alumnisSource.next(alumniOrder)
@@ -58,6 +63,7 @@ export class AlumniServices {
     let url  = `${URL_SERVICES}/alumni/${id}`
     let headers = new HttpHeaders().set("token", token);
     return this.http.delete(url,{headers}).pipe(map((res:any)=>{
+      this.count--
       swal('ALUMNI SUCCESFULLY DELETED', res.alumni.name, 'success')
       let alumiOrder = new AlumniOrder(res.alumni,'delete')
       this.alumnisSource.next(alumiOrder)

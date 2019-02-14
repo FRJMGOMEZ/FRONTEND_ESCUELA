@@ -12,3 +12,11 @@ export class User {
     ){
     }
 }
+
+
+export class UserOrder{
+    constructor(public user:User,
+               public order:string){
+
+    }
+}

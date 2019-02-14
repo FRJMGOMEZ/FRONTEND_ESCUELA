@@ -41,7 +41,7 @@ export class CalendarModalComponent implements OnInit {
       let calendarId = this._modalController.currentCalendarId;
       let dayId = this._modalController.dayId;
 
-    this._calendarServices.getCalendarById(calendarId,this.token).subscribe((calendar)=>{
+    this._calendarServices.getCalendarById(calendarId).subscribe((calendar:any)=>{
           
       if(calendar.monday._id === dayId){this.day = calendar.monday}
       if (calendar.tuesday._id === dayId) { this.day = calendar.tuesday }

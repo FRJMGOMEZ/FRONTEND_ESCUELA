@@ -3,7 +3,7 @@
         <div class='col text-center'>
             <div class='d-flex flex-column justify-content-center p-2'>
                 <div>
-                    <img class='img-fluid' [src]="userOnline.img | imgPipe:'usuarios'" alt="">
+                    <img class='img-fluid' [src]="userOnline.img | imgPipe:'users'" alt="">
                 </div>
                 <div>
                     <a (click)='openImgModal()'><strong style='cursor: pointer;'>CAMBIAR IMAGEN</strong></a>
@@ -14,7 +14,7 @@
             <form action="" ngNativeValidate #form='ngForm' role="form" (ngSubmit)='saveChanges(form)'>
                 <div class='form-group'>
                     <label for="nombre">Nombre</label>
-                    <input [ngModel]="userOnline.nombre" class='form-control' type="text" placeholder="nombre" id="nombre" name="nombre">
+                    <input [ngModel]="userOnline.name" class='form-control' type="text" placeholder="nombre" id="name" name="name">
                 </div>
                 <div class='form-group'>
                     <label for="password">Email</label>

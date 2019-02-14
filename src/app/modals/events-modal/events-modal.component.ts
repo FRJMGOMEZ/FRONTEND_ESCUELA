@@ -55,14 +55,15 @@ export class EventsModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._calendarServices.daySource$.subscribe(day => {
-      this.day = day;
-    });
 
+    this._calendarServices.currentDay$.subscribe((day)=>{
+      this.day = day;
+    })
+  
     this._modalController.notification.subscribe(res => {
       if (res) {
         if (res.facilitieId) {
-          this.hour = this.day[String(parseInt(res.position))];
+          this.hour = this.day[`hour${parseInt(res.position)}`];
           this.decimalsOfPosition = Number(res.position) - parseInt(res.position);
           this.facilitie.id = res.facilitieId;
           this.position = res.position;
@@ -205,6 +206,8 @@ export class EventsModalComponent implements OnInit {
         this.spaceAvailable = this.spaceAvailable - Number(this.position);
       }
 
+      if(this.hour.length > 0){
+
       for (let event of this.hour) {
         if (
           event.posicion === this.position + 0.75 &&
@@ -230,6 +233,7 @@ export class EventsModalComponent implements OnInit {
         ) {
           this.spaceAvailable = 0.25;
         }
+      }
       }
 
       resolve();
@@ -367,6 +371,8 @@ export class EventsModalComponent implements OnInit {
   checkSpaceBack() {
     let currentPositionDecimals = String(this.position).split(".")[1];
     let eventsBefore = [];
+
+    console.log(this.hour)
 
     if (currentPositionDecimals != undefined) {
       for (let event of this.hour) {

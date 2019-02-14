@@ -3,6 +3,7 @@ import { UserServices } from 'src/app/providers/user.service';
 import { FacilitiesService } from '../../providers/facilities.service';
 import { Facilitie } from '../../models/facilitie.model';
 import { FacilitiesModalController } from '../../modals/facilities-modal/facilities-modalController';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-facilities',
@@ -13,33 +14,44 @@ export class FacilitiesComponent implements OnInit {
 
   token:string
 
-  facilities:Facilitie[];
+  facilities:Facilitie[] = []
+
+  facilitiesSubscription:Subscription = null;
 
   from:number = 0;
 
   constructor(private _userServices:UserServices,
-              private _facilitieService:FacilitiesService,
-              private _facilitiesModalController:FacilitiesModalController) {
+              public _facilitieServices:FacilitiesService,
+              public _facilitiesModalController:FacilitiesModalController) {
     this.token = this._userServices.token;
    }
 
   ngOnInit() {
-    this.getFacilities()
-    this._facilitieService.facilities$.subscribe((facilities)=>{
-      this.facilities = facilities;
+    
+    this.facilitiesSubscription = this._facilitieServices.facilities$.subscribe((facilitieOrder: any) => {
+      if (facilitieOrder.order === 'post') {
+        if (this.facilities.length < 5) { this.facilities.push(facilitieOrder.facilitie) }
+      }
+      if (facilitieOrder.order === 'get') {
+        this.facilities.push(facilitieOrder.facilitie);
+        
+      }
+      else if (facilitieOrder.order === 'delete') {
+        this.facilities = this.facilities.filter((facilitie) => { return facilitie._id != facilitieOrder.facilitie._id })
+      }
+      else if (facilitieOrder.order === 'update') {
+        this.facilities.forEach((facilitie, index) => {
+          if (facilitie._id === facilitieOrder.facilitie._id) {
+            this.facilities[index] = facilitieOrder.facilitie
+          }
+        })
+      }
     })
+    this._facilitieServices.getFacilities(this.token).subscribe()
   }
-
-  getFacilities(){
-    this._facilitieService.getFacilities(this.token,this.from).subscribe((facilities) => {})}
-
-  postFacilitie(){
-    this._facilitiesModalController.showModal()
-  }
-
-  putFacilicite(id:string){
+  putFacilitie(id:string){
     this._facilitiesModalController.showModal(id)
-    this._facilitiesModalController.notification.emit()
+    this._facilitiesModalController.notification.emit({message:'updateFacilitie'})
   }
 
   changeStatus(facilitie:Facilitie){
@@ -49,22 +61,14 @@ export class FacilitiesComponent implements OnInit {
       case false: facilitie.status = true; 
       break;
     }
-    this._facilitieService.putFacilitie(facilitie._id,facilitie,this.token).subscribe(()=>{})
-  }
-
-  editFacilitie(id:string){
-    this._facilitiesModalController.showModal()
-    this._facilitiesModalController.notification.emit({id})
-  }
-
-  deleteFacilitie(id:string){
-    this._facilitieService.deleteFacilitie(id,this.token).subscribe(()=>{})
+    this._facilitieServices.putFacilitie(facilitie._id,facilitie,this.token).subscribe()
   }
 
   changeFrom(number: number) {
     if (this.from + number >= 0) {
       this.from += number;
     }
-    this.getFacilities()
+    this.facilities = []
+    this._facilitieServices.getFacilities(this.token,this.from).subscribe()
   }
 }

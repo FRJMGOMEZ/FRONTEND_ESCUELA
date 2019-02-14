@@ -5,150 +5,176 @@ import { map } from 'rxjs/operators';
 import { Subject} from 'rxjs';
 import { Event } from '../models/event.model';
 import { Calendar } from '../models/calendar.model';
+import { UserServices } from './user.service';
+import * as _ from "underscore";
+import { Day } from '../models/day.model';
+
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CalendarService {
+  token: string;
 
-  private daySource = new Subject<void>();
-  public daySource$ = this.daySource.asObservable()
+  days: string[];
+
+  public currentDaySource = new Subject<Day>();
+  public currentDay$ = this.currentDaySource.asObservable();
 
   public calendarsSource = new Subject<Calendar>();
-  public calendars$ = this.calendarsSource.asObservable()
+  public calendars$ = this.calendarsSource.asObservable();
 
-  constructor(private http:HttpClient) { }
+  public eventsSource = new Subject<Event>();
+  public events$ = this.calendarsSource.asObservable();
 
-  postCalendar(days:string[],token:string){
-
-        let url = `${URL_SERVICES}/calendario`;
-
-        let headers = new HttpHeaders().set('token', token)
-        
-        return this.http.post(url,{days},{headers}).pipe(map((res:any)=>{
-
-          return res.calendarSaved
-        }))     
-  }
-   
-  getCalendars(token:string){
-
-    let url = `${URL_SERVICES}/calendarios`;
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.get(url,{headers}).pipe(map((res: any) => {
-
-      return res.calendariosDb
-    }))
+  constructor(private http: HttpClient, private _userServices: UserServices) {
+    this.token = this._userServices.token;
   }
 
-  getCalendarById(id: string, token: string, day?: string) {
+  getCalendarByDate(date: Date) {
+    let url = `${URL_SERVICES}/calendar/${date}`;
+    let headers = new HttpHeaders().set("token", this.token);
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        this.calendarsSource.next(res.calendars[0])
+        return res.calendars;
+      })
+    );
+  }
 
-    let url = `${URL_SERVICES}/searchById/calendario/${id}`
+  postDaysOfTheWeek(calendarDay: Date) {
+    switch (calendarDay.getDay()) {
+      case 1:
+        calendarDay = calendarDay;
+        break;
+      case 2:
+        calendarDay.setDate(calendarDay.getDate() - 1);
+        break;
+      case 3:
+        calendarDay.setDate(calendarDay.getDate() - 2);
+        break;
+      case 4:
+        calendarDay.setDate(calendarDay.getDate() - 3);
+        break;
+      case 5:
+        calendarDay.setDate(calendarDay.getDate() - 4);
+        break;
+      case 6:
+        calendarDay.setDate(calendarDay.getDate() - 5);
+        break;
+      case 0:
+        calendarDay.setDate(calendarDay.getDate() - 6);
+        break;
+    }
+    let url = `${URL_SERVICES}/days`;
+    let headers = new HttpHeaders().set("token", this.token);
+    return this.http
+      .post(url, { date: new Date(calendarDay) }, { headers })
+      .pipe(
+        map((res: any) => {
+          this.days = res.days.map(day => {
+            return day._id;
+          });
+        })
+      );
+  }
 
-    let headers = new HttpHeaders().set('token', token)
+  postCalendar() {
+    let url = `${URL_SERVICES}/calendar`
+    let headers = new HttpHeaders().set("token", this.token);
+    return this.http.post(url, { days: this.days }, { headers }).pipe(
+      map((res: any) => {
+        this.calendarsSource.next(res.calendar);
+        return res.calendar
+      })
+    );
+  }
 
-    return this.http.get(url, { headers }).pipe(map((res: any) => {
-
-      return res.calendario
-
-    }))
+  getCalendarById(id: string) {
+    let url = `${URL_SERVICES}/searchById/calendar/${id}`;
+    let headers = new HttpHeaders().set("token", this.token);
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        this.calendarsSource.next(res.calendar);
+      })
+    );
   }
 
   getCalendarByDay(dayId: string, dayOfTheWeek: number, token: string) {
-
-    let url = `${URL_SERVICES}/calendarByDay/${dayId}/${dayOfTheWeek}`
-
+    let url = `${URL_SERVICES}/calendarByDay/${dayId}/${dayOfTheWeek}`;
     let headers = new HttpHeaders().set("token", token);
-
-    return this.http.get(url, { headers }).pipe(map((res: any) => {
-
-      return res.calendar[0]
-    }))
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        return res.calendar[0];
+      })
+    );
   }
 
-  postDaysOfTheWeek(date: Date, token: string) {
 
-    let url = `${URL_SERVICES}/days`;
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.post(url, { date }, { headers }).pipe(map((res: any) => {
-
-      return res.daysSaved
-    }))
-  }
-
-  getDayById(id:string,token:string){
-
-    let url = `${URL_SERVICES}/searchById/day/${id}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.get(url,{headers}).pipe(map((res:any)=>{
-
-      this.daySource.next(res.day)
-
-       return res.day
-    }))
+  getDayById(id: string) {
+    let url = `${URL_SERVICES}/searchById/day/${id}`;
+    let headers = new HttpHeaders().set("token", this.token);
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        this.currentDaySource.next(res.day);
+      })
+    );
   }
 
   getDayByDate(date: Date, token: string) {
-
-    let url = `${URL_SERVICES}/dayByDate/${date}`
+    let url = `${URL_SERVICES}/dayByDate/${date}`;
 
     let headers = new HttpHeaders().set("token", token);
 
-    return this.http.get(url, { headers }).pipe(map((res: any) => {
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        return res.day;
+      })
+    );
+  }
 
-      return res.day
+  postEvent(event: Event, token: string) {
+    let url = `${URL_SERVICES}/event`;
+    let headers = new HttpHeaders().set("token", token);
+    return this.http.post(url, event, { headers }).pipe(
+      map((res: any) => {
+        return res.event;
+      })
+    );
+  }
+
+  pushEvent(event: Event, dayId: string, token: string) {
+    let url = `${URL_SERVICES}/day/${dayId}`;
+    let headers = new HttpHeaders().set("token", token);
+    return this.http.put(
+      url,
+      { position: event.position, id: event._id },
+      { headers }
+    ).pipe(map((res:any)=>{
+     this.currentDaySource.next(res.day)
     }))
   }
 
-  postEvent(event:Event,token:string){
-
-    let url = `${URL_SERVICES}/event`
-
+  putEvent(eventId: string, event: any, token: string) {
+    let url = `${URL_SERVICES}/event/${eventId}`;
     let headers = new HttpHeaders().set("token", token);
-
-    return this.http.post(url,event,{headers}).pipe(map((res:any)=>{
-
-      return res.event
-    }))
+    return this.http.put(url, event, { headers }).pipe(
+      map((res: any) => {
+        this.eventsSource.next(res.event)
+        return res.event;
+      })
+    );
   }
 
-  pushEvent(event:Event,dayId:string,token:string){
-
-    let url = `${URL_SERVICES}/day/${dayId}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.put(url,{position:event.position,id:event._id},{headers})
-
-  }
-
-  putEvent(eventId:string,event:any,token:string){
-    
-    let url = `${URL_SERVICES}/event/${eventId}`
+  getEventById(eventId: string, token: string) {
+    let url = `${URL_SERVICES}/searchById/event/${eventId}`;
 
     let headers = new HttpHeaders().set("token", token);
 
-      return this.http.put(url,event,{headers}).pipe(map((res:any)=>{
-
-      return res.event
-      }))
-  }
-
-  getEventById(eventId:string,token:string){
-
-    let url = `${URL_SERVICES}/searchById/event/${eventId}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.get(url,{headers}).pipe(map((res:any)=>{
-
-      return res.event
-    }))
+    return this.http.get(url, { headers }).pipe(
+      map((res: any) => {
+        return res.event;
+      })
+    );
   }
 }

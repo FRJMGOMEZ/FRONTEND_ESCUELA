@@ -16,6 +16,8 @@ export class ProfessorsServices {
   public professorsSource = new Subject<ProfessorOrder>();
   public professors$ = this.professorsSource.asObservable()
 
+  public count:number
+
   constructor(private http:HttpClient,
              private _userServices:UserServices) { 
   }
@@ -24,6 +26,7 @@ export class ProfessorsServices {
     let url = `${URL_SERVICES}/professor`
     let headers = new HttpHeaders().set("token", token);
     return this.http.post(url,professor,{headers}).pipe(map((res:any)=>{
+      this.count++
        swal('PROFESSOR SUCCESSFULLY CREATED',res.professor.name,'success')
        let professorOrder = new ProfessorOrder(res.professor,'post')
        this.professorsSource.next(professorOrder);
@@ -34,6 +37,7 @@ export class ProfessorsServices {
     let url = `${URL_SERVICES}/professor?from=${from}&limit=${limit}`
     let headers = new HttpHeaders().set('token', this._userServices.token)
     return this.http.get(url,{headers}).pipe(map((res:any)=>{
+      this.count = res.count;
       res.professors.forEach((professor)=>{
         let professorOrder = new ProfessorOrder(professor,'get');
         this.professorsSource.next(professorOrder)
@@ -46,6 +50,7 @@ export class ProfessorsServices {
     let url = `${URL_SERVICES}/search/professors/${input}?from=${from}`
     let headers = new HttpHeaders().set('token', token);
     return this.http.get(url, { headers }).pipe(map((res: any) => {
+      this.count = res.count;
       res.professors.forEach((professor) => {
         let professorOrder = new ProfessorOrder(professor, 'get');
         this.professorsSource.next(professorOrder)
@@ -58,6 +63,7 @@ export class ProfessorsServices {
     let url = `${URL_SERVICES}/professor/${id}`
     let headers = new HttpHeaders().set('token', token);
     return this.http.delete(url,{headers}).pipe(map((res:any)=>{
+      this.count--
       swal('PROFESSOR SUCCESFULLY DELETED',res.professor.name, 'success')
       let professorOrder = new ProfessorOrder(res.professor,'delete')
       this.professorsSource.next(professorOrder)

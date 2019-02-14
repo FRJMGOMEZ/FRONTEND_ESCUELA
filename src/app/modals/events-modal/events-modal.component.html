@@ -60,7 +60,7 @@
 
                         <!--  PAGE 3  -->
                         <div *ngIf="page === '3'" #div3 class="row d-flex form-group flex-column align-content-center">
-                            <input [(ngModel)]='name' name='name' type="text" class="form-control" placeholder="Nombre" required>
+                            <input [(ngModel)]='name' name='name' type="text" class="form-control" placeholder="name" required>
                             <textarea [(ngModel)]="description" type="text" name="description" class="form-control"></textarea>
                             <div class='d-flex justify-content-around'>
                                 <button (click)="switch('3','prev')">PREV</button>
@@ -76,13 +76,13 @@
                                         <p>
                                             <select #valueSubject>
                                            <option value=" "></option>
-                                           <option *ngFor="let subject of subjects " [value]="subject._id ">{{subject.nombre}}</option>
+                                           <option *ngFor="let subject of subjects " [value]="subject._id ">{{subject.name}}</option>
                                         </select>
 
                                             <button class='btn btn-warning' (click)='addSubject(valueSubject.value)'>ADD</button>
 
                                             <div class='d-flex flex-column' class=''>
-                                                <a *ngFor="let subject of selectedSubjects "> {{subject.nombre}}</a>
+                                                <a *ngFor="let subject of selectedSubjects "> {{subject.name}}</a>
                                             </div>
                                 </div>
                                 <div class="col-6 d-flex flex-column">
@@ -90,11 +90,11 @@
                                         <p>
                                             <select #valueProfessor>
                                             <option value=" "></option>
-                                            <option *ngFor="let professor of professors " [value]="professor._id ">{{professor.nombre}}</option>
+                                            <option *ngFor="let professor of professors " [value]="professor._id ">{{professor.name}}</option>
                                         </select>
                                             <button class='btn btn-warning' (click)='addProfessor(valueProfessor.value)'>ADD</button>
                                             <div class='d-flex flex-column'>
-                                                <a *ngFor="let professor of selectedProfessors ">{{professor.nombre}}</a>
+                                                <a *ngFor="let professor of selectedProfessors ">{{professor.name}}</a>
                                             </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-around">
@@ -110,21 +110,21 @@
                     <div *ngIf="page === '5'" class="row">
                         <div class="col-12 d-flex flex-column">
                             <h6 class='text-center'>Event Succesfully created</h6>
-                            <p>nombre: {{eventCreated.nombre}}</p>
-                            <p>descripcion: {{eventCreated.descripcion}}</p>
+                            <p>name: {{eventCreated.name}}</p>
+                            <p>description: {{eventCreated.description}}</p>
                             <div>
                                 <p>Profesores participantes :</p>
-                                <p *ngFor="let profesor of eventCreated.profesores">{{profesor.nombre}}</p>
+                                <p *ngFor="let profesor of eventCreated.profesores">{{profesor.name}}</p>
                             </div>
                             <div>
                                 <p> Materias :</p>
-                                <p *ngFor="let materia of eventCreated.materias">{{materia.nombre}}</p>
+                                <p *ngFor="let materia of eventCreated.materias">{{materia.name}}</p>
                             </div>
-                            <p>Empieza a las: {{eventCreated.posicion | timeConversor2: null }}</p>
-                            <p>Termina a las: {{eventCreated.posicion | timeConversor2: eventCreated.duracion }}</p>
-                            <p>instalacion : {{eventCreated.instalacion.nombre}}</p>
-                            <p>duracion : {{eventCreated.duracion | timeConversor1}}</p>
-                            <p>Repetir todas las semanas : {{eventCreated.repeticion}}</p>
+                            <p>Empieza a las: {{eventCreated.position | timeConversor2: null }}</p>
+                            <p>Termina a las: {{eventCreated.position | timeConversor2: eventCreated.duration }}</p>
+                            <p>instalacion : {{eventCreated.facilitie.name}}</p>
+                            <p>duration : {{eventCreated.duration | timeConversor1}}</p>
+                            <p>Repetir todas las semanas : {{eventCreated.repetition}}</p>
                             <button (click)="checkSpaceBack()">MODIFICAR EVENTO</button>
                         </div>
                     </div>

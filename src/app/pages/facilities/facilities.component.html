@@ -2,7 +2,7 @@
     <div class="col-12">
         <div class='list-group'>
             <h3 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h3>
-            <button (click)='postFacilitie()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
+            <button (click)='_facilitiesModalController.showModal()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
             <div *ngIf="!cargando" class="row animated fadeIn">
                 <div *ngIf="facilities" class="col-12">
                     <div class="card">
@@ -29,10 +29,10 @@
                                             </label>
                                         </td>
                                         <td>
-                                            <button (click)='editFacilitie(facilitie._id)' class="btn btn-primary">
-                        <i class="fa fa-info"></i>
+                                            <button (click)='putFacilitie(facilitie._id)' class="btn btn-primary">
+                        <i class="fas fa-edit"></i>
                       </button>
-                                            <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-danger">
+                                            <button (click)="_facilitieServices.deleteFacilitie(facilitie._id,token).subscribe()" class="btn btn-danger">
                         <i class="far fa-trash-alt"></i>
                       </button>
                                         </td>
@@ -40,8 +40,8 @@
                                 </tbody>
                             </table>
                             <div class='d-flex justify-content-around'>
-                                <button (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-                                <button (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+                                <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
+                                <button *ngIf="_facilitieServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
                             </div>
                         </div>
                     </div>

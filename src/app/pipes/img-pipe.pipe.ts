@@ -21,7 +21,6 @@ export class ImgPipe implements PipeTransform {
     }
 
     if (img.indexOf('base64') >= 0) {
-
       return img
     }
 
