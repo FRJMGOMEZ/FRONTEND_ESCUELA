@@ -7,8 +7,10 @@ import { UsersComponent } from './users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
 import { ProjectComponent } from './proyects/project/project.component';
 import { DayComponent } from './calendar/day/day.component';
-import { AddressBookComponent } from './addressBook/addressBook.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
+import { SubjectComponent } from './addressBook/subject/subject.component';
+import { ProfessorComponent } from './addressBook/professor/professor.component';
+import { AlumniComponent } from './addressBook/alumni/alumni.component';
 
 const pagesRoutes: Routes = [
   {
@@ -38,9 +40,19 @@ const pagesRoutes: Routes = [
         data: { title: "PROYECT", description: "Proyect" }
       },
       {
-        path: "addressBook/:item",
-        component: AddressBookComponent,
-        data: { title: "ADDRESSBOOK", description: "AddressBook" }
+        path: "addressBook/subjects",
+        component: SubjectComponent,
+        data: { title: "SUBJECT", description: "Subjects" }
+      }, 
+      {
+        path: "addressBook/professors",
+        component: ProfessorComponent,
+        data: { title: "PROFESSOR", description: "Professors" }
+      }, 
+      {
+        path: "addressBook/alumnis",
+        component: AlumniComponent,
+        data: { title: "ALUMNIS", description: "Alumnis" }
       }, 
       {
         path: "users",
@@ -53,7 +65,7 @@ const pagesRoutes: Routes = [
         data: { title: "FACILITIE", description: "Facilities" }
       },
       {
-        path: "day/:calendarId/:day",
+        path: "day/:weekId/:day",
         component: DayComponent,
         data: { title: "DAY", description: "Day" }
       },

@@ -1,10 +1,9 @@
-import { Component, Input, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Alumni } from '../../../models/alumni.model';
 import { SubjectModalController } from '../../../modals/subject-modal/subjectModalController';
 import { IndexCardModalController } from 'src/app/modals/index-card-modal/indexCardModalController';
 import { Subscription } from 'rxjs';
 import { AlumniServices } from '../../../providers/alumni.service';
-import { UserServices } from '../../../providers/user.service';
 import { SubjectServices } from 'src/app/providers/subject.service';
 
 @Component({
@@ -13,8 +12,6 @@ import { SubjectServices } from 'src/app/providers/subject.service';
   styles: []
 })
 export class AlumniComponent implements OnInit,OnDestroy {
-
-  token:string
 
   alumnis: Alumni[]=[]
   alumnisSubscription: Subscription = null;
@@ -26,13 +23,11 @@ export class AlumniComponent implements OnInit,OnDestroy {
   searchMode:boolean=false
 
   constructor(
-    private _userServices:UserServices,
     public _alumniServices:AlumniServices,
     public _subjectServices:SubjectServices,
     private _subjectModalController: SubjectModalController,
     private _indexcardModalController: IndexCardModalController
   ) {
-    this.token = this._userServices.token;
   }
 
    ngOnInit(){
@@ -55,7 +50,7 @@ export class AlumniComponent implements OnInit,OnDestroy {
          })
        }
      })
-     this._alumniServices.getAlumnis(this.token).subscribe()
+     this._alumniServices.getAlumnis().subscribe()
    }
 
   changeFrom(number: number) {
@@ -64,10 +59,10 @@ export class AlumniComponent implements OnInit,OnDestroy {
     }
     if(this.searchMode){
       this.alumnis = [];
-      this._alumniServices.searchAlumnis(this.input.nativeElement.value,this.token,this.from).subscribe(()=>{})
+      this._alumniServices.searchAlumnis(this.input.nativeElement.value,this.from).subscribe(()=>{})
     }else{
       this.alumnis=[];
-      this._alumniServices.getAlumnis(this.token,this.from).subscribe()
+      this._alumniServices.getAlumnis(this.from).subscribe()
     }
   }
 

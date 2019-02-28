@@ -68,6 +68,7 @@ export class UserServices {
                 let userOrder = new UserOrder(user,'get')
                 this.usersSource.next(userOrder)
             });
+            return res.users
         }))
     }
 
@@ -122,6 +123,7 @@ export class UserServices {
         }
          let url = `${URL_SERVICES}/login`;
          return this.http.post(url,user).pipe(map((res:any)=>{
+             console.log(res)
         this.saveInStorage(res.id,res.user,res.token)
      }))
      }

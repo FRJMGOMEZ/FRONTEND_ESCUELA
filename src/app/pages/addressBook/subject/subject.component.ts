@@ -1,11 +1,9 @@
-import { Component, Input, OnChanges, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from '../../../modals/subject-modal/subjectModalController';
-import { UserServices } from 'src/app/providers/user.service';
 import { SubjectServices } from '../../../providers/subject.service';
 import { Subject } from 'src/app/models/subject.model';
 import { AlumnniModalController } from '../../../modals/alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from '../../../modals/professor-modal/professorModalController';
-import { AddressBookComponent } from '../addressBook.component';
 import { Subscription } from 'rxjs';
 
 
@@ -16,21 +14,17 @@ import { Subscription } from 'rxjs';
 })
 export class SubjectComponent implements OnInit, OnDestroy  {
 
-  token: string;
    subjects:Subject[] = [];
    subjectSelected: Subject;
 
   subjectsSubscription: Subscription = null;
  
   constructor(
-    private _userServices: UserServices,
     public _subjectServices:SubjectServices,
     private _subjectModalController: SubjectModalController,
     private _alumniModalController:AlumnniModalController,
     private _professorModalController:ProfessorModalController,
-    public manteinanceComponent:AddressBookComponent
   ) {
-    this.token = this._userServices.token;
   }
 
   ngOnInit(): void {
@@ -56,7 +50,7 @@ export class SubjectComponent implements OnInit, OnDestroy  {
       } 
     })
     
-    this._subjectServices.getSubjects(this.token).subscribe()
+    this._subjectServices.getSubjects().subscribe()
   }
 
   openSubjectModal(id?:string) {

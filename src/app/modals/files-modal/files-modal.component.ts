@@ -1,12 +1,9 @@
-import { Component, OnInit, Renderer2,ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FilesModalController } from './filesModal.controller';
 import { ChatServices } from '../../providers/chat.service';
 import { title } from 'process';
-import { ProjectServices } from '../../providers/project.service';
-import { UserServices } from '../../providers/user.service';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MessagesService } from '../../providers/messages.service';
-import { IfStmt } from '@angular/compiler';
 
 
 @Component({
@@ -20,20 +17,14 @@ export class FilesModalComponent implements OnInit {
 
   file: string;
 
-  token: string;
-
   @ViewChild("myPdf") myPdf: ElementRef;
 
   constructor(
     public _modalController: FilesModalController,
-    private renderer: Renderer2,
-    private el: ElementRef,
     private _chatServices: ChatServices,
-    private _projectServices: ProjectServices,
-    private _userServices: UserServices,
     private _messagesService: MessagesService
   ) {
-    this.token = this._userServices.token;
+ 
   }
 
   ngOnInit() {
@@ -46,7 +37,7 @@ export class FilesModalComponent implements OnInit {
 
       if (!res) {
         this._messagesService
-          .getMessages(this._modalController.id, this.token)
+          .getMessages(this._modalController.id)
           .subscribe(messages => {
             for (let message of messages) {
               if (message.titulo) {

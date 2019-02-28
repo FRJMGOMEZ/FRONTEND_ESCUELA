@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { CommonModule, registerLocaleData } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-
+import localeEs from "@angular/common/locales/Es";
+registerLocaleData(localeEs);
 
 import { AppComponent } from './app.component';
 
@@ -29,12 +30,9 @@ import { LoginComponent } from './login/login/login.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule
-    
   ],
-
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue:'es-ES'}],
   bootstrap: [AppComponent],
-
 })
 
 export class AppModule { }

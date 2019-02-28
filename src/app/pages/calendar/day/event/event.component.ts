@@ -1,17 +1,15 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit} from '@angular/core';
-import { UserServices } from '../../../../providers/user.service';
+import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
-import { CalendarComponent } from '../../calendar.component';
 import { DayComponent } from '../day.component';
+import { CalendarService } from '../../../../providers/calendar.service';
+import { Event } from '../../../../models/event.model';
 
 @Component({
   selector: "app-event",
   templateUrl: "./event.component.html",
   styleUrls: ["./event.component.scss"],
 })
-export class EventComponent implements OnInit,AfterViewInit{
-  
-  token: string;
+export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
 
   @Input() facilitie: any;
   @Input() position: number = 0
@@ -20,32 +18,29 @@ export class EventComponent implements OnInit,AfterViewInit{
   ourEvents: any = {
     "0": undefined,
     "0.25": undefined,
-    "0.50": undefined,
+    "0.5": undefined,
     "0.75": undefined
   };
 
   @ViewChild("eventCard") eventCard: ElementRef;
-
-  child1 = this.renderer.createElement("a");
+  child = this.renderer.createElement("a");
   newDiv = this.renderer.createElement('div')
   newDiv1 = this.renderer.createElement('div')
   newDiv2 = this.renderer.createElement('div')
   newDiv3 = this.renderer.createElement('div')
 
   constructor(
-    private _userServices: UserServices,
     private renderer: Renderer2,
     private _modalEventController: EventModalController,
-    private dayComponent:DayComponent
+    private dayComponent:DayComponent,
+    private _calendarServices:CalendarService
   ) {
-
-    this.token = this._userServices.token;
   }
   ngOnInit() {
     const plus = document.createTextNode("+");
-    this.child1.appendChild(plus);
-    this.child1.setAttribute("id", "#child");
-    this.renderer.setStyle(this.child1, "cursor", "pointer");
+    this.child.appendChild(plus);
+    this.child.setAttribute("id", "#child");
+    this.renderer.setStyle(this.child, "cursor", "pointer");
   }
 
   ngAfterViewInit(): void {
@@ -58,9 +53,11 @@ export class EventComponent implements OnInit,AfterViewInit{
    
     if(this.hour){
 
-    let spaceMustBe = 720 - (this.position) * 60; 
+    let spaceWithoutEvents = 720 - (this.position) * 60; 
+
     for (let event of this.hour) {
-      if (event.facilitie === this.facilitie._id) {
+       let facilitieId = event.facilitie._id || event.facilitie || null;
+      if (facilitieId && facilitieId === this.facilitie._id) {
         if (event.position === this.position) {
           this.ourEvents["0"] = event;
         }
@@ -68,7 +65,7 @@ export class EventComponent implements OnInit,AfterViewInit{
           this.ourEvents["0.25"] = event;
         }
         if (event.position === this.position + 0.5) {
-          this.ourEvents["0.50"] = event;         
+          this.ourEvents["0.5"] = event;         
         }
         if (event.position === this.position + 0.75) {
           this.ourEvents["0.75"] = event;
@@ -78,14 +75,13 @@ export class EventComponent implements OnInit,AfterViewInit{
 
     if (
       this.ourEvents["0"] === undefined &&
-      this.ourEvents["0.25"] === undefined &&
-      this.ourEvents["0.50"] === undefined &&
-      this.ourEvents["0.75"] === undefined
+      this.ourEvents["0.25"] === undefined&&
+      this.ourEvents["0.5"] === undefined&&
+      this.ourEvents["0.75"] === undefined 
     ) {
 
-      if (Number(this.facilitie.space) === spaceMustBe) {
-        
-        this.renderer.appendChild(this.eventCard.nativeElement, this.child1);
+      if (Number(this.facilitie.space) === spaceWithoutEvents) {        
+        this.renderer.appendChild(this.eventCard.nativeElement, this.child);
         this.renderer.listen(this.eventCard.nativeElement, "click", () => {
           this.createEvent(this.position);
         });
@@ -101,17 +97,17 @@ export class EventComponent implements OnInit,AfterViewInit{
         );
         this.facilitie.space -= 60;
         return
-      } else if ((Number(this.facilitie.space) != spaceMustBe)) {
+      } else if ((Number(this.facilitie.space) != spaceWithoutEvents)) {
       
-          if (spaceMustBe - this.facilitie.space >= 60) {
+          if (spaceWithoutEvents - this.facilitie.space >= 60) {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", "0");
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0"); return    
           } else {
           
-            this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceMustBe - this.facilitie.space)}px`);
-            this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceMustBe) / 60));
-            this.facilitie.space -= 60 - (spaceMustBe-this.facilitie.space)            
-            this.renderer.appendChild(this.eventCard.nativeElement, this.child1);
+            this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceWithoutEvents - this.facilitie.space)}px`);
+            this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceWithoutEvents) / 60));
+            this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space)            
+            this.renderer.appendChild(this.eventCard.nativeElement, this.child);
             this.renderer.listen(this.eventCard.nativeElement, "click", () => {
               this.createEvent(this.position);
             });
@@ -120,102 +116,104 @@ export class EventComponent implements OnInit,AfterViewInit{
           }               
       } 
     } else {
-             ////////SEGUNDO PROBLEMA: Necesitamos arreglar las positiones cuando renderizamos un evento REVISAR TODO LOS RELACIONADO CON LAS positionES ////
-             await this.setEvent('0',spaceMustBe)
-
-             await this.setEvent('0.25',null)
-
-             await this.setEvent('0.50',null)
-
-             await this.setEvent('0.75',null)
-
+      ////gestionar Eventos que se solapen una buena idea puede ser vetar la creacion de eventos permanentes a la semana actual/////
+             await this.setEvent(0),
+             await this.setEvent(0.25)
+             await this.setEvent(0.5)
+             await this.setEvent(0.75)
 
              return
            }}
   }
 
-
- async setEvent(eventPosition:string,spaceMustBe:number){
+ async setEvent(eventPosition:number){
     if (this.ourEvents[eventPosition] != undefined) {
-      await this.placeEvent(eventPosition, this.facilitie.space);
-      await this.fixHeight(60 * this.ourEvents[eventPosition].duration);
+      await this.placeEvent(eventPosition);
+      await this.fixHeight(60 * this.ourEvents[eventPosition].duration)
+  }else{
       let res = await this.checkSpace(eventPosition);
       if (res) {
-        await this.fixPosition(res["position"]);
         await this.fixHeight(res["height"]);
-        await this.setSpace("newDiv1", res["height"], this.position);
+        await this.setEmptySpace(res["height"], res['position']);
         return
-      }else{return}
-    }else if ( eventPosition === '0'){
-      let res = await this.checkSpace(null, spaceMustBe);
-      if (res) {
-        await this.fixPosition(res["position"]);
-        await this.fixHeight(res["height"]);
-        await this.setSpace("newDiv", res["height"], this.position);
-        return
-      }else{return}
-    }else{return}
+    }
+    else{return}
   }
+}
   
- placeEvent(position:string,space:string) {
+ placeEvent(position:number) {
 
     return new Promise((resolve,reject)=>{
 
       let card;
       switch (position) {
-        case '0': card = this.newDiv;
+        case 0: card = this.newDiv;
           break;
-        case '0.25': card = this.newDiv1;
+        case 0.25: card = this.newDiv1;
           break;
-        case '0.50': card = this.newDiv2;
+        case 0.5: card = this.newDiv2;
           break;
-        case '0.75': card = this.newDiv3;
+        case 0.75: card = this.newDiv3;
         break;
-      }
-
-      let parent = this.renderer.parentNode(this.eventCard.nativeElement);
-      let parent2 = this.renderer.parentNode(parent); 
+      } 
 
       card = this.renderer.createElement('div')
       this.renderer.addClass(card,'card');
-
       let cardBody = this.renderer.createElement('div');
-      this.renderer.addClass(cardBody,'card-body')
+      this.renderer.addClass(cardBody,'card-body');
+      this.renderer.appendChild(card,cardBody);
 
-      this.renderer.appendChild(card,cardBody)
+      if(this.ourEvents[String(position)].permanent === true){
+        this.renderer.setStyle(cardBody, "background-color", "red");
+      }else{
+        this.renderer.setStyle(cardBody, "background-color", "blue");
+      }
+      this.renderer.addClass(cardBody,'d-flex')
+      this.renderer.addClass(cardBody, 'justify-content-around')
 
-      //this.renderer.setStyle(cardBody, "width", `${this.width}px`);
-      this.renderer.setStyle(cardBody, "background-color", "blue");
-
-      const child = document.createElement(`a`);
-      const name3 = document.createTextNode(`${this.ourEvents[position].nombre}`);
-      child.append(name3);
-      this.renderer.listen(cardBody, "click", () => {
-        this.showEventInfo(this.ourEvents[position]._id,this.ourEvents[position].position);
+      const child1 = document.createElement(`a`);
+      const name1 = document.createTextNode(`${this.ourEvents[String(position)].name}`);
+      child1.append(name1);
+      this.renderer.listen(child1, "click", () => {
+        this.showEventInfo(this.ourEvents[String(position)]._id);
       });
-      this.renderer.appendChild(cardBody, child);
+      this.renderer.appendChild(cardBody, child1);
+
+      const child2 = document.createElement(`a`);
+      const icon = document.createElement('icon');
+      this.renderer.addClass(icon,'fas');
+      this.renderer.addClass(icon, 'fa-times');
+      this.renderer.appendChild(child2,icon);
+      this.renderer.setStyle(icon,'margin-right',10)
+   
+      this.renderer.listen(child2, "click", () => {
+        this.deleteEvent(this.ourEvents[String(position)]);
+      });
+      this.renderer.appendChild(cardBody, child2);
       this.renderer.setStyle(
         cardBody,
         "height",
-        `${60 * this.ourEvents[position].duration}px`
+        `${60 * this.ourEvents[String(position)].duration}px`
       );
+
+      let parent = this.renderer.parentNode(this.eventCard.nativeElement);
+      let parent2 = this.renderer.parentNode(parent);
      
       switch (position) {
-        case '0':
-          this.renderer.insertBefore(parent2, card, parent)
-          break;
-        case "0.25":
+        case 0:
           this.renderer.appendChild(parent2, card)
           break;
-        case "0.50":
+        case 0.25:
           this.renderer.appendChild(parent2, card)
           break;
-        case "0.75":
+        case 0.5:
+          this.renderer.appendChild(parent2, card)
+          break;
+        case 0.75:
           this.renderer.appendChild(parent2, card)
           break;
       }
-      
-      resolve({space});
+      resolve();
     })
    }
 
@@ -226,130 +224,48 @@ fixHeight(height: number) {
     })
   } 
 
- checkSpace(reference?:string,spaceMustBe?:number){
+ checkSpace(reference?:number){
   return new Promise((resolve,reject)=>{
-    
-     if (reference) {
-
-       if (reference === "0") {
-        
-         if (this.ourEvents["0.25"] === undefined && this.ourEvents["0"].duration >= 0.25) {
   
-           if (this.ourEvents["0.50"] === undefined) {
-              
-            if (this.ourEvents["0.75"] === undefined) {
-
-              if(this.ourEvents['0'].duration < 0.50){ resolve({height:45,position:0.25})}
-              if (this.ourEvents['0'].duration === 0.50){resolve({ height: 30, position: 0.50 }) }
-              if (this.ourEvents['0'].duration === 0.75) { resolve({ height: 15, position: 0.75 }) }
-              if (this.ourEvents['0'].duration > 0.75) { resolve()}
-               
-             } else {
-              if(this.ourEvents['0'].duration < 0.50){resolve({height:30,position:0.25})}
-              if (this.ourEvents['0'].duration === 0.50) { resolve({ height: 15, position: 0.50}) }
-              else { resolve()}
-             }
-           } else {
-             if (this.ourEvents["0"].duration < 0.50){resolve({height:15,position:0.25})}
-             else{resolve()}
-           }
-         }resolve()
-       }
-       else if (reference === "0.25") {
-         if (this.ourEvents["0.50"] === undefined && this.ourEvents["0.25"].duration >= 0.25) {
-           if (this.ourEvents["0.75"] === undefined) {
-
-             if (this.ourEvents['0.25'].duration < 0.50) { 
-              resolve({ height: 30, position: 0.50 })}
-             if (this.ourEvents['0.25'].duration === 0.50) {
-               resolve({ height: 15, position: 0.75 })
-             }
-             if (this.ourEvents['0.25'].duration > 0.50) {
-               resolve()
-             }
-             else {
-               resolve()
-             }
-           }
-             else{resolve({height:15,position:0.50})}
-         }resolve()
-       }
-       else if (reference === "0.50") {     
-         if (this.ourEvents["0.75"] === undefined && this.ourEvents["0.50"].duration === 0.25) {
-           resolve({ height: 15, position: 0.75 })
+     if (reference + 0.25 < 1 && this.ourEvents[String(reference + 0.25)] === undefined) {
+       if (reference + 0.5 < 1 && this.ourEvents[String(reference + 0.5)] === undefined) {
+         if (reference + 0.75 < 1 && this.ourEvents[String(reference + 0.75)] === undefined) {
+           resolve()
+         } else { 
+           if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
+             resolve({ height: 45, position:reference })
+           }else{resolve()}
+        }
+       } else {
+         if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
+           resolve({ height: 30, position: reference })
          }else{resolve()}
-       }
-     } else {
-         if (Number(this.facilitie.space) === spaceMustBe) {
-           if (this.ourEvents["0.25"] === undefined) {
-             if (this.ourEvents["0.50"] === undefined) {
-               resolve({ height: 45, position: 0 });
-             } else {resolve({ height: 30, position: 0 });
-             }
-            } else {resolve({ height: 15, position: 0 });
-           }
-         } else {
-           let spaceLeft = (this.facilitie.space+60) - spaceMustBe;
-           if(spaceLeft === 15){
-                if(this.ourEvents['0.75']===undefined){
-                  resolve({height:15,position:0.75})
-                } else { resolve()}           
-           }
-           if (spaceLeft === 30) {
-               if (this.ourEvents['0.50'] === undefined) {
-                 if (this.ourEvents['0.75'] === undefined) {
-                   resolve({ height: 30, position: 0.50 })
-                 } else { resolve({ height: 15, position: 0.50 }) }
-               } else { resolve() }
-             }
-           if (spaceLeft === 45) {
-               if (this.ourEvents['0.25'] === undefined) {
-                 if(this.ourEvents['0.50']===undefined){
-                   if(this.ourEvents['0.75']){
-                        resolve({height:45,position:0.25})
-                   }else{resolve({height:30,position:0.25})}
-                 }else{resolve({height:15,position:0.25})}
-               } else { resolve() }
-             }        
          }
-       
-     }      
+     } else {
+       if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
+         resolve({ height: 15, position: reference })
+       }else{resolve()} }
+        
   }) }
 
-  fixPosition(position: number) {
-    return new Promise((resolve, reject) => {
-      if(position===undefined){resolve()}
-      else{
-        this.position += position;
-        resolve()
-      }
-    })
-  }
-
-  setSpace(div:string,height?:number,position?:number){
-
+  setEmptySpace(height?:number,position?:number){
     return new Promise((resolve,reject)=>{
       let division;
-      switch (div) {
-        case 'newDiv': division = this.newDiv;
+      switch (position) {
+        case 0: division = this.newDiv;
           break;
-        case 'newDiv1': division = this.newDiv1;
+        case 0.25: division = this.newDiv1;
           break;
-        case 'newDiv2': division = this.newDiv2;
+        case 0.5: division = this.newDiv2;
           break;
-        case 'newDiv3': division = this.newDiv3;
+        case 0.75: division = this.newDiv3;
           break;
       }
 
-      let parent = this.renderer.parentNode(this.eventCard.nativeElement);
-      let parent2 = this.renderer.parentNode(parent)
       this.renderer.addClass(division, 'card')
-
       let cardBody = this.renderer.createElement('div');
       this.renderer.addClass(cardBody, 'card-body');
-
       this.renderer.appendChild(division, cardBody)
-
       this.renderer.setStyle(cardBody, 'height', `${height}px`)
       this.renderer.setStyle(cardBody, "background-color", "#c4afa1");
       const child = document.createElement(`a`);
@@ -357,13 +273,17 @@ fixHeight(height: number) {
       child.append(name);
       this.renderer.appendChild(cardBody, child);
       this.renderer.listen(cardBody, "click", () => {
-        this.createEvent(position);
+        let positionSum = this.position+position;
+        this.createEvent(positionSum);
       });
 
-      if (div === 'newDiv') { this.renderer.insertBefore(parent2, division, parent);resolve() }
-      if (div === 'newDiv1') { this.renderer.appendChild(parent2, division);resolve() }
-      if (div === 'newDiv2') { this.renderer.appendChild(parent2, division);resolve() }
-      if (div === 'newDiv3') { this.renderer.appendChild(parent2, division);resolve() }
+      let parent = this.renderer.parentNode(this.eventCard.nativeElement);
+      let parent2 = this.renderer.parentNode(parent);
+
+      if (position === 0) { this.renderer.appendChild(parent2, division);resolve() }
+      if (position === 0.25) { this.renderer.appendChild(parent2, division);resolve() }
+      if (position === 0.5) { this.renderer.appendChild(parent2, division);resolve() }
+      if (position === 0.75) { this.renderer.appendChild(parent2, division);resolve() }
     })
   }
             
@@ -372,11 +292,23 @@ fixHeight(height: number) {
     this._modalEventController.showModal()
   }
 
-  showEventInfo(id:string,position:number){ 
-    console.log(position)
-    this._modalEventController.notification.emit({ position, facilitieId: this.facilitie._id })
+  showEventInfo(id:string){ 
     this._modalEventController.notification.emit({eventId:id})
     this._modalEventController.showModal() 
+  }
+
+  deleteEvent(event:Event){
+    if(event.permanent){
+      this._calendarServices.pullEvent(this.dayComponent.currentDay._id,event._id).subscribe()
+    }else{
+      this._calendarServices.deleteEvent(event._id, this.dayComponent.currentDay._id).subscribe()
+    }
+  }
+
+  ngOnDestroy(): void {
+    
+    console.log('DESTROYED')
+    
   }
 }
 

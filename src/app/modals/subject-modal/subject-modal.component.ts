@@ -14,7 +14,6 @@ import { ProfessorsServices } from '../../providers/professor.service';
 })
 export class SubjectModalComponent implements OnInit {
 
-  token:string
   alumniSubjects:string[]
   subjects:Subject[]
   
@@ -25,13 +24,11 @@ export class SubjectModalComponent implements OnInit {
 
   from:number=0
 
-  constructor(private _userServices:UserServices,
-              private _alumniServices:AlumniServices,
+  constructor(private _alumniServices:AlumniServices,
               private _professorServices:ProfessorsServices,
               public _modalController:SubjectModalController,
               private _subjectServices:SubjectServices) {
 
-    this.token= this._userServices.token
   }
 
   ngOnInit() {
@@ -43,9 +40,9 @@ export class SubjectModalComponent implements OnInit {
           this.creation= false;
           let observable;
           switch(this._modalController.type){
-            case 'ALUMNI': observable = this._alumniServices.getAlumniById(this._modalController.id,this.token);
+            case 'ALUMNI': observable = this._alumniServices.getAlumniById(this._modalController.id);
             break;
-            case 'PROFESSOR': observable = this._professorServices.getProfessorById(this._modalController.id,this.token);
+            case 'PROFESSOR': observable = this._professorServices.getProfessorById(this._modalController.id);
             break;
           }
           observable.subscribe((item)=>{
@@ -64,7 +61,7 @@ export class SubjectModalComponent implements OnInit {
         if (this._modalController.id) {
           this.edition = true;
           this.creation = false;
-          this._subjectServices.getSubjectById(this._modalController.id, this.token).subscribe((subject:any) => {
+          this._subjectServices.getSubjectById(this._modalController.id).subscribe((subject:any) => {
           this.subject = subject  
           })
         }else{
@@ -76,7 +73,7 @@ export class SubjectModalComponent implements OnInit {
 
   getSubjects(){
     return new Promise((resolve,reject)=>{
-      this._subjectServices.getSubjects(this.token,0,100).subscribe((subjects: any) => {
+      this._subjectServices.getSubjects(0,100).subscribe((subjects: any) => {
         resolve(subjects)
       })
     })
@@ -85,7 +82,7 @@ export class SubjectModalComponent implements OnInit {
   createSubject(form:NgForm){
      if(form.valid){
       let subject = new Subject(form.value.subjectName)
-      this._subjectServices.createSubject(subject,this.token).subscribe((subject)=>{
+      this._subjectServices.createSubject(subject).subscribe((subject)=>{
         this.subject = subject;
         this.edition = true;
         this.creation = false;
@@ -96,7 +93,7 @@ export class SubjectModalComponent implements OnInit {
   editSubject(form: NgForm) {
     if (form.valid) {
       let subject = new Subject(form.value.subjectName)
-      this._subjectServices.updateSubject(this.subject._id,subject,this.token).subscribe((subject)=>{
+      this._subjectServices.updateSubject(this.subject._id,subject).subscribe((subject)=>{
         this.subject = subject
       })
     }
@@ -104,14 +101,14 @@ export class SubjectModalComponent implements OnInit {
 
   addSubject(subjectId:string){
     if(this._modalController.type === 'ALUMNI'){
-      this._subjectServices.addOrDeleteAlumni(subjectId, this._modalController.id, this.token).subscribe((subjectUpdated:any) => {
+      this._subjectServices.addOrDeleteAlumni(subjectId, this._modalController.id).subscribe((subjectUpdated:any) => {
         let id = subjectUpdated._id;
         this.subjects = this.subjects.filter((subject) => { return subject._id != id });
         if (this.subjects === []) { this._modalController.hideModal() }
       })
     }
     else if(this._modalController.type === 'PROFESSOR'){
-      this._subjectServices.addOrDeleteProfessor(subjectId, this._modalController.id, this.token).subscribe((subjectUpdated: any) => {
+      this._subjectServices.addOrDeleteProfessor(subjectId, this._modalController.id).subscribe((subjectUpdated: any) => {
         let id = subjectUpdated._id
         this.subjects = this.subjects.filter((subject) => { return subject._id != id });
         if (this.subjects === []) { this._modalController.hideModal() }

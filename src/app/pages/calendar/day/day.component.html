@@ -1,210 +1,229 @@
-<div *ngIf="!inProgress && prevCalendar && nextCalendar" class="row">
-    <div class="col-5 p-0 ">
-        <div class="row p-0 m-1">
-            <div class="col-1">
-            </div>
-            <div class="col-10 card-group">
-                <div (click)='toOtherWeek(prevCalendar[0])' class="card">
-                    <div class="card-body text-center">
-                        {{prevCalendar[0] | date:'dd MM yy'}} - {{prevCalendar[1] | date:'dd MM yy'}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-1">
-            </div>
-        </div>
-    </div>
-    <div class="col-2 m-0 p-0 d-flex flex-column text-center ">
-        <h4 *ngIf="currentDate">{{currentDate}}</h4>
-        <button (click)='showCalendarModal()'><i class="fas fa-search "></i></button>
-
-    </div>
-    <div class="col-5 p-0 ">
-        <div class="row p-0 m-1 ">
-            <div class="col-1">
-            </div>
-            <div class="col-10 card-group ">
-                <div (click)='toOtherWeek(nextCalendar[0])' class="card ">
-                    <div class="card-body text-center ">
-
-                        {{nextCalendar[0]| date:'dd MM yy'}} - {{nextCalendar[1]| date:'dd MM yy'}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-1">
-            </div>
-        </div>
-    </div>
-</div>
--->
-<div class="row">
-    <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
-</div>
-<div *ngIf="currentCalendar != null" class="row card-group mt-3 ">
-    <div *ngIf="currentCalendar.monday['_id'] !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.monday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Lunes {{currentCalendar.monday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.tuesday['_id']  !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.tuesday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Martes {{currentCalendar.tuesday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.wednesday['_id']  !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.wednesday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Miércoles {{currentCalendar.wednesday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.thursday['_id']  !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.thursday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Jueves {{currentCalendar.thursday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.friday['_id']  !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.friday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Viernes {{currentCalendar.friday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.saturday['_id']  !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.saturday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Sábado {{currentCalendar.saturday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-    <div *ngIf="currentCalendar.sunday['_id'] !=dayId " class="card ">
-        <div (click)="toOtherDay(currentCalendar.sunday['_id'])" class="card-body ">
-            <p class='text-center'>
-                Domingo {{currentCalendar.sunday['date']|date:'d'}}
-            </p>
-        </div>
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-11">
-        <div *ngIf="facilities " class="row mt-2 ml-5 mr-2 " style='height:30px; border:1px solid black'>
-            <div class="col-1 p-0 m-0 bg-white "></div>
-            <div class="col-11 d-flex flex-row card-group ">
-                <div *ngFor="let facilitie of facilities " class="card ">
-                    <div class="card-body text-center ">
-                        {{facilitie.name}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-1 d-flex justify-content-center m-0 mt-2 p-0">
+<ng-container *ngIf="inProgress">
+    <div class='d-flex justify-content-center'>
         <div>
-            <button *ngIf="facilitieFrom && facilitieFrom > 0" (click)='reinit(-5)' class='fluid'><i class="fas fa-arrow-left"></i></button>
-        </div>
-        <div>
-            <button *ngIf="_facilitieServices.count >= facilitieFrom+5" (click)='reinit(5)' class='fluid'><i class="fas fa-arrow-right"></i></button>
+            <i class="fas fa-spinner" style='height:200px;width:200px'></i>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-11">
-        <div #calendarPlace class="row mr-2 ml-5 " style='border:1px solid black'>
-            <div class="col-1 p-0 m-0 ">
-                <div class="row d-flex flex-column card-group " style='height:720px'>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            8-9
+</ng-container>
+
+<ng-container *ngIf="!inProgress">
+    <h5 class='text-center'>Eventos con permanencia</h5>
+    <cdk-virtual-scroll-viewport itemSize='50px' style="height:85px;border:1px solid black;background:white">
+        <div *cdkVirtualFor="let event of permanentEvents" class='d-flex flex-column'>
+            <div class=' row d-flex justify-content-around flex-row'>
+                <div class="col-10 d-flex flex-row justify-content-around">
+                    <p>Nombre: {{event.name}}</p>
+                    <p>Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </p>
+                    <p>Termina el día : {{event.endDate | date }} a las {{event.position | timeConversor2 : event.duration}}</p>
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                    <button (click)='deletePermanentEvent(event._id)'><i class="far fa-trash-alt"></i></button>
+                    <button (click)='showEventPermanentInfo(event._id)'><i class="far fa-edit"></i></button>
+                </div>
+            </div>
+        </div>
+    </cdk-virtual-scroll-viewport>
+    <div class="row">
+        <div class="col-5 p-0 ">
+            <div class="row p-0 m-1">
+                <div class="col-1">
+                </div>
+                <div class="col-10 card-group">
+                    <div (click)='toOtherWeek(prevWeek[0])' class="card">
+                        <div class="card-body text-center">
+                            {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
                         </div>
                     </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            9-10
+                </div>
+                <div class="col-1">
+                </div>
+            </div>
+        </div>
+        <div class="col-2 m-0 p-0 d-flex flex-column text-center ">
+            <h5 *ngIf="currentDay">{{currentDay.date | date:'EEEE d MMMM , y'}}</h5>
+            <button (click)='showCalendarModal()'><i class="fas fa-search "></i></button>
+
+        </div>
+        <div class="col-5 p-0 ">
+            <div class="row p-0 m-1 ">
+                <div class="col-1">
+                </div>
+                <div class="col-10 card-group ">
+                    <div (click)='toOtherWeek(nextWeek[0])' class="card ">
+                        <div class="card-body text-center ">
+                            {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
                         </div>
                     </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            10-11
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            11-12
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            12-13
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            13-14
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            14-15
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            15-16
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            16-17
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            17-18
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            18-19
-                        </div>
-                    </div>
-                    <div class="card ">
-                        <div class="card-body pl-2 ">
-                            19-20
+                </div>
+                <div class="col-1">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i>
+    </div>
+    <div class="row card-group mt-3 ">
+        <div *ngIf="currentWeek.monday['_id'] !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.monday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Lunes {{currentWeek.monday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.tuesday['_id']  !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.tuesday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Martes {{currentWeek.tuesday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.wednesday['_id']  !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.wednesday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Miércoles {{currentWeek.wednesday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.thursday['_id']  !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.thursday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Jueves {{currentWeek.thursday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.friday['_id']  !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.friday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Viernes {{currentWeek.friday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.saturday['_id']  !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.saturday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Sábado {{currentWeek.saturday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="currentWeek.sunday['_id'] !=dayId " class="card ">
+            <div (click)="toOtherDay(currentWeek.sunday['_id'])" class="card-body ">
+                <p class='text-center'>
+                    Domingo {{currentWeek.sunday['date']|date:'d'}}
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-11">
+            <div class="row mt-2 ml-5 mr-2 " style='height:30px; border:1px solid black'>
+                <div class="col-1 p-0 m-0 bg-white "></div>
+                <div class="col-11 d-flex flex-row card-group ">
+                    <div *ngFor="let facilitie of facilities " class="card ">
+                        <div class="card-body text-center ">
+                            {{facilitie.name}}
                         </div>
                     </div>
                 </div>
             </div>
-            <div *ngIf="cardWidth" class="col-11 d-flex justify-content-around " style='height:720px'>
-                <div *ngFor="let facilitie of facilities " class="d-flex flex-column ">
-                    <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="currentDay.hour0" [ngStyle]="{ 'width': cardWidth} "></app-event>
-                    <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="currentDay.hour1 "></app-event>
-                    <app-event *ngIf="position >=2" [facilitie]='facilitie' [position]='2' [hour]="currentDay.hour2 "></app-event>
-                    <app-event *ngIf="position >=3" [facilitie]='facilitie' [position]='3' [hour]="currentDay.hour3 "></app-event>
-                    <app-event *ngIf="position >=4" [facilitie]='facilitie' [position]='4' [hour]="currentDay.hour4 "></app-event>
-                    <app-event *ngIf="position >=5" [facilitie]='facilitie' [position]='5' [hour]="currentDay.hour5 "></app-event>
-                    <app-event *ngIf="position >=6" [facilitie]='facilitie' [position]='6' [hour]="currentDay.hour6 "></app-event>
-                    <app-event *ngIf="position >=7" [facilitie]='facilitie' [position]='7' [hour]="currentDay.hour7 "></app-event>
-                    <app-event *ngIf="position >=8" [facilitie]='facilitie' [position]='8' [hour]="currentDay.hour8 "></app-event>
-                    <app-event *ngIf="position >=9" [facilitie]='facilitie' [position]='9' [hour]="currentDay.hour9 "></app-event>
-                    <app-event *ngIf="position >=10" [facilitie]='facilitie' [position]='10' [hour]="currentDay.hour10 "></app-event>
-                    <app-event *ngIf="position >=11" [facilitie]='facilitie' [position]='11' [hour]="currentDay.hour11 "></app-event>
-                </div>
+        </div>
+        <div class="col-1 d-flex justify-content-center m-0 mt-2 p-0">
+            <div>
+                <button *ngIf="facilitieFrom && facilitieFrom > 0" (click)='switchFacilities(-5)' class='fluid'><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div>
+                <button *ngIf="_facilitieServices.count >= facilitieFrom+5" (click)='switchFacilities(5)' class='fluid'><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
-
     </div>
-    <div class="col-1">
+    <div class="row">
+        <div class="col-11">
+            <div #weekPlace class="row mr-2 ml-5 " style='border:1px solid black'>
+                <div class="col-1 p-0 m-0 ">
+                    <div class="row d-flex flex-column card-group " style='height:720px'>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                8-9
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                9-10
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                10-11
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                11-12
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                12-13
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                13-14
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                14-15
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                15-16
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                16-17
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                17-18
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                18-19
+                            </div>
+                        </div>
+                        <div class="card ">
+                            <div class="card-body pl-2 ">
+                                19-20
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-11 d-flex justify-content-around " style='height:720px'>
+                    <div *ngFor="let facilitie of facilities" class="d-flex flex-column ">
+                        <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="currentDay.hour0" [ngStyle]="{ 'width': cardWidth} "></app-event>
+                        <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="currentDay.hour1 "></app-event>
+                        <app-event *ngIf="position >=2" [facilitie]='facilitie' [position]='2' [hour]="currentDay.hour2 "></app-event>
+                        <app-event *ngIf="position >=3" [facilitie]='facilitie' [position]='3' [hour]="currentDay.hour3 "></app-event>
+                        <app-event *ngIf="position >=4" [facilitie]='facilitie' [position]='4' [hour]="currentDay.hour4 "></app-event>
+                        <app-event *ngIf="position >=5" [facilitie]='facilitie' [position]='5' [hour]="currentDay.hour5 "></app-event>
+                        <app-event *ngIf="position >=6" [facilitie]='facilitie' [position]='6' [hour]="currentDay.hour6 "></app-event>
+                        <app-event *ngIf="position >=7" [facilitie]='facilitie' [position]='7' [hour]="currentDay.hour7 "></app-event>
+                        <app-event *ngIf="position >=8" [facilitie]='facilitie' [position]='8' [hour]="currentDay.hour8 "></app-event>
+                        <app-event *ngIf="position >=9" [facilitie]='facilitie' [position]='9' [hour]="currentDay.hour9 "></app-event>
+                        <app-event *ngIf="position >=10" [facilitie]='facilitie' [position]='10' [hour]="currentDay.hour10 "></app-event>
+                        <app-event *ngIf="position >=11" [facilitie]='facilitie' [position]='11' [hour]="currentDay.hour11 "></app-event>
+                    </div>
+                </div>
+            </div>
 
+        </div>
     </div>
 
-
-
-</div>
+</ng-container>

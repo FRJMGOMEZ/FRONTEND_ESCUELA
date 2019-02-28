@@ -1,5 +1,4 @@
-import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
-import { UserServices } from 'src/app/providers/user.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FacilitiesService } from '../../providers/facilities.service';
 import { Facilitie } from '../../models/facilitie.model';
 import { FacilitiesModalController } from '../../modals/facilities-modal/facilities-modalController';
@@ -10,9 +9,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './facilities.component.html',
   styleUrls: ['./facilities.component.css']
 })
-export class FacilitiesComponent implements OnInit {
-
-  token:string
+export class FacilitiesComponent implements OnInit,OnDestroy {
 
   facilities:Facilitie[] = []
 
@@ -20,10 +17,9 @@ export class FacilitiesComponent implements OnInit {
 
   from:number = 0;
 
-  constructor(private _userServices:UserServices,
-              public _facilitieServices:FacilitiesService,
+  constructor(public _facilitieServices:FacilitiesService,
               public _facilitiesModalController:FacilitiesModalController) {
-    this.token = this._userServices.token;
+
    }
 
   ngOnInit() {
@@ -47,7 +43,7 @@ export class FacilitiesComponent implements OnInit {
         })
       }
     })
-    this._facilitieServices.getFacilities(this.token).subscribe()
+    this._facilitieServices.getFacilities().subscribe()
   }
   putFacilitie(id:string){
     this._facilitiesModalController.showModal(id)
@@ -61,7 +57,7 @@ export class FacilitiesComponent implements OnInit {
       case false: facilitie.status = true; 
       break;
     }
-    this._facilitieServices.putFacilitie(facilitie._id,facilitie,this.token).subscribe()
+    this._facilitieServices.putFacilitie(facilitie._id,facilitie).subscribe()
   }
 
   changeFrom(number: number) {
@@ -69,6 +65,9 @@ export class FacilitiesComponent implements OnInit {
       this.from += number;
     }
     this.facilities = []
-    this._facilitieServices.getFacilities(this.token,this.from).subscribe()
+    this._facilitieServices.getFacilities(this.from).subscribe()
+  }
+  ngOnDestroy(){
+    this.facilitiesSubscription.unsubscribe()
   }
 }

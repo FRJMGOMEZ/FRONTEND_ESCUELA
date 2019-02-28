@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PasswordModalController } from './passwordModalController.service';
 import { NgForm } from '@angular/forms';
 import { UserServices } from '../../providers/user.service';
-import swal from 'sweetalert';
 import { User } from 'src/app/models/user.model';
 
 @Component({
@@ -12,11 +11,7 @@ import { User } from 'src/app/models/user.model';
 })
 export class PasswordComponent implements OnInit {
 
-  token:string;
-
   constructor(public _modalService:PasswordModalController, private _userServices:UserServices) {
-
-    this.token = this._userServices.token;
    }
 
   ngOnInit() {

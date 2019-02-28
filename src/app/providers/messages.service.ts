@@ -3,35 +3,33 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Message } from '../models/message.model';
 import { URL_SERVICES } from '../config/config';
 import { map } from 'rxjs/operators';
+import { UserServices } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessagesService {
 
-  constructor(private http:HttpClient) { }
+  headers:HttpHeaders
 
-  postMessage(message:Message,token:string){
+  constructor(private http:HttpClient,
+             private _userServices:UserServices) {
+    this.headers = new HttpHeaders().set('token',this._userServices.token)              
+              }
+
+  postMessage(message:Message){
 
     let url = `${URL_SERVICES}/mensaje`
-
-    let headers = new HttpHeaders().set('token',token)
-
-    return this.http.post(url,message,{headers}).pipe(map((res:any)=>{
-
+    return this.http.post(url,message,{headers:this.headers}).pipe(map((res:any)=>{
      return res.mensajeGuardado
     }))
 
   }
 
-  getMessages(projectId: string, token: string){
+  getMessages(projectId: string){
 
     let url = `${URL_SERVICES}/mensajes/${projectId}`;
-
-    let headers = new HttpHeaders().set('token', token)
-
-    return this.http.get(url, {headers}).pipe(map((res:any)=>{
-
+    return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
       return res.mensajes
     }))
      

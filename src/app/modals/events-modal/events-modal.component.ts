@@ -2,13 +2,11 @@ import { Component, OnInit} from '@angular/core';
 import { EventModalController } from './eventsModal.controller';
 import { UserServices } from '../../providers/user.service';
 import { User } from 'src/app/models/user.model';
-import { ProfessorsServices } from '../../providers/professor.service';
-import { SubjectServices } from '../../providers/subject.service';
-import { Professor } from '../../models/professor.model';
-import { Subject } from '../../models/subject.model';
 import { CalendarService } from '../../providers/calendar.service';
-import { Event } from '../../models/event.model';
+import { Event, EventOrder } from '../../models/event.model';
 import * as _ from "underscore";
+import { FacilitiesService } from '../../providers/facilities.service';
+import { Day } from 'src/app/models/day.model';
 
 @Component({
   selector: "app-events-modal",
@@ -16,462 +14,425 @@ import * as _ from "underscore";
   styleUrls: ["./events-modal.component.css"]
 })
 export class EventsModalComponent implements OnInit {
+  
   userOnline: User;
-  token: string;
-
-  page: string = "1";
+  page: string = "0";
+  ready: boolean = false;
   spaceAvailable: number = 12;
-
-  day: any;
+  event: Event;
+  startPosition: number;
   hour: any;
-
-  position: string;
-  decimalsOfPosition: number;
-
-  facilitie: any = { id: undefined, events: [] };
-
-  startDecimals: any;
-  timeRepresentation: any = { decimal: 0, integer: 0 };
-  repetition: boolean = false;
-  name: string;
-  description: string;
-  professors: Professor[];
-  selectedProfessors: Professor[] = [];
-  subjects: Subject[];
-  selectedSubjects: Subject[] = [];
-
-  eventCreated: any;
+  day: any;
 
   constructor(
-    public _modalController: EventModalController,
+    public  _modalController: EventModalController,
     private _userServices: UserServices,
-    private _professorServices: ProfessorsServices,
-    private _subjectServices: SubjectServices,
-    private _calendarServices: CalendarService
+    private _calendarServices: CalendarService,
+    private _facilitieServices: FacilitiesService
   ) {
-    this.token = this._userServices.token;
-
     this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
-
-    this._calendarServices.currentDay$.subscribe((day)=>{
+    this._calendarServices.currentDay$.subscribe(day => {
       this.day = day;
-    })
-  
+    });
+
+    this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
+      this.event = null;
+      this.event = eventOrder.event;
+      setTimeout(() => {
+        this.page = "6";
+      });
+    });
+
     this._modalController.notification.subscribe(res => {
       if (res) {
-        if (res.facilitieId) {
-          this.hour = this.day[`hour${parseInt(res.position)}`];
-          this.decimalsOfPosition = Number(res.position) - parseInt(res.position);
-          this.facilitie.id = res.facilitieId;
-          this.position = res.position;
-
-          this.checkSpaceAvailable().then(res => {
-            this.getProfessors();
-            this.getSubjects();
-          });
-        }
-        if (res.eventId) {
-          this._calendarServices
-            .getEventById(res.eventId, this.token)
-            .subscribe(event => {
-              this.eventCreated = event;
-              this.page = "5";
-            });
+        if (!res.eventId) {
+          if (res.facilitieId) {
+            this.event = new Event(
+              "",
+              "",
+              0,
+              res.position,
+              this.userOnline._id,
+              null,
+              Number(parseInt(String(res.position))),
+              new Date(this.day.date).getDay(),
+              false,
+              new Date(this.day.date),
+              null
+            );
+            this._facilitieServices
+              .getFacilitieById(res.facilitieId)
+              .subscribe(facilitie => {
+                this.event.facilitie = facilitie;
+                this.page = "1";
+              });
+          }
+        } else {
+          this._calendarServices.getEventById(res.eventId).subscribe();
         }
       }
     });
   }
 
-  checkSpaceAvailable() {
+  ////// PAGE 2 ///////
 
-    return new Promise((resolve, reject) => {  
-       
-      if (
-        this.day[parseInt(this.position) + 11] &&
-        this.day[parseInt(this.position) + 11].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 11]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 11;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 10] &&
-        this.day[parseInt(this.position) + 10].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 10]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 10;
-          }
-        }
-      }
-
-      if (
-        this.day[parseInt(this.position) + 9] &&
-        this.day[parseInt(this.position) + 9].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 9]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 9;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 8] &&
-        this.day[parseInt(this.position) + 8].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 8]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 8;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 7] &&
-        this.day[parseInt(this.position) + 7].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 7]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 7;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 6] &&
-        this.day[parseInt(this.position) + 6].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 6]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 6;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 5] &&
-        this.day[parseInt(this.position) + 5].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 5]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 5;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 4] &&
-        this.day[parseInt(this.position) + 4].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 4]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 4;
-          }
-        }
-      }
-
-      if (
-        this.day[parseInt(this.position) + 3] &&
-        this.day[parseInt(this.position) + 3].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 3]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 3;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 2] &&
-        this.day[parseInt(this.position) + 2].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 2]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 2;
-          }
-        }
-      }
-      if (
-        this.day[parseInt(this.position) + 1] &&
-        this.day[parseInt(this.position) + 1].length > 0
-      ) {
-        for (let event of this.day[parseInt(this.position) + 1]) {
-          if (event.instalacion === this.facilitie.id) {
-            this.spaceAvailable = 1;
-          }
-        }
-      }
-
-      if(Number(this.spaceAvailable) === 12){
-        this.spaceAvailable = this.spaceAvailable - Number(this.position);
-      }
-
-      if(this.hour.length > 0){
-
-      for (let event of this.hour) {
-        if (
-          event.posicion === this.position + 0.75 &&
-          event.instalacion === this.facilitie.id
-        ) {
-          this.spaceAvailable = 0.75;
-        }
-      }
-
-      for (let event of this.hour) {
-        if (
-          event.posicion === this.position + 0.5 &&
-          event.instalacion === this.facilitie.id
-        ) {
-          this.spaceAvailable = 0.5;
-        }
-      }
-
-      for (let event of this.hour) {
-        if (
-          event.posicion === this.position + 0.25 &&
-          event.instalacion === this.facilitie.id
-        ) {
-          this.spaceAvailable = 0.25;
-        }
-      }
-      }
-
-      resolve();
-    });
-  }
-
-  switch(div: string, way?: string) {
-    if (div === "1") {
-      this.spaceAvailable -= Number(this.startDecimals);
+   async page2(back: boolean = false) {
+    if (back) {
+      this.event.position -= this.startPosition;
+      this.startPosition = 0;
+      this.page = "2";
+    } else {
+      let hour = this.day[`hour${parseInt(String(this.event.position))}`];
+      await this.checkNextHoursSpace(hour);
+      await this.checkSpaceInEventHour(hour);
       this.page = "2";
     }
-    if (div === "2") {
-      if (way && way === "prev") {
-        this.spaceAvailable += Number(this.startDecimals);
-        this.timeRepresentation.hour = 0;
-        this.timeRepresentation.decimals = 0;
-        this.page = "1";
-      } else {
-        this.page = "3";
-      }
-    }
-    if (div === "3") {
-      if (way && way === "prev") {
-        this.page = "2";
-      } else {
-        this.page = "4";
-      }
-    }
-    if (div === "4") {
-      if (way && way === "prev") {
-        this.page = "3";
-      }
-    }
   }
 
-  getProfessors() {
-    this._professorServices.getProfessors(this.token).subscribe(professors => {
-      this.professors = professors;
-    });
-  }
-
-  getSubjects() {
-    this._subjectServices.getSubjects(this.token).subscribe(subjects => {
-      this.subjects = subjects;
-    });
-  }
-
-  addProfessor(id: string) {
-    if (id) {
-      let professor = this.professors.find(professor => {
-        return professor._id === id;
-      });
-
-      this.selectedProfessors.push(professor);
-
-      this.professors = this.professors.filter(professor => {
-        return professor._id != id;
-      });
-    }
-  }
-
-  addSubject(id: string) {
-    if (id) {
-      let subject = this.subjects.find(subject => {
-        return subject._id === id;
-      });
-
-      this.selectedSubjects.push(subject);
-
-      this.subjects = this.subjects.filter(subject => {
-        return subject._id != id;
-      });
-    }
-  }
-
-  postEvent() {
-    let position = Number(this.position) + Number(this.startDecimals);
-    let duration = Number(this.timeRepresentation.integer) + Number(this.timeRepresentation.decimals / 100);
-    let professors = [];
-    this.selectedProfessors.forEach(professor => {
-      professors.push(professor._id);
-    });
-    let subjects = [];
-    this.selectedSubjects.forEach(subject => {
-      subjects.push(subject._id);
-    });
-    let event = new Event(
-      this.name,
-      this.description,
-      duration,
-      position,
-      this.repetition,
-      this.userOnline._id,
-      this.facilitie.id,
-      professors,
-      subjects
-    );
-    this._calendarServices
-      .postEvent(event, this.token)
-      .subscribe((event: Event) => {
-        this.eventCreated = event;
-        this._calendarServices
-          .pushEvent(event, this.day._id, this.token)
-          .subscribe(day => {
-            this._modalController.notification.emit();
-            this.page = "5";
-          });
-      });
-  }
-
-  putEvent() {
-    this.eventCreated.posicion =
-      Number(this.position) + Number(this.startDecimals);
-    this.eventCreated.duracion =
-      Number(this.timeRepresentation.integer) + Number(this.timeRepresentation.decimals / 100);
-    let professors = [];
-    this.selectedProfessors.forEach(professor => {
-      professors.push(professor._id);
-    });
-    this.eventCreated.profesores = professors;
-    let subjects = [];
-    this.selectedSubjects.forEach(subject => {
-      subjects.push(subject._id);
-    });
-    this.eventCreated.materias = subjects;
-    this._calendarServices
-      .putEvent(this.eventCreated._id, this.eventCreated, this.token)
-      .subscribe(event => {
-        this.eventCreated = event;
-        this._modalController.notification.emit();
-        this.page = "5";
-      });
-  }
-
-  checkSpaceBack() {
-    let currentPositionDecimals = String(this.position).split(".")[1];
-    let eventsBefore = [];
-
-    console.log(this.hour)
-
-    if (currentPositionDecimals != undefined) {
-      for (let event of this.hour) {
-        if (this.facilitie.id === event.instalacion) {
-          if (event._id != this.eventCreated._id) {
-            let eventDecimals = String(event.posicion).split(".")[1];
-            if (
-              eventDecimals === undefined ||
-              Number(eventDecimals) < Number(currentPositionDecimals)
-            ) {
-              eventsBefore.push(event);
+  private checkNextHoursSpace(hour: Event[]) {
+    return new Promise((resolve, reject) => {
+      let hours = [
+        this.day.hour11,
+        this.day.hour10,
+        this.day.hour9,
+        this.day.hour8,
+        this.day.hour7,
+        this.day.hour6,
+        this.day.hour5,
+        this.day.hour4,
+        this.day.hour3,
+        this.day.hour2,
+        this.day.hour1,
+        this.day.hour0
+      ];
+      let hourIndex = hours.indexOf(hour);
+      hours.forEach((hour, index) => {
+        if (index < hourIndex) {
+          hour.forEach(event => {
+            if (event.facilitie === this.event.facilitie._id) {
+              this.spaceAvailable = hourIndex - index;
+              resolve();
+            } else {
+              resolve();
             }
+          });
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  private checkSpaceInEventHour(hour: Event[]) {
+    return new Promise((resolve, reject) => {
+      if (hour.length > 0) {
+        let eventsInSamePositionAndSameFacilitie = hour.filter((event: any) => {
+          return event.facilitie === this.event.facilitie._id;
+        });
+        eventsInSamePositionAndSameFacilitie = eventsInSamePositionAndSameFacilitie.filter(
+          event => {
+            return event._id != this.event._id;
+          }
+        );
+        for (let event of eventsInSamePositionAndSameFacilitie) {
+          if (event.position === this.event.position + 0.75) {
+            this.spaceAvailable = 0.75;
           }
         }
-      }
-      if (eventsBefore.length === 0) {
-        let decimals = String(this.position).split(".")[1];
-        this.spaceAvailable += Number(decimals) / 100;
-        this.decimalsOfPosition = 0;
-        this.position = String(this.position).split(".")[0];
-        this.page = "1";
-        return;
+        for (let event of eventsInSamePositionAndSameFacilitie) {
+          if (event.position === this.event.position + 0.5) {
+            this.spaceAvailable = 0.5;
+          }
+        }
+        for (let event of eventsInSamePositionAndSameFacilitie) {
+          if (event.position === this.event.position + 0.25) {
+            this.spaceAvailable = 0.25;
+          }
+        }
+        resolve();
       } else {
-        eventsBefore = _.sortBy(eventsBefore, event => {
-          return event.position;
-        });
-        if (eventsBefore.length === 3) {
-          this.page = "1";
-          return;
+        resolve();
+      }
+    });
+  }
+
+   checkInitialStartHour() {
+    return Number(this.event.position) - parseInt(String(this.event.position));
+  }
+
+  ////// PAGE 3 ///////
+
+   page3(back: boolean = false) {
+    if (back) {
+      this.spaceAvailable += Number(this.hoursPrevValue);
+      this.timeValue = this.spaceAvailable;
+      this.minutesPrevValue = 0;
+      this.hoursPrevValue = 0;
+      this.event.duration = 0;
+      this.page = "3";
+    } else {
+      this.spaceAvailable -= this.startPosition;
+      this.event.duration = 0;
+      this.event.position +=
+        this.startPosition -
+        (this.event.position - parseInt(String(this.event.position)));
+      this.timeValue = this.spaceAvailable;
+      this.page = "3";
+    }
+  }
+
+  timeValue: number = 0;
+  private minutesPrevValue: number = 0;
+  private hoursPrevValue: number = 0;
+  checkMinutesAvailables(value: string, type: string) {
+    this.timeValue += this.minutesPrevValue;
+    this.timeValue -= Number(value);
+    this.minutesPrevValue = Number(value);
+  }
+  checkHoursAvailables(value: string) {
+    this.event.duration -= this.hoursPrevValue;
+    this.spaceAvailable += this.hoursPrevValue;
+    this.event.duration += Number(value);
+    this.spaceAvailable -= Number(value);
+    this.hoursPrevValue = Number(value);
+  }
+
+ 
+ /////// PAGE 4 ////////
+
+  dayWithPermanentEvents: Day[];
+  availableDatesFrame: Date[] = [];
+  async page4(back?:string) {
+    this.event.duration +=this.spaceAvailable + this.event.duration - this.timeValue;
+    if(back){
+      this.weeksOfDuration = 0;
+      this.noLimit = false;
+      this.page = '4';
+    }else{
+    if (this.event.permanent) {
+      this._calendarServices.checkPermanentEvents(this.event).subscribe(day => {
+        if (day) {
+          let ourDay = new Date(this.day.date);
+          let followingDay = new Date(day.date);
+          this.dayWithPermanentEvents = day;
+          let milisecondsBetween = followingDay.getTime()- ourDay.getTime(); 
+          let weeks= milisecondsBetween / 604800000;
+          let referenceDay= new Date(ourDay);
+          for(let i=0; i < weeks;i++){
+            referenceDay.setTime(referenceDay.getTime() + 604800000)
+            this.availableDatesFrame.push(referenceDay)
+          }
+          setTimeout(()=>{
+            this.page = '4' 
+          })       
         } else {
-          if (eventsBefore.length === 2) {
-            let eventDecimals = String(eventsBefore[1].posicion).split(".")[1];
-            if (eventDecimals === "5") {
-              eventDecimals = "50";
-            }
-            if (
-              Number(currentPositionDecimals) - Number(eventDecimals) ===
-              25
-            ) {
-              this.page = "1";
-              return;
+          this.page = '4'
+        }
+      });
+    }else{
+      this.page4()
+    }
+  }
+  }
+
+  public updateEndUpDate(){
+    let ourDay = new Date(this.day.date);
+    let endDate = new Date(ourDay.getTime() + this.weeksOfDuration * 604800000);
+    return new Date(endDate)    
+  }
+  /////////// PAGE 5 //////////////
+
+   page5() {
+      if(this.event.permanent){
+        if (this.noLimit === false) {
+          if(this.weeksOfDuration === 0){
+            this.event.permanent = false;
+            this.page = '5';
+          }else{
+            let dateFrom = new Date(this.day.date);
+            let limitDate = dateFrom.getTime() + this.weeksOfDuration * 604800000;
+            this.event.endDate = new Date(limitDate - 604800000);
+          }
+      }
+    }
+    this.page = "5";
+  }
+  ////////////// POST AND PUT /////////////
+
+   weeksOfDuration: number = 0;
+   noLimit:boolean = false;
+   postEvent() {
+    if(this.event.endDate){
+      let limitDate = this.event.endDate.getTime() + 604800000;
+        this._calendarServices.postEvent(this.event,this.day._id,limitDate).subscribe(()=>{
+        })
+    }else{
+      this._calendarServices.postEvent(this.event,this.day._id).subscribe()
+    }   
+  }
+
+   putEvent() {
+    this._calendarServices
+      .putEvent(this.event._id, this.event)
+      .subscribe(() => {
+        this.ready = false;
+      });
+  }
+
+  //////////// REINIT ////////////  
+
+   fixEventPositionBack() {
+    let currentEvent = new Event(
+      this.event.name,
+      this.event.description,
+      this.event.duration,
+      this.event.hour,
+      this.userOnline._id,
+      this.event.facilitie,
+      Number(parseInt(String(this.event.position))),
+      this.event.day,
+      this.event.permanent,
+      this.event.startDate,
+      this.event.endDate,
+      this.event._id
+    );
+
+    let hours = [
+      this.day.hour0,
+      this.day.hour1,
+      this.day.hour2,
+      this.day.hour3,
+      this.day.hour4,
+      this.day.hour5,
+      this.day.hour6,
+      this.day.hour7,
+      this.day.hour8,
+      this.day.hour9,
+      this.day.hour10,
+      this.day.hour11
+    ];
+    let hourIndex = currentEvent.hour;
+    let prevEventsInSameFacilitie = [];
+    hours.forEach((day, index) => {
+      if (index < hourIndex) {
+        day.forEach(event => {
+          if (event.facilitie === currentEvent.facilitie._id) {
+            prevEventsInSameFacilitie.push(event);
+          }
+        });
+      }
+    });
+    if (prevEventsInSameFacilitie.length > 0) {
+      prevEventsInSameFacilitie.reverse();
+      prevEventsInSameFacilitie.forEach(async event => {
+        let res = await this.fixEventPosition(event, 1);
+        if (res === false) {
+          let res = await this.fixEventPosition(event, 2);
+          if (res === false) {
+            let res = await this.fixEventPosition(event, 3);
+            if (res === false) {
+              let res = await this.fixEventPosition(event, 4);
+              if (res === false) {
+                let res = await this.fixEventPosition(event, 5);
+                if (res === false) {
+                  let res = await this.fixEventPosition(event, 6);
+                  if (res === false) {
+                    let res = await this.fixEventPosition(event, 7);
+                    if (res === false) {
+                      let res = await this.fixEventPosition(event, 8);
+                      if (res === false) {
+                        let res = await this.fixEventPosition(event, 9);
+                        if (res === false) {
+                          let res = await this.fixEventPosition(event, 10);
+                          if (res === false) {
+                            let res = await this.fixEventPosition(event, 11);
+                            if (res === false) {
+                              return;
+                            } else {
+                              currentEvent.position = event.position + event.duration;
+                            }
+                          } else {
+                            currentEvent.position = event.position + event.duration;
+                          }
+                        } else {
+                          currentEvent.position = event.position + event.duration;
+                        }
+                      } else {
+                        currentEvent.position = event.position + event.duration;
+                      }
+                    } else {
+                      currentEvent.position = event.position + event.duration;
+                    }
+                  } else {
+                    currentEvent.position = event.position + event.duration;
+                  }
+                } else {
+                  currentEvent.position = event.position + event.duration;
+                }
+              } else {
+                currentEvent.position = event.position + event.duration;
+              }
             } else {
-              let position = Number(this.position) - 0.25;
-              this.position = String(position);
-              this.decimalsOfPosition -= 0.25;
-              this.spaceAvailable -= 0.25;
-              this.page = "1";
-              return;
+              currentEvent.position = event.position + event.duration;
             }
           } else {
-            if (eventsBefore.length === 1) {
-              let eventDecimals = String(eventsBefore[0].posicion).split(
-                "."
-              )[1];
-              if (
-                Number(currentPositionDecimals) - Number(eventDecimals) ===
-                25
-              ) {
-                this.page = "1";
-                return;
-              } else {
-                if (eventDecimals === undefined) {
-                  this.page = "1";
-                  return;
-                } else {
-                  let position = Number(this.position) - 0.25;
-                  this.position = String(position);
-                  this.decimalsOfPosition -= 0.25;
-                  this.spaceAvailable -= 0.25;
-                  this.page = "1";
-                  return;
-                }
-              }
-            }
+            currentEvent.position = event.position + event.duration;
           }
+        } else {
         }
-      }
-    } else {
-      this.page = "1";
-      return;
+      });
     }
+
+    let hour = this.day[`hour${parseInt(String(currentEvent.position))}`];
+    hour = hour.filter(event => {
+      return event.facilitie === currentEvent.facilitie._id;
+    });
+    hour = hour.filter(event => {
+      return event._id != currentEvent._id;
+    });
+    hour = _.sortBy(hour, (event: Event) => {
+      return event.position;
+    });
+    hour.forEach(event => {
+      if (event.position < this.event.position) {
+        currentEvent.position = event.position + event.duration;
+      }
+    });
+    this.event = currentEvent;
+    this.page = "1";
   }
 
-  hideModal() {
+  private fixEventPosition(event, timeBack: number) {
+    return new Promise((resolve, reject) => {
+      if (event.hour === this.event.hour - timeBack) {
+        if (event.duration + 1 > timeBack) {
+          resolve(true);
+        }
+      }
+      resolve(false);
+    });
+  }
+
+  //////////// CLOSE ///////////
+
+   hideModal() {
     this._modalController.hideModal();
+    this.ready = false;
     this.spaceAvailable = 12;
-    this.page = "1";
-    this.startDecimals = "0";
-    this.timeRepresentation = { decimals: 0, integer: 0 };
-    this.repetition = false;
-    this.name = undefined;
-    this.description = undefined;
-    this.professors = undefined;
-    this.professors = [];
-    this.subjects = undefined;
-    this.selectedSubjects = [];
-    this.eventCreated = null;
-    this.spaceAvailable = 12;
-    this.decimalsOfPosition = 0;
+    this.page = "0";
+    this.startPosition = null;
+    this.event = null;
+    this.hour = null;
+    this.timeValue = 0;
+    this.minutesPrevValue = 0;
+    this.hoursPrevValue = 0;
+    this.dayWithPermanentEvents=null;
+    this.availableDatesFrame = []
+    this.weeksOfDuration = 0;
+    this.noLimit= false;
   }
 }
 

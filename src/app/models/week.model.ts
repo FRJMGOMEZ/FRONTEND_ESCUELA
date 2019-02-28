@@ -1,6 +1,5 @@
 import { Day } from './day.model';
-export class Calendar {
-
+export class Week {
     constructor(
         public date:Date,
         public monday:Day,

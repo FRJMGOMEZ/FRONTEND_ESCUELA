@@ -1,10 +1,9 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { CalendarModalController } from './calendar-modal.controller';
 import { CalendarService } from '../../providers/calendar.service';
-import { UserServices } from '../../providers/user.service';
+
 import { Router } from '@angular/router';
-
-
+import { Week } from 'src/app/models/week.model';
 
 @Component({
   selector: "app-calendar-modal",
@@ -13,51 +12,35 @@ import { Router } from '@angular/router';
 })
 export class CalendarModalComponent implements OnInit {
 
-  token:string
-
   constructor(public _modalController:CalendarModalController,
              private _calendarServices:CalendarService,
-             private _userServices:UserServices,
              private router:Router) {
-                this.token = this._userServices.token;
              }
-  frame:any 
-  
-  day: any
+  frame:any
+
+  firstDate: any
   month:any
-  year: any
-
-  referenceDay:any
-  firstDate:any
-
-  notification:EventEmitter<void>
   
   ngOnInit() {
-    
-    this._modalController.notification.subscribe((res)=>{
-
-      if(!res){
-      
-      let calendarId = this._modalController.currentCalendarId;
-      let dayId = this._modalController.dayId;
-
-    this._calendarServices.getCalendarById(calendarId).subscribe((calendar:any)=>{
-          
-      if(calendar.monday._id === dayId){this.day = calendar.monday}
-      if (calendar.tuesday._id === dayId) { this.day = calendar.tuesday }
-      if (calendar.wednesday._id === dayId) { this.day = calendar.wednesday }
-      if (calendar.thursday._id === dayId) { this.day = calendar.thursday }
-      if (calendar.friday._id === dayId) { this.day = calendar.friday }
-      if (calendar.saturday._id === dayId) { this.day = calendar.saturday }
-      if (calendar.sunday._id === dayId) { this.day = calendar.sunday }
-
       this.firstDate = new Date();
-      this.firstDate.setDate(this.firstDate.getDate() - (this.firstDate.getDate() - 1));   
-      this.referenceDay = new Date(this.firstDate.getFullYear(),this.firstDate.getMonth(),this.firstDate.getDate());
+      this.firstDate.setDate((this.firstDate.getDate()-this.firstDate.getDate()) +1 )
       this.getStructure()  
       this.getMonth(new Date(this.firstDate))
-    })}
-    })
+  }
+  
+  async getStructure() {
+    this.frame = []
+      for(let i=1;i<=this.firstDate.getDay();i++){
+        let dayBefore = new Date(this.firstDate);
+       dayBefore.setDate(dayBefore.getDate()-(this.firstDate.getDay()-i))
+        this.frame.push(dayBefore)
+      }
+      let referenceDay = this.firstDate;
+      for (let i = this.firstDate.getDay(); i <= 34; i++) {
+        referenceDay= new Date(referenceDay.getFullYear(),referenceDay.getMonth(),referenceDay.getDate()+1,referenceDay.getHours(),referenceDay.getMinutes(),referenceDay.getMilliseconds())
+        this.frame.push(referenceDay)
+      }
+    
   }
 
   switchMonth(month:number){
@@ -65,10 +48,8 @@ export class CalendarModalComponent implements OnInit {
     let year = this.firstDate.getFullYear();
     let date = this.firstDate.getDate();
     this.firstDate = new Date(year,newMonth,date) 
-    this.referenceDay = new Date(this.firstDate);
-    this.getMonth(this.referenceDay)
+    this.getMonth(this.firstDate)
     this.getStructure()
-    
   }
 
   switchYear(year:number){
@@ -76,172 +57,11 @@ export class CalendarModalComponent implements OnInit {
     let newYear = this.firstDate.getFullYear()+year;
     let date = this.firstDate.getDate();
     this.firstDate = new Date(newYear, month, date)
-    this.referenceDay = new Date(this.firstDate);
-    this.getMonth(this.referenceDay);
+    this.getMonth(this.firstDate);
     this.getStructure()
   }
 
- async getStructure(){
-  this.frame = []
-
-  if (this.firstDate.getDay() === 1) {
-
-    this.frame.push(this.referenceDay)
-
-    for (let i = 1; i <= 34; i++) {
-      this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1) 
-      this.frame[i]=this.referenceDay;
-  }}
-
-  if (this.firstDate.getDay() === 2) {
-  let dayBefore = new Date(this.referenceDay);
-
-  dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 1);
-
-  this.frame.push(dayBefore);
-
-  this.frame.push(this.referenceDay);
-
-  for (let i = 2; i <= 34; i++) {
-    this.referenceDay = new Date(this.referenceDay.getFullYear(),this.referenceDay.getMonth(),this.referenceDay.getDate()+1) 
-    this.frame[i] = this.referenceDay;};
-  }
-
-   if(this.firstDate.getDay() === 3){
-
-     let dayBefore = new Date(this.referenceDay);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 2);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-   
-     this.frame.push(this.referenceDay);
-
-     for (let i = 3; i <= 34; i++) {
-       this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
-       this.frame[i] = this.referenceDay;
-     }
-   }
-
-   if (this.firstDate.getDay() === 4) {
-
-     let dayBefore = new Date(this.referenceDay);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 3);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     this.frame.push(this.referenceDay);
-
-     for (let i = 4; i <= 34; i++) {
-       this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
-       this.frame[i] = this.referenceDay;
-     }
-   }
-
-   if (this.firstDate.getDay() === 5) {
-
-     let dayBefore = new Date(this.referenceDay);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 4);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(),dayBefore.getMonth(),dayBefore.getDate()+1);
  
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate()+1)
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1)
-
-     this.frame.push(dayBefore)
-
-     this.frame.push(this.referenceDay);
-
-     for (let i = 5; i <= 34; i++) {
-       this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
-       this.frame[i] = this.referenceDay;
-     }
-   }
-
-   if (this.firstDate.getDay() === 6) {
-     let dayBefore = new Date(this.referenceDay);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 5);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1)
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1)
-
-     this.frame.push(dayBefore)
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     this.frame.push(this.referenceDay);
-
-     for (let i = 6; i <= 34; i++) {
-       this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
-       this.frame[i] = this.referenceDay;
-     }
-   }
-
-   if (this.firstDate.getDay() === 0) {
-     let dayBefore = new Date(this.referenceDay);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() - 6);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1)
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1)
-
-     this.frame.push(dayBefore)
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     dayBefore = new Date(dayBefore.getFullYear(), dayBefore.getMonth(), dayBefore.getDate() + 1);
-
-     this.frame.push(dayBefore);
-
-     this.frame.push(this.referenceDay);
-
-     for (let i = 7; i <= 34; i++) {
-       this.referenceDay = new Date(this.referenceDay.getFullYear(), this.referenceDay.getMonth(), this.referenceDay.getDate() + 1)
-       this.frame[i] = this.referenceDay;
-     }
-   }
-  }
   hideModal(){
     this._modalController.hideModal()
   }
@@ -274,19 +94,24 @@ export class CalendarModalComponent implements OnInit {
     }
   }
 
+  ////// TO FIX ///////
   navigateToDay(date:Date){
-     //////handle errors///// continue Herrera's course
-    this._calendarServices.getDayByDate(date,this.token).subscribe((day)=>{
+    let dateToSearch = new Date(date.getFullYear(),date.getMonth(),date.getDate(),1,0,0,0);
+    this._calendarServices.getDayByDate(dateToSearch).subscribe((day)=>{
+      console.log(day)
       if(day === null){
-        this._modalController.notification.emit(date)
+        let dateInMilliseconds = date.getTime();
+        this._modalController.notification.emit({date:dateInMilliseconds,day:date.getDay()});
         this._modalController.hideModal()
       }
       else{
-       let date = new Date(day.date);
-       this._calendarServices.getCalendarByDay(day._id,date.getDay(),this.token).subscribe((calendar:any)=>{
-           this._modalController.hideModal()
-         this.router.navigate(['/day', calendar._id, day._id])
+        console.log('what')
+       let dayOfTheWeek= new Date(day.date).getDay();
+       this._calendarServices.getWeekByDay(day._id,dayOfTheWeek).subscribe((week:Week)=>{
+         this.router.navigate(['/day', week._id, day._id])
+         this._modalController.hideModal()
        })}
     })
   }
 }
+

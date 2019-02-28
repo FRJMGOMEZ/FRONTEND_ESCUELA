@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Indexcard } from '../models/indexcard.model';
 import { URL_SERVICES } from '../config/config';
+import { UserServices } from './user.service';
 
 
 @Injectable({
@@ -10,12 +11,16 @@ import { URL_SERVICES } from '../config/config';
 })
 export class IndexcardServices {
 
-  constructor(private http:HttpClient) { }
+  headers:HttpHeaders
 
-  createIndexcard(indexcard:Indexcard,token:string){
+  constructor(private http:HttpClient,
+             private _userServices:UserServices) {
+    this.headers = new HttpHeaders().set('token',this._userServices.token)            
+              }
+
+  createIndexcard(indexcard:Indexcard){
     let url = `${URL_SERVICES}/indexcard`
-    let headers = new HttpHeaders().set('token',token);
-    return this.http.post(url,indexcard,{headers}).pipe(map((res:any)=>{  
+    return this.http.post(url,indexcard,{headers:this.headers}).pipe(map((res:any)=>{  
       if(res.alumni){
         swal(`indexcard SUCCESFULLY CREATED AND ADDED TO THE ALUMNI ${res.alumni.name}`,'','success')
         return
@@ -27,19 +32,20 @@ export class IndexcardServices {
     }))    
   }
 
-  updateIndexcard(indexcard:Indexcard,idIndexcard:string,token:string){
+  updateIndexcard(indexcard:Indexcard,idIndexcard:string){
     let url = `${URL_SERVICES}/indexcard/${idIndexcard}`;
-    let headers = new HttpHeaders().set('token', token);
-    return this.http.put(url,indexcard,{headers}).pipe(map((res:any)=>{
-      return {indexcard:res.indexcard,item:res.item}
+    return this.http.put(url,indexcard,{headers:this.headers}).pipe(map((res:any)=>{
+      if(res.item){
+        return { indexcard: res.indexcard, item: res.item }
+      }else{
+        return { indexcard: res.indexcard};
+      }
     }))
 }
 
-  searchIndexcardById(id:string,token:string){
-    
+  searchIndexcardById(id:string){  
     let url = `${URL_SERVICES}/searchById/indexcard/${id}`
-    let headers = new HttpHeaders().set("token", token);
-    return this.http.get(url,{headers}).pipe(map((res:any)=>{
+    return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
       return res.indexcard
     }))
   }

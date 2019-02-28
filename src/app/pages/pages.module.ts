@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { RouterModule} from "@angular/router";
+import{ScrollingModule} from '@angular/cdk/scrolling';
 
 
 //My modules//
@@ -30,11 +31,10 @@ import { PAGESROUTES } from './pages.routes';
 import { ImagesComponent } from './proyects/project/images/images.component';
 import { MessagesComponent } from './proyects/project/messages/messages.component';
 import { FilesComponent } from './proyects/project/files/files.component';
-import { CalendarComponent } from './calendar/calendar.component';
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component';
-import { AddressBookComponent } from './addressBook/addressBook.component';
+
 
 
 
@@ -53,11 +53,9 @@ import { AddressBookComponent } from './addressBook/addressBook.component';
     ImagesComponent,
     MessagesComponent,
     FilesComponent,
-    CalendarComponent,
     DayComponent,
     FacilitiesComponent,
-    EventComponent,
-    AddressBookComponent
+    EventComponent
   ],
   imports: [
     BrowserModule,
@@ -70,10 +68,10 @@ import { AddressBookComponent } from './addressBook/addressBook.component';
     ModalsModule,
     PipesModule,
     SharedModule,
+    ScrollingModule
 
   ],
   exports: [],
-  providers: [CalendarComponent, AddressBookComponent],
   bootstrap: [],
   entryComponents:[EventComponent]
 })

@@ -9,9 +9,9 @@
         </button>
                 </div>
                 <div class="modal-body">
-                    <div *ngIf="referenceDay" class='row d-flex justify-content-between'>
+                    <div *ngIf="firstDate" class='row d-flex justify-content-between'>
                         <button (click)='switchYear(-1)'>PREV</button>
-                        <h4>{{referenceDay.getFullYear()}}</h4>
+                        <h4>{{firstDate.getFullYear()}}</h4>
                         <button (click)='switchYear(1)'>NEXT</button>
                     </div>
                     <div *ngIf="month" class='row d-flex justify-content-around'>

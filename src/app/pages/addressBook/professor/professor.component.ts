@@ -1,8 +1,7 @@
-import { Component, Input, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component,ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { Professor } from '../../../models/professor.model';
 import { SubjectModalController } from 'src/app/modals/subject-modal/subjectModalController';
 import { IndexCardModalController } from 'src/app/modals/index-card-modal/indexCardModalController';
-import { AddressBookComponent } from '../addressBook.component';
 import { ProfessorsServices } from '../../../providers/professor.service';
 import { Subscription } from 'rxjs';
 import { UserServices } from '../../../providers/user.service';
@@ -15,8 +14,6 @@ import { SubjectServices } from '../../../providers/subject.service';
 })
 export class ProfessorComponent implements OnInit, OnDestroy  {
 
-  token:string
-  
   professors: Professor[] = []
 
   @ViewChild('input') input: ElementRef
@@ -35,8 +32,6 @@ export class ProfessorComponent implements OnInit, OnDestroy  {
     private _subjectModalController: SubjectModalController,
     private _indexCardModalController: IndexCardModalController
   ) {
-
-    this.token = this._userServices.token;
   }
 
   ngOnInit(){
@@ -67,10 +62,10 @@ export class ProfessorComponent implements OnInit, OnDestroy  {
     }
     if (this.searchMode) {
       this.professors = [];
-      this._professorServices.searchProfessors(this.input.nativeElement.value,this.token,this.from).subscribe()
+      this._professorServices.searchProfessors(this.input.nativeElement.value,this.from).subscribe()
     } else {
       this.professors = [];
-      this._professorServices.getProfessors(this.token,this.from).subscribe()
+      this._professorServices.getProfessors(this.from).subscribe()
     }
   }
 

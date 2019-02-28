@@ -12,23 +12,20 @@ import { NgForm } from '@angular/forms';
 })
 export class FacilitiesModalComponent implements OnInit {
 
-  token:string
-
   creation:boolean=true;
   edition:boolean=false;
 
   facilitie:Facilitie=new Facilitie('',[],undefined)
 
-  constructor(private _userServices:UserServices,
-              public _modalController:FacilitiesModalController,
+  constructor(public _modalController:FacilitiesModalController,
               private _facilitieServices:FacilitiesService) {
-                this.token = this._userServices.token}
+               }
 
   ngOnInit() {
     this._modalController.notification.subscribe((res)=>{
    if(res){
      if(res.message && res.message === 'updateFacilitie'){
-      this._facilitieServices.getFacilitieById(this._modalController.id,this.token).subscribe((facilitie)=>{          
+      this._facilitieServices.getFacilitieById(this._modalController.id).subscribe((facilitie)=>{          
         this.facilitie = facilitie;
         this.edition = true;
         this.creation = false;
@@ -40,14 +37,14 @@ export class FacilitiesModalComponent implements OnInit {
 
   postFacilitie(form:NgForm){
     this.facilitie.name = form.value.facilitieName;
-   this._facilitieServices.postFacilitie(this.facilitie,this.token).subscribe(()=>{
+   this._facilitieServices.postFacilitie(this.facilitie).subscribe(()=>{
    this._modalController.hideModal()
    })
   }
 
   putFacilitie(form:NgForm){
     this.facilitie.name = form.value.facilitieName;
-   this._facilitieServices.putFacilitie(this.facilitie._id,this.facilitie,this.token).subscribe(()=>{
+   this._facilitieServices.putFacilitie(this.facilitie._id,this.facilitie).subscribe(()=>{
      this._modalController.hideModal()
    })
   }

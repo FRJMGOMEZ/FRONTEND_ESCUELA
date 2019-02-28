@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { Subject as SubjectModel, SubjectOrder } from '../models/subject.model';
 import { ProfessorsServices } from './professor.service';
 import { AlumniServices } from './alumni.service';
+import { UserServices } from './user.service';
 
 
 @Injectable({
@@ -13,19 +14,23 @@ import { AlumniServices } from './alumni.service';
 })
 export class SubjectServices {
 
+    headers:HttpHeaders
+
     public subjectsSource = new Subject<SubjectOrder>();
     public subjects$ = this.subjectsSource.asObservable();
 
     public count:number
 
     constructor( private http:HttpClient,
+                 private _userServices:UserServices,
                  private _professorServices:ProfessorsServices,
-                 private _alumnniServices:AlumniServices) {}
+                 private _alumnniServices:AlumniServices) {
+      this.headers = new HttpHeaders().set('token', this._userServices.token)               
+                 }
      
-    createSubject(subject:SubjectModel,token:string){
+    createSubject(subject:SubjectModel){
         let url = `${URL_SERVICES}/subject`;
-        let headers = new HttpHeaders().set('token',token)
-        return this.http.post(url,subject,{headers}).pipe(map((res:any)=>{
+        return this.http.post(url,subject,{headers:this.headers}).pipe(map((res:any)=>{
             this.count++
            let subjectOrder = new SubjectOrder(res.subject,'post');
            this.subjectsSource.next(subjectOrder)
@@ -33,10 +38,9 @@ export class SubjectServices {
         }))
      }
 
-    getSubjects(token:string,from:number=0,limit:number=5){
+    getSubjects(from:number=0,limit:number=5){
         let url = `${URL_SERVICES}/subject?from=${from}&limit=${limit}`;
-        let headers = new HttpHeaders().set('token', token)
-        return this.http.get(url, {headers}).pipe(map((res:any)=>{
+        return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
             this.count = res.count;
             res.subjects.forEach(subject => {
                 let subjectOrder = new SubjectOrder(subject,'get')
@@ -46,30 +50,27 @@ export class SubjectServices {
         }))
      }
 
-     deleteSubject (id:string,token:string){
+     deleteSubject (id:string){
         let url = `${URL_SERVICES}/subject/${id}`
-        let headers = new HttpHeaders().set('token', token)
-        return this.http.delete(url,{headers}).pipe(map((res:any)=>{
+        return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count--
             let subjectOrder = new SubjectOrder(res.subject, 'delete')
             this.subjectsSource.next(subjectOrder)
         }))
      }
 
-     updateSubject(id:string,subject:SubjectModel,token:string){
+     updateSubject(id:string,subject:SubjectModel){
         let url = `${URL_SERVICES}/subject/${id}`
-        let headers = new HttpHeaders().set("token", token);
-        return this.http.put(url,subject,{headers}).pipe(map((res:any)=>{
+        return this.http.put(url,subject,{headers:this.headers}).pipe(map((res:any)=>{
             let subjectOrder = new SubjectOrder(res.subject, 'update')
             this.subjectsSource.next(subjectOrder)
             return res.subject
         }))
      }
 
-    addOrDeleteAlumni(subjectId:string,alumniId:string,token){
+    addOrDeleteAlumni(subjectId:string,alumniId:string){
       let url = `${URL_SERVICES}/addOrDeleteAlumni/${subjectId}`;
-      let headers = new HttpHeaders().set('token', token)
-      return this.http.put(url,{alumniId},{headers}).pipe(map((res:any)=>{
+      return this.http.put(url,{alumniId},{headers:this.headers}).pipe(map((res:any)=>{
           let subjectOrder = new SubjectOrder(res.subject,'update')
           this.subjectsSource.next(subjectOrder)
           this._alumnniServices.updateAlumni(res.alumni)
@@ -77,10 +78,9 @@ export class SubjectServices {
       }))       
     }  
 
-    addOrDeleteProfessor(subjectId:string,professorId: string, token:string) {
+    addOrDeleteProfessor(subjectId:string,professorId: string) {
         let url = `${URL_SERVICES}/addOrDeleteProfessor/${subjectId}`;
-        let headers = new HttpHeaders().set('token', token)
-        return this.http.put(url, { professorId }, { headers }).pipe(map((res: any) => {
+        return this.http.put(url, { professorId }, { headers:this.headers }).pipe(map((res: any) => {
             let subjectOrder = new SubjectOrder(res.subject, 'update')
             this.subjectsSource.next(subjectOrder)
             this._professorServices.updateProfessor(res.professor)
@@ -88,10 +88,9 @@ export class SubjectServices {
         }))
     } 
 
-    getSubjectById(id:string,token:string){
+    getSubjectById(id:string){
         let url = `${URL_SERVICES}/searchById/subject/${id}`
-        let headers = new HttpHeaders().set('token', token)
-        return this.http.get(url,{headers}).pipe(map((res:any)=>{
+        return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
             return res.subject
         }))
     }

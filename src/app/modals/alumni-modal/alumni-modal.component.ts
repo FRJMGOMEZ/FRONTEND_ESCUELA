@@ -13,8 +13,6 @@ import { Subject } from 'src/app/models/subject.model';
 })
 export class AlumniModalComponent implements OnInit {
 
-  token:string
-
   alumnis:Alumni[]=[]
   
   subject:Subject
@@ -25,7 +23,6 @@ export class AlumniModalComponent implements OnInit {
              public _modalController:AlumnniModalController,
              private _alumniServices:AlumniServices,
              private _subjectServices:SubjectServices ) {
-    this.token = this._userServices.token;
    }
 
   ngOnInit() {
@@ -33,7 +30,7 @@ export class AlumniModalComponent implements OnInit {
       if(res){
         if(res.message && res.message ==='addAlumnis' ){
 
-          this._subjectServices.getSubjectById(this._modalController.id,this.token).subscribe((subject:Subject)=>{
+          this._subjectServices.getSubjectById(this._modalController.id).subscribe((subject:Subject)=>{
              this.subject = subject;
 
             this.getAlumnis().then((res:any) => {
@@ -52,14 +49,14 @@ export class AlumniModalComponent implements OnInit {
 
  getAlumnis(){
    return new Promise((resolve,reject)=>{
-     this._alumniServices.getAlumnis(this.token, this.from).subscribe((alumnis) => {
+     this._alumniServices.getAlumnis(this.from).subscribe((alumnis) => {
        resolve({alumnis})
      })
    })
  }  
 
  addAlumni(id:string){
-  this._subjectServices.addOrDeleteAlumni(this._modalController.id,id,this.token).subscribe(()=>{
+  this._subjectServices.addOrDeleteAlumni(this._modalController.id,id).subscribe(()=>{
     this.alumnis = this.alumnis.filter((alumni) => { return alumni._id != id });
     if (this.alumnis.length === 0) { 
       this._modalController.hideModal()
@@ -68,7 +65,7 @@ export class AlumniModalComponent implements OnInit {
   }
 
   searchAlumnis(input: string) {
-    this._alumniServices.searchAlumnis(input, this.token).subscribe((alumnis:any) => {
+    this._alumniServices.searchAlumnis(input).subscribe((alumnis:any) => {
       this.alumnis = [];
       alumnis.forEach(alumni => {
         if(this.subject.alumnis.indexOf(alumni._id) < 0){

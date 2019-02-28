@@ -47,7 +47,7 @@ export class UsersModalComponent implements OnInit {
           this.users.push(user)
         }
       }  
-      this.users = this.users.filter((user) => { return user.estado != false })
+      this.users = this.users.filter((user) => { return user.status != false })
     })
   }
 

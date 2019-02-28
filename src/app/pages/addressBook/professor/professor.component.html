@@ -4,9 +4,9 @@
             <h3 class='list-group-item-heading text-center mt-3'>PROFESORES</h3>
             <input #input placeholder="Buscar profesor" class='pb-2 mt-2' type="text" name="" id="">
             <div class="d-flex justify-content-center">
-                <button class='btn btn-warning mb-2' (click)='_professorServices.searchProfessors(input.value,token,0).subscribe();from=0;searchMode=true;getMode=false; professors=[]'>BUSCAR
+                <button class='btn btn-warning mb-2' (click)='_professorServices.searchProfessors(input.value,0).subscribe();from=0;searchMode=true;getMode=false; professors=[]'>BUSCAR
                 PROFESORES</button>
-                <button (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors(token).subscribe(); professors = []' class='btn btn-warning mb-2'>TODOS</button>
+                <button (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe(); professors = []' class='btn btn-warning mb-2'>TODOS</button>
             </div>
             <button (click)='openIndexCardModal()' class='btn btn-warning m-2'>CREAR PROFESOR</button>
             <div *ngIf="!cargando" class="row animated fadeIn">
@@ -33,7 +33,7 @@
                                                         <a class="list-group-item list-group-item-action">{{subject.name}}</a>
                                                     </div>
                                                     <div class='col-2'>
-                                                        <button (click)="_subjectServices.addOrDeleteProfessor(subject._id,professor._id,token).subscribe()" class='btn btn-warning m-2'>X</button>
+                                                        <button (click)="_subjectServices.addOrDeleteProfessor(subject._id,professor._id).subscribe()" class='btn btn-warning m-2'>X</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -45,7 +45,7 @@
                                             <button (click)='openIndexCardModal(professor.indexcard)' class="btn btn-primary">
                         <i class="fa fa-info"></i>
                       </button>
-                                            <button (click)="_professorServices.deleteProfessor(professor._id,token)" class="btn btn-danger">
+                                            <button (click)="_professorServices.deleteProfessor(professor._id)" class="btn btn-danger">
                         <i class="far fa-trash-alt"></i>
                       </button>
                                         </td>
@@ -54,7 +54,7 @@
                             </table>
                             <div class='d-flex justify-content-around'>
                                 <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-                                <button *ngIf="_professorServices.count >= from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+                                <button *ngIf="_professorServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
                             </div>
                         </div>
                     </div>

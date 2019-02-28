@@ -25,7 +25,7 @@ export class UsersComponent implements OnInit,OnDestroy {
   searchMode:boolean=false;
   getMode:boolean=true;
 
-  userSubscription:Subscription
+  userSubscription:Subscription = null;
 
   constructor(public _userServices:UserServices,
               private _modalUploadFilesController:UploadFilesModalController) {}

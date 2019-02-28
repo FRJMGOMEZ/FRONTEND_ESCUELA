@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
 import { User, UserOrder } from '../../models/user.model';
 import { NgForm } from '@angular/forms';
@@ -11,11 +11,11 @@ import { Subscription } from 'rxjs';
   templateUrl: './profile.component.html',
   styles: []
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   userOnline:User
 
-  userSubscription:Subscription
+  userSubscription:Subscription = null;
 
   constructor(private _userServices:UserServices,
               private _uploadFilesModal:UploadFilesModalController,
@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
 
     this.userOnline = this._userServices.userOnline;
     
-    this._userServices.users$.subscribe((userOrder:UserOrder)=>{
+    this.userSubscription = this._userServices.users$.subscribe((userOrder:UserOrder)=>{
       if(userOrder.user._id === this.userOnline._id){
         this.userOnline = userOrder.user;
       }
@@ -46,5 +46,9 @@ export class ProfileComponent implements OnInit {
 
   openPasswordModal(){
    this._passwordModalController.showModal(this.userOnline._id)
+  }
+
+  ngOnDestroy(){
+    this.userSubscription.unsubscribe()
   }
 }

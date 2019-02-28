@@ -20,7 +20,7 @@
                                 </div>
 
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button (click)='_subjectServices.deleteSubject(subjectSelected._id,token).subscribe();subjectSelected = null;' class='text-left m-2'><i class="far fa-trash-alt"></i></button>
+                                    <button (click)='_subjectServices.deleteSubject(subjectSelected._id).subscribe();subjectSelected = null;' class='text-left m-2'><i class="far fa-trash-alt"></i></button>
                                     <button (click)='openSubjectModal(subjectSelected._id)' class='m-2'><i class="fas fa-edit"></i></button>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                         <div *ngFor="let professor of subjectSelected.professors" class='col-12 p-2 '>
                                             <div class="row d-flex flex-row justify-content-center">
                                                 <div class='pr-2'><a>{{professor['name']}}</a></div>
-                                                <div class='pl-5'><button (click)="_subjectServices.addOrDeleteProfessor(subjectSelected._id,professor['_id'],token).subscribe()" class='btn btn-danger'>x</button></div>
+                                                <div class='pl-5'><button (click)="_subjectServices.addOrDeleteProfessor(subjectSelected._id,professor['_id']).subscribe()" class='btn btn-danger'>x</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -54,7 +54,7 @@
                                         <div *ngFor="let alumni of subjectSelected.alumnis" class="col-6 pt-2">
                                             <div class="row d-flex flex-row justify-content-around">
                                                 <div><a>{{alumni['name']}}</a></div>
-                                                <div><button (click)="_subjectServices.addOrDeleteAlumni(subjectSelected._id,alumni['_id'],token).subscribe()" class='btn btn-danger'>x</button></div>
+                                                <div><button (click)="_subjectServices.addOrDeleteAlumni(subjectSelected._id,alumni['_id']).subscribe()" class='btn btn-danger'>x</button></div>
                                             </div>
                                         </div>
                                     </div>
