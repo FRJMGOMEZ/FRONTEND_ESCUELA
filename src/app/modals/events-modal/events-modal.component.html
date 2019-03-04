@@ -14,11 +14,23 @@
                         <div class='d-flex flex-column'>
                             <input [(ngModel)]="event.permanent" type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Quiero que este evento se repita más semanas</label>
-                            <button class='mt-2' (click)='page2()'>NEXT</button>
+                            <button class='mt-2' (click)="_projectServices.getProjects().subscribe();page = '2'">NEXT</button>
                         </div>
                     </div>
-                    <!--  PAGE 2  -->
-                    <div *ngIf="page ==='2'" class="d-flex justify-content-center form-group flex-column mb-2">
+                    <!-- PAGE 2 -->
+                    <div *ngIf="page === '2'">
+                        <p class='text-center'>Puedes asignar el evento a un determinado proyecto</p>
+                        <select [(ngModel)]="event.project" name="event.project" class='form-control'>
+                            <option value=""></option>
+                            <option *ngFor="let project of projects" [value]="project._id">{{project.name}}</option>
+                      </select>
+                        <div class='d-flex justify-content-around'>
+                            <button (click)="page = '1'">PREV</button>
+                            <button (click)="page3()">NEXT</button>
+                        </div>
+                    </div>
+                    <!--  PAGE 3 -->
+                    <div *ngIf="page ==='3'" class="d-flex justify-content-center form-group flex-column mb-2">
                         <p class='text-center'>Selecciona la hora de inicio del evento</p>
                         <select [(ngModel)]="startPosition" name="startPosition" class='form-control'>
                                         <option value="0"></option>
@@ -28,13 +40,13 @@
                                         <option *ngIf="spaceAvailable >= 1 && checkInitialStartHour() < 0.25" value='{{checkInitialStartHour()+0.75}}'>{{event.position | timeConversor:'75'}}</option>
                                     </select>
                         <div class='d-flex justify-content-around'>
-                            <button (click)="page = '1'">PREV</button>
-                            <button *ngIf="startPosition" (click)="page3()">NEXT</button>
+                            <button (click)="page = '2'">PREV</button>
+                            <button *ngIf="startPosition" (click)="page4()">NEXT</button>
                         </div>
                     </div>
 
-                    <!--  PAGE 3  -->
-                    <div *ngIf="page === '3'" class="d-flex form-group d-flex flex-column">
+                    <!--  PAGE 4  -->
+                    <div *ngIf="page === '4'" class="d-flex form-group d-flex flex-column">
                         DURACION
                         <select #hour class='form-control' (click)="checkHoursAvailables(hour.value)">
                                     <option  value=0> </option>
@@ -58,44 +70,43 @@
                             <option  *ngIf="spaceAvailable  >= 0.75" value=0.75>45 minutos</option>
                         </select>
                         <div class='d-flex justify-content-around'>
-                            <button (click)="page2('back')">PREV</button>
-                            <button *ngIf="timeValue" (click)=" page4() ">NEXT</button>
+                            <button (click)="page3('back')">PREV</button>
+                            <button *ngIf="timeValue" (click)=" page5() ">NEXT</button>
                         </div>
                     </div>
 
-                    <!--PAGE 4 -->
-                    <div *ngIf="page === '4'">
+                    <!--PAGE 5 -->
+                    <div *ngIf="page === '5'">
                         <p>Día de inicio del evento: {{day.date | date}}</p>
                         <div *ngIf="availableDatesFrame.length === 0" class="custom-control custom-checkbox">
                             <input [(ngModel)]="noLimit" name='noLimit' type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Sin límite temporal</label>
                             <p *ngIf="noLimit === false">Semanas:<input [(ngModel)]='weeksOfDuration' name='weeksOfDuration' type="number" max='999' min='0'> </p>
-                            <button (click)="page3('back')">BACK</button>
-                            <button (click)="page5()">OK</button>
+                            <button (click)="page4('back')">BACK</button>
+                            <button (click)="page6()">OK</button>
                         </div>
                         <div *ngIf="availableDatesFrame.length > 0">
                             <p *ngIf="availableDatesFrame.length > 1">Semanas:<input [(ngModel)]='weeksOfDuration' name='weeksOfDuration' type="number" [max]="availableDatesFrame.length" min='0'> </p>
                             <p *ngIf="availableDatesFrame.length > 1">Fecha limite: {{availableDatesFrame[availableDatesFrame.length -2 ] | date}} </p>
                             <p *ngIf="availableDatesFrame.length === 1">Solo durará esta semana, ya que se solapa con otro evento la semana siguiente</p>
-                            <button (click)="page3('back')">BACK</button>
-                            <button (click)="page5()">OK</button>
+                            <button (click)="page4('back')">BACK</button>
+                            <button (click)="page6()">OK</button>
                         </div>
                         <p *ngIf="weeksOfDuration && !noLimit">Día de finalización del evento:{{updateEndUpDate() | date}} </p>
-
-                    </div>
-
-                    <!--  PAGE 5  -->
-                    <div *ngIf="page==='5' " #div3 class="row d-flex form-group flex-column align-content-center ">
-                        <input [(ngModel)]='event.name' type="text " class="form-control " placeholder="name " required>
-                        <textarea [(ngModel)]="event.description " type="text " name="description " class="form-control "></textarea>
-                        <div class='d-flex justify-content-around'>
-                            <button (click)="page4('back')">PREV</button>
-                            <button *ngIf="event.name" (click)="page='6';ready=true">NEXT</button>
-                        </div>
                     </div>
 
                     <!--  PAGE 6  -->
-                    <div *ngIf="page ==='6' " #div4 class="row d-flex justify-content-center ">
+                    <div *ngIf="page==='6' " #div3 class="row d-flex form-group flex-column align-content-center ">
+                        <input [(ngModel)]='event.name' type="text " class="form-control " placeholder="name " required>
+                        <textarea [(ngModel)]="event.description " type="text " name="description " class="form-control "></textarea>
+                        <div class='d-flex justify-content-around'>
+                            <button (click)="page5('back')">PREV</button>
+                            <button *ngIf="event.name" (click)="page='7';ready=true">NEXT</button>
+                        </div>
+                    </div>
+
+                    <!--  PAGE 7  -->
+                    <div *ngIf="page ==='7' " #div4 class="row d-flex justify-content-center ">
                         <div class="col-12 d-flex flex-column ">
                             <h6 class='text-center'>RESUME</h6>
                             <p>name: {{event.name}}</p>
@@ -109,7 +120,7 @@
                             <button *ngIf="ready && !event._id" (click)='postEvent()' class='btn btn-warning'>CREAR EVENTO</button>
                             <button *ngIf="!ready && event._id" (click)="fixEventPositionBack()">EDITAR EVENTO</button>
                             <button *ngIf="ready && event._id" (click)='putEvent()'>MODIFICAR EVENTO</button>
-                            <button *ngIf="!event._id && ready" (click)="page='5';ready=false" class='btn btn-warning'>ATRÁS</button>
+                            <button *ngIf="!event._id && ready" (click)="page='6';ready=false" class='btn btn-warning'>ATRÁS</button>
                         </div>
                     </div>
                 </div>

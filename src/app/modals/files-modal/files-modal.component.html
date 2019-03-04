@@ -16,15 +16,9 @@
                         <div *ngIf="file" class="progress">
                             <div class="progress-bar" role="progressbar" [ngStyle]="{'width': progress + '%' }"></div>
                         </div>
-                        <div *ngIf="file" class="scroll-box">
-                            <pdf-viewer #myPdf [src]="file | filesPipe" [render-text]="true" style="display: block;" [autoresize]="true" [original-size]="false" (page-rendered)="pageRendered($event)" (after-load-complete)="pdfLoaded($event)">
+                        <div *ngIf="file && type" class="scroll-box">
+                            <pdf-viewer #myPdf [src]="file| filesPipe:type" [render-text]="true" style="display: block;" [autoresize]="true" [original-size]="false" (page-rendered)="pageRendered($event)" (after-load-complete)="pdfLoaded($event)">
                             </pdf-viewer>
-                        </div>
-                    </div>
-                    <div *ngIf="!file && messages" class='row'>
-                        <div *ngFor="let message of messages" class="col-2">
-                            <img #file (click)="showDocument(message['file'])" class='img-fluid' [src]="message['img'] | imgPipe:'icons'" alt="">
-                            <span>{{message['titulo']}}</span>
                         </div>
                     </div>
                     <button *ngIf="file && progress === 100" (click)='downloadFile()' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">

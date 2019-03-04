@@ -8,12 +8,6 @@
             <span aria-hidden="true">&times;</span>
           </button>
                 </div>
-                <div class="modal-body text-center d-flex flex-row">
-                    <div *ngFor="let image of images" class='col-4'>
-                        <img #img [src]=" image | imgPipe:'imgProyectos'" class='img-fluid' style='cursor: pointer'>
-                        <button (click)='downloadImg(img.src)' class='btn btn-warning btn-block'>Descargar archivo</button>
-                    </div>
-                </div>
                 <div class="modal-body text-center d-flex flex-column">
                     <div class="row">
                         <div class="col-3"></div>

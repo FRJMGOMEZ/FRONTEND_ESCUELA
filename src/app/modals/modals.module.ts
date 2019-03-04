@@ -15,11 +15,9 @@ import { UsersModalComponent } from './users-modal/users-modal.component';
 import { UploadFilesModalComponent } from './upload-files-modal/upload-files-modal.component';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
 import { PasswordComponent } from "./password/password.component";
-import { AdminComponent } from "./admin/admin.component";
 import { FilesModalComponent } from "./files-modal/files-modal.component";
 import { ImgModalComponent } from "./img-modal/img-modal.component";
 import { EventsModalComponent } from "./events-modal/events-modal.component";
-
 import { AlumnniModalController } from './alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from "./professor-modal/professorModalController";
 import { IndexCardModalController } from "./index-card-modal/indexCardModalController";
@@ -28,7 +26,6 @@ import { SubjectModalController } from './subject-modal/subjectModalController';
 import { UploadFilesModalController } from "./upload-files-modal/uploadFilesModalController";
 import { UserModalController } from "./users-modal/userModalController";
 import { PasswordModalController } from "./password/passwordModalController.service";
-import { AdminModalController } from "./admin/adminModal.controller";
 import { ImgModalController } from './img-modal/imgModal.controller';
 import { FilesModalController } from './files-modal/filesModal.controller';
 import { EventModalController } from './events-modal/eventsModal.controller';
@@ -52,7 +49,6 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UsersModalComponent,
     UploadFilesModalComponent,
     PasswordComponent,
-    AdminComponent,
     ImgModalComponent,
     FilesModalComponent,
     EventsModalComponent,
@@ -78,7 +74,6 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UsersModalComponent,
     UploadFilesModalComponent,
     PasswordComponent,
-    AdminComponent,
     ImgModalComponent,
     FilesModalComponent,
     EventsModalComponent,
@@ -95,7 +90,6 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UploadFilesModalController,
     UserModalController,
     PasswordModalController,
-    AdminModalController,
     ImgModalController,
     FilesModalController,
     EventModalController,

@@ -7,6 +7,8 @@ import { Event, EventOrder } from '../../models/event.model';
 import * as _ from "underscore";
 import { FacilitiesService } from '../../providers/facilities.service';
 import { Day } from 'src/app/models/day.model';
+import { Project } from 'src/app/models/project.model';
+import { ProjectServices } from '../../providers/project.service';
 
 @Component({
   selector: "app-events-modal",
@@ -18,6 +20,7 @@ export class EventsModalComponent implements OnInit {
   userOnline: User;
   page: string = "0";
   ready: boolean = false;
+  projects:Project[]=[]
   spaceAvailable: number = 12;
   event: Event;
   startPosition: number;
@@ -28,21 +31,28 @@ export class EventsModalComponent implements OnInit {
     public  _modalController: EventModalController,
     private _userServices: UserServices,
     private _calendarServices: CalendarService,
-    private _facilitieServices: FacilitiesService
+    private _facilitieServices: FacilitiesService,
+    public _projectServices:ProjectServices
   ) {
     this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
+
+    this._projectServices.projects$.subscribe((projectOrder)=>{
+      if(projectOrder.order === 'get'){
+        this.projects.push(projectOrder.project)
+      }
+    })
+
     this._calendarServices.currentDay$.subscribe(day => {
       this.day = day;
     });
-
     this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
       this.event = null;
       this.event = eventOrder.event;
       setTimeout(() => {
-        this.page = "6";
+        this.page = "7";
       });
     });
 
@@ -61,6 +71,7 @@ export class EventsModalComponent implements OnInit {
               new Date(this.day.date).getDay(),
               false,
               new Date(this.day.date),
+              null,
               null
             );
             this._facilitieServices
@@ -77,18 +88,18 @@ export class EventsModalComponent implements OnInit {
     });
   }
 
-  ////// PAGE 2 ///////
+  ////// PAGE 3 ///////
 
-   async page2(back: boolean = false) {
+   async page3(back: boolean = false) {
     if (back) {
       this.event.position -= this.startPosition;
       this.startPosition = 0;
-      this.page = "2";
+      this.page = "3";
     } else {
       let hour = this.day[`hour${parseInt(String(this.event.position))}`];
       await this.checkNextHoursSpace(hour);
       await this.checkSpaceInEventHour(hour);
-      this.page = "2";
+      this.page = "3";
     }
   }
 
@@ -163,16 +174,16 @@ export class EventsModalComponent implements OnInit {
     return Number(this.event.position) - parseInt(String(this.event.position));
   }
 
-  ////// PAGE 3 ///////
+  ////// PAGE 4 ///////
 
-   page3(back: boolean = false) {
+   page4(back: boolean = false) {
     if (back) {
       this.spaceAvailable += Number(this.hoursPrevValue);
       this.timeValue = this.spaceAvailable;
       this.minutesPrevValue = 0;
       this.hoursPrevValue = 0;
       this.event.duration = 0;
-      this.page = "3";
+      this.page = "4";
     } else {
       this.spaceAvailable -= this.startPosition;
       this.event.duration = 0;
@@ -180,7 +191,7 @@ export class EventsModalComponent implements OnInit {
         this.startPosition -
         (this.event.position - parseInt(String(this.event.position)));
       this.timeValue = this.spaceAvailable;
-      this.page = "3";
+      this.page = "4";
     }
   }
 
@@ -201,16 +212,16 @@ export class EventsModalComponent implements OnInit {
   }
 
  
- /////// PAGE 4 ////////
+ /////// PAGE 5 ////////
 
   dayWithPermanentEvents: Day[];
   availableDatesFrame: Date[] = [];
-  async page4(back?:string) {
+  async page5(back?:string) {
     this.event.duration +=this.spaceAvailable + this.event.duration - this.timeValue;
     if(back){
       this.weeksOfDuration = 0;
       this.noLimit = false;
-      this.page = '4';
+      this.page = '5';
     }else{
     if (this.event.permanent) {
       this._calendarServices.checkPermanentEvents(this.event).subscribe(day => {
@@ -226,31 +237,30 @@ export class EventsModalComponent implements OnInit {
             this.availableDatesFrame.push(referenceDay)
           }
           setTimeout(()=>{
-            this.page = '4' 
+            this.page = '5' 
           })       
         } else {
-          this.page = '4'
+          this.page = '5'
         }
       });
     }else{
-      this.page4()
+      this.page6()
     }
   }
   }
-
   public updateEndUpDate(){
     let ourDay = new Date(this.day.date);
     let endDate = new Date(ourDay.getTime() + this.weeksOfDuration * 604800000);
     return new Date(endDate)    
   }
-  /////////// PAGE 5 //////////////
+  /////////// PAGE 6 //////////////
 
-   page5() {
+   page6() {
       if(this.event.permanent){
         if (this.noLimit === false) {
           if(this.weeksOfDuration === 0){
             this.event.permanent = false;
-            this.page = '5';
+            this.page = '6';
           }else{
             let dateFrom = new Date(this.day.date);
             let limitDate = dateFrom.getTime() + this.weeksOfDuration * 604800000;
@@ -258,7 +268,7 @@ export class EventsModalComponent implements OnInit {
           }
       }
     }
-    this.page = "5";
+    this.page = "6";
   }
   ////////////// POST AND PUT /////////////
 
@@ -297,6 +307,7 @@ export class EventsModalComponent implements OnInit {
       this.event.permanent,
       this.event.startDate,
       this.event.endDate,
+      this.event.project,
       this.event._id
     );
 
@@ -425,6 +436,7 @@ export class EventsModalComponent implements OnInit {
     this.page = "0";
     this.startPosition = null;
     this.event = null;
+    this.projects = []
     this.hour = null;
     this.timeValue = 0;
     this.minutesPrevValue = 0;

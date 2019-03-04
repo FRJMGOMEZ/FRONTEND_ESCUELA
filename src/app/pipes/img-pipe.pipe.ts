@@ -8,7 +8,6 @@ import { URL_SERVICES } from '../config/config';
 export class ImgPipe implements PipeTransform {
 
   transform(img: any, type: any): any {
-
     let url = `${URL_SERVICES}/images/`;
 
     if (!img) {
@@ -22,6 +21,13 @@ export class ImgPipe implements PipeTransform {
 
     if (img.indexOf('base64') >= 0) {
       return img
+    }
+
+    let ext = img.split('.')[1]
+    /////Add more ////
+    if(ext === 'pdf'){
+      url = `${URL_SERVICES}/images/icons/${ext}.png`
+      return url;
     }
 
     switch (type) {
@@ -40,19 +46,17 @@ export class ImgPipe implements PipeTransform {
       case "imagesProject":
         url += `imagesProject/${img}`;
         break;
-      case "filesProject":
-        url += `filesProject/${img}`;
-        break;
       case "files":
         url += `files/${img}`;
         break;
       case 'icons':
-       url +=  `icons/${img}`;
+       url += `icons/${img}`;
         break;
       default:
         url += `x/x`;
     }
-
-    return url;
+    console.log(url)
+      return url;
+  } 
   }
-}
+

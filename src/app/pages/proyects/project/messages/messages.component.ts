@@ -1,15 +1,13 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ProjectComponent } from '../project.component';
 import { User } from 'src/app/models/user.model';
-import { Project } from '../../../../models/project.model';
 import { MessagesService } from '../../../../providers/messages.service';
 import { Message } from 'src/app/models/message.model';
 import { ChatServices } from '../../../../providers/chat.service';
-import { UploadFilesModalController } from '../../../../modals/upload-files-modal/uploadFilesModalController';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
 import { ImgModalController } from '../../../../modals/img-modal/imgModal.controller';
 import { FilesModalController } from '../../../../modals/files-modal/filesModal.controller';
-
+import { MessageOrder } from '../../../../models/message.model';
 
 @Component({
   selector: "app-messages",
@@ -19,75 +17,80 @@ import { FilesModalController } from '../../../../modals/files-modal/filesModal.
 export class MessagesComponent implements OnInit {
 
   userOnline: User;
-  token: string;
-
-  project: Project;
-
+ 
+  @Input()projectId:string
   messages: any[] = [];
-
-  message: string;
-
+  message:string; 
   imgUpload: File;
   temporaryImg: any;
 
   fileUpload:File;
-  fileIcon: string;
   fileTitle:string;
+
 
   constructor(
     private projectComponent: ProjectComponent,
     private _messageServices: MessagesService,
-    private _chatServices: ChatServices,
-    private _uploadFilesModalController: UploadFilesModalController,
     private _uploadFilesServices: UploadFilesServices,
-    private _imgModalController:ImgModalController,
-    private _filesModalController:FilesModalController
+    private _chatServices:ChatServices,
+    private _filesModalController:FilesModalController,
+    private _imgModalController:ImgModalController
   ) {
-    this.userOnline = this.projectComponent.userOnline;
-    this.project = this.projectComponent.project;
-    this.token = this.projectComponent.token;
+    this.userOnline = this.projectComponent.userOnline
   }
 
-  ngOnInit() {
-
-    this.getMessages();
-
-    this.projectComponent.notification.subscribe(() => {
-      this.project = this.projectComponent.project;
-
-      this.getMessages();
-    });
-
+  ngOnInit() { 
+    this._messageServices.messages$.subscribe((messageOrder:MessageOrder) => {
+      if(messageOrder.order === 'push'){
+        this._chatServices.sendMessage(messageOrder.message)
+      }else if (messageOrder.order === 'get'){
+        this.messages.push(messageOrder.message)
+      }
+    })
+    this.checkFrom(this.projectComponent.project.messages.length).then((res:any)=>{
+      this._messageServices.getMessages(this.projectId,res.from).subscribe()
+    })
     this._chatServices.getMessages().subscribe((message: Message) => {
       this.messages.push(message);
     });
+
+    this._uploadFilesServices.files$.subscribe((res:any)=>{
+      let message;
+       if(res.type === 'filesProject'){
+         message = new Message(this.userOnline._id, this.projectId, this.message, null,res.file,this.fileTitle)
+        
+       }
+       if(res.type === 'imagesProject'){
+         message = new Message(this.userOnline._id, this.projectId, this.message,res.file,null,this.fileTitle)
+       }
+      this._messageServices.postMessage(message).subscribe()
+    })
   }
 
-  getMessages() {
-    this._messageServices
-      .getMessages(this.project._id, this.token)
-      .subscribe(messages => {
-        this.messages = messages;
-      });
+  checkFrom(messages: number) {
+    return new Promise((resolve, reject) => {
+      let from = messages - 15;
+      if (from > 0) {
+        resolve(from)
+      } else {
+        resolve(0)
+      }
+    })
   }
 
-  selectImg(file: File) {
-
+  selectFile(file: File) {
     if (!file) {
       this.imgUpload = null;
       return;
     }
-
     if(file.type.indexOf('pdf') >= 0 ){
-
       this.fileTitle = file.name;
-      this.fileIcon = 'pdf.png'
       this.fileUpload = file;
-      this.imgUpload=null
+      this.imgUpload=null;
 
     } else if (file.type.indexOf('image') >= 0){
-
       this.imgUpload = file;
+      this.fileTitle = file.name;
       let reader = new FileReader();
       let urlImgTemp = reader.readAsDataURL(file);
       reader.onloadend = () => {
@@ -96,97 +99,24 @@ export class MessagesComponent implements OnInit {
     }
   }
 
+  openFile(file:string){
+    this._filesModalController.showModal('filesProject')
+    this._filesModalController.notification.emit(file)
+  }
+
+  showImg(img:any){
+    this._imgModalController.showModal('imagesProject')
+    this._imgModalController.notification.emit(img.src)
+  }
+
   sendMessage() {
     if (this.imgUpload) {
-      this._uploadFilesServices
-        .updateFile(this.imgUpload, "imgProyectos", this.project._id)
-        .then((res: any) => {
-          let message = new Message(
-            this.userOnline._id,
-            this.project._id,
-            this.message,
-            res.fileName
-          );
-          this._messageServices
-            .postMessage(message, this.token)
-            .subscribe(messageSaved => {
-              this._chatServices.sendMessage(messageSaved);
-              this.message = "";
-              this.temporaryImg = "";
-
-              this.projectComponent.notification.emit({
-                image: messageSaved.img
-              });
-            });
-        })
-        .catch(res => {
-          console.log(res);
-        });
-    }else if(this.fileUpload){
-
-      this._uploadFilesServices.updateFile(this.fileUpload,'files',this.project._id)
-      .then((res:any)=>{
-
-        let message = new Message(this.userOnline._id, this.project._id, this.message);
-        message.file = res.fileName;
-        if(res.fileName.indexOf('pdf')){
-          message.img = 'pdf.png';
-        }
-        message.titulo = this.fileTitle;
-
-        this._messageServices
-          .postMessage(message, this.token)
-          .subscribe(messageSaved => {
-
-            this._chatServices.sendMessage(messageSaved);
-            this.message = "";
-            this.fileIcon='';
-            this.fileTitle=''
-            this.projectComponent.notification.emit({
-              file: messageSaved.file
-            });
-          });
-      })
-    }
-    
-    else {
-      let message = new Message(
-        this.userOnline._id,
-        this.project._id,
-        this.message
-      );
-      this._messageServices
-        .postMessage(message, this.token)
-        .subscribe(messageSaved => {
-          this._chatServices.sendMessage(messageSaved);
-          this.message = "";
-          this.imgUpload = null;
-        });
+      console.log(this.imgUpload)
+      this._uploadFilesServices.updateFile(this.imgUpload, "imagesProject", this.projectId) 
+    } else if(this.fileUpload){
+      this._uploadFilesServices.updateFile(this.fileUpload,'filesProject',this.projectId)
+    }else{
+      let message = new Message(this.userOnline._id, this.projectId, this.message, null)
+      this._messageServices.postMessage(message).subscribe()
     }}
-
-  openModalUpload() {
-    this._uploadFilesModalController.showModal(this.project._id, "mensajes");
-  }
-
-  upload(img?: any, id?: string) {
-
-    this._imgModalController.showModal(id)
-
-    if(img){
-      this._imgModalController.notification.emit({ src: img.src })
-    }
-
-    else{
-
-      this._imgModalController.notification.emit()
-    }
-  }
-
-  openFile(file:string){
- 
-   this._filesModalController.showModal(this.projectComponent.project._id)
-   this._filesModalController.notification.emit({fileName:file})
-   this._filesModalController.notification.emit()
-
-  }
 }

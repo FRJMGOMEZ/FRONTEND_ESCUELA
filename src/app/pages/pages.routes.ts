@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ProyectsComponent } from './proyects/projects.component';
+import { ProjectsComponent } from './proyects/projects.component';
 import { UsersComponent } from './users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
 import { ProjectComponent } from './proyects/project/project.component';
@@ -31,8 +31,8 @@ const pagesRoutes: Routes = [
       },
       {
         path: "projects",
-        component: ProyectsComponent,
-        data: { title: "PROYECTS", description: "Proyects" }
+        component: ProjectsComponent,
+        data: { title: "PROJECTS", description: "Projects" }
       },
       {
         path: "project/:id",

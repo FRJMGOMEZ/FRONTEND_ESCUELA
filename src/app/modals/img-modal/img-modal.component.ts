@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ImgModalController } from './imgModal.controller';
 import { ChatServices } from '../../providers/chat.service';
 import { title } from 'process';
-import { ProjectServices } from '../../providers/project.service';
-import { UserServices } from '../../providers/user.service';
 
 @Component({
   selector: 'app-img-modal',
@@ -12,41 +10,21 @@ import { UserServices } from '../../providers/user.service';
 })
 export class ImgModalComponent implements OnInit {
 
-  token:string
-
   image:string
-
-  images:string[] = []
+  type:string
 
   constructor( public _modalController:ImgModalController,
-               private _chatServices:ChatServices,
-               private _projectServices:ProjectServices,
-               private _userServices:UserServices) {
+               private _chatServices:ChatServices) {
 
-                this.token= this._userServices.token
                 }
   ngOnInit() {
-
-    this._modalController.notification.subscribe((res)=>{
-
-      if(res){
-
-        if(res.src){
-        
-          this.image= res.src
-        }
-      }else{
-
-        this._projectServices.searchProjectById(this._modalController.id,this.token).subscribe((project)=>{
-
-         this.images = project.imagenes
-        })
-      }
+    this._modalController.notification.subscribe((image:string)=>{
+    this.image = image;
+    this.type = this._modalController.type;
     })
   }
 
   downloadImg(image?:any){
-
     if(image){
       this._chatServices.getFile(image).subscribe((res) => {
         const a = document.createElement('a');
@@ -65,14 +43,10 @@ export class ImgModalComponent implements OnInit {
         a.click();
       })
     }
-    
   }
 
   hideModal(){
-
-    this.images = []
     this.image = null
-
     this._modalController.hideModal()
   }
 

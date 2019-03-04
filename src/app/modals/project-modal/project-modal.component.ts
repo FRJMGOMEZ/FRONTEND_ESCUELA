@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
 import { ProjectModalController } from './projectModalController';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Project } from '../../models/project.model';
+import { Project, ProjectOrder } from '../../models/project.model';
 import { ProjectServices } from '../../providers/project.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-project-modal',
@@ -16,75 +17,62 @@ export class ProjectModalComponent implements OnInit {
   
   token:string
 
-  project:Project
+  project:any
 
   constructor(private _userServices:UserServices,
               public _modalController:ProjectModalController,
               private _projectServices:ProjectServices) { 
-
-    this.token = this._userServices.token
   }
 
   ngOnInit() {
 
-    this.form= new FormGroup({
-      nombre:new FormControl('',Validators.required),
-      descripcion:new FormControl('',Validators.required)
+    this.form = new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('')
     })
 
-      this._modalController.notification.subscribe((res)=>{
+    this._modalController.notification.subscribe(()=>{
+      this.form.setValue({
+        name: '',
+        description: ''
+      })
+    })
 
-        if(res){
-          if (res.id) {
-
-            this._projectServices.searchProjectById(res.id, this.token).subscribe((project) => {
-
-              this.project = project;
-
-              this.form.setValue({
-                nombre: project.nombre,
-                descripcion: project.descripcion
-              })
-            })
-          }
-        }
+    this._projectServices.projects$.subscribe((projectOrder:ProjectOrder)=>{
+      if(projectOrder.order === 'getOne' || projectOrder.order === 'put'){
+        this.project = projectOrder.project;
+        this.form.setValue({
+          name: this.project.name,
+          description: this.project.description || ''
+        })
+      }
     })
   }
 
-  hideModal(){
-    this._modalController.hideModal()
-  }  
-
   newProject(){
-
     if(this.form.valid){
-
-      let project = new Project(this.form.value.nombre,this.form.value.descripcion)
-
-      this._projectServices.createProject(project,this.token).subscribe((res:any)=>{
-
+      let project = new Project(this.form.value.name,[],[],this.form.value.description)
+      this._projectServices.postProject(project).subscribe((user:User)=>{
+         this._userServices.saveInStorage(user._id,user,this._userServices.token);
         this._modalController.hideModal();
-
-         this._userServices.saveInStorage(res.user._id,res.user,this.token)
-
-           this._modalController.notification.emit()
         })
     }
   }
 
   updateProject(){
-
     if(this.form.valid){
-
-      let project = new Project(this.form.value.nombre, this.form.value.descripcion)
-
-      this._projectServices.updateProject(this.project._id, project, this.token).subscribe(()=>{
-
-          this._modalController.notification.emit()
-
+      let project = new Project(this.form.value.name,[],[],this.form.value.description)
+      this._projectServices.updateProject(this._modalController.id, project).subscribe(()=>{
           this._modalController.hideModal()
-
         })
     }
   }
+
+  hideModal() {
+    this._modalController.hideModal()
+    this.form.setValue({
+      name: this.project.name,
+      description: this.project.description || ''
+    })
+  }  
 }

@@ -1,8 +1,10 @@
 <div class='row d-flex justify-content-center'>
-    <div class="col-12">
-        <a (click)='downloadImg()' class='d-block text-center' style='cursor: pointer'> IMAGENES COMPARTIDAS</a>
-    </div>
-    <div *ngFor="let image of images" class="text-center p-2">
-        <img #img (click)='downloadImg(img)' [src]="image | imgPipe:'imgProyectos'" alt="" style='height:50px;width:50px'>
+    <div class='card-group'>
+        <div class="card" *ngFor="let image of images">
+            <div class="card-body">
+                <img style='height: 200px;width:200px' class='img-fluid' [src]="image['image'] | imgPipe: 'imagesProject'" alt="">
+                <p>{{image.title}}</p>
+            </div>
+        </div>
     </div>
 </div>

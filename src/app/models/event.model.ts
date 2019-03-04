@@ -11,6 +11,7 @@ export class Event{
                 public permanent: boolean,
                 public startDate:Date,
                 public endDate:Date,
+                public project?:string,
                 public _id?:string
                 ){}
 }

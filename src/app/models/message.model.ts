@@ -10,3 +10,10 @@ export class Message {
         )
         {}    
 }
+
+export class MessageOrder{
+    constructor(public message:Message,
+                public order:string){
+
+    }
+}

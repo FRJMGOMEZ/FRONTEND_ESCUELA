@@ -6,8 +6,6 @@ import { URL_SERVICES } from '../config/config';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-
-
 @Injectable({
     providedIn: 'root'
 })
@@ -21,14 +19,13 @@ export class ChatServices {
      }
 
     sendMessage(message) {
-        this.socket.emit('mensaje', message)
+        this.socket.emit('message', message)
     }
 
     getMessages() {
         return Observable.create((observer) => {
-            this.socket.on('mensaje', (mensaje) => {
-
-                observer.next(mensaje);
+            this.socket.on('message', (message) => {
+                observer.next(message);
             });
         });
     } 

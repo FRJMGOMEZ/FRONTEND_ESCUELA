@@ -1,16 +1,18 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter} from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { ProjectServices } from '../../../providers/project.service';
 import { UserServices } from 'src/app/providers/user.service';
-import { Project } from '../../../models/project.model';
+import { Project, ProjectOrder } from '../../../models/project.model';
 import { User } from 'src/app/models/user.model';
 import { ProjectModalController } from '../../../modals/project-modal/projectModalController';
 import { UploadFilesModalController } from 'src/app/modals/upload-files-modal/uploadFilesModalController';
 import { UserModalController } from '../../../modals/users-modal/userModalController';
-import { AdminModalController } from '../../../modals/admin/adminModal.controller';
-
 import * as _swal from "sweetalert";
 import { SweetAlert } from "sweetalert/typings/core";
+import { UserOrder } from '../../../models/user.model';
+import { MessagesService } from '../../../providers/messages.service';
+import { MessageOrder } from '../../../models/message.model';
+
 const swal: SweetAlert = _swal as any;
 
 @Component({
@@ -18,193 +20,117 @@ const swal: SweetAlert = _swal as any;
   templateUrl: "./project.component.html",
   styleUrls: ["./project.component.css"]
 })
-export class ProjectComponent implements OnInit {
-  
-  token: string;
 
-  public userOnline: User;
-  admin:boolean=false
-  projects: Project[]
+export class ProjectComponent implements OnInit {
+
+  userOnline:User
+
   public project: Project;
 
   public notification = new EventEmitter<any>();
 
+  public page:string = 'chat'
+
   constructor(
-    private _userServices: UserServices,
+    public _userServices: UserServices,
     private router: Router,
-    private aRoute: ActivatedRoute,
-    private _projectServices: ProjectServices,
+
+    public _projectServices: ProjectServices,
     private _projectModalController: ProjectModalController,
-    private _uploadFilesController: UploadFilesModalController,
-    private _usersModalController:UserModalController,
-    private _adminModalController:AdminModalController
+    private _uploadFilesModalController:UploadFilesModalController,
+    private _usersModalController: UserModalController,
+    private activatedRoute:ActivatedRoute,
+    private _messagesServices:MessagesService
   ) {
-
     this.userOnline = this._userServices.userOnline;
-    this.token = this._userServices.token;
-
-    this.aRoute.params.subscribe(params => {
-      
-      this.getProject(params["id"])
-
-      this._userServices
-        .searchUsersById(this.userOnline._id)
-        .subscribe((user: User) => {
-
-          let proyectos = user.proyectos;
-
-          this.projects = proyectos.filter((project) => {
-
-            return project._id != params['id'];
-          });
-        });
-    })
   }
 
   ngOnInit() {
 
-    this._projectModalController.notification.subscribe(res => {
-      if (!res) {
-
-         if(this.project){
-
-           this.getProject(this.project._id);
-         }
+   this._projectServices.projects$.subscribe((projectOrder:ProjectOrder)=>{
+     if(projectOrder.order === 'getOne'){
+       this.project = projectOrder.project;
+       this.project.participants = this.project.participants.filter((user:User)=>{return user._id != this._userServices.userOnline._id})
+     }
+     if(projectOrder.order === 'put'){
+       this.project.name = projectOrder.project.name;
+       this.project.description = projectOrder.project.description;
+     }
+   })
+    
+   this._projectServices.users$.subscribe((userOrder:UserOrder)=>{
+     if(userOrder.user._id != this.userOnline._id){
+    if(userOrder.order === 'participant'){
+      let projectIds = this.project.participants.map((participant: User) => { return participant._id })
+      if (projectIds.indexOf(userOrder.user._id) < 0) {
+        this.project.participants.push(userOrder.user)
+      } else {
+        this.project.participants = this.project.participants.filter((participant: User) => { return participant._id != userOrder.user._id })
       }
-    })
-
-    this._uploadFilesController.notification.subscribe((res)=>{
-      
-      if(!res){
-        this.getProject(this.project._id)
+    }else if(userOrder.order === 'admin'){
+      let projectIds = this.project.administrators.map((admin: User) => { return admin._id })
+      if (projectIds.indexOf(userOrder.user._id) < 0) {
+        this.project.administrators.push(userOrder.user)
+      } else {
+        this.project.administrators = this.project.administrators.filter((admin: User) => { return admin._id != userOrder.user._id })
       }
-    })
-
-    this._usersModalController.notification.subscribe((res)=>{
-
-      if(!res){
-        this.getProject(this.project._id)
-      }
-    })
+    }
   }
+})
 
-  getProject(id: string) {
-    this._projectServices
-      .searchProjectById(id, this.token)
-      .subscribe(project => {
-
-        if(project.administradores.length === 0){
-
-         this.router.navigate(['/projects'])
-        }else{
-
-          project.participantes = project.participantes.filter((user: any) => { return user._id != this.userOnline._id })
-
-          this.project = project;
-
-          let admIds = this.project.administradores.map((user:any)=>{return user._id})
-
-          if(admIds.indexOf(this.userOnline._id)<0){
-            this.admin = false
-          }else{
-            this.admin = true
-          }
-          this.notification.emit()
+   this._messagesServices.messages$.subscribe((messageOrder:MessageOrder)=>{
+      if(messageOrder.order==='push'){
+        if(messageOrder.message.img){
+          let image = {title:messageOrder.message.title,image:messageOrder.message.img}
+          this.project.images.push(image)
         }
-      });
-  }
-  
-  editProject(id: string) {
-    this._projectModalController.notification.emit({ id });
-    this._projectModalController.showModal();
-  }
+        if (messageOrder.message.file) {
+          let file = { title: messageOrder.message.title, file: messageOrder.message.file }
+          this.project.files.push(file)
+        }
+      }
+   })
 
-  changeProject(id: string) {
-    this._userServices
-      .searchUsersById(this.userOnline._id)
-      .subscribe((user: User) => {
-       
-        let proyectos = user.proyectos;
-
-        this.projects = proyectos.filter(project => {
-          return project._id != id;
-        })
-        this.router.navigate(["/project", id]);
-      });
+    this.activatedRoute.params.subscribe((params)=>{
+      this._projectServices.getProjectById(params['id']).subscribe()
+    }) 
   }
 
-  addUser(id: string) { 
-    this._usersModalController.showModal(id)
-
-    let usersIds = this.project.participantes.map((user:any)=>{return user._id})
-
-    usersIds.push(this.userOnline._id)
-
-    this._usersModalController.notification.emit({usersIds})
+  putProject() {
+    this._projectModalController.showModal(this.project._id);
   }
 
-  deleteUser(id:string) {
-
-    this._projectServices.addOrRemoveUser(this.project._id,id, this.token).subscribe(()=>{
-
-      this.getProject(this.project._id)
-    })
+  toOtherProject(id: string) {
+    this.router.navigate(['/project', id])
   }
 
-  openFilesUploadModal(id:string){
-    this._uploadFilesController.showModal(id,'proyectos')
+  addUser() {
+    this._usersModalController.showModal('participant')
+    this._usersModalController.notification.emit()
   }
 
-  changeAdmin(){
-    this._adminModalController.notification.emit({id:this.project._id});
-    this._adminModalController.showModal()
+  deleteUser(id: string) {
+    this._projectServices.addOrRemoveUser(this.project._id,id).subscribe()
+  }
+
+  addAdmin(id:string) {
+    this._usersModalController.notification.emit({ id })
+    this._usersModalController.showModal('admin')
   }
 
   getOut(){
+    this._projectServices.addOrRemoveUser(this.project._id, this._userServices.userOnline._id).subscribe(() => {
+      this.project.participants = this.project.participants.filter((participant: User) => { return participant._id != this._userServices.userOnline._id })
+      this._projectServices.addOrRemoveAdmin(this.project._id, this._userServices.userOnline._id).subscribe(() => {
+        this.project.administrators = this.project.administrators.filter((admin:User)=>{return admin._id != this._userServices.userOnline._id })
+          this.userOnline.projects = this.userOnline.projects.filter((project:string)=>{return project != this.project._id})
+          this.router.navigate(['/projects'])
+          this._userServices.saveInStorage(this.userOnline._id,this.userOnline,this._userServices.token)
+      })
+    })
+  }
 
-    let admIds = this.project.administradores.map((user: any) => { return user._id })
-
-    if(admIds.indexOf(this.userOnline._id)<0){
-
-        this._projectServices.addOrRemoveUser(this.project._id,this.userOnline._id,this.token).subscribe(()=>{
-         
-          this.router.navigate(["/projects"]);          
-        })
-    }
-
-    else{
-
-      if (this.project.administradores.length === 1) {
-
-        swal({
-          title: "Estás seguro/a",
-          text: 'Ya que eres el último admnistrador del projecto, este se desactivará con tu salida',
-          icon: "warning",
-          buttons: ["Cancelar", "Seguir adelante"],
-          dangerMode: true,
-        })
-          .then((willDelete: any) => {
-            if (willDelete) {
-
-              this._projectServices.changeStatus(this.project._id, this.token).subscribe((res) => {
-
-                this._projectServices.addOrRemoveAdmin(this.project._id, this.userOnline._id, this.token).subscribe(() => {
-
-                  this.router.navigate(["/projects"]);
-                })
-              })
-            }
-          });
-      }
-      else {
-        this._projectServices.addOrRemoveUser(this.project._id,this.userOnline._id,this.token).subscribe(()=>{
-
-          this._projectServices.addOrRemoveAdmin(this.project._id, this.userOnline._id, this.token).subscribe(() => {
-
-            this.router.navigate(['/projects'])
-          })
-        })
-      }
-    }
+  openFilesUploadModal(id: string) {
+    this._uploadFilesModalController.showModal(id, "projects");
   }
 }

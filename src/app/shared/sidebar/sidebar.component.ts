@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
     this._calendarServices.weeks$.subscribe((week)=>{
       this.currentWeek = week;
     })
-    
+
   }
  toLastWeek(){
      let today = new Date()
@@ -45,7 +45,6 @@ export class SidebarComponent implements OnInit {
    }
    weekDate = new Date(weekDate);
    weekDate = new Date(weekDate.getFullYear(),weekDate.getMonth(),weekDate.getDate(),1,0,0,0);
-   console.log(weekDate)
    weekDate = weekDate.getTime()
 
    this._calendarServices

@@ -1,25 +1,23 @@
 import { Injectable, EventEmitter } from "@angular/core";
-import { User } from "src/app/models/user.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class UserModalController {
-  public id:string
   public hidden: string = "hidden";
+  public type:string
   public notification = new EventEmitter<any>();
-
 
   constructor() {}
 
   hideModal() {
     this.hidden = "hidden";
-    this.id = '';
+    this.type = undefined;
   }
 
-  showModal(id:string) {
+  showModal(type:string) {
     this.hidden = "";
-    this.id = id;
+    this.type = type;
   }
 
 }

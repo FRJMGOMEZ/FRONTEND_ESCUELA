@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ProjectComponent } from '../project.component';
-import { ChatServices } from '../../../../providers/chat.service';
-import { title } from 'process';
 import { ImgModalController } from '../../../../modals/img-modal/imgModal.controller';
 
 @Component({
@@ -10,49 +8,19 @@ import { ImgModalController } from '../../../../modals/img-modal/imgModal.contro
   styleUrls: ['./images.component.css']
 })
 export class ImagesComponent implements OnInit {
+  /////Create model of images////
 
-  images:string[] =  []
+  @Input()images : any[] =  []
   files:string[]=[]
 
-  constructor(private projectComponent:ProjectComponent,
-              private _chatServices:ChatServices,
-              private _imgModalController:ImgModalController) { }
-
+  constructor(private _imgModalController:ImgModalController,
+             private projectComponent:ProjectComponent) { }
   ngOnInit() {
-
-    this.images = this.projectComponent.project.imagenes
-
-    this.projectComponent.notification.subscribe((res)=>{
-
-      if(res){
-
-        if (res.image) {
-
-          this.images.push(res.image)
-        }
-
-        if(res.file){
-
-          this.files.push(res.file)
-        }
-      }
-      else {
-        this.images = this.projectComponent.project.imagenes;
-      }
-    })
+    console.log(this.images)
   }
 
   downloadImg(img?:any){
-
-    this._imgModalController.showModal(this.projectComponent.project._id)
-
-    if(img){
-      this._imgModalController.notification.emit({ src: img.src })
-    }
-
-    else{
-      this._imgModalController.notification.emit()
-    }
+    this._imgModalController.showModal('imagesProject')
+    this._imgModalController.notification.emit(img.src)
   }
-
 }

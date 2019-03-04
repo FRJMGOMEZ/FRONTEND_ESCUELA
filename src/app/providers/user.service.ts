@@ -80,6 +80,7 @@ export class UserServices {
                 let userOrder = new UserOrder(user, 'get')
                 this.usersSource.next(userOrder)
             });
+            return res.users
         }))
     }
 

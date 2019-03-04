@@ -10,10 +10,10 @@
             <div *ngFor=" let project of projects">
                 <div class="p-2">
                     <div class='card'>
-                        <div class="card-header text-center">{{project.nombre}}</div>
+                        <div class="card-header text-center">{{project.name}}</div>
                         <img class='card-img-top' [src]="project.img | imgPipe" alt="" style='border: 1px solid black'>
                         <div class='card-body'>
-                            <p class='card-text'>{{project.descripcion}}</p>
+                            <p class='card-text'>{{project.description}}</p>
                             <div class='text-center'>
                                 <button (click)='toProject(project._id)' routerLinkActive="router-link-active" class='btn btn-warning'>IR</button>
                             </div>

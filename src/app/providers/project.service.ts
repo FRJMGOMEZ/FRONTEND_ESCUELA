@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { URL_SERVICES } from '../config/config';
-import swal from "sweetalert";
-import { Project } from '../models/project.model';
-
+import { Project, ProjectOrder } from '../models/project.model';
+import { UserServices } from './user.service';
+import { Subject } from 'rxjs';
+import { UserOrder, User } from '../models/user.model';
 
 
 @Injectable({
@@ -12,86 +13,80 @@ import { Project } from '../models/project.model';
 })
 export class ProjectServices {
 
-  constructor(private http:HttpClient) { }
+  headers:HttpHeaders
 
-  createProject(proyect:Project,token:string){
+  projectsSource = new Subject<ProjectOrder>();
+  projects$ = this.projectsSource.asObservable()
 
-    let url = `${URL_SERVICES}/proyecto`
+  usersSource = new Subject<UserOrder>();
+  users$ = this.usersSource.asObservable()
 
-    let headers = new HttpHeaders().set('token',token)
+  projects:Project[]=[]
 
-    return this.http.post(url,proyect,{headers}).pipe(map((response:any)=>{
+  constructor(private http:HttpClient,
+              private _userServices: UserServices) { 
+    this.headers = new HttpHeaders().set("token", this._userServices.token);          
+   }
 
-      swal('PROYECT SUCCESFULLY CREATED',response.proyectoGuardado.nombre,'success')
-
-     return  {project:response.proyectoGuardado,user:response.usuarioActualizado}
+  getProjects(){
+    let url = `${URL_SERVICES}/projects`
+    return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
+      this.projects = res.projects;
+      res.projects.forEach((project)=>{
+        let projectOrder = new ProjectOrder(project,'get')
+        this.projectsSource.next(projectOrder);
+      })
+    }))
+  } 
+  
+  postProject(project:Project){
+    let url = `${URL_SERVICES}/project`
+    return this.http.post(url,project,{headers:this.headers}).pipe(map((res:any)=>{
+      let projectOrder = new ProjectOrder(res.project,'push')
+      this.projects.push(res.project)
+      this.projectsSource.next(projectOrder)
+     return res.user
     }))
   }
 
-  searchProjectById(id:string,token:string){
-
-    let url = `${URL_SERVICES}/searchById/proyecto/${id}`
-
-    let headers = new HttpHeaders().set('token', token)
-
-    return this.http.get(url, {headers}).pipe(map((response:any)=>{
-
-       return response.proyecto
+  getProjectById(id:string){
+    let url = `${URL_SERVICES}/searchById/project/${id}`
+    return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
+      let projectOrder = new ProjectOrder(res.project,'getOne')
+       this.projectsSource.next(projectOrder)
     }))
   }
 
-
-  addOrRemoveUser(projectId:string,participanteId:string,token:string){
-
-    let url = `${URL_SERVICES}/anadirOExpulsarParticipante/${projectId}`
-
-    let body = {participante:participanteId};
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.put(url,body,{headers}).pipe(map((res:any)=>{
-
-      return res.usuarioActualizado
+  addOrRemoveUser(projectId:string,participantId:string){
+    let url = `${URL_SERVICES}/pullOrPushOutParticipant/${projectId}`;
+    let body = {participant:participantId};
+    return this.http.put(url,body,{headers:this.headers}).pipe(map((res:any)=>{
+      let userOrder = new UserOrder(res.user,'participant')
+      this.usersSource.next(userOrder)
     }))
   }
 
-  addOrRemoveAdmin(projectId:string,userId:string,token:string){
-
-    let url = `${URL_SERVICES}/anadirEliminarAdmin/${projectId}`;
-
-    let body = {participante:userId};
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.put(url,body,{headers}).pipe(map((res:any)=>{
-
-      return res.proyectoGuardado
-    }))
-
-  }
-
-  updateProject(id:string,project:Project,token:string){
-
-    let url = `${URL_SERVICES}/proyecto/${id}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.put(url,project,{headers}).pipe(map((res:any)=>{
-
-      return res.proyectoActualizado
-
+  addOrRemoveAdmin(projectId:string,userId:string){
+    let url = `${URL_SERVICES}/pullOrPushAdmin/${projectId}`;
+    let body = {participant:userId};
+    return this.http.put(url,body,{headers:this.headers}).pipe(map((res:any)=>{
+      let userOrder = new UserOrder(res.user,'admnin')
+      this.usersSource.next(userOrder)
     }))
   }
 
-  changeStatus(id:string,token:string){
+  updateProject(id:string,project:Project){
+    let url = `${URL_SERVICES}/project/${id}`
+    return this.http.put(url,project,{headers:this.headers}).pipe(map((res:any)=>{
+      let projectOrder = new ProjectOrder(res.project,'put')
+      this.projectsSource.next(projectOrder)
+    }))
+  }
 
-    let url = `${URL_SERVICES}/cambiarEstado/${id}`
-
-    let headers = new HttpHeaders().set("token", token);
-
-    return this.http.put(url,{headers}).pipe(map((res:any)=>{
-
-      return res.proyectoGuardado
+  changeStatus(id:string){
+    let url = `${URL_SERVICES}/changeStatus/${id}`
+    return this.http.put(url,{headers:this.headers}).pipe(map((res:any)=>{
+      return res.project
     }))
   }
 }

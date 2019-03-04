@@ -3,22 +3,49 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-center">Usuarios</h5>
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
                 </div>
                 <div class="modal-body">
-                    <div class='row'>
+                    <div *ngIf="_modalController.type === 'admin'" class="row d-flex justify-content-center">
+                        <table style="width:100%">
+                            <div class="col-4">
+                                <tr *ngFor="let user of admins">
+                                    <th>{{user['name']}}</th>
+                                </tr>
+                            </div>
+                        </table>
+                    </div>
+                    <div *ngIf="_modalController.type === 'participant'" class="row d-flex justify-content-center">
+                        <div class="col-6 d-flex flex-row">
+                            <div>
+                                <p>Participantes:</p>
+                            </div>
+                            <table style="width:100%">
+                                <tr *ngFor="let user of participants">
+                                    <th>{{user['name']}}</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class='row mt-2'>
                         <div class='col-12 d-flex justify-content-center mb-3'>
                             <input #input type="text">
                             <button (click)='searchUsers(input.value)' class='btn btn-warning'>BUSCAR</button>
                         </div>
-                        <div *ngIf="users" class='col d-flex flex-column'>
-                            <div class='text-center' *ngFor="let user of users">
+                        <div *ngIf="users" class='col d-flex justify-content-center mt-1'>
+                            <div class="col-6 d-flex flex-row">
                                 <div>
-                                    <a (click)='addUser(user._id)'><strong style='cursor: pointer;'>{{user.nombre}}</strong></a>
+                                    <p *ngIf="_modalController.type === 'participant'">Usuarios no participantes:</p>
+                                    <p *ngIf="_modalController.type === 'admin'">Usuarios no admnistradores:</p>
                                 </div>
+                                <table style="width:100%">
+                                    <tr *ngFor="let user of users">
+                                        <th>{{user.name}}</th>
+                                        <th> <a class='btn btn-warning' (click)='addUser(user._id)'>+</a> </th>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>

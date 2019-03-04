@@ -5,7 +5,6 @@ import { CommonModule } from "@angular/common";
 import { RouterModule} from "@angular/router";
 import{ScrollingModule} from '@angular/cdk/scrolling';
 
-
 //My modules//
 import { ProvidersModule } from "../providers/providers.module";
 import { ModalsModule } from "../modals/modals.module";
@@ -22,7 +21,7 @@ import { ProfessorComponent } from "./addressBook/professor/professor.component"
 //Main pages//
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ProyectsComponent } from './proyects/projects.component';
+import { ProjectsComponent } from './proyects/projects.component';
 import { ProjectComponent } from "./proyects/project/project.component";
 
 
@@ -35,10 +34,6 @@ import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component';
 
-
-
-
-
 @NgModule({
   declarations: [
     PagesComponent,
@@ -48,7 +43,7 @@ import { EventComponent } from './calendar/day/event/event.component';
     UsersComponent,
     DashboardComponent,
     ProfileComponent,
-    ProyectsComponent,
+    ProjectsComponent,
     ProjectComponent,
     ImagesComponent,
     MessagesComponent,

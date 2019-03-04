@@ -4,7 +4,7 @@ import { ChatServices } from '../../providers/chat.service';
 import { title } from 'process';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { MessagesService } from '../../providers/messages.service';
-
+import { ProjectServices } from '../../providers/project.service';
 
 @Component({
   selector: "app-files-modal",
@@ -13,8 +13,7 @@ import { MessagesService } from '../../providers/messages.service';
 })
 export class FilesModalComponent implements OnInit {
   
-  messages: Message[] = [];
-
+  type:string
   file: string;
 
   @ViewChild("myPdf") myPdf: ElementRef;
@@ -22,31 +21,15 @@ export class FilesModalComponent implements OnInit {
   constructor(
     public _modalController: FilesModalController,
     private _chatServices: ChatServices,
-    private _messagesService: MessagesService
   ) {
  
   }
 
   ngOnInit() {
-    this._modalController.notification.subscribe(res => {
-      if (res) {
-        if (res.fileName) {
-          this.file = res.fileName;
-        }
-      }
-
-      if (!res) {
-        this._messagesService
-          .getMessages(this._modalController.id)
-          .subscribe(messages => {
-            for (let message of messages) {
-              if (message.titulo) {
-                this.messages.push(message);
-              }
-            }
-          });
-      }
-    });
+    this._modalController.notification.subscribe((file)=>{
+      this.file = file;
+      this.type = this._modalController.type;
+    })  
   }
 
   downloadFile() {
@@ -64,12 +47,7 @@ export class FilesModalComponent implements OnInit {
       window.location.reload()
     }
     this.file = null;
-    this.messages = [];
     this._modalController.hideModal();
-  }
-  
-  showDocument(fileName: string) {
-    this.file = fileName;
   }
 
   toMyFiles = () => {

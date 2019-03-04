@@ -3,28 +3,29 @@
         <div class=' col-12 nav justify-content-around align-items-center ' style='background:black;color:white;height: 40px '>
             <div>
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown" style='cursor: pointer'>MIS PROYECTOS</a>
-                <div *ngIf="projects" class="dropdown-menu" aria-labelledby="dp-proyectos">
-                    <div *ngFor="let oneProject of projects">
-                        <a (click)='changeProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>{{oneProject.nombre}}</a>
+                <div *ngIf="_projectServices.projects.length > 0" class="dropdown-menu" aria-labelledby="dp-proyectos">
+                    <div *ngFor="let oneProject of _projectServices.projects">
+                        <a (click)='toOtherProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>{{oneProject.name}}</a>
                     </div>
                 </div>
-                <div *ngIf="!projects" class="dropdown-menu" aria-labelledby="dp-proyectos">
+                <div *ngIf="_projectServices.projects.length === 0" class="dropdown-menu" aria-labelledby="dp-proyectos">
                     <div>
                         <a routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>No existen más proyectos</a>
                     </div>
                 </div>
             </div>
             <div>
-                <a [routerLink]="['/projects']" routerLinkActive="router-link-active">VOLVER</a>
+                <a [routerLink]="['/projects']" routerLinkActive="router-link-active" [routerLinkActive]>VOLVER</a>
             </div>
             <div>
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown" style='cursor: pointer'>CONFIGURACION</a>
                 <div class="dropdown-menu" aria-labelledby="dp-config">
-                    <div *ngIf="admin">
-                        <a (click)='editProject(project._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>EDITAR PROYECTO</a>
+
+                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                        <a (click)='putProject()' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>EDITAR PROYECTO</a>
                     </div>
-                    <div *ngIf="admin">
-                        <a (click)='changeAdmin()' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>CAMBIAR ADMINISTRADOR</a>
+                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                        <a (click)='addAdmin(project._id)' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>CAMBIAR ADMINISTRADOR</a>
                     </div>
                     <div>
                         <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item' style='cursor: pointer'>SALIR DE PROYECTO</a>
@@ -33,36 +34,65 @@
             </div>
         </div>
         <div class="col-12 mt-2" style='background:#1F0968;color:white '>
-            <h5 class='text-center '>{{project.nombre}}</h5>
+            <h5 class='text-center '>{{project.name}}</h5>
         </div>
-        <div class="col-4 d-flex justify-content-center">
-            <img class='img-fluid m-1' [src]="project.img | imgPipe:'proyectos'" (click)='openFilesUploadModal(project._id)' style='height:200px;border: 1px solid black;cursor: pointer'>
+        <div class="col-3 d-flex justify-content-center">
+            <div class="row d-flex flex-column">
+                <div>
+                    <img class='img-fluid m-1' [src]="project.img | imgPipe:'projects'" (click)='openFilesUploadModal(project._id)' style='height:125px;border: 1px solid black;cursor: pointer'>
+                </div>
+                <div>
+                    {{project.description}}
+                </div>
+            </div>
         </div>
-        <div *ngIf="admin" class='col-8 d-flex justify-content-start flex-column'>
+        <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'" class='col-9 d-flex justify-content-start flex-column'>
             <div class="d-flex justify-content-center">
                 <h5 class='mr-2 '>PARTICIPANTES:</h5>
             </div>
-            <div class="d-flex align-items-center row justify-content-start">
-                <div *ngFor="let user of project['participantes']" class="col-4 user d-flex justify-content-between">
-                    <div> <a>{{user.nombre}}</a></div>
-                    <div><button (click)='deleteUser(user._id)' class='btn btn-danger'>X</button></div>
-                </div>
-            </div>
+            <table style="width:100%">
+                <tr *ngFor="let user of project.participants">
+                    <th>{{user['name']}}</th>
+                    <th>{{user['role']}}</th>
+                    <th><button (click)="deleteUser(user['_id'])" class='btn btn-danger'>X</button></th>
+                </tr>
+            </table>
             <div class='d-flex justify-content-center mt-2 '>
-                <button (click)='addUser(project._id)' class='btn btn-warning '>Añadir participante</button>
+                <button (click)='addUser()' class='btn btn-warning '>Añadir participante</button>
             </div>
         </div>
     </div>
     <hr>
     <div class="row mb-4" style='border: 1px solid black'>
-        <div class=" col-10 d-flex justify-content-around flex-column " style='background:#1F0968;color:white '>
-            <app-images></app-images>
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background:black">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+             </button>
+                <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+
+                    <div>
+                        <a class='text-white' (click)="page='chat'">CHAT</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="page = 'images'">IMAGENES</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="page = 'files'">ARCHIVOS</a>
+                    </div>
+                    <div>
+                        <a class='text-white'>TAREAS</a>
+                    </div>
+                    <div>
+                        <a class='text-white'>EVENTOS</a>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <div class=" col-2 d-flex justify-content-around flex-column " style='background:#1F0968;color:white '>
-            <app-files></app-files>
-        </div>
-        <div class="col-12 " style='background:#1F0968'>
-            <app-messages></app-messages>
+        <div class="col-12 mt-3 " style='background:#1F0968'>
+            <app-messages *ngIf="page === 'chat'" [projectId]='project._id'></app-messages>
+            <app-images *ngIf="page === 'images'" [images]='project.images'></app-images>
+            <app-files *ngIf="page === 'files'" [files]='project.files'></app-files>
         </div>
     </div>
 </div>
