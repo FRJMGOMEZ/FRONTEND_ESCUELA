@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeConversorPipe2 implements PipeTransform {
 
-    transform(position: number, duration:number): any { 
+    transform(position: number, duration:number) { 
 
     if(duration === null){
     let integer = String(position).split('.')[0];

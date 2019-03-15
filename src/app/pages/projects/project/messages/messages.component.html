@@ -1,0 +1,61 @@
+<div class="row pt-2" style='background: #F5F1E3'>
+    <div class="col-12">
+        <div (scroll)='getMoreMessages()' class='col-12 scroll-box' #scroll>
+            <div *ngIf="loading === true" class="lds-spinner text-center" style='background:white'>
+                CARGANDO MAS MENSAJES....
+            </div>
+            <div *ngFor="let message of messages">
+                <div class="card">
+                    <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == userOnline._id }" style='height:25px;background:white;border:none'>
+                        <strong [ngClass]="{'badge badge': message.user._id == userOnline._id  , 'badge badge-warning': message.user._id != userOnline._id  }">{{message.user.name}}</strong>
+                    </div>
+                    <div class="card-body m-0 pt-0 pb-0 ">
+                        <div class="row d-flex" [ngClass]="{'justify-content-end': message.user._id == userOnline._id }">
+                            <div>
+                                <p>{{message.message}}</p>
+                            </div>
+                            <div class="col-12"></div>
+                            <div *ngIf="message.file">
+                                <img (click)='openFile(message.file._id)' [src]="message.file|imgPipe : 'projectFiles'" alt="" style='height:100px;width:100px'>
+                            </div>
+                            <div class="col-12"></div>
+                            <div *ngIf="message.file" style='width:100px border:none'>
+                                <span><small>{{message.file.title}}</small></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer p-0 m-0 text-center" style='height:25px; background:white;border:none'>
+                        <span class='badge'>{{message.date|date:'medium'}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='input-group mt-3 d-flex flex-row align-items-end' style="background:white">
+        <div class='row m-2 p-2' *ngIf="temporaryImg || fileUpload" style='width:20%'>
+            <div class='col-11 p-0 m-0'>
+                <img *ngIf="temporaryImg" class='img-fluid' [src]="temporaryImg | imgPipe" alt=''>
+                <img *ngIf='fileUpload' class='img-fluid' [src]="fileUpload | imgPipe" alt="">
+            </div>
+            <div class="col-1 p-0 m-0">
+                <button class='btn btn-warning' (click)='fileUpload=null;temporaryImg=null'>x</button>
+            </div>
+            <div class="col-12 p-0">
+                <span> <small>{{fileTitle}}</small></span>
+                <label><input [(ngModel)]="download"type="checkbox">Permitir descarga</label>
+            </div>
+        </div>
+        <div [ngStyle]="{'width': temporaryImg || fileUpload ? '75%' : '100%'}">
+            <textarea (keyup.enter)='sendMessage(input.value)' #input [(ngModel)]="message" class='form-control ' value="" placeholder="Send Message" style="border: none">
+            </textarea>
+        </div>
+    </div>
+    <div class='input-group d-flex justify-content-around mt-2 '>
+        <div>
+            <label class="uploadBtnWrap bg-warning" for="thefile">
+                    <input class='' type="file" id="thefile" (change)=' selectFile($event.target.files[0]) ' />
+                    <span class="btn">COMPARTIR ARCHIVO</span>
+                </label>
+        </div>
+    </div>
+</div>

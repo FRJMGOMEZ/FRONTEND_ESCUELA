@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfessorModalController } from './professorModalController';
-import { Professor } from '../../models/professor.model';
+import { Professor, ProfessorOrder } from '../../models/professor.model';
 import { ProfessorsServices } from '../../providers/professor.service';
 import { SubjectServices } from '../../providers/subject.service';
 import { Subject } from 'src/app/models/subject.model';
+import { Subscription } from 'rxjs';
+import { SubjectOrder } from '../../models/subject.model';
 
 
 @Component({
@@ -19,6 +21,9 @@ export class ProfessorModalComponent implements OnInit {
 
   from:number=0
 
+  subjectSubscription:Subscription=null;
+  professorsSubscription:Subscription=null;
+
   constructor(public _modalController:ProfessorModalController,
               private _professorServices:ProfessorsServices,
               private _subjectServices:SubjectServices) {
@@ -27,29 +32,20 @@ export class ProfessorModalComponent implements OnInit {
   ngOnInit() {
     
     this._modalController.notification.subscribe((res)=>{
-      if (res) {
-        if (res.message && res.message ==='addProfessors') {
-          this._subjectServices.getSubjectById(this._modalController.id).subscribe((subject:Subject)=>{
-            this.subject = subject;
-            this.getProfessors().then((res:any) => {
-              this.professors = [];
-              for (let professor of res.professors) {
-                if (subject.professors.indexOf(professor._id) < 0) {
-                  this.professors.push(professor);
-                }
-              }
-            });
-          })
-        }
-      }
-    })
-  }
-
-  getProfessors(){
-    return new Promise((resolve,reject)=>{
-      this._professorServices.getProfessors(this.from).subscribe((professors:any) => {
-        resolve({professors})
-      })
+       this.subjectSubscription = this._subjectServices.subjects$.subscribe((subjectOrder:SubjectOrder)=>{
+         if(subjectOrder.order === 'getById'){
+           this.subject = subjectOrder.subject;
+           this.professorsSubscription = this._professorServices.professors$.subscribe((professorOrder:ProfessorOrder)=>{
+             if(professorOrder.order === 'get'){
+               if(this.subject.professors.indexOf(professorOrder.professor._id)<0){
+                 this.professors.push(professorOrder.professor)
+               }
+             }
+           })
+           this._professorServices.getProfessors().subscribe()
+         }
+       })
+       this._subjectServices.getSubjectById(this._modalController.id).subscribe()
     })
   }
 
@@ -75,6 +71,8 @@ export class ProfessorModalComponent implements OnInit {
 
   hideModal(){
     this.professors = [];
+    this.professorsSubscription.unsubscribe();
+    this.subjectSubscription.unsubscribe();
     this._modalController.hideModal()
   }
 }

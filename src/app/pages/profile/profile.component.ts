@@ -3,7 +3,7 @@ import { UserServices } from '../../providers/user.service';
 import { User, UserOrder } from '../../models/user.model';
 import { NgForm } from '@angular/forms';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
-import { PasswordModalController } from '../../modals/password/passwordModalController.service';
+import { PasswordModalController } from '../../modals/password-modal/passwordModalController.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   saveChanges(form:NgForm){
     if(form.valid){
       let user = new User(form.value.name,form.value.email)
-      this._userServices.updateUser(this.userOnline._id,user).subscribe()
+      this._userServices.putUser(this.userOnline._id,user).subscribe()
     }
   }
 

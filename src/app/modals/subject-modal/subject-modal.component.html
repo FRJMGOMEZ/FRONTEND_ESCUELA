@@ -9,7 +9,7 @@
           </button>
                 </div>
                 <div class="modal-body">
-                    <table *ngIf="!edition && !creation" class='table table-hover'>
+                    <table *ngIf="addition" class='table table-hover'>
                         <thead>
                             <tr>
                                 <th class='text-center'>MATERIAS</th>
@@ -28,8 +28,8 @@
                     <form *ngIf="creation || edition" ngNativeValidate #form='ngForm' role="form">
                         <div class="form-group">
                             <input [ngModel]="subject.name" class='form-control' name='subjectName' placeholder='nombre de la materia' type="text">
-                            <button *ngIf="creation" (click)='createSubject(form)' class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Crear</strong></button>
-                            <button *ngIf="edition" (click)='editSubject(form)' class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Guardar cambios</strong></button>
+                            <button *ngIf="creation" (click)='postSubject(form)' class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Crear</strong></button>
+                            <button *ngIf="edition" (click)='putSubject(form)' class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Guardar cambios</strong></button>
                         </div>
                     </form>
                 </div>

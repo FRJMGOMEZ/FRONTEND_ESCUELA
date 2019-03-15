@@ -1,12 +1,16 @@
 
+
+//// Modules ////
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { PipesModule } from "../pipes/pipes.module";
 import { PdfViewerModule } from "ng2-pdf-viewer";
+import { SharedModule } from "../shared/shared.module";
 
 
+//// Components ////
 import { IndexCardModalComponent } from './index-card-modal/index-card-modal.component';
 import { AlumniModalComponent } from './alumni-modal/alumni-modal.component';
 import { ProfessorModalComponent } from './professor-modal/professor-modal.component';
@@ -14,10 +18,15 @@ import { SubjectModalComponent } from './subject-modal/subject-modal.component';
 import { UsersModalComponent } from './users-modal/users-modal.component';
 import { UploadFilesModalComponent } from './upload-files-modal/upload-files-modal.component';
 import { ProjectModalComponent } from './project-modal/project-modal.component';
-import { PasswordComponent } from "./password/password.component";
-import { FilesModalComponent } from "./files-modal/files-modal.component";
-import { ImgModalComponent } from "./img-modal/img-modal.component";
+import { PasswordComponent } from "./password-modal/password.component";
+import { ShowFilesModalComponent } from "./show.files-modal/showfiles-modal.component";
+import { TaskModalComponent } from "./task-modal/task-modal.component";
 import { EventsModalComponent } from "./events-modal/events-modal.component";
+
+
+
+/////Controllers///
+import { CalendarModalComponent } from "./calendar-modal/calendar-modal.component";
 import { AlumnniModalController } from './alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from "./professor-modal/professorModalController";
 import { IndexCardModalController } from "./index-card-modal/indexCardModalController";
@@ -25,17 +34,13 @@ import { ProjectModalController } from './project-modal/projectModalController';
 import { SubjectModalController } from './subject-modal/subjectModalController';
 import { UploadFilesModalController } from "./upload-files-modal/uploadFilesModalController";
 import { UserModalController } from "./users-modal/userModalController";
-import { PasswordModalController } from "./password/passwordModalController.service";
-import { ImgModalController } from './img-modal/imgModal.controller';
-import { FilesModalController } from './files-modal/filesModal.controller';
+import { PasswordModalController } from "./password-modal/passwordModalController.service";
 import { EventModalController } from './events-modal/eventsModal.controller';
-import { CalendarModalComponent } from './calendar-modal/calendar-modal.component';
 import { CalendarModalController } from './calendar-modal/calendar-modal.controller';
 import { FacilitiesModalComponent } from './facilities-modal/facilities-modal.component';
 import { FacilitiesModalController } from './facilities-modal/facilities-modalController';
-
-
-
+import { TaskModalController } from './task-modal/task.modalController';
+import { ShowFilesModalController } from './show.files-modal/showfilesModal.controller';
 
 
 
@@ -49,11 +54,11 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UsersModalComponent,
     UploadFilesModalComponent,
     PasswordComponent,
-    ImgModalComponent,
-    FilesModalComponent,
+    ShowFilesModalComponent,
     EventsModalComponent,
     CalendarModalComponent,
-    FacilitiesModalComponent
+    FacilitiesModalComponent,
+    TaskModalComponent
   ],
 
   imports: [
@@ -62,7 +67,8 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     ReactiveFormsModule,
     RouterModule,
     PipesModule,
-    PdfViewerModule
+    PdfViewerModule,
+    SharedModule
   ],
 
   exports: [
@@ -74,11 +80,11 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UsersModalComponent,
     UploadFilesModalComponent,
     PasswordComponent,
-    ImgModalComponent,
-    FilesModalComponent,
+    ShowFilesModalComponent,
     EventsModalComponent,
     CalendarModalComponent,
-    FacilitiesModalComponent
+    FacilitiesModalComponent,
+    TaskModalComponent
   ],
 
   providers: [
@@ -90,11 +96,11 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
     UploadFilesModalController,
     UserModalController,
     PasswordModalController,
-    ImgModalController,
-    FilesModalController,
     EventModalController,
     CalendarModalController,
-    FacilitiesModalController
+    FacilitiesModalController,
+    TaskModalController,
+    ShowFilesModalController
   ],
 
   bootstrap: []

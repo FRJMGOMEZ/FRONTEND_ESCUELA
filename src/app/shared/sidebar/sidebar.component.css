@@ -1,20 +1,20 @@
-.barra_lateral {
+.lateral_bar {
     background: black;
     color: white;
     min-width: 220px;
-    min-height: 150vh;
+    min-height: 170vh;
     padding: 0
 }
 
-.barra_lateral a {
+.lateral_bar a {
     color: white
 }
 
-.barra_lateral .logo {
+.lateral_bar .logo {
     margin-bottom: 2px
 }
 
-.barra_lateral img {
+.lateral_bar img {
     width: 100px;
     height: 100px;
     padding: 10px;
@@ -22,19 +22,19 @@
     cursor: pointer;
 }
 
-.barra_lateral .menu a {
+.lateral_bar .menu a {
     display: block;
     padding: 20px
 }
 
-.barra_lateral .menu .footer {
+.lateral_bar .menu .footer {
     background: black;
     height: 22px;
     display: block;
     padding: 20px
 }
 
-.barra_lateral .menu a:hover {
+.lateral_bar .menu a:hover {
     background: #B03F0E;
     text-decoration: none
 }

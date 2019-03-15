@@ -17,13 +17,13 @@ export class UsersModalComponent implements OnInit {
   participants:any[]
   admins:any[]
 
-  constructor(private _userServices:UserServices,
+  constructor(public _userServices:UserServices,
               public _modalController:UserModalController,
               private _projectServices:ProjectServices) {}
 
   ngOnInit() {
     this._projectServices.projects$.subscribe((projectOrder:ProjectOrder)=>{
-      if(projectOrder.order === 'getOne'){
+      if(projectOrder.order === 'getById'){
         this.projectId = projectOrder.project._id
         this.participants = projectOrder.project.participants;
         this.admins = projectOrder.project.administrators;
@@ -76,7 +76,7 @@ export class UsersModalComponent implements OnInit {
         })        
   }
   addUser(id: string) {
-   this._projectServices.addOrRemoveUser(this.projectId, id).subscribe(()=>{
+   this._projectServices.addOrRemoveParticipant(this.projectId, id).subscribe(()=>{
      this.hideModal()
    })
   }

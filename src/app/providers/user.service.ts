@@ -11,12 +11,12 @@ import { User, UserOrder } from '../models/user.model';
 import { Subject } from 'rxjs';
 
 
-
-
 @Injectable({
     providedIn: 'root'
 })
 export class UserServices {
+
+    private headers : HttpHeaders
 
     public  userOnline:User;
     public  token:string;
@@ -27,6 +27,7 @@ export class UserServices {
     public count:number
 
     constructor(private http:HttpClient, private router:Router) { 
+        this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
         this.uploadFromStorage();
     }
 
@@ -39,30 +40,20 @@ export class UserServices {
                         );
     }
 
-    updateUser(id:string, user:User){
+    putUser(id:string, user:User){
         let url = `${URL_SERVICES}/user/${id}`
-        let headers = new HttpHeaders().set('token', this.token);
-        return this.http.put(url,user,{headers}).pipe((map((res:any)=>{
+        return this.http.put(url,user,{headers:this.headers}).pipe((map((res:any)=>{
             if (res.user._id === this.userOnline._id) {
                 this.saveInStorage(res.user._id, res.user, this.token)
             }
-                let userOrder=new UserOrder(res.user,'update')
-                this.usersSource.next(userOrder)
-            
-            swal("USER SUCCESSFULLY UPDATED", res.user.email, "success"); 
-            return res.user  
+                let userOrder=new UserOrder(res.user,'put')
+                this.usersSource.next(userOrder)  
             })))    
-    }
-
-    updateUserfromOutside(user:User){
-        let userOrder = new UserOrder(user,'update')
-        this.usersSource.next(userOrder)
     }
 
     getUsers(from:number=0,limit:number=5){
         let url = `${URL_SERVICES}/users?from=${from}&limit=${limit}`;
-        let headers = new HttpHeaders().set('token', this.token);
-        return this.http.get(url,{headers}).pipe(map((res:any)=>{
+        return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count = res.count;
             res.users.forEach(user => {
                 let userOrder = new UserOrder(user,'get')
@@ -84,32 +75,22 @@ export class UserServices {
         }))
     }
 
-    searchUserById(id:string){
-        let url = `${URL_SERVICES}/searchById/user/${id}`
-        let headers = new HttpHeaders().set("token", this.token);
-        return this.http.get(url,{headers}).pipe(map((res:any)=>{
-            return res.user
-        }))
-    }
-
     changeUserStatus(id:string){
         let url = `${URL_SERVICES}/changeUserStatus/${id}`
-        let headers = new HttpHeaders().set("token", this.token)
-        return this.http.put(url,'',{headers}).pipe(map((res:any)=>{
+        return this.http.put(url,'',{headers:this.headers}).pipe(map((res:any)=>{
             if(res.user.status === true){
                 swal('USER ACTIVATED',res.user.email,'success')
             }else{
                 swal("USER DISABLED", res.user.email, 'success');
             }
-           let userOrder = new UserOrder(res.user,'update');
+           let userOrder = new UserOrder(res.user,'put');
            this.usersSource.next(userOrder)
         }))
     }
     
     deleteUser(id:string){
         let url = `${URL_SERVICES}/user/${id}`
-        let headers = new HttpHeaders().set("token", this.token);
-        return this.http.delete(url,{headers}).pipe(map((res:any)=>{
+        return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count--
             let userOrder = new UserOrder(res.user,'delete');
             this.usersSource.next(userOrder)
@@ -124,7 +105,6 @@ export class UserServices {
         }
          let url = `${URL_SERVICES}/login`;
          return this.http.post(url,user).pipe(map((res:any)=>{
-             console.log(res)
         this.saveInStorage(res.id,res.user,res.token)
      }))
      }
@@ -152,19 +132,19 @@ export class UserServices {
     }
 
     logout() {
-        this.userOnline = null;
-        this.token = "";
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("id");
-        this.router.navigate(["/login"]);
+            this.userOnline = null;
+            this.token = "";
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            localStorage.removeItem("id");
+            this.router.navigate(["/login"]);
     }
 
     checkPassword(id:string,password:string){
         let url = `${URL_SERVICES}/user/${id}/${password}`
-        let headers = new HttpHeaders().set('token',this.token);
-        return this.http.get(url,{headers})
+        return this.http.get(url,{headers:this.headers})
     }
+
 }
 
 

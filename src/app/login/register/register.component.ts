@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
-
-import swal from "sweetalert";
 import { UserServices } from '../../providers/user.service';
 import { User } from '../../models/user.model';
 
@@ -29,12 +27,12 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
-      password2: new FormControl('', Validators.required),
-      conditions: new FormControl(false),
+      password2: new FormControl('', Validators.required)
     }, { validators: this.areTheyEqual('password', 'password2') })
 
     this.form.setValue({
@@ -42,16 +40,11 @@ export class RegisterComponent implements OnInit {
       email: '',
       password: '',
       password2: '',
-      conditions: false
     })
   }
 
   registerUser() {
     if (this.form.invalid) {
-      return
-    }
-    if (this.form.value.conditions === false) {
-      swal('YOU MUST ACEPT THE CONDITIONS ', '', 'warning')
       return
     }
     let values = this.form.value;

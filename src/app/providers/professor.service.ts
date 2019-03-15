@@ -25,11 +25,11 @@ export class ProfessorsServices {
    this.headers = new HttpHeaders().set('token', this._userServices.token)
             }
 
-  createProfessor(professor:Professor){
+  postProfessor(professor:Professor){
     let url = `${URL_SERVICES}/professor`
     return this.http.post(url,professor,{headers:this.headers}).pipe(map((res:any)=>{
       this.count++
-       swal('PROFESSOR SUCCESSFULLY CREATED',res.professor.name,'success')
+      console.log(res.professor)
        let professorOrder = new ProfessorOrder(res.professor,'post')
        this.professorsSource.next(professorOrder);
     }))
@@ -43,7 +43,6 @@ export class ProfessorsServices {
         let professorOrder = new ProfessorOrder(professor,'get');
         this.professorsSource.next(professorOrder)
       })
-      return res.professors
     }))
   }
 
@@ -72,12 +71,13 @@ export class ProfessorsServices {
   getProfessorById(id:string){
     let url = `${URL_SERVICES}/searchById/professor/${id}`
     return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-      return res.professor
+      let professorOrder = new ProfessorOrder(res.professor,'getById')
+      this.professorsSource.next(professorOrder)
     }))
   }
 
-  updateProfessor(professor:Professor){
-     let professorOrder = new ProfessorOrder(professor,'update')
+   putProfessor(professor:Professor){
+     let professorOrder = new ProfessorOrder(professor,'put')
       this.professorsSource.next(professorOrder); 
   }
 }

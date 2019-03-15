@@ -1,5 +1,5 @@
 import { Facilitie } from './facilitie.model';
-export class Event{
+export class EventModel{
     constructor(public name:string,
                 public description:string,
                 public duration:number,
@@ -18,7 +18,7 @@ export class Event{
 
 
 export class EventOrder{
-    constructor(public event:Event,
+    constructor(public event:EventModel,
                 public order:string){}
 }
 

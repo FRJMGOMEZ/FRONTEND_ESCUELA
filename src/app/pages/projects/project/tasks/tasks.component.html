@@ -1,0 +1,79 @@
+<div class="row d-flex justify-content-center" style='background: #F5F1E3'>
+    <div class='d-flex'>
+        <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
+    </div>
+    <div *ngIf="groupTasks.length>0">
+        <h5>Tareas del grupo de trabajo</h5>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Asignado por:</th>
+                    <th>Asignado a:</th>
+                    <th>Fecha de creación:</th>
+                    <th>Fecha límite:</th>
+                    <th>¿OK?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of groupTasks">
+                    <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
+                    <td>{{task.assignedBy['name']}}</td>
+                    <td>{{task.user['name']}}</td>
+                    <td>{{task.date | date}}</td>
+                    <td>{{task.dateLimit | date}}</td>
+                    <td>
+                        <button [ngStyle]="{'background-color': task.ok == true? 'green':'red'}">
+                            <i *ngIf="task.ok" class="fas fa-check-double"></i>
+                            <i (click)='done(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                            <i *ngIf="!task.checked" class="far fa-clock"></i>
+                        </button>
+                    </td>
+                    <td><i class="far fa-trash-alt"></i></td>
+                    <td><i class="far fa-edit"></i></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div *ngIf="myTasks.length>0">
+        <h5>Mis tareas</h5>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Asignado por:</th>
+                    <th>Asignado a:</th>
+                    <th>Fecha de creación:</th>
+                    <th>Fecha límite:</th>
+                    <th>¿OK?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let task of myTasks">
+                    <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
+                    <td>{{task.assignedBy['name']}}</td>
+                    <td>{{task.user['name']}}</td>
+                    <td>{{task.date | date}}</td>
+                    <td>{{task.dateLimit | date}}</td>
+                    <td>
+                        <button [ngStyle]="{'background-color': task.ok == true? 'green':'red'}">
+                            <i *ngIf="task.ok" class="fas fa-check-double"></i>
+                            <i (click)='done(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                            <i *ngIf="!task.checked" class="far fa-clock"></i>
+                        </button>
+                    </td>
+                    <td><i class="far fa-trash-alt"></i></td>
+                    <td><i class="far fa-edit"></i></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div *ngIf="myTasks.length === 0 || groupTasks.length === 0">
+        <h5>No hay tareas asignadas</h5>
+    </div>
+</div>

@@ -1,27 +1,26 @@
-<div class="row main">
+<div class="row m-2" style='background:#DCD4D2;height:1000px'>
     <div class="col-12">
         <div class='list-group'>
             <h3 class='list-group-item-heading text-center mt-3'>MANTENIMIENTO DE MATERIAS</h3>
-            <button (click)='openSubjectModal()' class='btn btn-warning m-2'>CREAR MATERIA</button>
+            <button (click)='postSubject()' class='btn btn-warning m-2'>CREAR MATERIA</button>
             <div class="row card-group">
-                <div *ngFor="let subject of subjects" class="card">
-                    <div (click)='subjectSelected=subject' class="card-body d-flex justify-content-center">
-                        <a style='cursor: pointer'>{{subject.name}}</a>
+                <div *ngFor="let subject of subjects" class="card" style='background:#F5F1E3'>
+                    <div (click)='selectSubject(subject._id)' class="card-body d-flex justify-content-center">
+                        <a>{{subject.name}}</a>
                     </div>
                 </div>
             </div>
-            <div *ngIf="!cargando" class="row animated fadeIn">
-                <div *ngIf="subjectSelected" class="col-12">
-                    <div class="card">
-                        <div class="card-header">
+            <div *ngIf="subjectSelected" class="row animated fadeIn">
+                <div class="col-12">
+                    <div class="card" style='background:#F5F1E3;border:1px solid #F0B841'>
+                        <div class="card-header" style='background:white'>
                             <div class="row">
                                 <div class="col-11">
                                     <h5 class='text-center'>{{subjectSelected.name.toUpperCase()}}</h5>
                                 </div>
-
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button (click)='_subjectServices.deleteSubject(subjectSelected._id).subscribe();subjectSelected = null;' class='text-left m-2'><i class="far fa-trash-alt"></i></button>
-                                    <button (click)='openSubjectModal(subjectSelected._id)' class='m-2'><i class="fas fa-edit"></i></button>
+                                    <button (click)='deleteSubject(subjectSelected._id)' class='text-left m-2'><i class="far fa-trash-alt"></i></button>
+                                    <button (click)='putSubject(subjectSelected._id)' class='m-2'><i class="fas fa-edit"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -34,14 +33,20 @@
                                     <div>
                                         <button (click)='addProfessor(subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <div *ngIf="subjectSelected.professors.length > 0" class="row">
-                                        <div *ngFor="let professor of subjectSelected.professors" class='col-12 p-2 '>
-                                            <div class="row d-flex flex-row justify-content-center">
-                                                <div class='pr-2'><a>{{professor['name']}}</a></div>
-                                                <div class='pl-5'><button (click)="_subjectServices.addOrDeleteProfessor(subjectSelected._id,professor['_id']).subscribe()" class='btn btn-danger'>x</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid black;background:#F5F1E3">
+                                        <table class='table'>
+                                            <tr>
+                                                <td class="row">
+                                                    <div *cdkVirtualFor="let professor of subjectSelected.professors" class='col-12 p-2 '>
+                                                        <div class="row d-flex flex-row justify-content-around">
+                                                            <div class='pr-2'><a>{{professor['name']}}</a></div>
+                                                            <div class='pl-5'><button (click)="_subjectServices.addOrDeleteProfessor(subjectSelected._id,professor['_id']).subscribe()" class='btn btn-danger'>x</button></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </cdk-virtual-scroll-viewport>
                                 </div>
                                 <div class="col-6">
                                     <div>
@@ -50,14 +55,20 @@
                                     <div>
                                         <button (click)='addAlumni(subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <div *ngIf="subjectSelected.alumnis.length > 0" class="row">
-                                        <div *ngFor="let alumni of subjectSelected.alumnis" class="col-6 pt-2">
-                                            <div class="row d-flex flex-row justify-content-around">
-                                                <div><a>{{alumni['name']}}</a></div>
-                                                <div><button (click)="_subjectServices.addOrDeleteAlumni(subjectSelected._id,alumni['_id']).subscribe()" class='btn btn-danger'>x</button></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid black;background:#F5F1E3">
+                                        <table class='table' *ngIf="subjectSelected.alumnis">
+                                            <tr>
+                                                <td class="row">
+                                                    <div *cdkVirtualFor="let alumni of subjectSelected.alumnis" class="col-12 pt-2">
+                                                        <div class="row d-flex flex-row justify-content-around">
+                                                            <div><a>{{alumni['name']}}</a></div>
+                                                            <div><button (click)="_subjectServices.addOrDeleteAlumni(subjectSelected._id,alumni['_id']).subscribe()" class='btn btn-danger'>x</button></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </cdk-virtual-scroll-viewport>
                                 </div>
                                 <div class="col-12 mt-2">
                                     <strong>Información útil:</strong>

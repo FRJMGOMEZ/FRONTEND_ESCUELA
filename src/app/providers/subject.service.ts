@@ -45,8 +45,7 @@ export class SubjectServices {
             res.subjects.forEach(subject => {
                 let subjectOrder = new SubjectOrder(subject,'get')
                 this.subjectsSource.next(subjectOrder)
-            });
-            return res.subjects;           
+            });          
         }))
      }
 
@@ -59,10 +58,10 @@ export class SubjectServices {
         }))
      }
 
-     updateSubject(id:string,subject:SubjectModel){
+     putSubject(id:string,subject:SubjectModel){
         let url = `${URL_SERVICES}/subject/${id}`
         return this.http.put(url,subject,{headers:this.headers}).pipe(map((res:any)=>{
-            let subjectOrder = new SubjectOrder(res.subject, 'update')
+            let subjectOrder = new SubjectOrder(res.subject, 'put')
             this.subjectsSource.next(subjectOrder)
             return res.subject
         }))
@@ -71,27 +70,26 @@ export class SubjectServices {
     addOrDeleteAlumni(subjectId:string,alumniId:string){
       let url = `${URL_SERVICES}/addOrDeleteAlumni/${subjectId}`;
       return this.http.put(url,{alumniId},{headers:this.headers}).pipe(map((res:any)=>{
-          let subjectOrder = new SubjectOrder(res.subject,'update')
+          let subjectOrder = new SubjectOrder(res.subject,'put')
           this.subjectsSource.next(subjectOrder)
-          this._alumnniServices.updateAlumni(res.alumni)
-          return res.subject
+          this._alumnniServices.putAlumni(res.alumni)
       }))       
     }  
 
     addOrDeleteProfessor(subjectId:string,professorId: string) {
         let url = `${URL_SERVICES}/addOrDeleteProfessor/${subjectId}`;
         return this.http.put(url, { professorId }, { headers:this.headers }).pipe(map((res: any) => {
-            let subjectOrder = new SubjectOrder(res.subject, 'update')
+            let subjectOrder = new SubjectOrder(res.subject, 'put')
             this.subjectsSource.next(subjectOrder)
-            this._professorServices.updateProfessor(res.professor)
-            return res.subject
+            this._professorServices.putProfessor(res.professor)
         }))
     } 
 
     getSubjectById(id:string){
         let url = `${URL_SERVICES}/searchById/subject/${id}`
         return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-            return res.subject
+            let subjectOrder = new SubjectOrder(res.subject,'getById')
+            this.subjectsSource.next(subjectOrder)
         }))
     }
 }

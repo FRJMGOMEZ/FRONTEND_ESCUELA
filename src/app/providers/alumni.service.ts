@@ -28,14 +28,13 @@ export class AlumniServices {
     this.headers = new HttpHeaders().set('token', this._userServices.token);
   }
 
-  createAlumni(alumni:Alumni){
+  postAlumni(alumni:Alumni){
     let url = `${URL_SERVICES}/alumni`
     return this.http.post(url,alumni, {headers:this.headers}).pipe(map((res:any)=>{
        swal('ALUMNI SUCCESFULLY CREATED',res.alumni.name,'success')
        this.count++
        let alumniOrder = new AlumniOrder(res.alumni,'post')
-       this.alumnisSource.next(alumniOrder);
-       return
+       this.alumnisSource.next(alumniOrder)
     }))
   }
 
@@ -47,7 +46,6 @@ export class AlumniServices {
           let alumniOrder = new AlumniOrder(alumni,'get')
           this.alumnisSource.next(alumniOrder)      
         });
-        return res.alumnis; 
       }))
   }
 
@@ -58,7 +56,6 @@ export class AlumniServices {
        res.alumnis.forEach(alumni => {
          let alumniOrder = new AlumniOrder(alumni,'get')
          this.alumnisSource.next(alumniOrder)
-         return res.alumnis
        }); 
      }))
   }
@@ -76,12 +73,14 @@ export class AlumniServices {
   getAlumniById(id:string){
     let url = `${URL_SERVICES}/searchById/alumni/${id}`
     return this.http.get(url, { headers:this.headers }).pipe(map((res: any) => {
-      return res.alumni
+     let alumniOrder = new AlumniOrder(res.alumni,'getById')
+     this.alumnisSource.next(alumniOrder)
     }))
   }
 
-  updateAlumni(alumni:Alumni){
-    let alumniOrder = new AlumniOrder(alumni,'update')
+  putAlumni(alumni:Alumni){
+    console.log(alumni)
+    let alumniOrder = new AlumniOrder(alumni,'put')
      this.alumnisSource.next(alumniOrder)
   }
 }

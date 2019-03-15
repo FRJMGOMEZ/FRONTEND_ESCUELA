@@ -8,23 +8,19 @@ import { UserServices } from '../providers/user.service';
 })
 export class LoginGuard implements CanActivate {
 
-  constructor(private _usuarioServicio: UserServices, public router: Router) {
+  constructor(private _userServices: UserServices, public router: Router) {
 
   }
   canActivate(
   ): boolean {
 
-    if (this._usuarioServicio.isLogged()) {
+    if (this._userServices.isLogged()) {
       return true
     }
     else {
-
       console.log('LOCKED BY GUARD')
-
       this.router.navigate(['/login']);
-
       return false
-
     }
   }
 }

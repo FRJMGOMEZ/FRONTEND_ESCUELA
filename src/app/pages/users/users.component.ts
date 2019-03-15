@@ -1,11 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
-import * as _swal from "sweetalert";
-import { SweetAlert } from "sweetalert/typings/core";
-const swal: SweetAlert = _swal as any;
 import { User } from 'src/app/models/user.model';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
 import { Subscription } from 'rxjs';
+import { SwalService } from '../../providers/swal.service';
 
 
 
@@ -28,7 +26,8 @@ export class UsersComponent implements OnInit,OnDestroy {
   userSubscription:Subscription = null;
 
   constructor(public _userServices:UserServices,
-              private _modalUploadFilesController:UploadFilesModalController) {}
+              private _modalUploadFilesController:UploadFilesModalController,
+              private _swalServices:SwalService) {}
 
   ngOnInit() {
     this.userSubscription = this._userServices.users$.subscribe((userOrder: any) => {
@@ -39,7 +38,7 @@ export class UsersComponent implements OnInit,OnDestroy {
       else if (userOrder.order === 'delete') {
         this.users = this.users.filter((user) => { return user._id != userOrder.user._id })
       }
-      else if (userOrder.order === 'update') {
+      else if (userOrder.order === 'put') {
         this.users.forEach((user, index) => {
           if (user._id === userOrder.user._id) {
             this.users[index] = userOrder.user
@@ -50,9 +49,17 @@ export class UsersComponent implements OnInit,OnDestroy {
     this._userServices.getUsers().subscribe()
   }
 
+  checkStatus(status:boolean){
+  if(status){
+    return 'desactivar'
+  }else{
+    return 'activar'
+  }
+  }
+
   changeRole(user:User){
     let userToEdit = new User('', '', '', undefined, '', undefined, '', [],user.role)
-    this._userServices.updateUser(user._id,userToEdit).subscribe()
+    this._userServices.putUser(user._id,userToEdit).subscribe()
   }
 
   changeFrom(number: number) {
@@ -69,6 +76,15 @@ export class UsersComponent implements OnInit,OnDestroy {
 
   openUploadFilesModule(id:string){
     this._modalUploadFilesController.showModal(id,'users')
+  }
+
+  deleteUser(id:string){
+    this._swalServices.confirmDelete().then((res)=>{
+       if(res){
+         this._userServices.deleteUser(id).subscribe()
+       }
+    })
+
   }
 
   ngOnDestroy(){

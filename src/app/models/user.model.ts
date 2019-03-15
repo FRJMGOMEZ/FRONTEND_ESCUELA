@@ -7,8 +7,9 @@ export class User {
         public img?:string,
         public google?:boolean,
         public _id?: string,
-        public projects?:any[],
+        public projects?:string[],
         public role?: string,
+        public lastCheck?:Date
     ){
     }
 }

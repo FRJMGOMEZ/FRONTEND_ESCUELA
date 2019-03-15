@@ -21,18 +21,20 @@ import { ProfessorComponent } from "./addressBook/professor/professor.component"
 //Main pages//
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ProjectsComponent } from './proyects/projects.component';
-import { ProjectComponent } from "./proyects/project/project.component";
+import { MainProjectsComponent } from './projects/mainProjects.component';
+import { ProjectComponent } from "./projects/project/project.component";
 
 
 //Routes//
 import { PAGESROUTES } from './pages.routes';
-import { ImagesComponent } from './proyects/project/images/images.component';
-import { MessagesComponent } from './proyects/project/messages/messages.component';
-import { FilesComponent } from './proyects/project/files/files.component';
+import { ImagesComponent } from './projects/project/images/images.component';
+import { MessagesComponent } from './projects/project/messages/messages.component';
+import { FilesComponent } from './projects/project/files/files.component';
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component';
+import { TasksComponent } from './projects/project/tasks/tasks.component';
+import { ProjectEventsComponent } from './projects/project/project-events/project-events.component';
 
 @NgModule({
   declarations: [
@@ -43,14 +45,16 @@ import { EventComponent } from './calendar/day/event/event.component';
     UsersComponent,
     DashboardComponent,
     ProfileComponent,
-    ProjectsComponent,
+    MainProjectsComponent,
     ProjectComponent,
     ImagesComponent,
     MessagesComponent,
     FilesComponent,
     DayComponent,
     FacilitiesComponent,
-    EventComponent
+    EventComponent,
+    TasksComponent,
+    ProjectEventsComponent
   ],
   imports: [
     BrowserModule,

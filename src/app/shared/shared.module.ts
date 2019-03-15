@@ -4,10 +4,13 @@ import { RouterModule } from '@angular/router';
 import { ProvidersModule } from "../providers/providers.module";
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
+import { CalendarComponent } from './calendar/calendar.component';
+
 
 @NgModule({
     declarations: [
-        SidebarComponent
+        SidebarComponent,
+        CalendarComponent
     ],
 
     imports: [
@@ -16,7 +19,8 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
         ProvidersModule],
 
     exports: [
-        SidebarComponent
+        SidebarComponent,
+        CalendarComponent
     ],
 
     providers: [],

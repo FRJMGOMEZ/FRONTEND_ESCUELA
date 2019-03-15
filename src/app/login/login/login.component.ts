@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { NgZone } from "@angular/core";
 import { UserServices } from 'src/app/providers/user.service';
 import { User } from 'src/app/models/user.model';
 
@@ -31,7 +30,6 @@ export class LoginComponent implements OnInit {
       return;
     }
     let user = new User(null, form.value.email, form.value.password);
-    console.log(user)
     this._userServices.login(user, this.rememberMe).subscribe(() => {
       this.router.navigate(["/dashboard"]);
     });

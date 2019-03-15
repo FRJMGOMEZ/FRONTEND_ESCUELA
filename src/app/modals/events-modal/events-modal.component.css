@@ -13,3 +13,8 @@
     visibility: hidden;
     display: none;
 }
+
+.modal-content {
+    /* 80% of window height */
+    height: 100%;
+}

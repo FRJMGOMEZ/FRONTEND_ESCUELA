@@ -8,20 +8,17 @@ export class SubjectModalController {
 
     public hidden: string = 'hidden';
     public id:string;
-    public type:string
     public notification = new EventEmitter<any>()
 
     constructor() { }
 
     hideModal() {
         this.hidden = "hidden";
-        this.id='';
-        this.type=''
+        this.id=''
     }
 
-   showModal(type:string,id?:string) {
+   showModal(id?:string) {
         this.hidden = "";
         this.id = id;
-        this.type = type
     }
 }

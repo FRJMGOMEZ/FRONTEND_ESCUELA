@@ -13,6 +13,7 @@ export class FacilitiesModalController {
 
     hideModal() {
         this.hidden = "hidden";
+        this.id = '';
     }
 
     showModal(id?:string) {

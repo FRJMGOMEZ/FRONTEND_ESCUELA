@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { SubjectModalController } from './subjectModalController';
-import { Subject } from '../../models/subject.model';
+import { Subject, SubjectOrder } from '../../models/subject.model';
 import { SubjectServices } from '../../providers/subject.service';
-import { UserServices } from '../../providers/user.service';
 import { NgForm } from '@angular/forms';
 import { AlumniServices } from '../../providers/alumni.service';
 import { ProfessorsServices } from '../../providers/professor.service';
+import { Subscription } from 'rxjs';
+import { Professor } from 'src/app/models/professor.model';
+import { Alumni } from 'src/app/models/alumni.model';
+import { AlumniOrder } from '../../models/alumni.model';
 
 @Component({
   selector: 'app-subject-modal',
@@ -14,109 +17,129 @@ import { ProfessorsServices } from '../../providers/professor.service';
 })
 export class SubjectModalComponent implements OnInit {
 
-  alumniSubjects:string[]
-  subjects:Subject[]
+  professor:Professor;
+  alumni:Alumni;
+  subjects:Subject[] = []
   
   subject:Subject = new Subject('')
 
   creation:boolean= false;
   edition:boolean=false;
+  addition:boolean=false;
 
   from:number=0
+
+  professorSubscription:Subscription = null;
+  alumniSubscription:Subscription = null;
+  subjectSubscription:Subscription=null;
 
   constructor(private _alumniServices:AlumniServices,
               private _professorServices:ProfessorsServices,
               public _modalController:SubjectModalController,
-              private _subjectServices:SubjectServices) {
-
-  }
+              private _subjectServices:SubjectServices) {}
 
   ngOnInit() {
 
-    this._modalController.notification.subscribe((res:any)=>{
-      if(res){
-        if (res.message && res.message === 'addSubjects') {
-          this.edition = false;
-          this.creation= false;
-          let observable;
-          switch(this._modalController.type){
-            case 'ALUMNI': observable = this._alumniServices.getAlumniById(this._modalController.id);
-            break;
-            case 'PROFESSOR': observable = this._professorServices.getProfessorById(this._modalController.id);
-            break;
-          }
-          observable.subscribe((item)=>{
-              this.getSubjects().then((subjects:any)=>{
-                this.subjects = [];
-                let subjectItemIds = item.subjects.map((item)=>{return item._id})
-                for (let subject of subjects) {
-                  if (subjectItemIds.indexOf(subject._id) < 0) {
-                    this.subjects.push(subject)
-                  }
+    this._modalController.notification.subscribe((res:string)=>{
+
+      if (res) {
+      this.addition = true;
+      let request;
+      if(res === 'ALUMNI'){
+        this.alumniSubscription = this._alumniServices.alumnis$.subscribe((alumniOrder: AlumniOrder) => {
+          if (alumniOrder.order === 'getById') {
+            this.alumni = alumniOrder.alumni;
+            this.subjectSubscription = this._subjectServices.subjects$.subscribe((subjectOrder: SubjectOrder) => {
+              if (subjectOrder.order === 'get') {
+                console.log(this.alumni.subjects)
+                if (this.alumni.subjects.indexOf(subjectOrder.subject._id) < 0) {
+                  this.subjects.push(subjectOrder.subject);
                 }
-              })
-          })
-        }
-        }else{
+              }
+            })
+            this._subjectServices.getSubjects().subscribe()
+          }
+        })
+        request = this._alumniServices.getAlumniById(
+          this._modalController.id
+        );
+      }else if (res === 'PROFESSOR'){
+        this.professorSubscription = this._professorServices.professors$.subscribe((professorOrder) => {
+          if (professorOrder.order === 'getById') {
+            this.professor = professorOrder.professor;
+            this.subjectSubscription = this._subjectServices.subjects$.subscribe((subjectOrder: SubjectOrder) => {
+              if (subjectOrder.order === 'get') {
+                if (this.professor.subjects.indexOf(subjectOrder.subject._id) < 0) {
+                  this.subjects.push(subjectOrder.subject);
+                }
+              }
+            })
+            this._subjectServices.getSubjects().subscribe()
+          }
+        })
+        request = this._professorServices.getProfessorById(
+          this._modalController.id
+        );
+      }
+        request.subscribe();
+
+    }else{
         if (this._modalController.id) {
           this.edition = true;
-          this.creation = false;
-          this._subjectServices.getSubjectById(this._modalController.id).subscribe((subject:any) => {
-          this.subject = subject  
+          this.subjectSubscription = this._subjectServices.subjects$.subscribe((subjectOrder: SubjectOrder) => {
+            if (subjectOrder.order === 'getById') {
+              this.subject = subjectOrder.subject
+            }
           })
-        }else{
-          this.edition = false;
-          this.creation = true;
-        }}
-      })      
+          this._subjectServices.getSubjectById(this._modalController.id).subscribe()
+        }
+      }
+    })      
   }
 
-  getSubjects(){
-    return new Promise((resolve,reject)=>{
-      this._subjectServices.getSubjects(0,100).subscribe((subjects: any) => {
-        resolve(subjects)
-      })
-    })
-  }
-   
-  createSubject(form:NgForm){
+  postSubject(form:NgForm){
      if(form.valid){
       let subject = new Subject(form.value.subjectName)
-      this._subjectServices.createSubject(subject).subscribe((subject)=>{
-        this.subject = subject;
-        this.edition = true;
-        this.creation = false;
+      this._subjectServices.createSubject(subject).subscribe(()=>{
+        this.hideModal()
       })
      }
   }
 
-  editSubject(form: NgForm) {
+  putSubject(form: NgForm) {
     if (form.valid) {
       let subject = new Subject(form.value.subjectName)
-      this._subjectServices.updateSubject(this.subject._id,subject).subscribe((subject)=>{
-        this.subject = subject
-      })
+      this._subjectServices.putSubject(this.subject._id,subject).subscribe(()=>{
+        this.hideModal()})
     }
   }
 
   addSubject(subjectId:string){
-    if(this._modalController.type === 'ALUMNI'){
-      this._subjectServices.addOrDeleteAlumni(subjectId, this._modalController.id).subscribe((subjectUpdated:any) => {
-        let id = subjectUpdated._id;
-        this.subjects = this.subjects.filter((subject) => { return subject._id != id });
+    if(this.alumni){
+      this._subjectServices.addOrDeleteAlumni(subjectId, this._modalController.id).subscribe(()=>{
+        this.subjects = this.subjects.filter((subject) => { return subject._id != subjectId });
         if (this.subjects === []) { this._modalController.hideModal() }
       })
     }
-    else if(this._modalController.type === 'PROFESSOR'){
-      this._subjectServices.addOrDeleteProfessor(subjectId, this._modalController.id).subscribe((subjectUpdated: any) => {
-        let id = subjectUpdated._id
-        this.subjects = this.subjects.filter((subject) => { return subject._id != id });
+    else if(this.professor){
+      this._subjectServices.addOrDeleteProfessor(subjectId, this._modalController.id).subscribe(()=>{
+        this.subjects = this.subjects.filter((subject) => { return subject._id != subjectId });
         if (this.subjects === []) { this._modalController.hideModal() }
       })
     }
 }
   hideModal() {
+    this.edition=false;
+    this.creation=false;
+    this.addition=false;
+    if (this.professorSubscription != null) { this.professorSubscription.unsubscribe()}
+    if(this.alumniSubscription != null ){this.alumniSubscription.unsubscribe()}
+    if(this.subjectSubscription != null){this.subjectSubscription.unsubscribe()}
+    this.subject = null;
     this.subjects = [];
+    this.alumni=null;
+    this.professor=null;
+    this.from=0;
     this._modalController.hideModal()
   }
 }

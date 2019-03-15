@@ -12,3 +12,9 @@ export class Week {
         public _id?:string
     ){}
 }
+
+
+export class WeekOrder{
+    constructor(public week:Week,
+               public order:string){}
+}

@@ -11,6 +11,7 @@ import { UserServices } from './user.service';
 })
 export class FacilitiesService {
 
+  token:string
   headers:HttpHeaders
 
   facilities:Facilitie[]=[]
@@ -22,9 +23,11 @@ export class FacilitiesService {
 
   constructor(private http:HttpClient,
               private _userServices:UserServices) {
-    this.headers = new HttpHeaders().set('token', this._userServices.token)        
+    this.token = this._userServices.token;
+    this.headers = new HttpHeaders().set('token', this.token)        
    }
 
+   ////// Detectar problema /////
    getFacilities(from:number=0,limit:number=5){
     let url = `${URL_SERVICES}/facilities?from=${from}&limit=${limit}`
     return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
@@ -33,7 +36,6 @@ export class FacilitiesService {
         let facilitieOrder = new FacilitieOrder(facilitie,'get')
         this.facilitiesSource.next(facilitieOrder)
       })
-      return res.facilities
     }))
    }
 
@@ -49,7 +51,7 @@ export class FacilitiesService {
    putFacilitie(id:string,facilitie:Facilitie){
      let url = `${URL_SERVICES}/facilitie/${id}`;
      return this.http.put(url, facilitie, { headers:this.headers }).pipe(map((res: any) => {
-       let facilitieOrder = new FacilitieOrder(res.facilitie,'update')
+       let facilitieOrder = new FacilitieOrder(res.facilitie,'put')
        this.facilitiesSource.next(facilitieOrder)
      }))
    }
@@ -57,7 +59,8 @@ export class FacilitiesService {
    getFacilitieById(id:String){
      let url = `${URL_SERVICES}/searchById/facilitie/${id}`;
      return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-      return res.facilitie
+      let facilitieOrder = new FacilitieOrder(res.facilitie,'getById')
+      this.facilitiesSource.next(facilitieOrder)
      }))
   }
 

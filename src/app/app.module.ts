@@ -4,17 +4,16 @@ import { CommonModule, registerLocaleData } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import localeEs from "@angular/common/locales/Es";
 registerLocaleData(localeEs);
-
 import { AppComponent } from './app.component';
-
 import { APPROUTES } from './app.routes';
-
 import { RegisterComponent } from './login/register/register.component';
-
 import { PagesModule } from './pages/pages.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login/login.component';
+import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+import { URL_SERVICES } from './config/config';
 
+const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
 
 @NgModule({
   declarations: [
@@ -29,7 +28,9 @@ import { LoginComponent } from './login/login/login.component';
     PagesModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserModule,
+    SocketIoModule.forRoot(config)
   ],
   providers: [{ provide: LOCALE_ID, useValue:'es-ES'}],
   bootstrap: [AppComponent],

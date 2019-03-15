@@ -1,0 +1,30 @@
+<div *ngIf="!projectSelectedId" class="row mt-4 m-2" style='background:#DCD4D2  '>
+    <div class=' col-12 d-flex justify-content-center mt-3 '>
+        <h4>MIS PROYECTOS</h4>
+    </div>
+    <div class='col-12 d-flex justify-content-center m-2 p-2 '>
+        <button (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
+    </div>
+    <div *ngIf="projects.length > 0 " class="col-12" style='height:800px;background:#DCD4D2'>
+        <cdk-virtual-scroll-viewport itemSize='40px ' style="height:600px;background:#F5F1E3;border:1px solid #F0B841">
+            <div *cdkVirtualFor="let project of projects">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>{{project.name}}</p>
+                            <p>
+                                <a (click)='toProject(project._id) '>
+                                    <p style='color:blue '>Navegar a {{project.name}}</p>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-6">
+                            <p>{{project.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+</div>
+<router-outlet></router-outlet>

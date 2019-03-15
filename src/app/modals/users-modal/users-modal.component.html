@@ -9,13 +9,17 @@
                 </div>
                 <div class="modal-body">
                     <div *ngIf="_modalController.type === 'admin'" class="row d-flex justify-content-center">
-                        <table style="width:100%">
-                            <div class="col-4">
-                                <tr *ngFor="let user of admins">
-                                    <th>{{user['name']}}</th>
-                                </tr>
+                        <div class="col-6 d-flex flex-row">
+                            <div>
+                                <p>Administradores:</p>
                             </div>
-                        </table>
+                            <table style="width:100%">
+                                <tr *ngFor="let user of admins">
+                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user['name']}}</th>
+                                    <th *ngIf="user._id === _userServices.userOnline._id">tú</th>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div *ngIf="_modalController.type === 'participant'" class="row d-flex justify-content-center">
                         <div class="col-6 d-flex flex-row">
@@ -24,7 +28,8 @@
                             </div>
                             <table style="width:100%">
                                 <tr *ngFor="let user of participants">
-                                    <th>{{user['name']}}</th>
+                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user['name']}}</th>
+                                    <th *ngIf="user._id === _userServices.userOnline._id">tú</th>
                                 </tr>
                             </table>
                         </div>

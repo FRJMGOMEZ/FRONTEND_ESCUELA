@@ -7,18 +7,18 @@ import { Injectable, EventEmitter } from '@angular/core';
 export class IndexCardModalController {
 
     public hidden: string = 'hidden'
-    public role:string
+    public id:string
     public notification = new EventEmitter<any>()
 
     constructor() { }
 
     hideModal() {
-        this.role=''
+        this.id = ''
         this.hidden = "hidden";
     }
 
-    showModal(type:string) {
-        this.role = type || ''
+    showModal(id?:string) {
+        this.id = id
         this.hidden = ''
     }
 }

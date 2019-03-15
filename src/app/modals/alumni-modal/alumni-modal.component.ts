@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { AlumnniModalController } from './alumniModal.controller';
 import { Alumni } from 'src/app/models/alumni.model';
 import { AlumniServices } from '../../providers/alumni.service';
-import { UserServices } from '../../providers/user.service';
 import { SubjectServices } from '../../providers/subject.service';
 import { Subject } from 'src/app/models/subject.model';
+import { Subscription } from 'rxjs';
+import { SubjectOrder } from '../../models/subject.model';
+import { AlumniOrder } from '../../models/alumni.model';
 
 @Component({
   selector: 'app-alumni-modal',
@@ -19,41 +21,32 @@ export class AlumniModalComponent implements OnInit {
 
   from:number = 0;
 
-  constructor(private _userServices:UserServices,
-             public _modalController:AlumnniModalController,
+  subjectsSubscription:Subscription= null;
+  alumnisSubscription:Subscription=null;
+
+  constructor(public _modalController:AlumnniModalController,
              private _alumniServices:AlumniServices,
              private _subjectServices:SubjectServices ) {
-   }
+}
 
   ngOnInit() {
-    this._modalController.notification.subscribe((res:any)=>{
-      if(res){
-        if(res.message && res.message ==='addAlumnis' ){
-
-          this._subjectServices.getSubjectById(this._modalController.id).subscribe((subject:Subject)=>{
-             this.subject = subject;
-
-            this.getAlumnis().then((res:any) => {
-              this.alumnis = []
-              for (let alumni of res.alumnis) {
-                if (subject.alumnis.indexOf(alumni._id) < 0) {
-                  this.alumnis.push(alumni)
+    this._modalController.notification.subscribe(()=>{
+         this.subjectsSubscription = this._subjectServices.subjects$.subscribe((subjectOrder:SubjectOrder)=>{
+          if(subjectOrder.order === 'getById'){
+              this.subject = subjectOrder.subject;
+              this.alumnisSubscription = this._alumniServices.alumnis$.subscribe((alumniOrder:AlumniOrder)=>{
+                if(alumniOrder.order === 'get'){
+                  if(this.subject.alumnis.indexOf(alumniOrder.alumni._id)<0){
+                      this.alumnis.push(alumniOrder.alumni)
+                  }
                 }
-              }
-            })
-          })
-        }
-      }
+              })
+              this._alumniServices.getAlumnis(this.from).subscribe()
+          }
+         })
+         this._subjectServices.getSubjectById(this._modalController.id).subscribe()
     })
-  }
-
- getAlumnis(){
-   return new Promise((resolve,reject)=>{
-     this._alumniServices.getAlumnis(this.from).subscribe((alumnis) => {
-       resolve({alumnis})
-     })
-   })
- }  
+  } 
 
  addAlumni(id:string){
   this._subjectServices.addOrDeleteAlumni(this._modalController.id,id).subscribe(()=>{
@@ -65,18 +58,14 @@ export class AlumniModalComponent implements OnInit {
   }
 
   searchAlumnis(input: string) {
-    this._alumniServices.searchAlumnis(input).subscribe((alumnis:any) => {
-      this.alumnis = [];
-      alumnis.forEach(alumni => {
-        if(this.subject.alumnis.indexOf(alumni._id) < 0){
-          this.alumnis.push(alumni)
-        }
-      });
-    })
+    this.alumnis = [];
+    this._alumniServices.searchAlumnis(input).subscribe()
   }
 
   hideModal(){
     this.alumnis = []
+    if (this.alumnisSubscription != null) { this.alumnisSubscription.unsubscribe();}
+    if (this.subjectsSubscription != null) { this.subjectsSubscription.unsubscribe();}
     this._modalController.hideModal()
   }
 

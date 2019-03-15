@@ -1,16 +1,13 @@
-import { Image } from './image';
-import { File } from './file';
 
 export class Project{
 
     constructor(public name:string,
-                public participants?:Object[],
-                public administrators?:Object[],
+                public participants?:string[],
+                public administrators?:string[],
                 public description?: string,
                 public img?:string,
                 public messages?:string[],
-                public files?:File[],
-                public images?:Image[],
+                public tasks?:string[],
                 public active?:boolean,
                 public _id?: string, ){
     }

@@ -10,10 +10,17 @@
     padding: 0px;
     margin: 0px;
     border: none;
-    cursor: pointer;
 }
 
 .card-group {
     margin: 0px;
     padding: 0px;
+}
+
+.day {
+    cursor: pointer
+}
+
+.date {
+    cursor: pointer;
 }

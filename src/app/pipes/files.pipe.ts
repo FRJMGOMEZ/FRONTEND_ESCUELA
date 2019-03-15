@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { URL_SERVICES } from '../config/config';
+import { FileModel } from '../models/file.model';
 
 @Pipe({
-  name: 'filesPipe'
+  name: 'filesPipe',
+  pure:true
 })
 export class FilesPipe implements PipeTransform {
-  transform(file: any,type:string): any {
-    let url = `${URL_SERVICES}/files/${type}/${file}`;
+  transform(file:FileModel) {
+    let url = `${URL_SERVICES}/files/${file.type}/${file.name}`;
     return url
   }
-
 }

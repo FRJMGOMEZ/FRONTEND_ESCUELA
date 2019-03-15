@@ -1,0 +1,33 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div class="modal" style='display: block' tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form ngNativeValidate *ngIf="form" [formGroup]='form'>
+                        <div class="form-group">
+                            <textarea formControlName="description" name='description' class='form-control' placeholder="Descripción"></textarea>
+                        </div>
+                        <div class='form-group'>
+                            <p>Selecciona el usuario al que quieras asignarle la tarea:</p>
+                            <select formControlName="user" name="user" id="">
+                                <option *ngFor="let user of participants" [value]="user._id">{{user.name}}</option>
+                              </select>
+                        </div>
+                        <div class='form-group'>
+                            <p class='text-center'>Selecciona fecha estimada de finalización de la tarea:</p>
+                            <app-calendar [modeNoBack]='true' (date)='dateLimit=$event'></app-calendar>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button (click)='postTask()' class='btn btn-warning' (click)='postTask()'>Crear tarea</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

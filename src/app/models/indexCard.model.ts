@@ -8,7 +8,14 @@ constructor(public role: string,
             public home?:string,
             public address?:string,
             public status?:boolean,
-            public id?:string){
+            public _id?:string){
 }
 
+}
+
+
+export class IndexcardOrder{
+    constructor(public indexcard:Indexcard,
+               public order:string){
+    }
 }

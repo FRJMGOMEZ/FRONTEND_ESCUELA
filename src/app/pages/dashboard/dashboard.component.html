@@ -1,6 +1,119 @@
-<div class='container'>
-    <div class='row'>
-        <!-- No permite separar columnas sin necesidad de crear dos row -->
-        <div class='w-100'></div>
+<div class="row m-0 mt-3 p-0 " style='background-color:#DCD4D2  ;height:1000px'>
+    <div class="col-12 mt-2" style='background:#DCD4D2 '>
+        <div>
+            <div class="card" style='background:#F0B841'>
+                <div class='card-header'>
+                    <h3 class='text-center'>¡{{hi()}} {{_userServices.userOnline.name}}!</h3>
+                </div>
+                <div class="card-body" style='background:#F5F1E3'>
+                    <p *ngIf="unreadMessages > 0"> - Tienes {{unreadMessages}} mensajes sin leer, revisa la sección de proyectos </p>
+                    <p *ngIf="uncheckedTasks.length > 0"> - {{checkTask(uncheckedTasks)}}, revisa la sección de proyectos</p>
+                    <p *ngIf="tasksToDo.length > 0"> - {{checkTask(tasksToDo)}}, revisa la sección de proyectos</p>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <div class="col-12">
+        <div *ngIf="projects.length > 0" class="col-12">
+            <h4 class='text-center'>MIS PROYECTOS</h4>
+            <cdk-virtual-scroll-viewport itemSize='50px' style="height:250px;border:1px solid #F0B841;background-color:#F5F1E3">
+                <div *cdkVirtualFor="let project of projects" class="card" style='background:#F5F1E3'>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <p>{{project.name}}</p>
+                                <p>{{project.messages.length}} mensajes sin leer <i class="far fa-bell"></i> </p>
+                                <p>
+                                    <a (click)='toProject(project._id)'>
+                                        <p style='color: blue'>Navegar a {{project.name}}</p>
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="col-6">
+                                <p>{{checkTask(tasksToDo,project._id)}}</p>
+                                <p>{{checkTask(uncheckedTasks,project._id)}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+    </div>
+    <div class="col-12">
+        <h4 class='text-center'>MIS EVENTOS</h4>
+        <div *ngIf="eventsToday.length > 0 " class="col-12 ">
+            <h5>EVENTOS DE HOY</h5>
+            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background: #F5F1E3">
+                <div *cdkVirtualFor="let eventToday of eventsToday" class='d-flex flex-column'>
+                    <div class=' row d-flex justify-content-around flex-row'>
+                        <div class="col-12">
+                            <table class='table'>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Empieza</th>
+                                    <th>Finaliza</th>
+                                </tr>
+                                <tr>
+                                    <td>{{eventToday.name}}</td>
+                                    <td>{{eventToday.startDate | date }} a las {{eventToday.position | timeConversor2: null}}</td>
+                                    <td>{{eventToday.endDate | date }} a las {{eventToday.position | timeConversor2 : eventToday.duration}}
+                                    </td>
+                                    <td><button (click)='toEvent()'>IR</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+        <div *ngIf="eventsOnCourse.length > 0 " class="col-12 ">
+            <h5>EVENTOS EN CURSO</h5>
+            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background:#F5F1E3">
+                <div *cdkVirtualFor="let eventOnCourse of eventsOnCourse" class='d-flex flex-column'>
+                    <div class=' row d-flex justify-content-around flex-row'>
+                        <div class="col-12">
+                            <table class='table'>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Empieza</th>
+                                    <th>Finaliza</th>
+                                </tr>
+                                <tr>
+                                    <td>{{eventOnCourse.name}}</td>
+                                    <td>{{eventOnCourse.startDate | date }} a las {{eventOnCourse.position | timeConversor2: null}}</td>
+                                    <td>{{eventOnCourse.endDate | date }} a las {{eventOnCourse.position | timeConversor2 : eventOnCourse.duration}}</td>
+                                    <td><button class='btn btn-warning' (click)='toEvent()'>IR</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+
+        <div *ngIf="eventsOnCourse.length > 0 " class="col-12 mb-4 ">
+            <h5>PROXIMOS EVENTOS</h5>
+            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background:#F5F1E3">
+                <div *cdkVirtualFor="let eventComming of eventsComming" class='d-flex flex-column'>
+                    <div class=' row d-flex justify-content-around flex-row'>
+                        <div class="col-12">
+                            <table class='table'>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Empieza</th>
+                                    <th>Finaliza</th>
+                                </tr>
+                                <tr>
+                                    <td>{{eventComming.name}}</td>
+                                    <td>{{eventComming.startDate | date }} a las {{eventComming.position | timeConversor2: null}}</td>
+                                    <td>{{eventComming.endDate | date }} a las {{eventComming.position | timeConversor2 : eventComming.duration}}
+                                    </td>
+                                    <td><button class='btn btn-warning' (click)='toEvent(eventComming.startDate)'>IR</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+    </div>

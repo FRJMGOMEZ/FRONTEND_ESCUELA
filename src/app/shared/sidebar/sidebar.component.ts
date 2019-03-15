@@ -3,6 +3,8 @@ import { UserServices } from '../../providers/user.service';
 import { CalendarService } from '../../providers/calendar.service';
 import { Router } from '@angular/router';
 import { Week } from 'src/app/models/week.model';
+import { Subscription } from 'rxjs';
+import { WeekOrder } from '../../models/week.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -11,20 +13,30 @@ import { Week } from 'src/app/models/week.model';
 })
 export class SidebarComponent implements OnInit {
 
-  currentWeek:any
+  currentWeek:Week
   today:string
+
+  weekSubscription:Subscription = null;
 
   constructor(public _userServices:UserServices,
               private _calendarServices:CalendarService,
               private route:Router) {}
 
-  ngOnInit() {
-    this._calendarServices.weeks$.subscribe((week)=>{
-      this.currentWeek = week;
-    })
-
+  ngOnInit() { 
+  
   }
+
  toLastWeek(){
+
+   this.weekSubscription = this._calendarServices.weeks$.subscribe((weekOrder: WeekOrder) => {
+     if (weekOrder.order === 'getByDate') {
+       this.currentWeek = weekOrder.week;
+       this.route.navigate(['/day', this.currentWeek._id, this.currentWeek[this.today]._id]).then(()=>{
+         this.weekSubscription.unsubscribe()
+       })
+     }
+   })
+
      let today = new Date()
      let weekDate;
     switch (today.getDay()) {
@@ -47,17 +59,18 @@ export class SidebarComponent implements OnInit {
    weekDate = new Date(weekDate.getFullYear(),weekDate.getMonth(),weekDate.getDate(),1,0,0,0);
    weekDate = weekDate.getTime()
 
-   this._calendarServices
-     .getWeekByDate(new Date(weekDate))
-     .subscribe((weeks: Week[]) => {
-       if (weeks.length >0) {
-         this.currentWeek = weeks[0];
-         this.route.navigate(['/day', this.currentWeek._id, this.currentWeek[this.today]._id])
-       }else{
-         let date = new Date();
+   this._calendarServices.getWeekByDate(new Date(weekDate)).subscribe((res:any)=>{
+     console.log(res);
+       if(res === 'no-week'){
+         let date = new Date(
+         );
          let dateInMiliseconds = date.getTime()
-         this.route.navigate(['/day', 'no-week', dateInMiliseconds])
+         this.route.navigate(['/day', 'no-week', dateInMiliseconds]).then(()=>{
+           this.weekSubscription.unsubscribe()
+         })
        }
-     });
+   })   
   }
+
+  ngOnDestroy(): void {}
 }

@@ -2,22 +2,21 @@ import { Routes, RouterModule } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
-import { ProjectsComponent } from './proyects/projects.component';
+import { MainProjectsComponent } from './projects/mainProjects.component';
 import { UsersComponent } from './users/users.component';
 import { LoginGuard } from '../guards/admin.guard';
-import { ProjectComponent } from './proyects/project/project.component';
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { SubjectComponent } from './addressBook/subject/subject.component';
 import { ProfessorComponent } from './addressBook/professor/professor.component';
 import { AlumniComponent } from './addressBook/alumni/alumni.component';
+import { ProjectComponent } from './projects/project/project.component';
 
 const pagesRoutes: Routes = [
   {
     path: "",
     component: PagesComponent,
     canActivate: [LoginGuard],
-    
     children: [
       {
         path: "dashboard",
@@ -30,14 +29,11 @@ const pagesRoutes: Routes = [
         data: { title: "PROFILE", description: "Profile" }
       },
       {
-        path: "projects",
-        component: ProjectsComponent,
-        data: { title: "PROJECTS", description: "Projects" }
-      },
-      {
-        path: "project/:id",
-        component: ProjectComponent,
-        data: { title: "PROYECT", description: "Proyect" }
+        path: 'projects',
+        component: MainProjectsComponent,
+        children: [
+          { path: ':id', component: ProjectComponent}
+        ]
       },
       {
         path: "addressBook/subjects",

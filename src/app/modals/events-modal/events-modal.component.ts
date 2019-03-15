@@ -3,12 +3,14 @@ import { EventModalController } from './eventsModal.controller';
 import { UserServices } from '../../providers/user.service';
 import { User } from 'src/app/models/user.model';
 import { CalendarService } from '../../providers/calendar.service';
-import { Event, EventOrder } from '../../models/event.model';
+import { EventModel, EventOrder } from '../../models/event.model';
 import * as _ from "underscore";
 import { FacilitiesService } from '../../providers/facilities.service';
-import { Day } from 'src/app/models/day.model';
-import { Project } from 'src/app/models/project.model';
+import { Day, DayOrder } from 'src/app/models/day.model';
+import { Project, ProjectOrder } from 'src/app/models/project.model';
 import { ProjectServices } from '../../providers/project.service';
+import { Subscription } from 'rxjs';
+import { FacilitieOrder } from '../../models/facilitie.model';
 
 @Component({
   selector: "app-events-modal",
@@ -22,69 +24,55 @@ export class EventsModalComponent implements OnInit {
   ready: boolean = false;
   projects:Project[]=[]
   spaceAvailable: number = 12;
-  event: Event;
+  event: EventModel;
   startPosition: number;
   hour: any;
   day: any;
+
+  projectsSubscription:Subscription = null;
+  daysSubscription:Subscription = null;
+  eventsSubscription: Subscription = null;
+  facilitieSubscription:Subscription = null;
 
   constructor(
     public  _modalController: EventModalController,
     private _userServices: UserServices,
     private _calendarServices: CalendarService,
     private _facilitieServices: FacilitiesService,
-    public _projectServices:ProjectServices
+    public _projectServices:ProjectServices,
   ) {
     this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
 
-    this._projectServices.projects$.subscribe((projectOrder)=>{
+    this.projectsSubscription = this._projectServices.projects$.subscribe((projectOrder:ProjectOrder)=>{
       if(projectOrder.order === 'get'){
-        this.projects.push(projectOrder.project)
+        if(this.projects.indexOf(projectOrder.project)<0){
+          this.projects.push(projectOrder.project)}
       }
     })
-
-    this._calendarServices.currentDay$.subscribe(day => {
-      this.day = day;
+    this.daysSubscription=this._calendarServices.day$.subscribe((dayOrder:DayOrder) => {
+      this.day = dayOrder.day;
     });
-    this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-      this.event = null;
-      this.event = eventOrder.event;
-      setTimeout(() => {
-        this.page = "7";
-      });
-    });
-
+    
     this._modalController.notification.subscribe(res => {
       if (res) {
-        if (!res.eventId) {
-          if (res.facilitieId) {
-            this.event = new Event(
-              "",
-              "",
-              0,
-              res.position,
-              this.userOnline._id,
-              null,
-              Number(parseInt(String(res.position))),
-              new Date(this.day.date).getDay(),
-              false,
-              new Date(this.day.date),
-              null,
-              null
-            );
-            this._facilitieServices
-              .getFacilitieById(res.facilitieId)
-              .subscribe(facilitie => {
-                this.event.facilitie = facilitie;
-                this.page = "1";
-              });
+     this.facilitieSubscription=this._facilitieServices.facilities$.subscribe((facilitieOrder:FacilitieOrder)=>{
+          if(facilitieOrder.order === 'getById'){
+            this.event.facilitie = facilitieOrder.facilitie;
+            this.page = '1';}})
+      this.event = new EventModel("","",0,res.position,this.userOnline._id,null,Number(parseInt(String(res.position))),new Date(this.day.date).getDay(),false,new Date(this.day.date),null,null);
+      this._facilitieServices.getFacilitieById(res.facilitieId).subscribe()
+      }else{
+          this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
+            if (eventOrder.order === 'getById') {
+              this.event = null;
+              this.event = eventOrder.event;
+              setTimeout(() => {
+                this.page = "7"})}});
+          this._calendarServices.getEventById(this._modalController.id).subscribe();
           }
-        } else {
-          this._calendarServices.getEventById(res.eventId).subscribe();
-        }
-      }
     });
   }
 
@@ -103,7 +91,7 @@ export class EventsModalComponent implements OnInit {
     }
   }
 
-  private checkNextHoursSpace(hour: Event[]) {
+  private checkNextHoursSpace(hour: EventModel[]) {
     return new Promise((resolve, reject) => {
       let hours = [
         this.day.hour11,
@@ -137,7 +125,7 @@ export class EventsModalComponent implements OnInit {
     });
   }
 
-  private checkSpaceInEventHour(hour: Event[]) {
+  private checkSpaceInEventHour(hour: EventModel[]) {
     return new Promise((resolve, reject) => {
       if (hour.length > 0) {
         let eventsInSamePositionAndSameFacilitie = hour.filter((event: any) => {
@@ -274,16 +262,15 @@ export class EventsModalComponent implements OnInit {
 
    weeksOfDuration: number = 0;
    noLimit:boolean = false;
-   postEvent() {
+
+   postEvent() {     
     if(this.event.endDate){
       let limitDate = this.event.endDate.getTime() + 604800000;
-        this._calendarServices.postEvent(this.event,this.day._id,limitDate).subscribe(()=>{
-        })
+        this._calendarServices.postEvent(this.event,this.day._id,limitDate).subscribe()
     }else{
       this._calendarServices.postEvent(this.event,this.day._id).subscribe()
     }   
   }
-
    putEvent() {
     this._calendarServices
       .putEvent(this.event._id, this.event)
@@ -294,8 +281,8 @@ export class EventsModalComponent implements OnInit {
 
   //////////// REINIT ////////////  
 
-   fixEventPositionBack() {
-    let currentEvent = new Event(
+   fixEventPositionBack() {  
+    let currentEvent = new EventModel(
       this.event.name,
       this.event.description,
       this.event.duration,
@@ -338,6 +325,7 @@ export class EventsModalComponent implements OnInit {
     });
     if (prevEventsInSameFacilitie.length > 0) {
       prevEventsInSameFacilitie.reverse();
+      prevEventsInSameFacilitie = prevEventsInSameFacilitie.filter((event)=>{return event._id != this.event._id})
       prevEventsInSameFacilitie.forEach(async event => {
         let res = await this.fixEventPosition(event, 1);
         if (res === false) {
@@ -399,12 +387,10 @@ export class EventsModalComponent implements OnInit {
 
     let hour = this.day[`hour${parseInt(String(currentEvent.position))}`];
     hour = hour.filter(event => {
-      return event.facilitie === currentEvent.facilitie._id;
-    });
-    hour = hour.filter(event => {
-      return event._id != currentEvent._id;
-    });
-    hour = _.sortBy(hour, (event: Event) => {
+      return event.facilitie === currentEvent.facilitie._id && event._id != this.event._id
+
+    })
+    hour = _.sortBy(hour, (event: EventModel) => {
       return event.position;
     });
     hour.forEach(event => {
@@ -426,9 +412,7 @@ export class EventsModalComponent implements OnInit {
       resolve(false);
     });
   }
-
   //////////// CLOSE ///////////
-
    hideModal() {
     this._modalController.hideModal();
     this.ready = false;
@@ -436,7 +420,6 @@ export class EventsModalComponent implements OnInit {
     this.page = "0";
     this.startPosition = null;
     this.event = null;
-    this.projects = []
     this.hour = null;
     this.timeValue = 0;
     this.minutesPrevValue = 0;
@@ -445,6 +428,13 @@ export class EventsModalComponent implements OnInit {
     this.availableDatesFrame = []
     this.weeksOfDuration = 0;
     this.noLimit= false;
+    this.projects=[];
+    if(this.eventsSubscription != null){
+      this.eventsSubscription.unsubscribe()
+    }
+    if(this.facilitieSubscription != null){
+      this.facilitieSubscription.unsubscribe()
+    }
   }
 }
 

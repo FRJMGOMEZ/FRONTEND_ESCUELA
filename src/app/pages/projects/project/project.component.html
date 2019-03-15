@@ -1,0 +1,99 @@
+<div *ngIf="name" class="container-fluid mt-2" style='background-color: #DCD4D2 '>
+    <div class="row">
+        <div class=' col-12 nav justify-content-around align-items-center ' style='background:black;color:white;height: 40px '>
+            <div>
+                <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown">MIS PROYECTOS</a>
+                <div *ngIf="mainProjectsComponent.projects.length > 1" class="dropdown-menu" aria-labelledby="dp-proyectos">
+                    <div *ngFor="let oneProject of mainProjectsComponent.projects">
+                        <a *ngIf="oneProject._id != mainProjectsComponent.projectSelectedId" (click)='toOtherProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item'>{{oneProject.name}}</a>
+                    </div>
+                </div>
+                <div *ngIf="mainProjectsComponent.projects.length == 1" class="dropdown-menu" aria-labelledby="dp-proyectos">
+                    <div>
+                        <a class='dropdown-item'>No participas en ningún otro proyecto</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <a [routerLink]="['/projects']" routerLinkActive="router-link-active" routerLinkActive="router-link-active" [routerLinkActive]>VOLVER</a>
+            </div>
+            <div>
+                <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown">CONFIGURACION</a>
+                <div class="dropdown-menu" aria-labelledby="dp-config">
+
+                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                        <a (click)="putProject(mainProjectsComponent.projectSelectedId)" routerLinkActive="router-link-active" class='dropdown-item'>EDITAR PROYECTO</a>
+                    </div>
+                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                        <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item'>CAMBIAR ADMINISTRADOR</a>
+                    </div>
+                    <div>
+                        <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item'>SALIR DE PROYECTO</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-2" style='background:#F5F1E3;color:black '>
+            <h5 class='text-center '>{{name}}</h5>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+            <div class="row d-flex ">
+                <div class='col-6 '>
+                    <img (click)="_uploadFilesModalController.showModal(mainProjectsComponent.projectSelectedId,'projects')" class='img-fluid m-1' [src]="projectImage| imgPipe" style='border: 1px solid black;cursor: pointer'>
+                </div>
+                <div class='col-6 p-0'>
+                    {{description}}
+                </div>
+            </div>
+        </div>
+        <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'" class='col-8 d-flex justify-content-start flex-column'>
+            <div class="d-flex justify-content-center">
+                <h5 class='mr-2 '>PARTICIPANTES:</h5>
+            </div>
+            <table style="width:100%">
+                <tr *ngFor="let user of participants">
+                    <th>{{user.name}}</th>
+                    <th>{{user.role}}</th>
+                    <th><button (click)="_projectServices.addOrRemoveParticipant(mainProjectsComponent.projectSelectedId,user._id).subscribe()" class='btn btn-danger'>X</button></th>
+                </tr>
+            </table>
+            <div class='d-flex justify-content-center mt-2 '>
+                <button (click)='addUser()' class='btn btn-warning '>Añadir participante</button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background:black">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+             </button>
+                <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
+
+                    <div>
+                        <a class='text-white' (click)="switchPage('chat')">CHAT</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="switchPage('images')">IMAGENES</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="switchPage('files')">ARCHIVOS</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="switchPage('tasks')">TAREAS</a>
+                    </div>
+                    <div>
+                        <a class='text-white' (click)="switchPage('events')">EVENTOS</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="col-12 mt-3" style='background:#1F0968;border:1px solid #F0B841'>
+            <app-messages *ngIf="page === 'chat'"></app-messages>
+            <app-images *ngIf="page === 'images'"></app-images>
+            <app-files *ngIf="page === 'files'"></app-files>
+            <app-project-events *ngIf="page === 'events'"></app-project-events>
+            <app-tasks *ngIf="page === 'tasks'"></app-tasks>
+        </div>
+    </div>

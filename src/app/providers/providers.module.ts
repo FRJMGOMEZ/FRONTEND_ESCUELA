@@ -13,9 +13,10 @@ import { IndexcardServices } from './indexcard.service';
 import { ProfessorsServices } from './professor.service';
 import { ChatServices } from './chat.service';
 import { AlumniServices } from './alumni.service';
-import { MessagesService } from './messages.service';
 import { CalendarService } from './calendar.service';
 import { FacilitiesService } from './facilities.service';
+import { SwalService } from './swal.service';
+import { TasksService } from './tasks.service';
 
 
 
@@ -33,10 +34,10 @@ import { FacilitiesService } from './facilities.service';
        ProfessorsServices,
        ChatServices,
        AlumniServices,
-       MessagesService,
        CalendarService,
        FacilitiesService,
-      
+       SwalService,
+       TasksService
     ],
 
     exports: [],

@@ -2,7 +2,8 @@ import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewIn
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
-import { Event } from '../../../../models/event.model';
+import { EventModel } from '../../../../models/event.model';
+import { SwalService } from '../../../../providers/swal.service';
 
 @Component({
   selector: "app-event",
@@ -11,7 +12,7 @@ import { Event } from '../../../../models/event.model';
 })
 export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
 
-  @Input() facilitie: any;
+  @Input() facilitie:any;
   @Input() position: number = 0
   @Input() hour:any
   
@@ -33,7 +34,8 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
     private renderer: Renderer2,
     private _modalEventController: EventModalController,
     private dayComponent:DayComponent,
-    private _calendarServices:CalendarService
+    private _calendarServices:CalendarService,
+    private _swalServices:SwalService
   ) {
   }
   ngOnInit() {
@@ -93,7 +95,7 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
         this.renderer.setStyle(
           this.eventCard.nativeElement,
           "background-color",
-          "#c4afa1"
+          "#F5F1E3"
         );
         this.facilitie.space -= 60;
         return
@@ -111,12 +113,15 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
             this.renderer.listen(this.eventCard.nativeElement, "click", () => {
               this.createEvent(this.position);
             });
-            this.renderer.setStyle(this.eventCard.nativeElement, "background-color", "#c4afa1");
+            this.renderer.setStyle(
+              this.eventCard.nativeElement,
+              "background-color",
+              "#F5F1E3"
+            );
             return
           }               
       } 
     } else {
-      ////gestionar Eventos que se solapen una buena idea puede ser vetar la creacion de eventos permanentes a la semana actual/////
              await this.setEvent(0),
              await this.setEvent(0.25)
              await this.setEvent(0.5)
@@ -187,7 +192,11 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       this.renderer.setStyle(icon,'margin-right',10)
    
       this.renderer.listen(child2, "click", () => {
-        this.deleteEvent(this.ourEvents[String(position)]);
+        this._swalServices.confirmDelete().then((res)=>{
+          if(res){
+            this.deleteEvent(this.ourEvents[String(position)]);
+          }
+        })
       });
       this.renderer.appendChild(cardBody, child2);
       this.renderer.setStyle(
@@ -261,13 +270,12 @@ fixHeight(height: number) {
         case 0.75: division = this.newDiv3;
           break;
       }
-
       this.renderer.addClass(division, 'card')
       let cardBody = this.renderer.createElement('div');
       this.renderer.addClass(cardBody, 'card-body');
       this.renderer.appendChild(division, cardBody)
       this.renderer.setStyle(cardBody, 'height', `${height}px`)
-      this.renderer.setStyle(cardBody, "background-color", "#c4afa1");
+      this.renderer.setStyle(cardBody, "background-color", "#F5F1E3");
       const child = document.createElement(`a`);
       const name = document.createTextNode(`+`);
       child.append(name);
@@ -293,11 +301,11 @@ fixHeight(height: number) {
   }
 
   showEventInfo(id:string){ 
-    this._modalEventController.notification.emit({eventId:id})
-    this._modalEventController.showModal() 
+    this._modalEventController.showModal(id) 
+    this._modalEventController.notification.emit()
   }
 
-  deleteEvent(event:Event){
+  deleteEvent(event:EventModel){
     if(event.permanent){
       this._calendarServices.pullEvent(this.dayComponent.currentDay._id,event._id).subscribe()
     }else{

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UploadFilesModalController } from './uploadFilesModalController';
 import { UploadFilesServices } from '../../providers/upload-files.service';
@@ -9,12 +9,12 @@ import { UserServices } from '../../providers/user.service';
   templateUrl: './upload-files-modal.component.html',
   styles: []
 })
-export class UploadFilesModalComponent implements OnInit {
+export class UploadFilesModalComponent {
 
   userOnline:User
   token: string
   imgUpload: File
-  temporaryImg: any
+  temporaryImg:any
 
   constructor(public _modalService: UploadFilesModalController,
               private _uploadFilesServices:UploadFilesServices,
@@ -24,13 +24,10 @@ export class UploadFilesModalComponent implements OnInit {
     this.token = this._userServices.token;
   }
 
-  ngOnInit() {
-  }
-
   uploadImg() {
     let id = this._modalService.id;
     let type = this._modalService.type;
-    this._uploadFilesServices.updateFile(this.imgUpload, type, id).then(() => { this.hideModal()})
+    this._uploadFilesServices.putFile(this.imgUpload, type, id).then(() => { this.hideModal()})
   }
 
   selectImg(file: File) {
