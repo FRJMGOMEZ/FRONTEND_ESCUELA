@@ -5,8 +5,8 @@
             <div class='d-flex flex-row justify-content-center'>
                 <div class='d-flex d-block'>
                     <input #input placeholder="Buscar usuario" class=' list-group-item' type="text">
-                    <button class='btn btn-warning ' (click)='searchMode=true;getMode=false;from=0;_userServices.searchUsers(input.value).subscribe();users=[]'>BUSCAR USUARIOS</button>
-                    <button class='btn btn-warning' (click)='searchMode=false;getMode=true;from=0;_userServices.getUsers().subscribe();users=[]'>TODOS</button>
+                    <button class='btn btn-warning ' (click)='searchMode=true;getMode=false;from=0;_userServices.searchUsers(input.value).subscribe()'>BUSCAR USUARIOS</button>
+                    <button class='btn btn-warning' (click)='searchMode=false;getMode=true;from=0;_userServices.getUsers().subscribe()'>TODOS</button>
                 </div>
 
             </div>
@@ -23,20 +23,21 @@
                 <th></th>
             </tr>
 
-            <tr *ngFor="let user of users let i=index">
+            <tr *ngFor="let user of _userServices.users">
                 <td>
-                    <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='openUploadFilesModule(user._id)' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
+                    <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='changeImg(user._id)' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
                 </td>
                 <td>{{user.email}}</td>
                 <td>{{user.name}}</td>
                 <td>
-                    <select [(ngModel)]='user.role' name="role" class='form-control' (change)="changeRole(user)">
+                    <select [(ngModel)]='user.role' name="role" class='form-control' (change)="_userServices.changeRole(user._id,user.role).subscribe()">
                       <option value="USER_ROLE">USER_ROLE</option>
                       <option value="ADMIN_ROLE">ADMIN_ROLE</option>
                     </select>
                 </td>
                 <td>
-                    <button class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="activador" value="Activar Usuario">{{checkStatus(user.status)}}</button>
+                    <button *ngIf="!user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">activar</button>
+                    <button *ngIf="user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">desactivar</button>
                 </td>
                 <td>
                     <div class="col-12 d-flex flex-row">
@@ -49,6 +50,6 @@
         </table>
         <div class='d-flex justify-content-around'>
             <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-            <button *ngIf="_userServices.count >= from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+            <button *ngIf="_userServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
         </div>
     </div>

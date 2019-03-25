@@ -7,7 +7,7 @@
             <div *ngFor="let message of messages">
                 <div class="card">
                     <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == userOnline._id }" style='height:25px;background:white;border:none'>
-                        <strong [ngClass]="{'badge badge': message.user._id == userOnline._id  , 'badge badge-warning': message.user._id != userOnline._id  }">{{message.user.name}}</strong>
+                        <strong [ngClass]="{'badge badge': message.user._id == userOnline._id  , 'badge badge-warning': message.user._id != userOnline._id  }">{{message.user['name']}}</strong>
                     </div>
                     <div class="card-body m-0 pt-0 pb-0 ">
                         <div class="row d-flex" [ngClass]="{'justify-content-end': message.user._id == userOnline._id }">
@@ -16,11 +16,11 @@
                             </div>
                             <div class="col-12"></div>
                             <div *ngIf="message.file">
-                                <img (click)='openFile(message.file._id)' [src]="message.file|imgPipe : 'projectFiles'" alt="" style='height:100px;width:100px'>
+                                <img (click)="openFile(message.file['_id'])" [src]="message.file|imgPipe : 'projectFiles'" alt="" style='height:100px;width:100px'>
                             </div>
                             <div class="col-12"></div>
-                            <div *ngIf="message.file" style='width:100px border:none'>
-                                <span><small>{{message.file.title}}</small></span>
+                            <div *ngIf="message.file" style='width:100px;border:none'>
+                                <span><small>{{message.file['title']}}</small></span>
                             </div>
                         </div>
                     </div>

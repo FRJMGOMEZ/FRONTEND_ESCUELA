@@ -23,15 +23,6 @@ export class ChatServices {
         this.headers = new HttpHeaders().set('token', this._userServices.token)
      }
 
-    postMessage(message: Message) {
-        let url = `${URL_SERVICES}/message`
-        return this.http.post(url, message, { headers: this.headers }).pipe(map((res: any) => {
-            let messageOrder = new MessageOrder(res.message,'push')
-            //this.messagesSource.next(messageOrder)
-            this.sendMessage(messageOrder)
-        }))
-    }
-
     getMessages(projectId: string, from: number, limit: number = 0) {
         let url = `${URL_SERVICES}/messages/${projectId}?from=${from}&limit=${limit}`;
         return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
@@ -41,6 +32,22 @@ export class ChatServices {
                 let messageOrder = new MessageOrder(message, 'get')
                 this.messagesSource.next(messageOrder)
             })
+        }))
+    }
+
+    getLastMessages() {
+       let url = `${URL_SERVICES}/lastMessages`
+       return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
+           return res.messages
+       }))
+    }
+
+    postMessage(message: Message) {
+        let url = `${URL_SERVICES}/message`
+        return this.http.post(url, message, { headers: this.headers }).pipe(map((res: any) => {
+            let messageOrder = new MessageOrder(res.message,'push')
+            //this.messagesSource.next(messageOrder)
+            this.sendMessage(messageOrder)
         }))
     }
 
@@ -55,7 +62,6 @@ export class ChatServices {
     sendMessage(messageOrder:MessageOrder) {
         this.socket.emit('message', messageOrder)
     }
-
 
      messagesSocket() {
         return this.socket.fromEvent('message').pipe(map((messageOrder:MessageOrder)=>{

@@ -10,8 +10,3 @@ export class Professor{
     }
 }
 
-
-export class ProfessorOrder{
-    constructor(public professor:Professor,
-                public order:string){}
-} 

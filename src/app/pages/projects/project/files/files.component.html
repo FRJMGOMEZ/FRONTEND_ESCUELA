@@ -1,5 +1,5 @@
 <div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block'>
-    <div class="card m-0 p-0 row d-flex flex-row" *ngFor="let file of projectComponent.textFiles" style='width:200px'>
+    <div class="card m-0 p-0 row d-flex flex-row" *ngFor="let file of _projectServices.textFiles" style='width:200px'>
         <div class="col-11">
             <img (click)='showFile(file._id)' style='height: 110px;width:110px' class='img-fluid' [src]="file | imgPipe">
             <small>{{file.title}}</small>
@@ -8,7 +8,7 @@
             <a routerLinkActive="active" (click)='deleteFile(file._id)'>x</a>
         </div>
     </div>
-    <div *ngIf="projectComponent.imageFiles.length === 0">
+    <div *ngIf="_projectServices.textFiles.length === 0">
         <h5>No hay archivos disponibles</h5>
     </div>
 </div>

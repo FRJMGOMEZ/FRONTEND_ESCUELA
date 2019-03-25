@@ -91,7 +91,7 @@
         <div class="row d-flex card-group">
             <div class="card">
                 <div class="card-body">
-                    <a [ngStyle]="{'opacity': linkStyle(7,'opacity'),'background-color': linkStyle(7,'bg')}" (click)="valueChange(frame[7])">{{frame[7].getDate()}}</a>
+                    <a [ngClass]="{'disabled': true}" [ngStyle]="{'opacity': linkStyle(7,'opacity'),'background-color': linkStyle(7,'bg')}" (click)="valueChange(frame[7])">{{frame[7].getDate()}}</a>
                 </div>
             </div>
             <div class="card">

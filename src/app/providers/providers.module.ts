@@ -16,9 +16,7 @@ import { AlumniServices } from './alumni.service';
 import { CalendarService } from './calendar.service';
 import { FacilitiesService } from './facilities.service';
 import { SwalService } from './swal.service';
-import { TasksService } from './tasks.service';
-
-
+import { NYTApiService } from './nytapi.service';
 
 
 @NgModule({
@@ -36,8 +34,7 @@ import { TasksService } from './tasks.service';
        AlumniServices,
        CalendarService,
        FacilitiesService,
-       SwalService,
-       TasksService
+       SwalService
     ],
 
     exports: [],

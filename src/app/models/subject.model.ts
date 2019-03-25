@@ -5,8 +5,3 @@ export class Subject {
                public _id?:string){}
 }
 
-
-export class SubjectOrder{
-    constructor(public subject:Subject,
-                public order:string){}
-}

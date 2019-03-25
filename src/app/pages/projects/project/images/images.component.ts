@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectComponent } from '../project.component';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
-import { FileModel } from 'src/app/models/file.model';
+import { ProjectServices } from '../../../../providers/project.service';
 
 @Component({
   selector: 'app-images',
@@ -10,7 +9,7 @@ import { FileModel } from 'src/app/models/file.model';
   styleUrls: ['./images.component.css']
 })
 export class ImagesComponent implements OnInit {
-  constructor(public projectComponent:ProjectComponent,
+  constructor(public _projectServices:ProjectServices,
               public _showFilesModalController:ShowFilesModalController,
               public _uploadFilesServices:UploadFilesServices
               ) { }

@@ -8,7 +8,7 @@ export class Project{
                 public img?:string,
                 public messages?:string[],
                 public tasks?:string[],
-                public active?:boolean,
+                public status?:boolean,
                 public _id?: string, ){
     }
 }

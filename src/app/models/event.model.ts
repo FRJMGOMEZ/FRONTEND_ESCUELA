@@ -5,7 +5,7 @@ export class EventModel{
                 public duration:number,
                 public position:number,
                 public user: string,
-                public facilitie:Facilitie,
+                public facilitie:string,
                 public hour: number,
                 public day:number,
                 public permanent: boolean,

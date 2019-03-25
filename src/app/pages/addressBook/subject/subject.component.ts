@@ -4,10 +4,7 @@ import { SubjectServices } from '../../../providers/subject.service';
 import { Subject } from 'src/app/models/subject.model';
 import { AlumnniModalController } from '../../../modals/alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from '../../../modals/professor-modal/professorModalController';
-import { Subscription } from 'rxjs';
 import { SwalService } from '../../../providers/swal.service';
-import { SubjectOrder } from '../../../models/subject.model';
-
 
 @Component({
   selector: "app-subject",
@@ -16,10 +13,7 @@ import { SubjectOrder } from '../../../models/subject.model';
 })
 export class SubjectComponent implements OnInit, OnDestroy  {
 
-   subjects:Subject[] = [];
-   subjectSelected: Subject;
-
-  subjectsSubscription: Subscription = null;
+  subjects:Subject[] = [];
 
   uploading:boolean=true;
  
@@ -33,28 +27,10 @@ export class SubjectComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(){
-
-    this.subjectsSubscription = this._subjectServices.subjects$.subscribe((subjectOrder:SubjectOrder) => {
-      if (subjectOrder.order === 'post') {
-        if (this.subjects.length < 5) { this.subjects.push(subjectOrder.subject) }
-      }else if (subjectOrder.order === 'get') {
-        this.subjects.push(subjectOrder.subject);
-      }else if (subjectOrder.order === 'delete') {
-        this.subjects = this.subjects.filter((subject) => { return subject._id != subjectOrder.subject._id })
-      }else if (subjectOrder.order === 'put') {
-        this.subjects.forEach((subject, index) => {
-          if (subject._id === subjectOrder.subject._id) {
-            this.subjects[index] = subjectOrder.subject;
-            this.subjectSelected = this.subjects[index];
-          }
-        })
-      } 
-    })
-    
     this._subjectServices.getSubjects().subscribe()
   }
   selectSubject(id:string){
-    this.subjectSelected = this.subjects.filter((subject)=>{return subject._id === id})[0];
+    this._subjectServices.subjectSelected = this._subjectServices.subjects.filter((subject)=>{return subject._id === id})[0];
     this.uploading = false;
   }
 
@@ -72,7 +48,8 @@ export class SubjectComponent implements OnInit, OnDestroy  {
     this._swalServices.confirmDelete().then((res)=>{
       if(res){
         this._subjectServices.deleteSubject(id).subscribe(()=>{
-          this.subjectSelected=null;
+          this._subjectServices.getSubjects().subscribe()
+          this._subjectServices.subjectSelected=undefined;
         })
       }
     })
@@ -82,12 +59,14 @@ export class SubjectComponent implements OnInit, OnDestroy  {
     this._professorModalController.showModal(id)
       this._professorModalController.notification.emit()
   }
+
   addAlumni(id:string) {
     this._alumniModalController.showModal(id)
       this._alumniModalController.notification.emit()
   }
 
   ngOnDestroy(): void {
-    this.subjectsSubscription.unsubscribe()
+    this._subjectServices.subjects=[]
+    this._subjectServices.subjectSelected=undefined;
   }
 }

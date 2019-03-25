@@ -1,9 +1,7 @@
 import { Component,ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
-import { Professor, ProfessorOrder } from '../../../models/professor.model';
 import { SubjectModalController } from 'src/app/modals/subject-modal/subjectModalController';
 import { IndexCardModalController } from 'src/app/modals/index-card-modal/indexCardModalController';
 import { ProfessorsServices } from '../../../providers/professor.service';
-import { Subscription } from 'rxjs';
 import { UserServices } from '../../../providers/user.service';
 import { SubjectServices } from '../../../providers/subject.service';
 import { SwalService } from '../../../providers/swal.service';
@@ -16,8 +14,6 @@ import { SwalService } from '../../../providers/swal.service';
   ]
 })
 export class ProfessorComponent implements OnInit, OnDestroy {
-  
-  professors: Professor[] = [];
 
   @ViewChild("input") input: ElementRef;
 
@@ -25,8 +21,6 @@ export class ProfessorComponent implements OnInit, OnDestroy {
 
   searchMode: boolean = false;
   getMode: boolean = true;
-
-  professorsSubscription: Subscription = null;
 
   constructor(
     public _userServices: UserServices,
@@ -38,31 +32,6 @@ export class ProfessorComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.professorsSubscription = this._professorServices.professors$.subscribe(
-      (professorOrder: ProfessorOrder) => {
-        if (professorOrder.order === "post") {
-          if (this.professors.length < 5) {
-            this.professors.push(professorOrder.professor);
-          }
-        }else if (professorOrder.order === "get") {
-          this.professors.push(professorOrder.professor);
-        } else if (professorOrder.order === "delete") {
-          this.professors = this.professors.filter(professor => {
-            return professor._id != professorOrder.professor._id;
-          });
-        } else if (professorOrder.order === "put") {
-          this.professors.forEach((professor, index) => {
-            if (professor.indexcard === professorOrder.professor.indexcard) {
-              if (professorOrder.professor.subjects.length === professor.subjects.length) {
-                this.professors[index].name = professorOrder.professor.name;
-              } else {
-                this.professors[index].subjects = professorOrder.professor.subjects;
-              }
-            }
-          });
-        }
-      }
-    );
     this._professorServices.getProfessors().subscribe();
   }
 
@@ -71,12 +40,10 @@ export class ProfessorComponent implements OnInit, OnDestroy {
       this.from += number;
     }
     if (this.searchMode) {
-      this.professors = [];
       this._professorServices
         .searchProfessors(this.input.nativeElement.value, this.from)
         .subscribe();
     } else {
-      this.professors = [];
       this._professorServices.getProfessors(this.from).subscribe();
     }
   }
@@ -100,38 +67,12 @@ export class ProfessorComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   addSubject(professorId: string) {
     this._subjectModalController.showModal(professorId);
     this._subjectModalController.notification.emit("PROFESSOR");
   }
 
-  deleteSubject(subjectId: string, professorId: string) {
-    this._subjectServices
-      .addOrDeleteProfessor(subjectId, professorId)
-      .subscribe(() => {
-        this.professors.forEach((professor, index) => {
-          let professorUpdated;
-          if (professor._id === professorId) {
-            professorUpdated = professor;
-            let professorSubjectsIds = professorUpdated.subjects.map(
-              (subject: any) => {
-                return subject._id;
-              }
-            );
-            if (professorSubjectsIds.indexOf(subjectId) < 0) {
-              this.professors[index].subjects = this.professors[
-                index
-              ].subjects.filter((subject: any) => {
-                return subject._id != subjectId;
-              });
-            }
-          }
-        });
-      });
-  }
-
   ngOnDestroy(): void {
-    this.professorsSubscription.unsubscribe();
+    this._professorServices.professors = []
   }
 }

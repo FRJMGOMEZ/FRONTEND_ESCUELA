@@ -3,10 +3,10 @@
         <div class='col text-center'>
             <div class='d-flex flex-column justify-content-center p-2'>
                 <div>
-                    <img class='img-fluid' [src]="userOnline.img | imgPipe:'users'" alt="">
+                    <img class='img-fluid' [src]="_userServices.userOnline.img | imgPipe">
                 </div>
                 <div>
-                    <a (click)='openImgModal()'><strong style='cursor: pointer;'>CAMBIAR IMAGEN</strong></a>
+                    <a (click)='changeImg()'><strong style='cursor: pointer;'>CAMBIAR IMAGEN</strong></a>
                 </div>
             </div>
         </div>
@@ -14,11 +14,11 @@
             <form action="" ngNativeValidate #form='ngForm' role="form" (ngSubmit)='saveChanges(form)'>
                 <div class='form-group'>
                     <label for="nombre">Nombre</label>
-                    <input [ngModel]="userOnline.name" class='form-control' type="text" placeholder="nombre" id="name" name="name">
+                    <input [ngModel]="_userServices.userOnline.name" class='form-control' type="text" placeholder="nombre" id="name" name="name">
                 </div>
                 <div class='form-group'>
                     <label for="password">Email</label>
-                    <input [ngModel]="userOnline.email" class='form-control' type="email" placeholder="email" id="email" name="email">
+                    <input [ngModel]="_userServices.userOnline.email" class='form-control' type="email" placeholder="email" id="email" name="email">
                 </div>
                 <button class='btn btn-warning btn-block mt-3' type='submit'>Guardar</button>
             </form>

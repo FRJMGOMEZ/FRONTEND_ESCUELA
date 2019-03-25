@@ -35,18 +35,14 @@
                         </div>
                     </div>
                     <div class='row mt-2'>
-                        <div class='col-12 d-flex justify-content-center mb-3'>
-                            <input #input type="text">
-                            <button (click)='searchUsers(input.value)' class='btn btn-warning'>BUSCAR</button>
-                        </div>
-                        <div *ngIf="users" class='col d-flex justify-content-center mt-1'>
+                        <div *ngIf="_userServices.users" class='col d-flex justify-content-center mt-1'>
                             <div class="col-6 d-flex flex-row">
                                 <div>
                                     <p *ngIf="_modalController.type === 'participant'">Usuarios no participantes:</p>
                                     <p *ngIf="_modalController.type === 'admin'">Usuarios no admnistradores:</p>
                                 </div>
                                 <table style="width:100%">
-                                    <tr *ngFor="let user of users">
+                                    <tr *ngFor="let user of _userServices.users">
                                         <th>{{user.name}}</th>
                                         <th> <a class='btn btn-warning' (click)='addUser(user._id)'>+</a> </th>
                                     </tr>

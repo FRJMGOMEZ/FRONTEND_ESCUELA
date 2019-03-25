@@ -10,22 +10,22 @@
         <button (click)='postProfessor()' class='btn btn-warning m-2'>CREAR PROFESOR</button>
     </div>
     <div *ngIf="!cargando" class="col-12 animated fadeIn" style='background:#DCD4D2'>
-        <table class='table mb-2' style='background:#F5F1E3;border:1px solid #F0B841'>
+        <table class='table mb-2' style='background:#F5F1E3;border:1px solid #F0B841;width:1000px'>
             <tr>
                 <th>Nombre</th>
                 <th style='width:50%'>Materias</th>
                 <th></th>
                 <th></th>
             </tr>
-            <tr *ngFor="let professor of professors  let i=index">
+            <tr *ngFor="let professor of _professorServices.professors  let i=index">
                 <td>
                     <div><strong> {{professor.name}}</strong></div>
                 </td>
                 <td style='width: 40%'>
                     <div class='scrollable' style="height:80px;border:1px solid black;background:#F5F1E3">
-                        <div class="d-flex justify-content-around" *ngFor="let subject of professors[i].subjects">
+                        <div class="d-flex justify-content-around" *ngFor="let subject of _professorServices.professors[i].subjects">
                             <a class="list-group-item list-group-item-action">{{subject.name}}</a>
-                            <button (click)="deleteSubject(subject._id,professor._id)" class='btn btn-warning m-2'>X</button>
+                            <button (click)="_subjectServices.addOrDeleteProfessor(subject._id,professor._id).subscribe()" class='btn btn-warning m-2'>X</button>
                         </div>
                     </div>
                 </td>

@@ -9,7 +9,6 @@ import { URL_SERVICES } from '../config/config';
 export class ImgPipe implements PipeTransform {
 
   transform(file:any) {
-
     let url;
     
     if (!file) {

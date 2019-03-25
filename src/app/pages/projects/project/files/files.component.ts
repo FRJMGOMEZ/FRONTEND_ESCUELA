@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectComponent } from '../project.component';
-import { FileModel } from '../../../../models/file.model';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
-import { MainProjectsComponent } from '../../mainProjects.component';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
-
+import { ProjectServices } from '../../../../providers/project.service';
 
 @Component({
   selector: "app-files",
@@ -15,8 +12,7 @@ export class FilesComponent implements OnInit {
 
   constructor(
     private _showFilesModalController: ShowFilesModalController,
-    public mainProjectsComponent: MainProjectsComponent,
-    public projectComponent:ProjectComponent,
+    public _projectServices:ProjectServices,
     private _uploadServices:UploadFilesServices
   ) {}
 

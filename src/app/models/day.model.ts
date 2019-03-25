@@ -19,9 +19,5 @@ export class Day {
          ) {}
        }
 
-export class DayOrder{
-    constructor(public day:Day,
-               public order:string){
-    }
-}       
+
 

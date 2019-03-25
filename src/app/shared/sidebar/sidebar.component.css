@@ -1,8 +1,8 @@
 .lateral_bar {
     background: black;
     color: white;
-    min-width: 220px;
-    min-height: 170vh;
+    width: 180px;
+    height: 900px;
     padding: 0
 }
 

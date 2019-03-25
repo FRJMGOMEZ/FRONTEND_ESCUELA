@@ -19,5 +19,4 @@ export class TaskModalController {
         this.hidden = "";
         this.id = id
     }
-
 }

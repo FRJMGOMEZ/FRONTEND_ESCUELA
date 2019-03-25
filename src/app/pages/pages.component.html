@@ -1,12 +1,12 @@
 <div class="container-fluid">
     <div class="row">
-        <app-sidebar></app-sidebar>
-        <main class='main col'>
+        <main class='d-flex flex-row justify-content-around'>
+            <app-sidebar></app-sidebar>
             <router-outlet></router-outlet>
+            <div>
+                <a class='fixed-bottom text-center' href="" style='background:black'>APP diseñada y desarrollada por FRJMA</a>
+            </div>
         </main>
-        <div>
-            <a class='fixed-bottom text-center' href="" style='background:black'>Web diseñada y desarrollada por FRJMA</a>
-        </div>
     </div>
 </div>
 

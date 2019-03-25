@@ -27,15 +27,10 @@
                             <div class="form-group">
                                 <input formControlName='password2' name='password2' class="form-control" placeholder="Password2" type="password" required>
                             </div>
-                            <div *ngIf="form.errors && form.errors.areTheyEqual && !form.pristine" class='form-group'>
+                            <div *ngIf="form.errors && form['errors'].areTheyEqual && !form.pristine" class='form-group'>
                                 <p class='text-danger'>Las contraseñas deben de ser iguales</p>
                             </div>
                             <br>
-                            <div class="checkbox">
-                                <label>
-                                    <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                </label>
-                            </div>
                             <!-- Change this to a button or input when using this as a form -->
                             <button class='btn btn-lg btn-warning btn-block' type='submit'>REGISTRARSE</button>
                             <br>

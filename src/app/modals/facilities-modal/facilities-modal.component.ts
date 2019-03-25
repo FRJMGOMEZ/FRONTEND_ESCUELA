@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesModalController } from './facilities-modalController';
-import { Facilitie, FacilitieOrder } from '../../models/facilitie.model';
+import { Facilitie } from '../../models/facilitie.model';
 import { FacilitiesService } from '../../providers/facilities.service';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-facilities-modal',
@@ -17,21 +16,11 @@ export class FacilitiesModalComponent implements OnInit {
 
   facilitie:Facilitie=new Facilitie('',undefined)
 
-  facilitieSubscription:Subscription = null;
-
   constructor(public _modalController:FacilitiesModalController,
               private _facilitieServices:FacilitiesService) {}
   ngOnInit() {
-
     this._modalController.notification.subscribe(()=>{
-        this.facilitieSubscription = this._facilitieServices.facilities$.subscribe((faciliteOrder: FacilitieOrder) => {
-          if (faciliteOrder.order === 'getById') {
-            this.facilitie = faciliteOrder.facilitie;
-            this.edition = true;
-            this.creation = false;
-          }
-        })
-        this._facilitieServices.getFacilitieById(this._modalController.id).subscribe()
+        this.facilitie = this._facilitieServices.facilities.filter((facilitie)=>{return facilitie._id === this._modalController.id})[0];
     })
   }
 
@@ -53,7 +42,6 @@ export class FacilitiesModalComponent implements OnInit {
     this.facilitie.name = '';
     this.creation = true;
     this.edition = false;
-    if (this.facilitieSubscription != null) {this.facilitieSubscription.unsubscribe()}
     this._modalController.hideModal()
   }
 }

@@ -16,7 +16,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let subject of subjects">
+                            <tr *ngFor="let subject of _subjectServices.subjects">
                                 <td class='text-center'>
                                     <div>
                                         <a (click)='addSubject(subject._id)'><strong style='cursor: pointer;'>{{subject.name}}</strong></a>

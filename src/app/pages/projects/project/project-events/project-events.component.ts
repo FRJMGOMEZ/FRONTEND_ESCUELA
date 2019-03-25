@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CalendarService } from '../../../../providers/calendar.service';
 import { EventModel } from '../../../../models/event.model';
 import * as _ from 'underscore';
-import { MainProjectsComponent } from '../../mainProjects.component';
+import { ProjectServices } from '../../../../providers/project.service';
 
 @Component({
   selector: "app-project-events",
@@ -15,9 +15,9 @@ export class ProjectEventsComponent implements OnInit {
   @Input() projectId: string
 
   constructor(private _calendarServices: CalendarService,
-              private mainProjectsComponent:MainProjectsComponent) {}
+              public _projectServices:ProjectServices) {}
   ngOnInit() {
-    this._calendarServices.getEventsInProject(this.mainProjectsComponent.projectSelectedId).subscribe((events:EventModel[])=>{
+    this._calendarServices.getEventsInProject(this._projectServices.projectSelectedId).subscribe((events:EventModel[])=>{
      this.events = events
      this.events = _.sortBy(this.events,(event)=>{
        return event.startDate

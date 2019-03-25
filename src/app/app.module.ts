@@ -3,7 +3,6 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule, registerLocaleData } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import localeEs from "@angular/common/locales/Es";
-registerLocaleData(localeEs);
 import { AppComponent } from './app.component';
 import { APPROUTES } from './app.routes';
 import { RegisterComponent } from './login/register/register.component';
@@ -12,6 +11,7 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { LoginComponent } from './login/login/login.component';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { URL_SERVICES } from './config/config';
+registerLocaleData(localeEs);
 
 const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
 

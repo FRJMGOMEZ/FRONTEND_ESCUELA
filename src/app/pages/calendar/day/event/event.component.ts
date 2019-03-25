@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewIn
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
-import { EventModel } from '../../../../models/event.model';
 import { SwalService } from '../../../../providers/swal.service';
 
 @Component({
@@ -52,11 +51,8 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
   }
   
   async render() {
-   
     if(this.hour){
-
     let spaceWithoutEvents = 720 - (this.position) * 60; 
-
     for (let event of this.hour) {
        let facilitieId = event.facilitie._id || event.facilitie || null;
       if (facilitieId && facilitieId === this.facilitie._id) {
@@ -81,7 +77,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       this.ourEvents["0.5"] === undefined&&
       this.ourEvents["0.75"] === undefined 
     ) {
-
       if (Number(this.facilitie.space) === spaceWithoutEvents) {        
         this.renderer.appendChild(this.eventCard.nativeElement, this.child);
         this.renderer.listen(this.eventCard.nativeElement, "click", () => {
@@ -105,7 +100,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
             this.renderer.setStyle(this.eventCard.nativeElement, "height", "0");
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0"); return    
           } else {
-          
             this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceWithoutEvents - this.facilitie.space)}px`);
             this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceWithoutEvents) / 60));
             this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space)            
@@ -126,7 +120,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
              await this.setEvent(0.25)
              await this.setEvent(0.5)
              await this.setEvent(0.75)
-
              return
            }}
   }
@@ -149,7 +142,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
  placeEvent(position:number) {
 
     return new Promise((resolve,reject)=>{
-
       let card;
       switch (position) {
         case 0: card = this.newDiv;
@@ -169,7 +161,11 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       this.renderer.appendChild(card,cardBody);
 
       if(this.ourEvents[String(position)].permanent === true){
-        this.renderer.setStyle(cardBody, "background-color", "red");
+        if(this.ourEvents[String(position)].endDate === null){
+          this.renderer.setStyle(cardBody, "background-color", "red");
+        }else{
+          this.renderer.setStyle(cardBody, "background-color", "green");
+        }
       }else{
         this.renderer.setStyle(cardBody, "background-color", "blue");
       }
@@ -183,7 +179,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
         this.showEventInfo(this.ourEvents[String(position)]._id);
       });
       this.renderer.appendChild(cardBody, child1);
-
       const child2 = document.createElement(`a`);
       const icon = document.createElement('icon');
       this.renderer.addClass(icon,'fas');
@@ -192,11 +187,15 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       this.renderer.setStyle(icon,'margin-right',10)
    
       this.renderer.listen(child2, "click", () => {
-        this._swalServices.confirmDelete().then((res)=>{
-          if(res){
-            this.deleteEvent(this.ourEvents[String(position)]);
-          }
-        })
+          this._swalServices.confirmDelete().then((res) => {
+            if (res) {
+            if(this.ourEvents[String(position)].permanent){
+              this._calendarServices.pullEvent(this._calendarServices.currentDay._id, this.ourEvents[String(position)]._id).subscribe()
+            }else{
+              this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id, this._calendarServices.currentDay._id).subscribe();
+            }
+            }
+          })   
       });
       this.renderer.appendChild(cardBody, child2);
       this.renderer.setStyle(
@@ -235,7 +234,6 @@ fixHeight(height: number) {
 
  checkSpace(reference?:number){
   return new Promise((resolve,reject)=>{
-  
      if (reference + 0.25 < 1 && this.ourEvents[String(reference + 0.25)] === undefined) {
        if (reference + 0.5 < 1 && this.ourEvents[String(reference + 0.5)] === undefined) {
          if (reference + 0.75 < 1 && this.ourEvents[String(reference + 0.75)] === undefined) {
@@ -253,8 +251,7 @@ fixHeight(height: number) {
      } else {
        if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
          resolve({ height: 15, position: reference })
-       }else{resolve()} }
-        
+       }else{resolve()} }     
   }) }
 
   setEmptySpace(height?:number,position?:number){
@@ -305,18 +302,8 @@ fixHeight(height: number) {
     this._modalEventController.notification.emit()
   }
 
-  deleteEvent(event:EventModel){
-    if(event.permanent){
-      this._calendarServices.pullEvent(this.dayComponent.currentDay._id,event._id).subscribe()
-    }else{
-      this._calendarServices.deleteEvent(event._id, this.dayComponent.currentDay._id).subscribe()
-    }
-  }
-
   ngOnDestroy(): void {
-    
     console.log('DESTROYED')
-    
   }
 }
 

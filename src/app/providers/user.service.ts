@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
-
 import { URL_SERVICES } from "../config/config";
-
 import { map } from "rxjs/operators";
-import swal from "sweetalert";
-
-import { User, UserOrder } from '../models/user.model';
-import { Subject } from 'rxjs';
-
+import { User} from '../models/user.model';
 
 @Injectable({
     providedIn: 'root'
@@ -18,99 +12,38 @@ export class UserServices {
 
     private headers : HttpHeaders
 
-    public  userOnline:User;
-    public  token:string;
+    userOnline:User;
 
-    public usersSource = new Subject<UserOrder>();
-    public users$ = this.usersSource.asObservable();
+    public token:string
 
-    public count:number
+    users:User[]=[]
+
+    count:number
 
     constructor(private http:HttpClient, private router:Router) { 
         this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
         this.uploadFromStorage();
     }
 
-    createUser(user: User) {
-        let url = `${URL_SERVICES}/user`;
-        return this.http.post(url, user)
-                        .pipe(map((res: any) => {
-                            swal("USER SUCCESSFULLY REGISTERED", user.email, "success");
-                            })
-                        );
-    }
-
-    putUser(id:string, user:User){
-        let url = `${URL_SERVICES}/user/${id}`
-        return this.http.put(url,user,{headers:this.headers}).pipe((map((res:any)=>{
-            if (res.user._id === this.userOnline._id) {
-                this.saveInStorage(res.user._id, res.user, this.token)
-            }
-                let userOrder=new UserOrder(res.user,'put')
-                this.usersSource.next(userOrder)  
-            })))    
-    }
-
-    getUsers(from:number=0,limit:number=5){
-        let url = `${URL_SERVICES}/users?from=${from}&limit=${limit}`;
-        return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-            this.count = res.count;
-            res.users.forEach(user => {
-                let userOrder = new UserOrder(user,'get')
-                this.usersSource.next(userOrder)
-            });
-            return res.users
-        }))
-    }
-
-    searchUsers(input: string, from: number = 0, limit: number = 5){
-        let url = `${URL_SERVICES}/search/users/${input}?from=${from}&limit=${limit}`;
-        return this.http.get(url).pipe(map((res:any)=>{
-            this.count = res.count
-            res.users.forEach(user => {
-                let userOrder = new UserOrder(user, 'get')
-                this.usersSource.next(userOrder)
-            });
-            return res.users
-        }))
-    }
-
-    changeUserStatus(id:string){
-        let url = `${URL_SERVICES}/changeUserStatus/${id}`
-        return this.http.put(url,'',{headers:this.headers}).pipe(map((res:any)=>{
-            if(res.user.status === true){
-                swal('USER ACTIVATED',res.user.email,'success')
-            }else{
-                swal("USER DISABLED", res.user.email, 'success');
-            }
-           let userOrder = new UserOrder(res.user,'put');
-           this.usersSource.next(userOrder)
-        }))
-    }
-    
-    deleteUser(id:string){
-        let url = `${URL_SERVICES}/user/${id}`
-        return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
-            this.count--
-            let userOrder = new UserOrder(res.user,'delete');
-            this.usersSource.next(userOrder)
-        }))
-    }
-    
-    login(user:User,rememberMe:boolean=false){
-        if (rememberMe) {
-            localStorage.setItem("email", user.email);
-        } else {
-            localStorage.removeItem("email");
-        }
-         let url = `${URL_SERVICES}/login`;
-         return this.http.post(url,user).pipe(map((res:any)=>{
-        this.saveInStorage(res.id,res.user,res.token)
-     }))
-     }
-
     isLogged() {
         return this.token.length > 5 ? true : false;
+    }
+
+    postUser(user: User) {
+        let url = `${URL_SERVICES}/user`;
+        return this.http.post(url, user)
+    }
+
+    login(user: User, rememberMe:boolean=false) {
+           if (rememberMe) {
+               localStorage.setItem("email", user.email);
+           } else {
+               localStorage.removeItem("email");
+           }
+        let url = `${URL_SERVICES}/login`;
+        return this.http.post(url, user).pipe(map((res: any) => {
+                this.saveInStorage(res.id, res.user, res.token)
+        }))
     }
 
     saveInStorage(id: string, user: User, token: string) {
@@ -131,20 +64,74 @@ export class UserServices {
         }
     }
 
+    getUsers(from: number = 0, limit: number = 5) {
+        let url = `${URL_SERVICES}/users?from=${from}&limit=${limit}`;
+        return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
+            this.count = res.count;
+            this.users = res.users;
+        }))
+    }
+
+    putUser(id:string, user:User){
+        let url = `${URL_SERVICES}/user/${id}`
+        return this.http.put(url,user,{headers:this.headers}).pipe((map((res:any)=>{
+            if (res.user._id === this.userOnline._id) {
+                this.saveInStorage(res.user._id, res.user, localStorage.getItem('token'))
+                this.userOnline = res.user; 
+            }else{
+               this.users.forEach((user,index)=>{
+                   if(user._id === res.user._id){
+                       this.users[index]=res.user;
+                   }
+               }) 
+            } 
+        })))    
+    }
+
+    searchUsers(input: string, from: number = 0, limit: number = 5){
+        let url = `${URL_SERVICES}/search/users/${input}?from=${from}&limit=${limit}`;
+        return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
+            this.count = res.count;
+            this.users = res.users;
+        }))
+    }
+
+    changeUserStatus(id:string){
+        let url = `${URL_SERVICES}/changeUserStatus/${id}`
+        return this.http.put(url,{},{headers:this.headers}).pipe(map((res:any)=>{ 
+                this.users.forEach((user, index) => {
+                    if (user._id === res.user._id) {
+                        this.users[index].status = res.user.status;
+                    }
+                })
+        }))
+    }
+
+    deleteUser(id:string){
+        let url = `${URL_SERVICES}/user/${id}`
+        return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
+            this.count--
+        }))
+    }
+
+    changePassword(password1: string,password2:string) {
+        let url = `${URL_SERVICES}/changePassword/${password1}/${password2}`
+        return this.http.put(url,{},{ headers: this.headers })
+    }
+
+    changeRole(userId:string,role:string){
+        let url = `${URL_SERVICES}/changeRole/${userId}/${role}`
+        return this.http.put(url,{},{headers:this.headers})
+    }
+
     logout() {
-            this.userOnline = null;
-            this.token = "";
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            localStorage.removeItem("id");
-            this.router.navigate(["/login"]);
+      this.userOnline = null;
+      this.token = "";
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("id");
+      this.router.navigate(["/login"]);
     }
-
-    checkPassword(id:string,password:string){
-        let url = `${URL_SERVICES}/user/${id}/${password}`
-        return this.http.get(url,{headers:this.headers})
-    }
-
 }
 
 

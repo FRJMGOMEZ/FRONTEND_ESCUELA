@@ -5,12 +5,10 @@ import { User } from 'src/app/models/user.model';
 import { CalendarService } from '../../providers/calendar.service';
 import { EventModel, EventOrder } from '../../models/event.model';
 import * as _ from "underscore";
-import { FacilitiesService } from '../../providers/facilities.service';
-import { Day, DayOrder } from 'src/app/models/day.model';
-import { Project, ProjectOrder } from 'src/app/models/project.model';
+import { Day} from 'src/app/models/day.model';
 import { ProjectServices } from '../../providers/project.service';
 import { Subscription } from 'rxjs';
-import { FacilitieOrder } from '../../models/facilitie.model';
+import { FacilitiesService } from '../../providers/facilities.service';
 
 @Component({
   selector: "app-events-modal",
@@ -18,338 +16,376 @@ import { FacilitieOrder } from '../../models/facilitie.model';
   styleUrls: ["./events-modal.component.css"]
 })
 export class EventsModalComponent implements OnInit {
+
+  editMode:boolean=false;
+  createMode:boolean=false;
+  modifyMode:boolean=false;
   
   userOnline: User;
   page: string = "0";
-  ready: boolean = false;
-  projects:Project[]=[]
-  spaceAvailable: number = 12;
+  spaceAvailable: number 
   event: EventModel;
-  startPosition: number;
-  hour: any;
-  day: any;
 
-  projectsSubscription:Subscription = null;
-  daysSubscription:Subscription = null;
   eventsSubscription: Subscription = null;
-  facilitieSubscription:Subscription = null;
 
   constructor(
     public  _modalController: EventModalController,
     private _userServices: UserServices,
-    private _calendarServices: CalendarService,
-    private _facilitieServices: FacilitiesService,
+    public _calendarServices: CalendarService,
     public _projectServices:ProjectServices,
+    private _facilitieServices:FacilitiesService
   ) {
     this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
 
-    this.projectsSubscription = this._projectServices.projects$.subscribe((projectOrder:ProjectOrder)=>{
-      if(projectOrder.order === 'get'){
-        if(this.projects.indexOf(projectOrder.project)<0){
-          this.projects.push(projectOrder.project)}
-      }
-    })
-    this.daysSubscription=this._calendarServices.day$.subscribe((dayOrder:DayOrder) => {
-      this.day = dayOrder.day;
-    });
-    
     this._modalController.notification.subscribe(res => {
-      if (res) {
-     this.facilitieSubscription=this._facilitieServices.facilities$.subscribe((facilitieOrder:FacilitieOrder)=>{
-          if(facilitieOrder.order === 'getById'){
-            this.event.facilitie = facilitieOrder.facilitie;
-            this.page = '1';}})
-      this.event = new EventModel("","",0,res.position,this.userOnline._id,null,Number(parseInt(String(res.position))),new Date(this.day.date).getDay(),false,new Date(this.day.date),null,null);
-      this._facilitieServices.getFacilitieById(res.facilitieId).subscribe()
+      if (this._projectServices.projects.length === 0) {
+        this._projectServices.getProjects().subscribe()
+      }
+      if (res) {    
+      this.event = new EventModel("","",0,res.position,this.userOnline._id,res.facilitieId,Number(parseInt(String(res.position))),new Date(this._calendarServices.currentDay.date).getDay(),false,new Date(this._calendarServices.currentDay.date),null,null);
+      this.page = '1'; 
+      this.createMode = true;
+        this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
+          if (eventOrder.order === 'push') {
+            this.resetValues().then(() => {
+              this.editMode = true;
+              this.event = eventOrder.event;
+              setTimeout(()=>{
+                this.page = '7'
+              })
+            })
+          }
+        })
       }else{
           this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-            if (eventOrder.order === 'getById') {
-              this.event = null;
-              this.event = eventOrder.event;
-              setTimeout(() => {
-                this.page = "7"})}});
-          this._calendarServices.getEventById(this._modalController.id).subscribe();
-          }
+              if (eventOrder.order === 'getById') {
+                this.editMode = true;
+                this.event = eventOrder.event;
+                setTimeout(() => {
+                  this.page = "7";
+                })
+              }else if (eventOrder.order === 'put'){
+                this.resetValues().then(()=>{
+                  this.editMode=true;
+                  this.event = eventOrder.event;
+                  setTimeout(()=>{
+                    this.page = "7";
+                  })
+                })
+              } 
+            });
+            this._calendarServices.getEventById(this._modalController.id).subscribe();
+        }
     });
   }
 
   ////// PAGE 3 ///////
-
-   async page3(back: boolean = false) {
-    if (back) {
-      this.event.position -= this.startPosition;
-      this.startPosition = 0;
-      this.page = "3";
-    } else {
-      let hour = this.day[`hour${parseInt(String(this.event.position))}`];
-      await this.checkNextHoursSpace(hour);
+  startPosition: number;
+  prevPosition: number;
+  prevSpaceAvailable: number;
+   async page3(back?:string) {
+      if(back){
+        this.event.position = this.prevPosition;
+        this.spaceAvailable = this.prevSpaceAvailable;
+        this.minutesPrevValue = 0;
+        this.hoursPrevValue = 0;
+      }
+      this.spaceAvailable = 12;
+      let hour = this._calendarServices.currentDay[`hour${parseInt(String(this.event.position))}`];
+      await this.checkOtherHoursEventsSpace(hour)
       await this.checkSpaceInEventHour(hour);
-      this.page = "3";
-    }
+      
+      this.page = "3";    
   }
 
-  private checkNextHoursSpace(hour: EventModel[]) {
-    return new Promise((resolve, reject) => {
+  private checkOtherHoursEventsSpace(hour: EventModel[]) {
+    return new Promise((resolve) => {
       let hours = [
-        this.day.hour11,
-        this.day.hour10,
-        this.day.hour9,
-        this.day.hour8,
-        this.day.hour7,
-        this.day.hour6,
-        this.day.hour5,
-        this.day.hour4,
-        this.day.hour3,
-        this.day.hour2,
-        this.day.hour1,
-        this.day.hour0
+        this._calendarServices.currentDay.hour11,
+        this._calendarServices.currentDay.hour10,
+        this._calendarServices.currentDay.hour9,
+        this._calendarServices.currentDay.hour8,
+        this._calendarServices.currentDay.hour7,
+        this._calendarServices.currentDay.hour6,
+        this._calendarServices.currentDay.hour5,
+        this._calendarServices.currentDay.hour4,
+        this._calendarServices.currentDay.hour3,
+        this._calendarServices.currentDay.hour2,
+        this._calendarServices.currentDay.hour1,
+        this._calendarServices.currentDay.hour0
       ];
       let hourIndex = hours.indexOf(hour);
       hours.forEach((hour, index) => {
         if (index < hourIndex) {
-          hour.forEach(event => {
-            if (event.facilitie === this.event.facilitie._id) {
-              this.spaceAvailable = hourIndex - index;
-              resolve();
-            } else {
-              resolve();
-            }
-          });
-        } else {
-          resolve();
+          if(hour.length > 0){
+            _.sortBy(hour,(event)=>{
+              return event.position
+            })
+            hour.reverse()
+            hour.forEach(event => {
+              if (event.facilitie === this.event.facilitie) {
+                this.spaceAvailable = hourIndex - (hourIndex-event.position);
+              }
+            });
+          }
         }
       });
+      resolve(); 
     });
   }
 
   private checkSpaceInEventHour(hour: EventModel[]) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (hour.length > 0) {
         let eventsInSamePositionAndSameFacilitie = hour.filter((event: any) => {
-          return event.facilitie === this.event.facilitie._id;
+          return (
+            event.facilitie === this.event.facilitie &&
+            event._id != this.event._id
+          );
         });
-        eventsInSamePositionAndSameFacilitie = eventsInSamePositionAndSameFacilitie.filter(
-          event => {
-            return event._id != this.event._id;
+        if(eventsInSamePositionAndSameFacilitie.length > 0){
+          for (let event of eventsInSamePositionAndSameFacilitie) {
+            if (event.position === this.event.position + 0.75) {
+              this.spaceAvailable = 0.75;
+            }
+            if (event.position === this.event.position + 0.5) {
+              this.spaceAvailable = 0.5;
+            }
+            if (event.position === this.event.position + 0.25) {
+              this.spaceAvailable = 0.25;
+            }
           }
-        );
-        for (let event of eventsInSamePositionAndSameFacilitie) {
-          if (event.position === this.event.position + 0.75) {
-            this.spaceAvailable = 0.75;
-          }
+          resolve()
+        }else{
+          resolve()
         }
-        for (let event of eventsInSamePositionAndSameFacilitie) {
-          if (event.position === this.event.position + 0.5) {
-            this.spaceAvailable = 0.5;
-          }
-        }
-        for (let event of eventsInSamePositionAndSameFacilitie) {
-          if (event.position === this.event.position + 0.25) {
-            this.spaceAvailable = 0.25;
-          }
-        }
-        resolve();
       } else {
         resolve();
       }
     });
   }
-
    checkInitialStartHour() {
     return Number(this.event.position) - parseInt(String(this.event.position));
   }
 
   ////// PAGE 4 ///////
 
-   page4(back: boolean = false) {
-    if (back) {
-      this.spaceAvailable += Number(this.hoursPrevValue);
-      this.timeValue = this.spaceAvailable;
-      this.minutesPrevValue = 0;
-      this.hoursPrevValue = 0;
-      this.event.duration = 0;
-      this.page = "4";
-    } else {
-      this.spaceAvailable -= this.startPosition;
-      this.event.duration = 0;
-      this.event.position +=
-        this.startPosition -
-        (this.event.position - parseInt(String(this.event.position)));
-      this.timeValue = this.spaceAvailable;
-      this.page = "4";
-    }
+
+   page4() {
+     this.prevSpaceAvailable = this.spaceAvailable;
+     this.prevPosition = this.event.position;
+
+     this.spaceAvailable = this.spaceAvailable - this.event.position- this.startPosition;
+     this.event.duration = 0;
+     this.event.position += this.startPosition - (this.event.position - parseInt(String(this.event.position)));
+     this.timeValue1 = this.spaceAvailable;
+     this.timeValue2 = this.spaceAvailable;
+     this.page = "4";
   }
 
-  timeValue: number = 0;
+  timeValue1: number = 0;
+  timeValue2: number = 0;
   private minutesPrevValue: number = 0;
   private hoursPrevValue: number = 0;
-  checkMinutesAvailables(value: string, type: string) {
-    this.timeValue += this.minutesPrevValue;
-    this.timeValue -= Number(value);
-    this.minutesPrevValue = Number(value);
-  }
   checkHoursAvailables(value: string) {
-    this.event.duration -= this.hoursPrevValue;
-    this.spaceAvailable += this.hoursPrevValue;
-    this.event.duration += Number(value);
-    this.spaceAvailable -= Number(value);
+    this.timeValue1 += this.hoursPrevValue;
+    this.timeValue1 -= Number(value);
     this.hoursPrevValue = Number(value);
   }
-
- 
+  checkMinutesAvailables(value: string) {
+    this.timeValue2 += this.minutesPrevValue;
+    this.timeValue2 -= Number(value);
+    this.minutesPrevValue = Number(value);
+  }
  /////// PAGE 5 ////////
 
   dayWithPermanentEvents: Day[];
   availableDatesFrame: Date[] = [];
+  weeksOfDuration: number = 0;
+  noLimit: boolean = false;
+
   async page5(back?:string) {
-    this.event.duration +=this.spaceAvailable + this.event.duration - this.timeValue;
+    this.event.duration = (this.spaceAvailable - this.timeValue1) + (this.spaceAvailable -this.timeValue2);
     if(back){
-      this.weeksOfDuration = 0;
-      this.noLimit = false;
-      this.page = '5';
+      if (this.event.permanent) {
+        this.weeksOfDuration = 0;
+        this.noLimit = false;
+        this.page = '5';
+      }
+      else {
+        this.page4()
+      }
     }else{
-    if (this.event.permanent) {
-      this._calendarServices.checkPermanentEvents(this.event).subscribe(day => {
-        if (day) {
-          let ourDay = new Date(this.day.date);
-          let followingDay = new Date(day.date);
-          this.dayWithPermanentEvents = day;
-          let milisecondsBetween = followingDay.getTime()- ourDay.getTime(); 
-          let weeks= milisecondsBetween / 604800000;
-          let referenceDay= new Date(ourDay);
-          for(let i=0; i < weeks;i++){
-            referenceDay.setTime(referenceDay.getTime() + 604800000)
-            this.availableDatesFrame.push(referenceDay)
+      if (this.event.permanent) {
+        this._calendarServices.checkPermanentEvents(this.event).subscribe(day => {
+          if (day) {
+            let ourDay = new Date(this.event.startDate);
+            let followingDay = new Date(day.date);
+            this.dayWithPermanentEvents = day;
+            let milisecondsBetween = followingDay.getTime() - ourDay.getTime();
+            let weeks = milisecondsBetween / 604800000;
+            let referenceDay = new Date(ourDay);
+            for (let i = 0; i < weeks; i++) {
+              referenceDay.setTime(referenceDay.getTime())
+              this.availableDatesFrame.push(referenceDay)
+            }
+            setTimeout(() => {
+              this.page = '5'
+            })
+          } else {
+            this.page = '5'
           }
-          setTimeout(()=>{
-            this.page = '5' 
-          })       
-        } else {
-          this.page = '5'
-        }
-      });
-    }else{
-      this.page6()
+        });
+      } else {
+        this.page6()
+      }
     }
   }
-  }
+
   public updateEndUpDate(){
-    let ourDay = new Date(this.day.date);
-    let endDate = new Date(ourDay.getTime() + this.weeksOfDuration * 604800000);
+    let ourDay = new Date(this.event.startDate);
+    let endDate = new Date(ourDay.getTime() + (this.weeksOfDuration -1) * 604800000);
     return new Date(endDate)    
   }
-  /////////// PAGE 6 //////////////
 
+  /////////// PAGE 6 //////////////
    page6() {
       if(this.event.permanent){
         if (this.noLimit === false) {
-          if(this.weeksOfDuration === 0){
+          if(this.weeksOfDuration === 1){
             this.event.permanent = false;
             this.page = '6';
           }else{
-            let dateFrom = new Date(this.day.date);
-            let limitDate = dateFrom.getTime() + this.weeksOfDuration * 604800000;
-            this.event.endDate = new Date(limitDate - 604800000);
+            let dateFrom = new Date(this.event.startDate);
+            let limitDate = dateFrom.getTime() + (this.weeksOfDuration-1) * 604800000;
+            if(dateFrom === new Date(limitDate)){
+             this.event.endDate = null;
+             this.event.permanent = false;
+            }else{
+              this.event.endDate = new Date(limitDate);
+            }
           }
+      }else{
+          this.event.endDate = null;
       }
+    }else{
+      this.event.endDate = null;
     }
     this.page = "6";
   }
-  ////////////// POST AND PUT /////////////
 
-   weeksOfDuration: number = 0;
-   noLimit:boolean = false;
-
-   postEvent() {     
-    if(this.event.endDate){
-      let limitDate = this.event.endDate.getTime() + 604800000;
-        this._calendarServices.postEvent(this.event,this.day._id,limitDate).subscribe()
-    }else{
-      this._calendarServices.postEvent(this.event,this.day._id).subscribe()
-    }   
+  //////////////////// PAGE 7 /////////////
+  page7(){
+    if(this.editMode){
+      this.editMode=false;
+      this.modifyMode=true;
+    }
+    this.page = '7';
   }
+
+  dateFixer(date: Date) {
+    date = new Date(date);
+    if (new Date(date).getTime() === 8640000000000000) {
+      return 'de forma indefinida'
+    } else {
+      return `hasta el día ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+    }
+  }
+  facilitieName (){
+  return `${this._facilitieServices.facilities.filter((facilitie)=>{return facilitie._id != this.event.facilitie})[0].name}`
+  }
+
+  ////////////// POST AND PUT /////////////
+   postEvent() {
+    if (this.event.endDate) {
+      this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id, this.event.endDate.getTime()).subscribe()
+    } else {
+        this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id).subscribe()        
+      }  
+  }
+
    putEvent() {
     this._calendarServices
-      .putEvent(this.event._id, this.event)
-      .subscribe(() => {
-        this.ready = false;
-      });
+        .putEvent(this.event._id, this.event)
+        .subscribe();
   }
 
   //////////// REINIT ////////////  
 
-   fixEventPositionBack() {  
-    let currentEvent = new EventModel(
-      this.event.name,
-      this.event.description,
-      this.event.duration,
-      this.event.hour,
-      this.userOnline._id,
-      this.event.facilitie,
-      Number(parseInt(String(this.event.position))),
-      this.event.day,
-      this.event.permanent,
-      this.event.startDate,
-      this.event.endDate,
-      this.event.project,
-      this.event._id
-    );
-
-    let hours = [
-      this.day.hour0,
-      this.day.hour1,
-      this.day.hour2,
-      this.day.hour3,
-      this.day.hour4,
-      this.day.hour5,
-      this.day.hour6,
-      this.day.hour7,
-      this.day.hour8,
-      this.day.hour9,
-      this.day.hour10,
-      this.day.hour11
-    ];
-    let hourIndex = currentEvent.hour;
-    let prevEventsInSameFacilitie = [];
-    hours.forEach((day, index) => {
-      if (index < hourIndex) {
-        day.forEach(event => {
-          if (event.facilitie === currentEvent.facilitie._id) {
-            prevEventsInSameFacilitie.push(event);
-          }
-        });
-      }
-    });
-    if (prevEventsInSameFacilitie.length > 0) {
-      prevEventsInSameFacilitie.reverse();
-      prevEventsInSameFacilitie = prevEventsInSameFacilitie.filter((event)=>{return event._id != this.event._id})
-      prevEventsInSameFacilitie.forEach(async event => {
-        let res = await this.fixEventPosition(event, 1);
-        if (res === false) {
-          let res = await this.fixEventPosition(event, 2);
+   fixEventBack() {  
+    if(this.event._id){
+      let currentEvent = new EventModel(
+        this.event.name,
+        this.event.description,
+        this.event.duration,
+        this.event.hour,
+        this.userOnline._id,
+        this.event.facilitie,
+        Number(parseInt(String(this.event.position))),
+        this.event.day,
+        this.event.permanent,
+        this.event.startDate,
+        this.event.endDate,
+        this.event.project,
+        this.event._id
+      );
+      let hours = [
+        this._calendarServices.currentDay.hour0,
+        this._calendarServices.currentDay.hour1,
+        this._calendarServices.currentDay.hour2,
+        this._calendarServices.currentDay.hour3,
+        this._calendarServices.currentDay.hour4,
+        this._calendarServices.currentDay.hour5,
+        this._calendarServices.currentDay.hour6,
+        this._calendarServices.currentDay.hour7,
+        this._calendarServices.currentDay.hour8,
+        this._calendarServices.currentDay.hour9,
+        this._calendarServices.currentDay.hour10,
+        this._calendarServices.currentDay.hour11
+      ];
+      let hourIndex = currentEvent.hour;
+      let prevEventsInSameFacilitie = [];
+      hours.forEach((day, index) => {
+        if (index < hourIndex) {
+          day.forEach(event => {
+            if (event.facilitie === currentEvent.facilitie && event._id != currentEvent._id) {
+              prevEventsInSameFacilitie.push(event);
+            }
+          });
+        }
+      });
+      if (prevEventsInSameFacilitie.length > 0) {
+        prevEventsInSameFacilitie.reverse();
+        prevEventsInSameFacilitie.forEach(async event => {
+          let res = await this.fixEventPosition(event, 1);
           if (res === false) {
-            let res = await this.fixEventPosition(event, 3);
+            let res = await this.fixEventPosition(event, 2);
             if (res === false) {
-              let res = await this.fixEventPosition(event, 4);
+              let res = await this.fixEventPosition(event, 3);
               if (res === false) {
-                let res = await this.fixEventPosition(event, 5);
+                let res = await this.fixEventPosition(event, 4);
                 if (res === false) {
-                  let res = await this.fixEventPosition(event, 6);
+                  let res = await this.fixEventPosition(event, 5);
                   if (res === false) {
-                    let res = await this.fixEventPosition(event, 7);
+                    let res = await this.fixEventPosition(event, 6);
                     if (res === false) {
-                      let res = await this.fixEventPosition(event, 8);
+                      let res = await this.fixEventPosition(event, 7);
                       if (res === false) {
-                        let res = await this.fixEventPosition(event, 9);
+                        let res = await this.fixEventPosition(event, 8);
                         if (res === false) {
-                          let res = await this.fixEventPosition(event, 10);
+                          let res = await this.fixEventPosition(event, 9);
                           if (res === false) {
-                            let res = await this.fixEventPosition(event, 11);
+                            let res = await this.fixEventPosition(event, 10);
                             if (res === false) {
-                              return;
+                              let res = await this.fixEventPosition(event, 11);
+                              if (res === false) {
+                                return;
+                              } else {
+                                currentEvent.position = event.position + event.duration;
+                              }
                             } else {
                               currentEvent.position = event.position + event.duration;
                             }
@@ -378,32 +414,30 @@ export class EventsModalComponent implements OnInit {
               currentEvent.position = event.position + event.duration;
             }
           } else {
-            currentEvent.position = event.position + event.duration;
           }
-        } else {
+        });
+      }
+
+      let hour = this._calendarServices.currentDay[`hour${parseInt(String(currentEvent.position))}`];
+      hour = hour.filter(event => {
+        return event.facilitie === currentEvent.facilitie && event._id != this.event._id
+
+      })
+      hour = _.sortBy(hour, (event: EventModel) => {
+        return event.position;
+      });
+      hour.forEach(event => {
+        if (event.position < this.event.position) {
+          currentEvent.position = event.position + event.duration;
         }
       });
+        this.event = currentEvent;
+        this.page = "1";
     }
-
-    let hour = this.day[`hour${parseInt(String(currentEvent.position))}`];
-    hour = hour.filter(event => {
-      return event.facilitie === currentEvent.facilitie._id && event._id != this.event._id
-
-    })
-    hour = _.sortBy(hour, (event: EventModel) => {
-      return event.position;
-    });
-    hour.forEach(event => {
-      if (event.position < this.event.position) {
-        currentEvent.position = event.position + event.duration;
-      }
-    });
-    this.event = currentEvent;
-    this.page = "1";
   }
 
   private fixEventPosition(event, timeBack: number) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       if (event.hour === this.event.hour - timeBack) {
         if (event.duration + 1 > timeBack) {
           resolve(true);
@@ -412,29 +446,38 @@ export class EventsModalComponent implements OnInit {
       resolve(false);
     });
   }
+
+  resetValues(){
+   return new Promise((resolve)=>{
+      this.page = "0";
+      this.event = null;
+
+      this.editMode = false;
+      this.createMode = false;
+      this.modifyMode = false;
+
+      this.spaceAvailable = 12;
+      this.startPosition = null;
+
+      this.timeValue1=0;
+      this.timeValue2=0;
+      this.minutesPrevValue = 0;
+      this.hoursPrevValue = 0;
+
+      this.dayWithPermanentEvents = null;
+      this.availableDatesFrame = []
+      this.weeksOfDuration = 0;
+      this.noLimit = false;
+      resolve()
+    })
+  }
+
   //////////// CLOSE ///////////
    hideModal() {
-    this._modalController.hideModal();
-    this.ready = false;
-    this.spaceAvailable = 12;
-    this.page = "0";
-    this.startPosition = null;
-    this.event = null;
-    this.hour = null;
-    this.timeValue = 0;
-    this.minutesPrevValue = 0;
-    this.hoursPrevValue = 0;
-    this.dayWithPermanentEvents=null;
-    this.availableDatesFrame = []
-    this.weeksOfDuration = 0;
-    this.noLimit= false;
-    this.projects=[];
-    if(this.eventsSubscription != null){
-      this.eventsSubscription.unsubscribe()
-    }
-    if(this.facilitieSubscription != null){
-      this.facilitieSubscription.unsubscribe()
-    }
+    this.resetValues().then(()=>{
+      this._modalController.hideModal();
+        this.eventsSubscription.unsubscribe()
+    })
   }
 }
 

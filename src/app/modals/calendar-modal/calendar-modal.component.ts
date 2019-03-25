@@ -13,12 +13,10 @@ export class CalendarModalComponent {
              private _calendarServices:CalendarService) {}
 
   navigateToDay(date:Date){
-    let dateToSearch = new Date(date.getFullYear(),date.getMonth(),date.getDate(),1,0,0,0);
-    this._calendarServices.getDayByDate(dateToSearch).subscribe((res:any)=>{
-      console.log(res)
+    date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),0,0,0,0)
+    this._calendarServices.getDayByDate(date.getTime()).subscribe((res:any)=>{
       if(res==='no-day'){
-        let dateInMilliseconds = date.getTime();
-        this._modalController.notification.emit({ date: dateInMilliseconds, day: date.getDay() });
+        this._modalController.notification.emit({ date, day: date.getDay() });
         this._modalController.hideModal()
       }
     })

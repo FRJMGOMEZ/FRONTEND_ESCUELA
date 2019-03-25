@@ -5,7 +5,7 @@ import { ChatServices } from '../../../../providers/chat.service';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
 import { MessageOrder } from '../../../../models/message.model';
 import { Subscription } from 'rxjs';
-import { FileOrder, FileModel } from '../../../../models/file.model';
+import { FileOrder } from '../../../../models/file.model';
 import { ProjectServices } from '../../../../providers/project.service';
 import { MainProjectsComponent } from '../../mainProjects.component';
 import { UserServices } from '../../../../providers/user.service';
@@ -73,19 +73,18 @@ export class MessagesComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.checkFrom(this.projectComponent.messagesCount).then((res: any) => {
-      this._chatServices
-        .getMessages(this.mainProjectsComponent.projectSelectedId, res)
-        .subscribe();
+
+    this.checkFrom(this._projectServices.projects.length).then((res: any) => {
+      this._chatServices.getMessages(this._projectServices.projectSelectedId, res).subscribe();
     });
 
     this.socketSubscription=this._chatServices.messagesSocket().subscribe()
-
-    this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
+    
+    this.filesSubscription=this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "push") {
         let message = new Message(
           this.userOnline._id,
-          this.mainProjectsComponent.projectSelectedId,
+          this._projectServices.projectSelectedId,
           this.message,
           fileOrder.file._id
         );
@@ -100,13 +99,13 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   getMoreMessages(){
     if(this.messages.length === this._chatServices.messagesCount ){
-        if(this.messages.length < this.projectComponent.messagesCount){
+        if(this.messages.length < this._projectServices.projects.length){
           this.loading = true
           if (this.scroll.nativeElement.scrollTop === 0) {
             setTimeout(()=>{
               this.loading = false;
               if(this.scroll.nativeElement.scrollTop === 0){
-                this.checkFrom(this.projectComponent.messagesCount).then((res: number) => {
+                this.checkFrom(this._projectServices.projects.length).then((res: number) => {
                   let from;
                   let limit;
                   if (res < 15) {
@@ -116,7 +115,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
                     from = res - 15;
                     limit = 15;
                   }
-                  this._chatServices.getMessages(this.mainProjectsComponent.projectSelectedId, from, limit).subscribe()
+                  this._chatServices.getMessages(this._projectServices.projectSelectedId, from, limit).subscribe()
                   this.scroll.nativeElement.scrollTop = 1
                 })
               }
@@ -161,27 +160,26 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   sendMessage() {
     if (this.imgUpload) {
-      console.log(this.download)
-      this._uploadFilesServices.putFile(
+      this._uploadFilesServices.uploadFile(
         this.imgUpload,
         "projectFiles",
-        this.mainProjectsComponent.projectSelectedId,
+        this._projectServices.projectSelectedId,
          this.download
       );
       this.imgUpload = null;
       this.temporaryImg = null;
     } else if (this.fileUpload) {
-      this._uploadFilesServices.putFile(
+      this._uploadFilesServices.uploadFile(
         this.fileUpload,
         "projectFiles",
-        this.mainProjectsComponent.projectSelectedId,
+        this._projectServices.projectSelectedId,
         this.download
       );
       this.fileUpload = null;
     } else {
       let message = new Message(
         this.userOnline._id,
-        this.mainProjectsComponent.projectSelectedId,
+        this._projectServices.projectSelectedId,
         this.message
       );
       this.message=null;
@@ -195,7 +193,8 @@ export class MessagesComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
+    this.filesSubscription.unsubscribe()
     this.messagesSubscription.unsubscribe();
-    this.socketSubscription.unsubscribe()
+   // this.socketSubscription.unsubscribe()
   }
 }

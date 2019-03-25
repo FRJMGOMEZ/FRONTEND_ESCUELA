@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import swal from "sweetalert";
-
-import { Alumni, AlumniOrder } from '../models/alumni.model';
+import { Alumni} from '../models/alumni.model';
 import { URL_SERVICES } from '../config/config';
-import { Subject } from 'rxjs';
 import { UserServices } from './user.service';
 
 
@@ -15,10 +11,9 @@ import { UserServices } from './user.service';
 })
 export class AlumniServices {
 
-  headers:HttpHeaders
+  headers:HttpHeaders;
 
-  public alumnisSource = new Subject<AlumniOrder>();
-  public alumnis$ = this.alumnisSource.asObservable()
+  alumnis:Alumni[]=[]
 
   count:number
 
@@ -28,35 +23,29 @@ export class AlumniServices {
     this.headers = new HttpHeaders().set('token', this._userServices.token);
   }
 
-  postAlumni(alumni:Alumni){
-    let url = `${URL_SERVICES}/alumni`
-    return this.http.post(url,alumni, {headers:this.headers}).pipe(map((res:any)=>{
-       swal('ALUMNI SUCCESFULLY CREATED',res.alumni.name,'success')
-       this.count++
-       let alumniOrder = new AlumniOrder(res.alumni,'post')
-       this.alumnisSource.next(alumniOrder)
+  getAlumnis(from: number = 0, limit: number = 5) {
+    let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
+    return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
+      this.count = res.count;
+      this.alumnis = res.alumnis;
     }))
   }
 
-  getAlumnis (from:number=0,limit:number=5)  {
-      let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
-      return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-        this.count = res.count;
-        res.alumnis.forEach(alumni => {
-          let alumniOrder = new AlumniOrder(alumni,'get')
-          this.alumnisSource.next(alumniOrder)      
-        });
-      }))
+  postAlumni(alumni:Alumni){
+    let url = `${URL_SERVICES}/alumni`
+    return this.http.post(url,alumni, {headers:this.headers}).pipe(map((res:any)=>{
+      this.count++
+      if(this.alumnis.length < 5){
+       this.alumnis.push(res.alumni)
+      }
+    }))
   }
 
   searchAlumnis(input: string, from:number=0,limit:number=5){
      let url = `${URL_SERVICES}/search/alumnis/${input}?from=${from}&limit=${limit}`
      return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-       this.count = res.count
-       res.alumnis.forEach(alumni => {
-         let alumniOrder = new AlumniOrder(alumni,'get')
-         this.alumnisSource.next(alumniOrder)
-       }); 
+       this.count = res.count;
+       this.alumnis = res.alumnis; 
      }))
   }
 
@@ -64,23 +53,14 @@ export class AlumniServices {
     let url  = `${URL_SERVICES}/alumni/${id}`
     return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
       this.count--
-      swal('ALUMNI SUCCESFULLY DELETED', res.alumni.name, 'success')
-      let alumiOrder = new AlumniOrder(res.alumni,'delete')
-      this.alumnisSource.next(alumiOrder)
     }))
   }
 
-  getAlumniById(id:string){
-    let url = `${URL_SERVICES}/searchById/alumni/${id}`
-    return this.http.get(url, { headers:this.headers }).pipe(map((res: any) => {
-     let alumniOrder = new AlumniOrder(res.alumni,'getById')
-     this.alumnisSource.next(alumniOrder)
-    }))
-  }
-
-  putAlumni(alumni:Alumni){
-    console.log(alumni)
-    let alumniOrder = new AlumniOrder(alumni,'put')
-     this.alumnisSource.next(alumniOrder)
+  putAlumni(alumniUpdated:Alumni){
+    this.alumnis.forEach((alumni,index)=>{
+      if(alumni._id === alumniUpdated._id){
+        this.alumnis[index]= alumniUpdated;
+      }
+    })
   }
 }

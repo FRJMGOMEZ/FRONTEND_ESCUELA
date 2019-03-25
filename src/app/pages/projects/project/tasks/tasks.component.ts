@@ -1,64 +1,70 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProjectServices } from '../../../../providers/project.service';
-import { TaskOrder, Task } from '../../../../models/task.model';
 import { TaskModalController } from '../../../../modals/task-modal/task.modalController';
 import { UserServices } from '../../../../providers/user.service';
-import { Subscription } from 'rxjs';
-import { MainProjectsComponent } from '../../mainProjects.component';
+import { SwalService } from '../../../../providers/swal.service';
+
 
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss']
 })
-export class TasksComponent implements OnInit, OnDestroy {
+export class TasksComponent implements OnInit {
 
-  groupTasks:Task[] = []
-  myTasks:Task[]=[]
 
-  taskSubscription:Subscription = null;
-
-  constructor(private _projectServices:ProjectServices,
+  constructor(public _projectServices:ProjectServices,
               public _taskModalController:TaskModalController,
               private _userServices:UserServices,
-              private mainProjectsComponent:MainProjectsComponent) { }
+              private _swalService:SwalService) { }
 
-  ngOnInit() {   
-
-    this.taskSubscription = this._projectServices.tasks$.subscribe((taskOrder: TaskOrder) => {
-      if (taskOrder.order === 'get' || taskOrder.order === 'push') {
-        if (taskOrder.task.user['_id'] === this._userServices.userOnline._id) {
-          if (!taskOrder.task.checked) {
-            taskOrder.task.checked = true;
-            this.myTasks.push(taskOrder.task);
-            this._projectServices.taskChecked(taskOrder.task._id).subscribe()
-          }else{
-            this.myTasks.push(taskOrder.task)
-          }
-        }else{
-          this.groupTasks.push(taskOrder.task)
+  ngOnInit() {
+    this._projectServices.myTasks.forEach((task:any,index)=>{
+        if(!task.checked && task.user._id === this._userServices.userOnline._id){
+          this._projectServices.taskChecked(task._id).subscribe(()=>{
+           this._projectServices.myTasks[index].checked = true;
+          })
         }
-      }else if(taskOrder.order === 'done') {
-        this.myTasks.forEach((task, index) => {
-          if (task._id === taskOrder.task._id) {
-            this.myTasks[index] = taskOrder.task;
-          }
-        })
-      }
     })
-    this._projectServices.getTasks(this.mainProjectsComponent.projectSelectedId).subscribe()
   }
 
   postTask(){
-    this._taskModalController.showModal(this.mainProjectsComponent.projectSelectedId)
+    this._taskModalController.showModal()
     this._taskModalController.notification.emit()
   }
 
-  done(taskId:string){
-   this._projectServices.taskDone(taskId).subscribe()
+  deleteTask(id:string){
+      this._swalService.confirmDelete().then((res:any)=>{
+        if(res){
+          this._projectServices.deleteTask(id).subscribe(() => {
+            this._projectServices.myTasks = this._projectServices.myTasks.filter((task) => { return task._id != id })
+            this._projectServices.groupTasks = this._projectServices.groupTasks.filter((task) => { return task._id != id })
+          })
+        }
+      })
+  }
+  
+  putTask(id:string){
+    this._taskModalController.showModal(id)
+    this._taskModalController.notification.emit()
   }
 
-  ngOnDestroy(){
-    this.taskSubscription.unsubscribe()
+  checkTime(date:Date){
+    let today = new Date();
+    today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),0,0,0,0);
+    if(new Date(date).getTime()<today.getTime()){
+      return '#E88C5A'  
+    }
+  }
+
+  checkAdmin(){
+    if (this._projectServices.administrators.map((user) => { return user._id }).indexOf(this._userServices.userOnline._id) >= 0) {
+      return true
+    }else{
+      false
+    }
+  }
+  done(taskId:string){
+   this._projectServices.taskDone(taskId).subscribe()
   }
 }

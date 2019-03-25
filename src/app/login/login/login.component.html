@@ -17,14 +17,14 @@
                     <form ngNativeValidate #form='ngForm' role="form" (ngSubmit)='login(form)'>
                         <fieldset>
                             <div class="form-group">
-                                <input [ngModel] name='email' class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
+                                <input [(ngModel)]="email" name='email' class="form-control" placeholder="E-mail" name="email" type="email" autofocus="">
                             </div>
                             <div class="form-group">
                                 <input ngModel name='password' class="form-control" placeholder="Password" name="password" type="password" value="">
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input  name="recuerdame" type="checkbox" value="Remember Me">Remember
+                                    <input [(ngModel)]="rememberMe"  name="rememberMe" type="checkbox" value="rememberMe">Remember
                                     Me
                                 </label>
                             </div>

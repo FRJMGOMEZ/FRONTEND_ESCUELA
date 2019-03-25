@@ -1,119 +1,141 @@
-<div class="row m-0 mt-3 p-0 " style='background-color:#DCD4D2  ;height:1000px'>
-    <div class="col-12 mt-2" style='background:#DCD4D2 '>
-        <div>
-            <div class="card" style='background:#F0B841'>
-                <div class='card-header'>
-                    <h3 class='text-center'>¡{{hi()}} {{_userServices.userOnline.name}}!</h3>
+<div class="row m-2" style='background:#DCD4D2;border:1px solid black'>
+    <div class="col-12 d-flex justify-content-center m-0 p-3" style='background:#F0B841'>
+        <h3 class='text-center'>¡{{hi()}} {{_userServices.userOnline.name}}!</h3>
+    </div>
+    <div class='col-8'>
+        <div class="row" style='border:1px solid black'>
+            <h5 *ngIf="!unreadMessages && !pendingTasks && !uncheckedTasks" class='text-center'>No hay nuevas notificaciones
+            </h5>
+            <div class="col-12 m-2 p-2" *ngIf="unreadMessages">
+                <p>Tienes mensajes sin leer....</p>
+                <div class="scrollable" style="height:120px">
+                    <table class='table'>
+                        <tr>
+                            <td *ngFor="let project of projects" class="" style='background:#F5F1E3'>
+                                <div>
+                                    <p><i class="far fa-bell"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="card-body" style='background:#F5F1E3'>
-                    <p *ngIf="unreadMessages > 0"> - Tienes {{unreadMessages}} mensajes sin leer, revisa la sección de proyectos </p>
-                    <p *ngIf="uncheckedTasks.length > 0"> - {{checkTask(uncheckedTasks)}}, revisa la sección de proyectos</p>
-                    <p *ngIf="tasksToDo.length > 0"> - {{checkTask(tasksToDo)}}, revisa la sección de proyectos</p>
+            </div>
+            <div class="col-12 m-2 p-2">
+                <div class="row">
+                    <div class='col-12' *ngIf="pendingTasks">
+                        <p>Tienes tareas pendientes de completar ...</p>
+                        <div class="scrollable" style="height:120px">
+                            <table class='table'>
+                                <tr>
+                                    <td *ngFor="let project of projects" class="" style='background:#F5F1E3'>
+                                        <div *ngIf="project.pendingTasks">
+                                            <p><i class="far fa-bell"></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class='col-12' *ngIf="uncheckedTasks">
+                        <p>Se te han asignado nuevas tareas ...</p>
+                        <div class="scrollable" style="height:120px">
+                            <table class='table'>
+                                <tr>
+                                    <td *ngFor="let project of projects" class="" style='background:#F5F1E3'>
+                                        <p *ngIf="project.uncheckedTasks"><i class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-12">
-        <div *ngIf="projects.length > 0" class="col-12">
-            <h4 class='text-center'>MIS PROYECTOS</h4>
-            <cdk-virtual-scroll-viewport itemSize='50px' style="height:250px;border:1px solid #F0B841;background-color:#F5F1E3">
-                <div *cdkVirtualFor="let project of projects" class="card" style='background:#F5F1E3'>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <p>{{project.name}}</p>
-                                <p>{{project.messages.length}} mensajes sin leer <i class="far fa-bell"></i> </p>
-                                <p>
-                                    <a (click)='toProject(project._id)'>
-                                        <p style='color: blue'>Navegar a {{project.name}}</p>
-                                    </a>
-                                </p>
-                            </div>
-                            <div class="col-6">
-                                <p>{{checkTask(tasksToDo,project._id)}}</p>
-                                <p>{{checkTask(uncheckedTasks,project._id)}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </cdk-virtual-scroll-viewport>
-        </div>
-    </div>
-    <div class="col-12">
-        <h4 class='text-center'>MIS EVENTOS</h4>
-        <div *ngIf="eventsToday.length > 0 " class="col-12 ">
-            <h5>EVENTOS DE HOY</h5>
-            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background: #F5F1E3">
-                <div *cdkVirtualFor="let eventToday of eventsToday" class='d-flex flex-column'>
+    <div class="col-4 mt-1" style='background:#F5F1E3;height:600px'>
+        <div class="row">
+            <div *ngIf="eventsToday.length > 0" class="col-12 scrollable mt-2" style="height:200px">
+                <h5 class='text-center'>Echa un vistazo a los eventos programados para hoy....</h5>
+                <div>
                     <div class=' row d-flex justify-content-around flex-row'>
-                        <div class="col-12">
+                        <div class=" col-12 ">
                             <table class='table'>
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Instalación</th>
                                     <th>Empieza</th>
                                     <th>Finaliza</th>
                                 </tr>
-                                <tr>
-                                    <td>{{eventToday.name}}</td>
-                                    <td>{{eventToday.startDate | date }} a las {{eventToday.position | timeConversor2: null}}</td>
-                                    <td>{{eventToday.endDate | date }} a las {{eventToday.position | timeConversor2 : eventToday.duration}}
+                                <tr *ngFor="let todayEvent of eventsToday">
+                                    <td> <a (click)='toEvent(todayEvent.startDate)' style='color: blue'>{{todayEvent.name}}</a></td>
+                                    <td>{{todayEvent.facilitie['name']}}</td>
+                                    <td>Empieza hoy a las {{todayEvent.position | timeConversor2: null}}</td>
+                                    <td>{{todayEvent.endDate | date: 'EEEE d MMMM' }} a las {{todayEvent.position | timeConversor2 : todayEvent.duration}}
                                     </td>
-                                    <td><button (click)='toEvent()'>IR</button></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
-            </cdk-virtual-scroll-viewport>
-        </div>
-        <div *ngIf="eventsOnCourse.length > 0 " class="col-12 ">
-            <h5>EVENTOS EN CURSO</h5>
-            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background:#F5F1E3">
-                <div *cdkVirtualFor="let eventOnCourse of eventsOnCourse" class='d-flex flex-column'>
+            </div>
+            <div *ngIf="eventsOnCourse.length > 0" class="col-12 scrollable" style="height:200px">
+                <h5 class='text-center'>Revisa los eventos en curso...</h5>
+                <div>
+                    <div class=' row d-flex justify-content-around flex-row'>
+                        <div class=" col-12 ">
+                            <table class='table'>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Instalación</th>
+                                    <th>Empezó</th>
+                                    <th>Finaliza</th>
+                                </tr>
+                                <tr *ngFor="let eventOnCourse of eventsOnCourse">
+                                    <td> <a (click)='toEvent(eventOnCourse.startDate)' style='color: blue'>{{eventOnCourse.name}}</a></td>
+                                    <td>{{eventOnCourse.facilitie['name']}}</td>
+                                    <td> {{eventOnCourse.startDate | date : 'EEEE d MMMM' }} a las {{eventOnCourse.position | timeConversor2: null}}</td>
+                                    <td>{{eventOnCourse.endDate | date: 'EEEE d MMMM' }} a las {{eventOnCourse.position | timeConversor2 : eventOnCourse.duration}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="eventsComming.length> 0" class="col-12 scrollable" style="height:200px">
+                <h5 class='text-center'>Aquí tienes los eventos más próximos...</h5>
+                <div class='d-flex flex-column'>
                     <div class=' row d-flex justify-content-around flex-row'>
                         <div class="col-12">
                             <table class='table'>
                                 <tr>
                                     <th>Nombre</th>
+                                    <th>Instalación</th>
                                     <th>Empieza</th>
                                     <th>Finaliza</th>
                                 </tr>
-                                <tr>
-                                    <td>{{eventOnCourse.name}}</td>
-                                    <td>{{eventOnCourse.startDate | date }} a las {{eventOnCourse.position | timeConversor2: null}}</td>
-                                    <td>{{eventOnCourse.endDate | date }} a las {{eventOnCourse.position | timeConversor2 : eventOnCourse.duration}}</td>
-                                    <td><button class='btn btn-warning' (click)='toEvent()'>IR</button></td>
+                                <tr *ngFor="let eventComming of eventsComming">
+                                    <td> <a (click)='toEvent(eventComming.startDate)' style='color: blue'>{{eventComming.name}}</a>
+                                    </td>
+                                    <td>{{eventComming.facilitie['name']}}</td>
+                                    <td>{{eventComming.startDate | date: 'EEEE d MMMM' }} a las {{eventComming.position | timeConversor2: null}}
+                                    </td>
+                                    <td>{{eventComming.endDate | date: 'EEEE d MMMM' }} a las {{eventComming.position | timeConversor2 : eventComming.duration}}
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                 </div>
-            </cdk-virtual-scroll-viewport>
+            </div>
+
         </div>
 
-        <div *ngIf="eventsOnCourse.length > 0 " class="col-12 mb-4 ">
-            <h5>PROXIMOS EVENTOS</h5>
-            <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid #F0B841;background:#F5F1E3">
-                <div *cdkVirtualFor="let eventComming of eventsComming" class='d-flex flex-column'>
-                    <div class=' row d-flex justify-content-around flex-row'>
-                        <div class="col-12">
-                            <table class='table'>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Empieza</th>
-                                    <th>Finaliza</th>
-                                </tr>
-                                <tr>
-                                    <td>{{eventComming.name}}</td>
-                                    <td>{{eventComming.startDate | date }} a las {{eventComming.position | timeConversor2: null}}</td>
-                                    <td>{{eventComming.endDate | date }} a las {{eventComming.position | timeConversor2 : eventComming.duration}}
-                                    </td>
-                                    <td><button class='btn btn-warning' (click)='toEvent(eventComming.startDate)'>IR</button></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </cdk-virtual-scroll-viewport>
-        </div>
     </div>
+    <div class='col-12 m-4'>
+        <img style='height:100px;width:1000px' class='img-fluid' src="../../../assets/cargo3.png" alt="">
+    </div>
+</div>

@@ -10,6 +10,7 @@ import { User } from 'src/app/models/user.model';
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
+  
   email: string;
   rememberMe: boolean = false;
   auth2: any;
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
       this.rememberMe = true;
     }
   }
+
   login(form: NgForm) {
     if (form.invalid) {
       return;
@@ -34,6 +36,5 @@ export class LoginComponent implements OnInit {
       this.router.navigate(["/dashboard"]);
     });
   }
-
 }
 

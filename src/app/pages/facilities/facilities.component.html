@@ -1,44 +1,36 @@
 <div class="row m-2" style='background:#DCD4D2'>
-    <div class="col-12">
-        <div class='list-group'>
-            <h3 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h3>
-            <button (click)='_facilitiesModalController.showModal()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
-            <div *ngIf="!cargando" class="row animated fadeIn">
-                <div *ngIf="facilities" class="col-12">
-                    <table class='table table-hover' style='background:#F5F1E3;border:1px solid #F0B841'>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Estado</th>
-                            <th></th>
-                        </tr>
-                        <tr *ngFor="let facilitie of facilities let i=index">
-                            <td>
-                                <div><strong> {{facilitie.name}}</strong></div>
-                            </td>
-                            <td>
-                                <label *ngIf="!facilitie.status">
-                                            <button class='btn btn-warning' (click)=changeStatus(facilitie) name="activador" value="Activar Usuario">Activar</button>
+    <div class="col-12 list-group">
+        <h3 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h3>
+        <button (click)='_facilitiesModalController.showModal()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
+    </div>
+    <div *ngIf="!cargando" class="col-12 animated fadeIn" style='background:#DCD4D2;width:1000px'>
+        <table class='table table-hover' style='background:#F5F1E3;border:1px solid #F0B841'>
+            <tr>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let facilitie of _facilitieServices.facilities let i=index">
+                <td>
+                    <div><strong> {{facilitie.name}}</strong></div>
+                </td>
+                <td>
+                    <label *ngIf="!facilitie.status">
+                                            <button class='btn btn-warning' (click)=changeStatus(facilitie)>Activar</button>
                                             </label>
-                                <label *ngIf="facilitie.status">
-                                             <button class='btn btn-warning' (click)=changeStatus(facilitie) name="desactivador" type="checkbox" value="Desactivar Usuario">Desactivar</button>
+                    <label *ngIf="facilitie.status">
+                                             <button class='btn btn-warning' (click)=changeStatus(facilitie)>Desactivar</button>
                                             </label>
-                            </td>
-                            <td>
-                                <button (click)='putFacilitie(facilitie._id)' class="btn btn-primary">
+                </td>
+                <td>
+                    <button (click)='putFacilitie(facilitie._id)' class="btn btn-warning">
                         <i class="fas fa-edit"></i>
                       </button>
-                                <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-danger">
+                    <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-warning">
                         <i class="far fa-trash-alt"></i>
                       </button>
-                            </td>
-                        </tr>
-                    </table>
-                    <div class='d-flex justify-content-around mb-2'>
-                        <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-                        <button *ngIf="_facilitieServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>

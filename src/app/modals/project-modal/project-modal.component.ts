@@ -27,17 +27,10 @@ export class ProjectModalComponent implements OnInit {
     })
 
     this._modalController.notification.subscribe((res:any)=>{
-      if(!this._modalController.id){
         this.form.setValue({
-          name: '',
-          description: ''
+          name: this._projectServices.name,
+          description: this._projectServices.description || ''
         })
-      }else{
-        this.form.setValue({
-          name: res.name,
-          description: res.description || ''
-        })
-      }
     })
   }
 
@@ -61,5 +54,9 @@ export class ProjectModalComponent implements OnInit {
 
   hideModal() {
     this._modalController.hideModal()
+    this.form.setValue({
+      name: '',
+      description: ''
+    })
   }
 }

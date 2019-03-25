@@ -1,54 +1,48 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component} from '@angular/core';
 import { UserServices } from '../../providers/user.service';
-import { User, UserOrder } from '../../models/user.model';
+import { User} from '../../models/user.model';
 import { NgForm } from '@angular/forms';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
 import { PasswordModalController } from '../../modals/password-modal/passwordModalController.service';
 import { Subscription } from 'rxjs';
+import { UploadFilesServices } from '../../providers/upload-files.service';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styles: []
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent {
 
-  userOnline:User
+  fileSubscription:Subscription = null;
 
-  userSubscription:Subscription = null;
-
-  constructor(private _userServices:UserServices,
+  constructor(public _userServices:UserServices,
               private _uploadFilesModal:UploadFilesModalController,
-              private _passwordModalController:PasswordModalController) {
+              private _passwordModalController:PasswordModalController,
+              private _filesUploadService:UploadFilesServices) {
    }
-
-  ngOnInit() {
-
-    this.userOnline = this._userServices.userOnline;
-    
-    this.userSubscription = this._userServices.users$.subscribe((userOrder:UserOrder)=>{
-      if(userOrder.user._id === this.userOnline._id){
-        this.userOnline = userOrder.user;
-      }
-    })
-  }
 
   saveChanges(form:NgForm){
     if(form.valid){
-      let user = new User(form.value.name,form.value.email)
-      this._userServices.putUser(this.userOnline._id,user).subscribe()
+      let user:any = new User(form.value.name,form.value.email,'',null)
+      this._userServices.putUser(this._userServices.userOnline._id,user).subscribe()
     }
   }
 
-  openImgModal(){
-    this._uploadFilesModal.showModal(this.userOnline._id,'users')
+  changeImg(){
+    this._uploadFilesModal.showModal(this._userServices.userOnline._id,'users')
+    this.fileSubscription = this._filesUploadService.files$.subscribe((fileOrder) => {
+      if (fileOrder.order === 'push') {
+        if (fileOrder.file.type === 'users') {
+          let user:any = this._userServices.userOnline;
+          user.img = fileOrder.file._id;
+          this._userServices.putUser(this._userServices.userOnline._id, this._userServices.userOnline).subscribe()
+          this.fileSubscription.unsubscribe()
+        }
+      }
+    })
   }
-
   openPasswordModal(){
-   this._passwordModalController.showModal(this.userOnline._id)
-  }
-
-  ngOnDestroy(){
-    this.userSubscription.unsubscribe()
+   this._passwordModalController.showModal()
   }
 }

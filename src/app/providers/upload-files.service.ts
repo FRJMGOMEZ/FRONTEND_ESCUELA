@@ -3,24 +3,29 @@ import { URL_SERVICES } from '../config/config';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { FileOrder , FileModel } from '../models/file.model';
-import { UserServices } from './user.service';
-import { pipe } from '@angular/core/src/render3';
+import { FileOrder} from '../models/file.model';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFilesServices {
 
+  headers: HttpHeaders
+
   public fileSource = new Subject<FileOrder>();
   public files$ = this.fileSource.asObservable();
 
-  constructor(private zone:NgZone,
-              private http:HttpClient,
-              private _userServices:UserServices) { }
+  textFormats: string[] = ['pdf'];
+  imgFormats: string[] = ['png', 'jpg', 'gif', 'jpeg'];
 
-  putFile(file: File, type: string, id: string, download:boolean=false) {
-    return new Promise((resolve, reject) => {
+  constructor(private zone:NgZone,
+              private http:HttpClient) {
+
+                this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+               }
+
+  uploadFile(file: File, type: string, id: string, download:boolean=false) {
      this.zone.run( ()=>{
        let formData = new FormData();
        let xhr = new XMLHttpRequest();
@@ -30,8 +35,9 @@ export class UploadFilesServices {
        xhr.onreadystatechange = () => {
          if (xhr.readyState === 4) {
            if (xhr.status === 200) {
-            let fileOrder = new FileOrder(JSON.parse(xhr.response).file,'push')
-            this.fileSource.next(fileOrder)
+             let file = JSON.parse(xhr.response).file;
+             let fileOrder = new FileOrder(file, 'push')
+             this.fileSource.next(fileOrder)
            }
            else {
              console.log('UPDATING PROCCESS HAS FAILED');
@@ -42,23 +48,23 @@ export class UploadFilesServices {
        xhr.open('PUT', url, true);
        xhr.send(formData)
      })
-    })
   }
 
   deleteFile(fileId:string,type:string){
     let url = `${URL_SERVICES}/deleteFile/${fileId}/${type}`;
-    return this.http.delete(url).pipe(map((res:any)=>{
-      let fileOrder = new FileOrder(res.file,'delete')
-      this.fileSource.next(fileOrder)
+    return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
+      console.log(res)
+      if(res.file.type === 'projectFiles'){
+        let fileOrder = new FileOrder(res.file,'delete')
+        this.fileSource.next(fileOrder)
+      }
     }))
   }
 
   getFileById(id:string){
     let url = `${URL_SERVICES}/searchById/file/${id}`
-    let headers = new HttpHeaders().set('token',this._userServices.token)
-    return this.http.get(url, {headers}).pipe(map((res:any)=>{
-      let fileOrder = new FileOrder(res.file,'getById');
-      this.fileSource.next(fileOrder)
+    return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
+      return res.file
     }))
   }
 }

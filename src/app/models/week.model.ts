@@ -14,7 +14,3 @@ export class Week {
 }
 
 
-export class WeekOrder{
-    constructor(public week:Week,
-               public order:string){}
-}

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FileModel, FileOrder } from '../../models/file.model';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { FileModel} from '../../models/file.model';
 import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { UploadFilesServices } from 'src/app/providers/upload-files.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-files-modal",
@@ -12,14 +11,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ["./showfiles-modal.component.css"]
 })
 export class ShowFilesModalComponent implements OnInit {
+
+  @ViewChild('myImg') myImg :ElementRef
   
   file:FileModel;
-  type:string
 
   textFormats:string[] = ['pdf'];
   imgFormats: string[] = ['png', 'jpg', 'gif', 'jpeg'];
-
-   fileSubscription : Subscription = null;
 
   constructor(
     public _modalController: ShowFilesModalController,
@@ -28,22 +26,25 @@ export class ShowFilesModalComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-
     this._modalController.notification.subscribe(()=>{
       if(this._modalController.id){
-        
-        this._uploadFilesService.files$.subscribe((fileOrder:FileOrder)=>{
-           if(fileOrder.order === 'getById'){
-             this.file = fileOrder.file;
-           }
+        this._uploadFilesService.getFileById(this._modalController.id).subscribe((file)=>{
+          this.file=file;
         })
-        this._uploadFilesService.getFileById(this._modalController.id).subscribe()
       }
     })  
   }
 
   downloadFile(source:string) {
     if(this.file.format === 'pdf'){
+      this.getFileBlob(source).subscribe(res => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(res);
+        a.download = this.file.title;
+        document.body.appendChild(a);
+        a.click();
+      });
+    }else if (this.imgFormats.indexOf(this.file.format)>=0){
       this.getFileBlob(source).subscribe(res => {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(res);
@@ -86,7 +87,6 @@ export class ShowFilesModalComponent implements OnInit {
 
   hideModal() {
     this.file = null;
-    if(this.fileSubscription != null){this.fileSubscription.unsubscribe()}
   }
 
 }

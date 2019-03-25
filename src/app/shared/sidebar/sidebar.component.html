@@ -5,7 +5,7 @@
     <nav class='menu d-flex d-sm-block justify-content-center text-center flex-column flex-md-row '>
 
         <a [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI PERFIL</span></a>
-        <a (click)='toLastWeek()' routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1"></i><span>MI CALENDARIO</span></a>
+        <a [routerLink]="['/day']" routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1"></i><span>MI CALENDARIO</span></a>
         <a [routerLink]="['/projects']" routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1"></i><span>MIS PROYECTOS</span></a>
         <div class="nav-item dropdown">
             <a href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup="true" aria-expanded="false">

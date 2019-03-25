@@ -1,11 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
-import { User } from 'src/app/models/user.model';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
 import { Subscription } from 'rxjs';
 import { SwalService } from '../../providers/swal.service';
-
-
+import { UploadFilesServices } from '../../providers/upload-files.service';
 
 @Component({
   selector: 'app-users',
@@ -13,53 +11,24 @@ import { SwalService } from '../../providers/swal.service';
   styles: []
 })
 export class UsersComponent implements OnInit,OnDestroy {
-
-  users:User[] = []
   
   from:number=0
 
   @ViewChild('input') input:ElementRef
 
   searchMode:boolean=false;
-  getMode:boolean=true;
+  getMode:boolean=false;
 
-  userSubscription:Subscription = null;
+  fileSubscription:Subscription = null;
 
   constructor(public _userServices:UserServices,
-              private _modalUploadFilesController:UploadFilesModalController,
+              private _uploadFilesModalController:UploadFilesModalController,
+              private _fileUploadServices:UploadFilesServices,
               private _swalServices:SwalService) {}
 
   ngOnInit() {
-    this.userSubscription = this._userServices.users$.subscribe((userOrder: any) => {
-
-      if (userOrder.order === 'get') {
-        this.users.push(userOrder.user);
-      }
-      else if (userOrder.order === 'delete') {
-        this.users = this.users.filter((user) => { return user._id != userOrder.user._id })
-      }
-      else if (userOrder.order === 'put') {
-        this.users.forEach((user, index) => {
-          if (user._id === userOrder.user._id) {
-            this.users[index] = userOrder.user
-          }
-        })
-      }
-    })
+    this.getMode=true;
     this._userServices.getUsers().subscribe()
-  }
-
-  checkStatus(status:boolean){
-  if(status){
-    return 'desactivar'
-  }else{
-    return 'activar'
-  }
-  }
-
-  changeRole(user:User){
-    let userToEdit = new User('', '', '', undefined, '', undefined, '', [],user.role)
-    this._userServices.putUser(user._id,userToEdit).subscribe()
   }
 
   changeFrom(number: number) {
@@ -74,20 +43,37 @@ export class UsersComponent implements OnInit,OnDestroy {
     }
   }
 
-  openUploadFilesModule(id:string){
-    this._modalUploadFilesController.showModal(id,'users')
+  changeImg(id:string) {
+    this._uploadFilesModalController.showModal(id, 'users')
+    this.fileSubscription = this._fileUploadServices.files$.subscribe((fileOrder) => {
+      if (fileOrder.order === 'push') {
+        if (fileOrder.file.type === 'users') {
+          this._userServices.users.forEach((user,index)=>{
+                if(user._id === id){
+                  this._userServices.users[index].img = fileOrder.file;
+                }
+          })
+          this.fileSubscription.unsubscribe()
+        }
+      }
+    })
   }
 
   deleteUser(id:string){
     this._swalServices.confirmDelete().then((res)=>{
        if(res){
-         this._userServices.deleteUser(id).subscribe()
+         this._userServices.deleteUser(id).subscribe(()=>{
+           this._userServices.getUsers(this.from).subscribe()
+         })
        }
     })
 
   }
 
   ngOnDestroy(){
-    this.userSubscription.unsubscribe()
+    this.from = 0;
+    this._userServices.users = []
+    this.getMode=false;
+    this.searchMode=false;
   }
 }
