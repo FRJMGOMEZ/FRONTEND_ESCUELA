@@ -54,7 +54,7 @@ export class IndexCardModalComponent implements OnInit {
                 home: indexcardOrder.indexcard.home || "",
                 address: indexcardOrder.indexcard.address || ""
               });
-            }else if (indexcardOrder.order === 'push'){
+            }else if (indexcardOrder.order === 'post'){
               this.indexcardId = indexcardOrder.indexcard._id;
                 if (this.role === "PROFESSOR") {
                   let professor = new Professor(indexcardOrder.indexcard.name, this.indexcardId);

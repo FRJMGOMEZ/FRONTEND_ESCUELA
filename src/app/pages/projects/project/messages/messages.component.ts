@@ -54,18 +54,24 @@ export class MessagesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.socketSubscription = this._chatServices.messagesSocket().subscribe()
+
     this.messagesSubscription = this._chatServices.messages$.subscribe(
       (messageOrder: MessageOrder) => {
         if (messageOrder.order === "get") {
-            this.messages.unshift(messageOrder.message);
+            if(this.messages.length < 15){
+              setTimeout(() => {
+                this.scrollToBottom()
+              })
+            }else{
+              this.scroll.nativeElement.scrollTop = 1;
+            }
+          this.messages.unshift(messageOrder.message);    
+        }else if (messageOrder.order === 'post'){
             setTimeout(() => {
-              this.scrollToBottom()
-            })      
-        }else if (messageOrder.order === 'push'){
+              this.scrollToBottom();
+            });
           this.messages.push(messageOrder.message)
-          setTimeout(()=>{
-            this.scrollToBottom()
-          })
         }else if (messageOrder.order === "delete") {
           this.messages = this.messages.filter(message => {
             return message._id != messageOrder.message._id;
@@ -74,66 +80,67 @@ export class MessagesComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.checkFrom(this._projectServices.projects.length).then((res: any) => {
+    this.checkFrom().then((res: any) => {
       this._chatServices.getMessages(this._projectServices.projectSelectedId, res).subscribe();
     });
-
-    this.socketSubscription=this._chatServices.messagesSocket().subscribe()
     
     this.filesSubscription=this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "push") {
-        let message = new Message(
-          this.userOnline._id,
-          this._projectServices.projectSelectedId,
-          this.message,
-          fileOrder.file._id
-        );
-        this._chatServices.postMessage(message).subscribe();
+        setTimeout(() => {
+            let message = new Message(
+              this.userOnline._id,
+              this._projectServices.projectSelectedId,
+              this.message,
+              fileOrder.file._id
+            );
+            this._chatServices.postMessage(message).subscribe();
+        });
+      }else if(fileOrder.order === 'delete'){
+        this.messages.forEach((message:any)=>{
+          if(message.file){
+            if(message.file._id === fileOrder.file._id){
+              this._chatServices.deleteMessage(message._id).subscribe()
+            }
+          }
+          })
       }
     });
   }
  
-  scrollToBottom(): void {    
+  scrollToBottom(): void {
       this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
   }
 
-  getMoreMessages(){
-    if(this.messages.length === this._chatServices.messagesCount ){
-        if(this.messages.length < this._projectServices.projects.length){
-          this.loading = true
-          if (this.scroll.nativeElement.scrollTop === 0) {
-            setTimeout(()=>{
-              this.loading = false;
-              if(this.scroll.nativeElement.scrollTop === 0){
-                this.checkFrom(this._projectServices.projects.length).then((res: number) => {
-                  let from;
-                  let limit;
-                  if (res < 15) {
-                    from = 0;
-                    limit = res;
-                  } else {
-                    from = res - 15;
-                    limit = 15;
-                  }
-                  this._chatServices.getMessages(this._projectServices.projectSelectedId, from, limit).subscribe()
-                  this.scroll.nativeElement.scrollTop = 1
-                })
-              }
-            },1000)
-          }
-        }
-    }
-  }
-
-  checkFrom(messages: number) {
+  checkFrom() {
     return new Promise((resolve, reject) => {
-      let from = messages - 15;
-      if (from > 0) {
-        resolve(from);
+      if (this.messages.length < this._projectServices.messagesCount) {
+        if (this._projectServices.messagesCount - 15 >= 0) {
+          let from = this._projectServices.messagesCount - 15;
+          resolve(from)
+        } else {
+          resolve(this._projectServices.messagesCount - this.messages.length)
+        }
       } else {
-        resolve(0);
+        resolve(0)
       }
     });
+  }
+
+  getMoreMessages(){
+    setTimeout(()=>{
+      if(this.scroll.nativeElement.scrollTop === 0){
+        if (this.messages.length < this._projectServices.messagesCount) {
+          let from;
+          if (this._projectServices.messagesCount - 15 >= 0) {
+            from = this._projectServices.messagesCount - 15;
+          } else {
+            from = this._projectServices.messagesCount - this.messages.length;
+          }
+          this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(()=>{
+          })
+        } else { return }
+      }
+    },3000)
   }
 
   selectFile(file: File) {
@@ -174,16 +181,21 @@ export class MessagesComponent implements OnInit, OnDestroy {
         "projectFiles",
         this._projectServices.projectSelectedId,
         this.download
-      );
+      )
       this.fileUpload = null;
     } else {
-      let message = new Message(
-        this.userOnline._id,
-        this._projectServices.projectSelectedId,
-        this.message
-      );
-      this.message=null;
-      this._chatServices.postMessage(message).subscribe();
+      if(this.message.trim().length >0){
+        let message = new Message(
+          this.userOnline._id,
+          this._projectServices.projectSelectedId,
+          this.message
+        );
+        this._chatServices.postMessage(message).subscribe(()=>{
+          this.message='';
+        });
+      }else{
+        return
+      }
     }
   }
 
@@ -195,6 +207,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.filesSubscription.unsubscribe()
     this.messagesSubscription.unsubscribe();
-   // this.socketSubscription.unsubscribe()
+   this.socketSubscription.unsubscribe()
   }
 }

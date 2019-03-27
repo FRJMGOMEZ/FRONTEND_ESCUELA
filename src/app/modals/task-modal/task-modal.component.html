@@ -1,8 +1,8 @@
 <div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
-    <div class="modal" style='display: block' tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+    <div class="modal" style='display:flex' role="dialog">
+        <div class="modal-dialog mt-0" style='position:fixed-top' role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                <div style='height:15px' class="modal-header">
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -24,10 +24,10 @@
                         </div>
                     </form>
                 </div>
-                <div *ngIf="!taskId" class="modal-footer d-flex justify-content-center">
+                <div *ngIf="!taskId" class="modal-footer d-flex justify-content-center p-0">
                     <button (click)='postTask()' class='btn btn-warning'>Crear tarea</button>
                 </div>
-                <div *ngIf="taskId" class="modal-footer d-flex justify-content-center">
+                <div *ngIf="taskId" class="modal-footer d-flex justify-content-center p-0">
                     <button (click)='putTask()' class='btn btn-warning'>Editar tarea</button>
                 </div>
             </div>

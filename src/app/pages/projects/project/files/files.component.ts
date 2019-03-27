@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { ProjectServices } from '../../../../providers/project.service';
@@ -8,15 +8,14 @@ import { ProjectServices } from '../../../../providers/project.service';
   templateUrl: "./files.component.html",
   styleUrls: ["./files.component.css"]
 })
-export class FilesComponent implements OnInit {
+export class FilesComponent  {
 
   constructor(
     private _showFilesModalController: ShowFilesModalController,
     public _projectServices:ProjectServices,
-    private _uploadServices:UploadFilesServices
+    private _uploadFilesServices:UploadFilesServices
   ) {}
 
-  ngOnInit() {}
 
   showFile(id:string) {
     this._showFilesModalController.showModal(id);
@@ -24,6 +23,6 @@ export class FilesComponent implements OnInit {
   }
 
  deleteFile(fileId:string) {
-   this._uploadServices.deleteFile(fileId,'projectFiles').subscribe()
+   this._uploadFilesServices.deleteFile(fileId,'projectFiles').subscribe()
   }
 }

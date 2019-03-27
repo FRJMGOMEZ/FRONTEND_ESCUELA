@@ -49,7 +49,7 @@ export class EventsModalComponent implements OnInit {
       this.page = '1'; 
       this.createMode = true;
         this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-          if (eventOrder.order === 'push') {
+          if (eventOrder.order === 'post') {
             this.resetValues().then(() => {
               this.editMode = true;
               this.event = eventOrder.event;

@@ -46,7 +46,7 @@ export class UsersComponent implements OnInit,OnDestroy {
   changeImg(id:string) {
     this._uploadFilesModalController.showModal(id, 'users')
     this.fileSubscription = this._fileUploadServices.files$.subscribe((fileOrder) => {
-      if (fileOrder.order === 'push') {
+      if (fileOrder.order === 'post') {
         if (fileOrder.file.type === 'users') {
           this._userServices.users.forEach((user,index)=>{
                 if(user._id === id){

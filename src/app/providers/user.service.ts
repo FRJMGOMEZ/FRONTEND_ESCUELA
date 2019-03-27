@@ -10,11 +10,11 @@ import { User} from '../models/user.model';
 })
 export class UserServices {
 
-    private headers : HttpHeaders
+    headers : HttpHeaders
 
     userOnline:User;
 
-    public token:string
+    token:string
 
     users:User[]=[]
 

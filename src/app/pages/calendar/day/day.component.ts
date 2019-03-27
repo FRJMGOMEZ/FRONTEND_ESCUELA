@@ -15,7 +15,8 @@ import Swal from "sweetalert2";
   styleUrls: ["./day.component.css"]
 })
 export class DayComponent implements OnInit, OnDestroy {
-  @ViewChild("weekPlace") weekPlace: ElementRef;
+
+  @ViewChild("dayPlace") dayPlace: ElementRef;
 
   userOnline:User
 
@@ -108,7 +109,6 @@ export class DayComponent implements OnInit, OnDestroy {
       }
     }
     );
-
     this.daySubscription = this._calendarServices.day$.subscribe((order: string) => {
       if (order === 'getById') {
         this.init();
@@ -162,7 +162,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   getWidth() {
     this.cardWidth = `${Math.round(
-      ((this.weekPlace.nativeElement.offsetWidth / 12) * 11) / 5
+      ((this.dayPlace.nativeElement.offsetWidth / 12) * 11) / 5
     )}px`;
   }
 

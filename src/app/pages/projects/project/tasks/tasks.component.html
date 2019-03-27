@@ -27,7 +27,7 @@
                     <td>
                         <button [ngStyle]="{'background-color': task.ok == true? 'green':'#f44141'}">
                             <i *ngIf="task.ok" class="fas fa-check-double"></i>
-                            <i (click)='done(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                            <i  *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
                             <i *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>
@@ -62,7 +62,7 @@
                     <td>
                         <button [ngStyle]="{'background-color': task.ok == true? 'green':'red'}">
                             <i *ngIf="task.ok" class="fas fa-check-double"></i>
-                            <i (click)='done(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                            <i (click)='taskDone(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
                             <i *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>

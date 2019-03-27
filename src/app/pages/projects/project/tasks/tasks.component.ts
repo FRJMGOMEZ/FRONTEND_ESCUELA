@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ProjectServices } from '../../../../providers/project.service';
 import { TaskModalController } from '../../../../modals/task-modal/task.modalController';
 import { UserServices } from '../../../../providers/user.service';
 import { SwalService } from '../../../../providers/swal.service';
-
 
 @Component({
   selector: 'app-tasks',
@@ -11,7 +10,7 @@ import { SwalService } from '../../../../providers/swal.service';
   styleUrls: ['./tasks.component.scss']
 })
 export class TasksComponent implements OnInit {
-
+ 
 
   constructor(public _projectServices:ProjectServices,
               public _taskModalController:TaskModalController,
@@ -49,6 +48,17 @@ export class TasksComponent implements OnInit {
     this._taskModalController.notification.emit()
   }
 
+  taskDone(taskId: string) {
+    this._projectServices.taskDone(taskId).subscribe(() => {
+      this._projectServices.myTasks.forEach((task, index) => {
+        if (task._id === taskId) {
+          this._projectServices.myTasks[index].ok = true;
+        }
+      })
+    })
+  }
+
+
   checkTime(date:Date){
     let today = new Date();
     today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),0,0,0,0);
@@ -64,7 +74,6 @@ export class TasksComponent implements OnInit {
       false
     }
   }
-  done(taskId:string){
-   this._projectServices.taskDone(taskId).subscribe()
-  }
+
+  
 }

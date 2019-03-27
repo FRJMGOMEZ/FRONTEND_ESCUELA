@@ -16,7 +16,6 @@ import { AlumniServices } from './alumni.service';
 import { CalendarService } from './calendar.service';
 import { FacilitiesService } from './facilities.service';
 import { SwalService } from './swal.service';
-import { NYTApiService } from './nytapi.service';
 
 
 @NgModule({

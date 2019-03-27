@@ -24,7 +24,10 @@ export class ProjectComponent implements OnInit {
 
   public page: string
 
-  public filesSubscription:Subscription = null;
+  public filesSocket:Subscription = null;
+  public filesSubscription:Subscription=null;
+  private usersSocket:Subscription=null;
+  private tasksSocket:Subscription = null;
 
   constructor(
     public _userServices: UserServices,
@@ -42,39 +45,46 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit() {
 
+    this.usersSocket = this._projectServices.usersConnected().subscribe()
     this._ar.params.subscribe(params => {
       this._projectServices.getProjectById(params['id']).subscribe(() => {
         this.page = 'chat';
-        this._projectServices.projectSelectedId = params['id'];
+        this._projectServices.userIn()
       })
     });
 
-    this.filesSubscription = this._filesUploadServices.files$.subscribe((fileOrder:FileOrder)=>{
-      if(fileOrder.order === 'push'){
-        if (fileOrder.file.type === 'projects') {
-          this._projectServices.projectImage = fileOrder.file;
-        } else if (fileOrder.file.type === 'projectFiles') {
-          if (this._filesUploadServices.textFormats.indexOf(fileOrder.file.format) >= 0) {
-            this._projectServices.textFiles.push(fileOrder.file)
-          } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file.format) >= 0) {
-            this._projectServices.imageFiles.push(fileOrder.file)
-          }
+    this.filesSocket = this._filesUploadServices.filesSocket().subscribe()
+    this.filesSubscription=this._filesUploadServices.files$.subscribe((fileOrder: FileOrder) => {
+      if (fileOrder.order === 'delete') {
+        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.textFiles = this._projectServices.textFiles.filter((file) => { return file._id != fileOrder.file._id })
+        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.imageFiles = this._projectServices.imageFiles.filter((file) => { return file._id != fileOrder.file._id })
         }
-      }else if (fileOrder.order === 'delete'){
-        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file.format) >= 0) {
-          this._projectServices.textFiles = this._projectServices.textFiles.filter((file) => { return file._id != file._id })
-        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file.format) >= 0) {
-          this._projectServices.imageFiles = this._projectServices.imageFiles.filter((file) => { return file._id != file._id })
+      }else if(fileOrder.order === 'post'){
+        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.textFiles.push(fileOrder.file)
+        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.imageFiles.push(fileOrder.file)
+        }
+      }else if(fileOrder.order === 'push'){
+        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.textFiles.push(fileOrder.file)
+        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+          this._projectServices.imageFiles.push(fileOrder.file)
         }
       }
     })
 
+    this.tasksSocket = this._projectServices.taskSocket().subscribe()   
   }
 
   ngAfterContentChecked(): void {
-     if(this._projectServices.status === false && this._projectServices.administrators.map((user)=>{return user._id}).indexOf(this._userServices.userOnline._id)<0){
+    setTimeout(()=>{
+      if (this._projectServices.status === false && this._projectServices.administrators.map((user) => { return user._id }).indexOf(this._userServices.userOnline._id) < 0) {
         this.router.navigate(['/projects'])
-     }
+      }
+    })
   }
 
   putProject(id:string){
@@ -87,7 +97,7 @@ export class ProjectComponent implements OnInit {
     this._usersModalController.notification.emit()
   }
 
-  checkUser(id:string){
+  checkUserRole(id:string){
     if(this._projectServices.administrators.map((user)=>{return user._id}).indexOf(id)<0){
       return false
     }else{
@@ -199,14 +209,19 @@ export class ProjectComponent implements OnInit {
     this._projectServices.myTasks = [];
     this._projectServices.textFiles = [];
     this._projectServices.imageFiles = [];
+    this._projectServices.messagesCount = 0;
+    this._projectServices.userOut()
+    this.usersSocket.unsubscribe()
+    this.filesSocket.unsubscribe()
     this.filesSubscription.unsubscribe()
+    this.tasksSocket.unsubscribe()
     this._userServices.userOnline.projects.forEach((project,index)=>{
       if(project._id === this._projectServices.projectSelectedId){
         this._projectServices.lastConnection().subscribe(()=>{
+          this._projectServices.projectSelectedId = undefined;
         })
       }
     })
-    this._projectServices.projectSelectedId = undefined;
   }
 }
 

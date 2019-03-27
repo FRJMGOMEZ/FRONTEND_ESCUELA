@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Indexcard, IndexcardOrder } from '../models/indexcard.model';
 import { URL_SERVICES } from '../config/config';
@@ -14,28 +14,26 @@ import { ProfessorsServices } from './professor.service';
 })
 export class IndexcardServices {
 
-  headers:HttpHeaders
   indexcardsSource = new Subject<IndexcardOrder>();
   indexcards$ = this.indexcardsSource.asObservable()
 
   constructor(private http:HttpClient,
              private _userServices:UserServices,
              private _alumniServices:AlumniServices,
-             private _professorServices:ProfessorsServices) {
-    this.headers = new HttpHeaders().set('token',this._userServices.token)            
+             private _professorServices:ProfessorsServices) {          
               }
 
   postIndexcard(indexcard:Indexcard){
     let url = `${URL_SERVICES}/indexcard`
-    return this.http.post(url,indexcard,{headers:this.headers}).pipe(map((res:any)=>{ 
-      let indexcardOrder = new IndexcardOrder(res.indexcard, 'push')
+    return this.http.post(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{ 
+      let indexcardOrder = new IndexcardOrder(res.indexcard, 'post')
       this.indexcardsSource.next(indexcardOrder)
     }))    
   }
 
   putIndexcard(indexcard:Indexcard,idIndexcard:string){
     let url = `${URL_SERVICES}/indexcard/${idIndexcard}`;
-    return this.http.put(url,indexcard,{headers:this.headers}).pipe(map((res:any)=>{
+    return this.http.put(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       if (res.ALUMNI) {
         this._alumniServices.putAlumni(res.ALUMNI)
       } else if (res.PROFESSOR) {
@@ -46,7 +44,7 @@ export class IndexcardServices {
 
   searchIndexcardById(id:string){  
     let url = `${URL_SERVICES}/searchIndexcardById/${id}`
-    return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
+    return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'getById')
       this.indexcardsSource.next(indexcardOrder)
     }))

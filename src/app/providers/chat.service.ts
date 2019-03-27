@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Socket } from "ngx-socket-io";
 import { Subject } from 'rxjs';
 import { URL_SERVICES } from '../config/config';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { MessageOrder, Message } from '../models/message.model';
 import { UserServices } from './user.service';
 import { map } from 'rxjs/operators';
+import { ProjectServices } from './project.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,21 +15,18 @@ export class ChatServices {
 
     messagesSource = new Subject<MessageOrder>();
     messages$ = this.messagesSource.asObservable();
-    messagesCount: number = 0
-    headers: HttpHeaders
 
     constructor(private http:HttpClient,
                 private _userServices: UserServices,
-                private socket:Socket) {
-        this.headers = new HttpHeaders().set('token', this._userServices.token)
+                private socket:Socket,
+                private _projectServices:ProjectServices) {
      }
 
-    getMessages(projectId: string, from: number, limit: number = 0) {
+    getMessages(projectId: string, from: number, limit: number = 15) {
         let url = `${URL_SERVICES}/messages/${projectId}?from=${from}&limit=${limit}`;
-        return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
+        return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
             res.messages.reverse()
             res.messages.forEach((message) => {
-                this.messagesCount++
                 let messageOrder = new MessageOrder(message, 'get')
                 this.messagesSource.next(messageOrder)
             })
@@ -37,25 +35,18 @@ export class ChatServices {
 
     getLastMessages() {
        let url = `${URL_SERVICES}/lastMessages`
-       return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
+       return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
            return res.messages
        }))
     }
 
     postMessage(message: Message) {
         let url = `${URL_SERVICES}/message`
-        return this.http.post(url, message, { headers: this.headers }).pipe(map((res: any) => {
-            let messageOrder = new MessageOrder(res.message,'push')
-            //this.messagesSource.next(messageOrder)
-            this.sendMessage(messageOrder)
-        }))
-    }
-
-    deleteMessage(messageId: string) {
-        let url = `${URL_SERVICES}/message/${messageId}`
-        return this.http.delete(url, { headers: this.headers }).pipe(map((res: any) => {
-            let messageOrder = new MessageOrder(res.message, 'delete')
+        return this.http.post(url, message, { headers: this._userServices.headers }).pipe(map((res: any) => {
+            this._projectServices.messagesCount++
+            let messageOrder = new MessageOrder(res.message,'post')
             this.messagesSource.next(messageOrder)
+            this.sendMessage(messageOrder)
         }))
     }
 
@@ -63,9 +54,18 @@ export class ChatServices {
         this.socket.emit('message', messageOrder)
     }
 
-     messagesSocket() {
+    messagesSocket() {
         return this.socket.fromEvent('message').pipe(map((messageOrder:MessageOrder)=>{
             this.messagesSource.next(messageOrder)
         }))  
     } 
+
+    deleteMessage(messageId: string) {
+        let url = `${URL_SERVICES}/message/${messageId}`
+        return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+            this._projectServices.messagesCount--;
+            let messageOrder = new MessageOrder(res.message, 'delete')
+            this.messagesSource.next(messageOrder)
+        }))
+    }
 }

@@ -21,6 +21,6 @@
         <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card m-1"></i><span>USUARIOS</span></a>
         <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" "><i class="fas fa-door-open m-1"></i><span>INSTALACIONES</span></a>
         <a [routerLink]="['/addressBook','subjects']" routerLinkActive="router-link-active" href=" "><i class="fas fa-guitar"></i><span>MATERIAS</span></a>
-        <a (click)='_userServices.logout()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
+        <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
     </nav>
 </div>

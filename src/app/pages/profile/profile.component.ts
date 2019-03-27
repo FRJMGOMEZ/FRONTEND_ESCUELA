@@ -32,7 +32,7 @@ export class ProfileComponent {
   changeImg(){
     this._uploadFilesModal.showModal(this._userServices.userOnline._id,'users')
     this.fileSubscription = this._filesUploadService.files$.subscribe((fileOrder) => {
-      if (fileOrder.order === 'push') {
+      if (fileOrder.order === 'post') {
         if (fileOrder.file.type === 'users') {
           let user:any = this._userServices.userOnline;
           user.img = fileOrder.file._id;

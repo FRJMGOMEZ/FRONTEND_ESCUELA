@@ -3,15 +3,14 @@ import { URL_SERVICES } from '../config/config';
 import { Subject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { FileOrder} from '../models/file.model';
-
+import { FileOrder } from '../models/file.model';
+import { Socket } from "ngx-socket-io";
+import { UserServices } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFilesServices {
-
-  headers: HttpHeaders
 
   public fileSource = new Subject<FileOrder>();
   public files$ = this.fileSource.asObservable();
@@ -20,10 +19,21 @@ export class UploadFilesServices {
   imgFormats: string[] = ['png', 'jpg', 'gif', 'jpeg'];
 
   constructor(private zone:NgZone,
-              private http:HttpClient) {
-
-                this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+              private http:HttpClient,
+              private socket: Socket,
+              private _userServices:UserServices) {
                }
+
+  filesSocket(){
+    return this.socket.fromEvent('file').pipe(map((fileOrder:FileOrder)=>{
+      this.fileSource.next(fileOrder)
+    }))
+  }
+  
+  emitFile(fileOrder){
+    fileOrder.order = 'push';
+    this.socket.emit('file',fileOrder)
+  }
 
   uploadFile(file: File, type: string, id: string, download:boolean=false) {
      this.zone.run( ()=>{
@@ -36,8 +46,9 @@ export class UploadFilesServices {
          if (xhr.readyState === 4) {
            if (xhr.status === 200) {
              let file = JSON.parse(xhr.response).file;
-             let fileOrder = new FileOrder(file, 'push')
+             let fileOrder = new FileOrder(file, 'post')
              this.fileSource.next(fileOrder)
+             this.emitFile(fileOrder)
            }
            else {
              console.log('UPDATING PROCCESS HAS FAILED');
@@ -52,18 +63,16 @@ export class UploadFilesServices {
 
   deleteFile(fileId:string,type:string){
     let url = `${URL_SERVICES}/deleteFile/${fileId}/${type}`;
-    return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
-      console.log(res)
-      if(res.file.type === 'projectFiles'){
+    return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
         let fileOrder = new FileOrder(res.file,'delete')
         this.fileSource.next(fileOrder)
-      }
+        this.emitFile(fileOrder)
     }))
   }
 
   getFileById(id:string){
     let url = `${URL_SERVICES}/searchById/file/${id}`
-    return this.http.get(url, {headers:this.headers}).pipe(map((res:any)=>{
+    return this.http.get(url, {headers:this._userServices.headers}).pipe(map((res:any)=>{
       return res.file
     }))
   }

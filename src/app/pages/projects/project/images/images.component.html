@@ -3,7 +3,7 @@
         <div class="col-11">
             <img (click)='showFile(image._id)' style='height: 110px;width:110px' [src]="image | imgPipe">
         </div>
-        <div>
+        <div class='col-1'>
             <a routerLinkActive="active" (click)='deleteFile(image._id)'>x</a>
         </div>
     </div>

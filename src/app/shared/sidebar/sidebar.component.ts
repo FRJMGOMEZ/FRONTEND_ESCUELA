@@ -9,4 +9,10 @@ import { UserServices } from '../../providers/user.service';
 export class SidebarComponent{
 
   constructor(public _userServices:UserServices) {}
+
+  logOut(){
+    setTimeout(()=>{
+      this._userServices.logout()
+    },1000)
+  }
 }

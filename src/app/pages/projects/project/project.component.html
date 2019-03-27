@@ -1,4 +1,4 @@
-<div *ngIf="page" class="container-fluid mt-3" style='background-color: #DCD4D2'>
+<div *ngIf="page && _projectServices.projectSelectedId" class="container-fluid mt-3" style='background-color: #DCD4D2'>
     <div class="row">
         <div class=' col-12 nav justify-content-around align-items-center ' style='background:#F0B841;color:black;height: 40px '>
             <div>
@@ -21,16 +21,16 @@
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown">CONFIGURACION</a>
                 <div class="dropdown-menu" aria-labelledby="dp-config">
 
-                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
                         <a (click)="putProject(_projectServices.projectSelectedId)" routerLinkActive="router-link-active" class='dropdown-item'>EDITAR PROYECTO</a>
                     </div>
-                    <div *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
                         <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item'>AÑADIR ADMINISTRADOR</a>
                     </div>
                     <div>
                         <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item'>SALIR DE PROYECTO</a>
                     </div>
-                    <div>
+                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
                         <a (click)='deleteProject(_projectServices.projectSelectedId)' routerLinkActive="router-link-active" class='dropdown-item'>ELIMINAR PROYECTO</a>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-12 mt-3" style='background:#1F0968;border:1px solid #F0B841'>
+                <div class="col-12 mt-3" style='background:#DCD4D2;border:1px solid #F0B841;height:500px'>
                     <app-messages *ngIf="page === 'chat'"></app-messages>
                     <app-images *ngIf="page === 'images'"></app-images>
                     <app-files *ngIf="page === 'files'"></app-files>
@@ -87,12 +87,11 @@
             </div>
             <div class="col-3 pl-0">
                 <div class="row">
-                    <div class="col-12 d-flex ">
-                        {{_projectServices.description}}
+                    <div class="col-12">
+                        <h5 class='text-center'>Descripción del proyecto:</h5>
+                        <p>{{_projectServices.description}}</p>
                     </div>
-                </div>
-                <div class="row">
-                    <div class='col-12' *ngIf="_userServices.userOnline.role === 'ADMIN_ROLE'">
+                    <div class='col-12'>
                         <div class="d-flex justify-content-center">
                             <h5 class='text-center'>PARTICIPANTES:</h5>
                         </div>
@@ -105,13 +104,16 @@
                                     <td>
                                         <p>{{user.role}}</p>
                                     </td>
+                                    <td *ngIf="user.connected">
+                                        <i class="fas fa-eye"></i>
+                                    </td>
                                     <td>
-                                        <p><button *ngIf="checkUser(user._id) === false && _projectServices.checkAdmin(this._projectServices.projectSelectedId)" (click)="removeParticipant(user._id)" class='btn btn-danger'>X</button></p>
+                                        <p><button *ngIf="_projectServices.checkAdmin(this._projectServices.projectSelectedId)" (click)="removeParticipant(user._id)" class='btn btn-danger'>X</button></p>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <div class='d-flex justify-content-center mt-2 '>
+                        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class='d-flex justify-content-center mt-2 '>
                             <button (click)='addParticipant()' class='btn btn-warning '>Añadir participante</button>
                         </div>
                     </div>
@@ -121,7 +123,7 @@
                 </div>
             </div>
             <div class="col-12 m-2 d-flex justify-content-center">
-                <img class='text-center' style='height:150px;width:1100px;' src="../../../assets/cargo3.png" alt="">
+                <img class='text-center' style='height:150px;width:1000px;' src="../../../assets/cargo3.png" alt="">
             </div>
             <hr>
         </div>

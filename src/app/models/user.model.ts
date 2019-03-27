@@ -9,7 +9,16 @@ export class User {
         public google?:boolean,
         public _id?: string,
         public projects?:any[],
-        public role?: string
+        public role?: string,
+        public connected?:boolean
     ){
+    }
+}
+
+
+export class UserOrder{
+    constructor(public user: User,
+                public order:string,
+                ){
     }
 }

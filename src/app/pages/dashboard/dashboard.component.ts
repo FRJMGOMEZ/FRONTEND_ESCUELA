@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 export class DashboardComponent implements OnInit {
 
   projects: any[] = []
+
   unreadMessages: boolean = false;
   uncheckedTasks: boolean = false;
   pendingTasks: boolean = false;
@@ -25,9 +26,6 @@ export class DashboardComponent implements OnInit {
   eventsComming:EventModel[]=[]
   eventsToday:EventModel[]=[]
   eventsOnCourse:EventModel[]=[]
-
-  daySubscription:Subscription= null;
-  weekSubscription:Subscription=null;
 
   constructor(
     public _userServices:UserServices,
@@ -164,10 +162,13 @@ export class DashboardComponent implements OnInit {
   }
 
   toEvent(date?:Date){
-    this.daySubscription = this._calendarServices.day$.subscribe((order:string)=>{
+    let daySubscription = this._calendarServices.day$.subscribe((order:string)=>{
       if (order === "getByDate") {
+        daySubscription.unsubscribe()
         let dayOfTheWeek = new Date(this._calendarServices.currentDay.date).getDay();
-        this.weekSubscription = this._calendarServices.weeks$.subscribe(()=>{
+        let weekSubscription = this._calendarServices.weeks$.subscribe((order:any)=>{
+          if(order === 'getByDay')
+          weekSubscription.unsubscribe()
           this.router.navigate(['./day', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id])
         })
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id,dayOfTheWeek).subscribe();
@@ -184,5 +185,6 @@ export class DashboardComponent implements OnInit {
     this.projects=[];
     this.eventsComming=[];
     this.eventsToday=[];
+    this.eventsOnCourse=[];
   }
 }

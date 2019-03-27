@@ -11,21 +11,17 @@ import { UserServices } from './user.service';
 })
 export class AlumniServices {
 
-  headers:HttpHeaders;
-
   alumnis:Alumni[]=[]
 
   count:number
 
   constructor(private http:HttpClient,
              private _userServices:UserServices) { 
-
-    this.headers = new HttpHeaders().set('token', this._userServices.token);
   }
 
   getAlumnis(from: number = 0, limit: number = 5) {
     let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
-    return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
+    return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.alumnis = res.alumnis;
     }))
@@ -33,7 +29,7 @@ export class AlumniServices {
 
   postAlumni(alumni:Alumni){
     let url = `${URL_SERVICES}/alumni`
-    return this.http.post(url,alumni, {headers:this.headers}).pipe(map((res:any)=>{
+    return this.http.post(url,alumni, {headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count++
       if(this.alumnis.length < 5){
        this.alumnis.push(res.alumni)
@@ -43,7 +39,7 @@ export class AlumniServices {
 
   searchAlumnis(input: string, from:number=0,limit:number=5){
      let url = `${URL_SERVICES}/search/alumnis/${input}?from=${from}&limit=${limit}`
-     return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
+     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        this.count = res.count;
        this.alumnis = res.alumnis; 
      }))
@@ -51,7 +47,7 @@ export class AlumniServices {
 
   deleteAlumni(id:string){
     let url  = `${URL_SERVICES}/alumni/${id}`
-    return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
+    return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count--
     }))
   }
