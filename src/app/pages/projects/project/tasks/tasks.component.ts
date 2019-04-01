@@ -14,8 +14,8 @@ export class TasksComponent implements OnInit {
 
   constructor(public _projectServices:ProjectServices,
               public _taskModalController:TaskModalController,
-              private _userServices:UserServices,
-              private _swalService:SwalService) { }
+              public _userServices:UserServices,
+              public _swalService:SwalService) { }
 
   ngOnInit() {
     this._projectServices.myTasks.forEach((task:any,index)=>{
@@ -67,13 +67,6 @@ export class TasksComponent implements OnInit {
     }
   }
 
-  checkAdmin(){
-    if (this._projectServices.administrators.map((user) => { return user._id }).indexOf(this._userServices.userOnline._id) >= 0) {
-      return true
-    }else{
-      false
-    }
-  }
 
   
 }

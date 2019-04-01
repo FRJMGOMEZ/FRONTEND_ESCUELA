@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectServices } from '../../providers/project.service';
 import { UserServices } from '../../providers/user.service';
 import { Project } from '../../models/project.model';
 import { CalendarService } from '../../providers/calendar.service';
-import { EventModel } from '../../models/event.model';
 import { Router } from '@angular/router';
 import * as _ from 'underscore';
-import { ChatServices } from '../../providers/chat.service';
+import { DashboardService } from '../../providers/dashboard.service';
 import { Subscription } from 'rxjs';
-
+import { ProjectServices } from '../../providers/project.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,117 +15,41 @@ import { Subscription } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
-  projects: any[] = []
+  userProjects:string[]
 
-  unreadMessages: boolean = false;
-  uncheckedTasks: boolean = false;
-  pendingTasks: boolean = false;
- 
-  eventsComming:EventModel[]=[]
-  eventsToday:EventModel[]=[]
-  eventsOnCourse:EventModel[]=[]
+  dashboardSubscription:Subscription=null;
+  projectsUsersSocket:Subscription = null;
 
   constructor(
     public _userServices:UserServices,
-    private _projectServices:ProjectServices,
     private _calendarServices:CalendarService,
-    private _chatServices:ChatServices,
-    private router:Router ) {
+    private router:Router,
+    public _dashboardServices:DashboardService,
+    private _projectServices:ProjectServices) {
      }
 
-  ngOnInit() {
+ async ngOnInit() {
 
-    this._projectServices.getTasks().subscribe((tasks)=>{
-       tasks.forEach((task)=>{
-         if(this.projects.length === 0){
-           if(!task.checked){
-             task.project.uncheckedTasks = [];
-             task.project.uncheckedTasks.push(task.description);
-             this.uncheckedTasks=true;
-             this.projects.push(task.project)
-           }else {
-             task.project.pendingTasks = [];
-             task.project.pendingTasks.push(task.description);
-             this.pendingTasks=true;
-             this.projects.push(task.project);
-           }
-         }else{
-           if(this.projects.map((project:any)=>{return project._id}).indexOf(task.project._id)<0){
-             if(!task.checked){
-               task.project.uncheckedTasks = [];
-               task.project.uncheckedTasks.push(task.description);
-               this.uncheckedTasks = true;
-               this.projects.push(task.project)
-             }else{
-               task.project.pendingTasks = [];
-               task.project.pendingTasks.push(task.description);
-               this.pendingTasks = true;
-               this.projects.push(task.project);
-             }
-           }else{
-             let index = this.projects.map((project: any) => { return project._id }).indexOf(task.project._id);
-             if(!task.checked){
-               if (this.projects[index].uncheckedTasks === undefined) {
-                 this.projects[index].uncheckedTasks = [];
-                 this.uncheckedTasks = true;
-                 this.projects[index].uncheckedTasks.push(task.description)
-               }else{
-                 this.projects[index].uncheckedTasks.push(task.description)
-               }
-             }else{
-               if (this.projects[index].pendingTasks === undefined) {
-                 this.projects[index].pendingTasks = [];
-                 this.projects[index].pendingTasks.push(task.description)
-                 this.pendingTasks = true;
-               } else {
-                 this.projects[index].pendingTasks.push(task.description)
-               }
-             }
-           }
-         }
-       })
-    })
+   this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id }) 
 
-    this._chatServices.getLastMessages().subscribe((messages)=>{ 
-      messages.forEach((message)=>{
-        if(this.projects.length === 0){
-          message.project.messages = [];
-          message.project.messages.push(message.message)
-          this.unreadMessages=true;
-          this.projects.push(message.project);
-        }else{
-          if (this.projects.map((project:any) => { return project._id }).indexOf(message.project._id) < 0) {
-          message.project.messages.push(message.message);
-          this.unreadMessages = true;
-          this.projects.push(message.project)
-        }else{
-            let index = this.projects.map((project: any) => { return project._id }).indexOf(message.project._id);
-            if(this.projects[index].messages === undefined){
-              this.projects[index].messages = [];
-              this.projects[index].messages.push(message.message);
-              this.unreadMessages = true;
-            }else{
-              this.projects[index].messages.push(message.message);
-              this.unreadMessages = true;
-            }
-        }
-        }
-      })
-    })
+  this.projectsUsersSocket=this._projectServices.usersSocket().subscribe(()=>{
+    if (this.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })){
+       this._dashboardServices.getTasks().subscribe()
+       this._dashboardServices.getLastMessages().subscribe()
+    }
+    this.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id }) 
+ })
 
-    this._calendarServices.getEvents().subscribe((events)=>{
-      events.forEach((event)=>{
-        if(new Date(event.startDate).getDate()=== new Date().getDate()){
-          this.eventsToday.push(event)
-        }else{
-          if(new Date(event.startDate).getTime()>new Date().getTime()){
-          this.eventsComming.push(event)
-          }else if(new Date(event.startDate).getTime()<new Date().getTime() && new Date(event.endDate).getTime()>new Date().getTime()){
-            this.eventsOnCourse.push(event)
-          }
-        }
-      })
-    })
+   this._dashboardServices.dashboardIn()  
+   
+  this.dashboardSubscription=this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
+
+    this._dashboardServices.getTasks().subscribe()
+
+    this._dashboardServices.getLastMessages().subscribe()
+
+    this._dashboardServices.getEvents().subscribe()
+
   }
 
   toProject(projectId:Project){
@@ -162,29 +84,32 @@ export class DashboardComponent implements OnInit {
   }
 
   toEvent(date?:Date){
-    let daySubscription = this._calendarServices.day$.subscribe((order:string)=>{
-      if (order === "getByDate") {
-        daySubscription.unsubscribe()
-        let dayOfTheWeek = new Date(this._calendarServices.currentDay.date).getDay();
-        let weekSubscription = this._calendarServices.weeks$.subscribe((order:any)=>{
-          if(order === 'getByDay')
-          weekSubscription.unsubscribe()
-          this.router.navigate(['./day', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id])
+    date =new Date(date)
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
+    this._calendarServices.getDayByDate(date.getTime()).subscribe(() => {
+        console.log(this._calendarServices.currentDay)
+        this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, new Date(this._calendarServices.currentDay.date).getDay()).subscribe(() => {
+          setTimeout(()=>{
+            this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
+            })
+          })
         })
-        this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id,dayOfTheWeek).subscribe();
-      }
+      
     })
-    date = new Date()
-    this._calendarServices.getDayByDate(date.getTime()).subscribe()
+    
+    
   }
 
   ngOnDestroy(): void {
-    this.uncheckedTasks=false;
-    this.unreadMessages=false;
-    this.pendingTasks=false;
-    this.projects=[];
-    this.eventsComming=[];
-    this.eventsToday=[];
-    this.eventsOnCourse=[];
+    this._dashboardServices.dashboardOut()
+    this.dashboardSubscription.unsubscribe()
+    this.projectsUsersSocket.unsubscribe()
+    this._dashboardServices.uncheckedTasks=false;
+    this._dashboardServices.unreadMessages=false;
+    this._dashboardServices.pendingTasks=false;
+    this._dashboardServices.projects=[];
+    this._dashboardServices.eventsComming=[];
+    this._dashboardServices.eventsToday=[];
+    this._dashboardServices.eventsOnCourse=[];
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from '../../../modals/subject-modal/subjectModalController';
 import { SubjectServices } from '../../../providers/subject.service';
-import { Subject } from 'src/app/models/subject.model';
+import { SubjectModel } from 'src/app/models/subject.model';
 import { AlumnniModalController } from '../../../modals/alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from '../../../modals/professor-modal/professorModalController';
 import { SwalService } from '../../../providers/swal.service';
@@ -13,7 +13,7 @@ import { SwalService } from '../../../providers/swal.service';
 })
 export class SubjectComponent implements OnInit, OnDestroy  {
 
-  subjects:Subject[] = [];
+  subjects:SubjectModel[] = [];
 
   uploading:boolean=true;
  

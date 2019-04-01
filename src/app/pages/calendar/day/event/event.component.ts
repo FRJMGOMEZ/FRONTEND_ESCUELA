@@ -3,6 +3,7 @@ import { EventModalController } from '../../../../modals/events-modal/eventsModa
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
 import { SwalService } from '../../../../providers/swal.service';
+import { UserServices } from '../../../../providers/user.service';
 
 @Component({
   selector: "app-event",
@@ -23,7 +24,6 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
   };
 
   @ViewChild("eventCard") eventCard: ElementRef;
-  child = this.renderer.createElement("a");
   newDiv = this.renderer.createElement('div')
   newDiv1 = this.renderer.createElement('div')
   newDiv2 = this.renderer.createElement('div')
@@ -34,14 +34,12 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
     private _modalEventController: EventModalController,
     private dayComponent:DayComponent,
     private _calendarServices:CalendarService,
-    private _swalServices:SwalService
+    private _swalServices:SwalService,
+    private _userServices:UserServices
   ) {
   }
   ngOnInit() {
-    const plus = document.createTextNode("+");
-    this.child.appendChild(plus);
-    this.child.setAttribute("id", "#child");
-    this.renderer.setStyle(this.child, "cursor", "pointer");
+
   }
 
   ngAfterViewInit(): void {
@@ -77,11 +75,23 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       this.ourEvents["0.5"] === undefined&&
       this.ourEvents["0.75"] === undefined 
     ) {
-      if (Number(this.facilitie.space) === spaceWithoutEvents) {        
-        this.renderer.appendChild(this.eventCard.nativeElement, this.child);
+
+
+      let child = this.renderer.createElement("strong");
+      const plus = document.createTextNode("add");
+      child.appendChild(plus);
+      child.setAttribute("id", "#child");
+      this.renderer.setStyle(child, 'font-size', '15px');
+      this.renderer.setStyle(child, "color", "#f47742");
+      this.renderer.setStyle(child, "cursor", "pointer");
+
+      if (Number(this.facilitie.space) === spaceWithoutEvents) {
+        if (this._userServices.checkRole()) {
+        this.renderer.appendChild(this.eventCard.nativeElement,child);
         this.renderer.listen(this.eventCard.nativeElement, "click", () => {
+          this._modalEventController.hideModal()
           this.createEvent(this.position);
-        });
+        });}
         this.renderer.setStyle(
           this.eventCard.nativeElement,
           "height",
@@ -102,11 +112,14 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
           } else {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceWithoutEvents - this.facilitie.space)}px`);
             this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceWithoutEvents) / 60));
-            this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space)            
-            this.renderer.appendChild(this.eventCard.nativeElement, this.child);
-            this.renderer.listen(this.eventCard.nativeElement, "click", () => {
-              this.createEvent(this.position);
-            });
+            this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space) 
+            if(this._userServices.checkRole()){
+              this.renderer.appendChild(this.eventCard.nativeElement, child);
+              this.renderer.listen(this.eventCard.nativeElement, "click", () => {
+                this._modalEventController.hideModal()
+                this.createEvent(this.position);
+              });
+            }           
             this.renderer.setStyle(
               this.eventCard.nativeElement,
               "background-color",
@@ -159,7 +172,11 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       let cardBody = this.renderer.createElement('div');
       this.renderer.addClass(cardBody,'card-body');
       this.renderer.appendChild(card,cardBody);
-
+      this.renderer.setStyle(
+        cardBody,
+        "height",
+        `${60 * this.ourEvents[String(position)].duration}px`
+      );
       if(this.ourEvents[String(position)].permanent === true){
         if(this.ourEvents[String(position)].endDate === null){
           this.renderer.setStyle(cardBody, "background-color", "red");
@@ -169,40 +186,58 @@ export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
       }else{
         this.renderer.setStyle(cardBody, "background-color", "blue");
       }
-      this.renderer.addClass(cardBody,'d-flex')
-      this.renderer.addClass(cardBody, 'justify-content-around')
+      const div = document.createElement('div')
+      this.renderer.addClass(div, 'd-flex')
+      this.renderer.addClass(div, 'justify-content-around')
+      this.renderer.setStyle(div, 'height', `${60 * this.ourEvents[String(position)].duration}px`)
+      this.renderer.appendChild(cardBody,div)
 
-      const child1 = document.createElement(`a`);
+
+      const div2 = document.createElement('div')
+      this.renderer.addClass(div2,'d-flex')
+      this.renderer.addClass(div2, 'flex-row')
+      this.renderer.addClass(div2, 'justify-content-start')
+      const child1 = document.createElement(`strong`);
+      this.renderer.setStyle(child1, "cursor", "pointer");
+      this.renderer.setStyle(child1, 'font-size', '15px');
+      this.renderer.setStyle(child1, 'height', `${60 * this.ourEvents[String(position)].duration}px`)
       const name1 = document.createTextNode(`${this.ourEvents[String(position)].name}`);
       child1.append(name1);
       this.renderer.listen(child1, "click", () => {
+        this._modalEventController.hideModal()
         this.showEventInfo(this.ourEvents[String(position)]._id);
       });
-      this.renderer.appendChild(cardBody, child1);
-      const child2 = document.createElement(`a`);
-      const icon = document.createElement('icon');
-      this.renderer.addClass(icon,'fas');
-      this.renderer.addClass(icon, 'fa-times');
-      this.renderer.appendChild(child2,icon);
-      this.renderer.setStyle(icon,'margin-right',10)
-   
+      this.renderer.appendChild(div2, child1);
+      this.renderer.appendChild(div, div2)
+
+      if (this._userServices.checkRole()) {
+
+      const div3 = document.createElement('div')  
+      this.renderer.addClass(div3, 'd-flex')
+      this.renderer.addClass(div3, 'flex-row')
+      this.renderer.addClass(div3, 'justify-content-start')
+      const child2 = document.createElement('i');
+      this.renderer.setStyle(child2, "cursor", "pointer");
+      this.renderer.setStyle(child2, 'font-size', '15px');
+      this.renderer.addClass(child2,'fas');
+      this.renderer.addClass(child2, 'fa-times');
       this.renderer.listen(child2, "click", () => {
           this._swalServices.confirmDelete().then((res) => {
+            this._modalEventController.hideModal()
             if (res) {
             if(this.ourEvents[String(position)].permanent){
               this._calendarServices.pullEvent(this._calendarServices.currentDay._id, this.ourEvents[String(position)]._id).subscribe()
             }else{
-              this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id, this._calendarServices.currentDay._id).subscribe();
+              this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id).subscribe();
             }
             }
           })   
       });
-      this.renderer.appendChild(cardBody, child2);
-      this.renderer.setStyle(
-        cardBody,
-        "height",
-        `${60 * this.ourEvents[String(position)].duration}px`
-      );
+      this.renderer.appendChild(div3, child2)
+    this.renderer.appendChild(div,div3)
+    }
+
+
 
       let parent = this.renderer.parentNode(this.eventCard.nativeElement);
       let parent2 = this.renderer.parentNode(parent);
@@ -273,15 +308,24 @@ fixHeight(height: number) {
       this.renderer.appendChild(division, cardBody)
       this.renderer.setStyle(cardBody, 'height', `${height}px`)
       this.renderer.setStyle(cardBody, "background-color", "#F5F1E3");
-      const child = document.createElement(`a`);
-      const name = document.createTextNode(`+`);
-      child.append(name);
-      this.renderer.appendChild(cardBody, child);
-      this.renderer.listen(cardBody, "click", () => {
-        let positionSum = this.position+position;
-        this.createEvent(positionSum);
-      });
-
+      this.renderer.addClass(cardBody,'d-flex')
+      this.renderer.addClass(cardBody, 'flex-column')
+      this.renderer.addClass(cardBody, 'justify-content-start')
+      this.renderer.addClass(cardBody, 'text-center')
+      if(this._userServices.checkRole()){
+        const child = document.createElement(`strong`);
+        const name = document.createTextNode(`add`);
+        child.append(name);
+        this.renderer.setStyle(child,'font-size','15px');
+        this.renderer.setStyle(child, "color", "#f47742");
+        this.renderer.setStyle(child, "cursor", "pointer");
+        this.renderer.appendChild(cardBody, child);
+        this.renderer.listen(cardBody, "click", () => {
+          let positionSum = this.position + position;
+          this._modalEventController.hideModal()
+          this.createEvent(positionSum);
+        });
+      }
       let parent = this.renderer.parentNode(this.eventCard.nativeElement);
       let parent2 = this.renderer.parentNode(parent);
 

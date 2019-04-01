@@ -1,11 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { URL_SERVICES } from '../config/config';
 import { Subject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FileOrder } from '../models/file.model';
 import { Socket } from "ngx-socket-io";
 import { UserServices } from './user.service';
+import { ProjectServices } from './project.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,6 @@ export class UploadFilesServices {
   }
   
   emitFile(fileOrder){
-    fileOrder.order = 'push';
     this.socket.emit('file',fileOrder)
   }
 
@@ -48,6 +48,7 @@ export class UploadFilesServices {
              let file = JSON.parse(xhr.response).file;
              let fileOrder = new FileOrder(file, 'post')
              this.fileSource.next(fileOrder)
+             fileOrder.order = 'push'
              this.emitFile(fileOrder)
            }
            else {

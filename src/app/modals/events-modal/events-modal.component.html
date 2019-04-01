@@ -118,17 +118,19 @@
                             <p>descripcion: {{event.description}}</p>
                             <p>Empieza a las: {{event.position | timeConversor2: null }}</p>
                             <p>Termina a las: {{event.position | timeConversor2: event.duration }}</p>
-                            <p>instalacion : {{facilitieName()}}</p>
+                            <p>instalacion : {{facilitie.name}}</p>
                             <p>duracion : {{event.duration | timeConversor1}}</p>
                             <hr>
                             <div class="row ml-1">
                                 <p *ngIf="event.permanent">Se repite cada {{_calendarServices.currentDay.date | date : 'EEEE'}}</p>
                                 <p *ngIf="!noLimit && event.endDate"> {{dateFixer(event.endDate)}}</p>
                             </div>
-                            <button class='btn btn-warning' *ngIf="createMode" (click)='postEvent()'>CREAR EVENTO</button>
-                            <button class='btn btn-warning' *ngIf="editMode" (click)="fixEventBack()">EDITAR EVENTO</button>
-                            <button class='btn btn-warning' *ngIf="modifyMode" (click)='putEvent()'>APLICAR CAMBIOS</button>
-                            <button class='btn btn-warning' *ngIf="modifyMode || createMode" (click)="page='6'">ATRÁS</button>
+                            <div *ngIf="_userServices.checkRole()">
+                                <button class='btn btn-warning' *ngIf="createMode" (click)='postEvent()'>CREAR EVENTO</button>
+                                <button class='btn btn-warning' *ngIf="editMode" (click)="fixEventBack()">EDITAR EVENTO</button>
+                                <button class='btn btn-warning' *ngIf="modifyMode" (click)='putEvent()'>APLICAR CAMBIOS</button>
+                                <button class='btn btn-warning' *ngIf="modifyMode || createMode" (click)="page='6'">ATRÁS</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,8 @@
 import { Component} from '@angular/core';
 import { UserServices } from '../../providers/user.service';
+import { ProjectServices } from '../../providers/project.service';
+import { Router } from '@angular/router';
+import { CalendarService } from '../../providers/calendar.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,11 +11,27 @@ import { UserServices } from '../../providers/user.service';
 })
 export class SidebarComponent{
 
-  constructor(public _userServices:UserServices) {}
+  constructor(public _userServices:UserServices,
+              private _projectServices:ProjectServices,
+              private router:Router,
+              private _calendarServices:CalendarService) {}
 
   logOut(){
     setTimeout(()=>{
       this._userServices.logout()
     },1000)
+  }
+
+  toProjects(){
+    this._projectServices.projectSelectedId = undefined;
+     this.router.navigate(['/projects'])
+  }
+
+  toCalendar(){
+    if(this._calendarServices.currentDay){
+      this.router.navigate(['/calendar',this._calendarServices.currentWeek._id,this._calendarServices.currentDay._id])
+    }else{
+      this.router.navigate(['/calendar'])
+    }
   }
 }

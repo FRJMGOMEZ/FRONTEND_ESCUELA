@@ -4,7 +4,7 @@
             <img (click)='showFile(file._id)' style='height: 110px;width:110px' class='img-fluid' [src]="file | imgPipe">
             <small>{{file.title}}</small>
         </div>
-        <div>
+        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
             <a routerLinkActive="active" (click)='deleteFile(file._id)'>x</a>
         </div>
     </div>

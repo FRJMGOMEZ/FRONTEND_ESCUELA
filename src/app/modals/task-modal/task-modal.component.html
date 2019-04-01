@@ -2,12 +2,10 @@
     <div class="modal" style='display:flex' role="dialog">
         <div class="modal-dialog mt-0" style='position:fixed-top' role="document">
             <div class="modal-content">
-                <div style='height:15px' class="modal-header">
+                <div class="modal-body pt-0 pb-0">
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-                </div>
-                <div class="modal-body">
                     <form ngNativeValidate *ngIf="form" [formGroup]='form'>
                         <div class="form-group">
                             <textarea formControlName="description" name='description' class='form-control' placeholder="Descripción"></textarea>

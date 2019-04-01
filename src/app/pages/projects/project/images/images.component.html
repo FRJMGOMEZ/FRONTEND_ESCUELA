@@ -1,9 +1,9 @@
 <div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block'>
-    <div class="card m-0 p-0 row d-flex flex-row mt-2" *ngFor="let image of _projectServices.imageFiles" style='height:130px;width:130px'>
-        <div class="col-11">
-            <img (click)='showFile(image._id)' style='height: 110px;width:110px' [src]="image | imgPipe">
+    <div class="card m-0 p-0 row d-flex flex-row mt-2" *ngFor="let image of _projectServices.imageFiles" style='height:110px;width:130px'>
+        <div class="col-11 p-0 m-0">
+            <img class='img-fluid' (click)='showFile(image._id)' style='height: 110px;width:110px' [src]="image | imgPipe">
         </div>
-        <div class='col-1'>
+        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class='col-1 p-0 m-0'>
             <a routerLinkActive="active" (click)='deleteFile(image._id)'>x</a>
         </div>
     </div>

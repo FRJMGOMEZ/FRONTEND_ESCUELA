@@ -33,25 +33,19 @@ export class ChatServices {
         }))
     }
 
-    getLastMessages() {
-       let url = `${URL_SERVICES}/lastMessages`
-       return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-           return res.messages
-       }))
-    }
-
     postMessage(message: Message) {
         let url = `${URL_SERVICES}/message`
         return this.http.post(url, message, { headers: this._userServices.headers }).pipe(map((res: any) => {
             this._projectServices.messagesCount++
             let messageOrder = new MessageOrder(res.message,'post')
             this.messagesSource.next(messageOrder)
-            this.sendMessage(messageOrder)
+            this.emitMessage(messageOrder)
         }))
     }
 
-    sendMessage(messageOrder:MessageOrder) {
-        this.socket.emit('message', messageOrder)
+    emitMessage(messageOrder:MessageOrder) {
+        let payload = {messageOrder,room:this._projectServices.projectSelectedId}
+        this.socket.emit('message', payload)
     }
 
     messagesSocket() {

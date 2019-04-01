@@ -1,7 +1,7 @@
-<div class="row m-2" style='background:#DCD4D2;height:800px'>
+<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:800px;border:1px solid black'>
     <div class="col-12">
-        <div class='list-group'>
-            <h3 class='list-group-item-heading text-center mt-3'>MANTENIMIENTO DE MATERIAS</h3>
+        <div class='list-group' style='width:1100px'>
+            <h5 class='list-group-item-heading text-center mt-3'>MATERIAS</h5>
             <button (click)='postSubject()' class='btn btn-warning m-2'>CREAR MATERIA</button>
             <div class="row card-group">
                 <div *ngFor="let subject of _subjectServices.subjects" class="card" style='background:#F5F1E3'>

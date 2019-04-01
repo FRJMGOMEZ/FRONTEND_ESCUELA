@@ -35,6 +35,8 @@ import { FacilitiesComponent } from './facilities/facilities.component';
 import { EventComponent } from './calendar/day/event/event.component';
 import { TasksComponent } from './projects/project/tasks/tasks.component';
 import { ProjectEventsComponent } from './projects/project/project-events/project-events.component';
+import { CalendarManagerComponent } from './calendar/calendar.component';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +56,9 @@ import { ProjectEventsComponent } from './projects/project/project-events/projec
     FacilitiesComponent,
     EventComponent,
     TasksComponent,
-    ProjectEventsComponent
+    ProjectEventsComponent,
+    CalendarManagerComponent
+    
   ],
   imports: [
     BrowserModule,

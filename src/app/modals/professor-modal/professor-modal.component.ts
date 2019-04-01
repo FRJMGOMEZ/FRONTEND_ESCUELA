@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfessorModalController } from './professorModalController';
 import { ProfessorsServices } from '../../providers/professor.service';
 import { SubjectServices } from '../../providers/subject.service';
-import { Subject } from 'src/app/models/subject.model';
+import { SubjectModel } from 'src/app/models/subject.model';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { Subject } from 'src/app/models/subject.model';
 })
 export class ProfessorModalComponent implements OnInit {
 
-  subject:Subject
+  subject:SubjectModel
 
   from:number=0
 

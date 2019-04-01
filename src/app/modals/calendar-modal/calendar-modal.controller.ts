@@ -15,7 +15,6 @@ export class CalendarModalController {
   }
 
   showModal() {
-    this.notification.emit()
     this.hidden = "";
     
   }

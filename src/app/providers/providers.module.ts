@@ -16,7 +16,8 @@ import { AlumniServices } from './alumni.service';
 import { CalendarService } from './calendar.service';
 import { FacilitiesService } from './facilities.service';
 import { SwalService } from './swal.service';
-
+import { ErrorHandlerService } from './error-handler.service';
+import { DashboardService } from './dashboard.service';
 
 @NgModule({
     declarations: [],
@@ -33,7 +34,9 @@ import { SwalService } from './swal.service';
        AlumniServices,
        CalendarService,
        FacilitiesService,
-       SwalService
+       SwalService,
+       ErrorHandlerService,
+       DashboardService
     ],
 
     exports: [],

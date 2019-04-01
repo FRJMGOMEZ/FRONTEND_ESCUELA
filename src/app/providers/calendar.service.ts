@@ -8,6 +8,9 @@ import { Week } from '../models/week.model';
 import * as _ from "underscore";
 import { Day } from '../models/day.model';
 import { UserServices } from './user.service';
+import { Socket } from 'ngx-socket-io';
+import { CalendarModalController } from '../modals/calendar-modal/calendar-modal.controller';
+import { EventModalController } from '../modals/events-modal/eventsModal.controller';
 
 @Injectable({
   providedIn: "root"
@@ -19,17 +22,15 @@ export class CalendarService {
 
   permanentEvents:EventModel[]
 
-  public daySource = new Subject<string>();
-  public day$ = this.daySource.asObservable();
-
-  public weeksSource = new Subject<string>();
-  public weeks$ = this.weeksSource.asObservable();
-
-  public eventsSource = new Subject<EventOrder>();
+  public eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
 
   constructor(private http: HttpClient,
-            private _userServices:UserServices) {
+            private _userServices:UserServices,
+            private socket:Socket,
+            private _calendarModalController:CalendarModalController,
+            private _eventModalController:EventModalController
+            ) {
   }
 
   //////// WEEK ///////
@@ -42,7 +43,6 @@ export class CalendarService {
           return 'no-week' 
         }else{
           this.currentWeek = res.week;
-          this.weeksSource.next('getByDate')
         }
       })
     );
@@ -53,7 +53,6 @@ export class CalendarService {
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         this.currentWeek = res.week;
-        this.weeksSource.next("getById");
       })
     );
   }
@@ -63,9 +62,6 @@ export class CalendarService {
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         this.currentWeek = res.week;
-        setTimeout(() => {
-          this.weeksSource.next("getByDay");
-        })
       })
     );
   }
@@ -191,8 +187,15 @@ export class CalendarService {
         if(res.day === null){
           return 'no-day'
         }else{
-          this.currentDay = res.day;
-          this.daySource.next("getByDate");
+          if (this.currentDay) {
+            this.userOut().then(()=>{
+              this.currentDay = res.day;
+              return
+            })
+          }else{
+            this.currentDay = res.day;
+              return
+          }
         }
       })
     );
@@ -202,20 +205,37 @@ export class CalendarService {
     let url = `${URL_SERVICES}/searchById/day/${id}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
-        this.currentDay = res.day;
-        this.daySource.next('getById');
+        if(this.currentDay){
+          this.userOut().then(()=>{
+            this.currentDay=res.day
+            return
+          })
+        }else{
+          this.currentDay = res.day;
+          return
+        }
       })
     );
   }
 
-    //////////// EVENTS ///////////
-  
-  getEvents() {
-    let url = `${URL_SERVICES}/events`
-    return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      return res.events
-    }))
+  userIn(){
+    return new Promise((resolve,reject)=>{
+      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
+      this.socket.emit('userIn', payload, (usersOnline) => {
+        resolve()
+      })
+    })
   }
+
+  userOut(){
+   return new Promise((resolve,reject)=>{
+      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
+      this.socket.emit('userOut', payload)
+      resolve()
+    })
+  }
+
+    //////////// EVENTS ///////////
 
   getEventsInProject(projectId: string) {
     let url = `${URL_SERVICES}/events/projects/${projectId}`
@@ -235,11 +255,42 @@ export class CalendarService {
     let url = `${URL_SERVICES}/searchById/event/${eventId}`;
     return this.http.get(url, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
-        let eventOrder = new EventOrder(res.event, 'getById')
-        this.eventsSource.next(eventOrder)
+        return res.event
       })
     );
   }
+
+  emitEvent(eventOrder?:EventOrder) {
+    let payload = {eventOrder,room:this.currentDay._id}
+     this.socket.emit('event',payload)
+  }
+
+  eventSocket() {
+    return this.socket.fromEvent('event').pipe(map((payload:any)=>{
+      if (payload.room === this.currentDay._id) {
+        if (this._calendarModalController.hidden != 'hidden') {
+          this._calendarModalController.hideModal()
+        }
+        if (this._eventModalController.hidden != 'hidden') {
+          this._calendarModalController.hideModal()
+        }
+        this.eventsSource.next()
+      }
+      if (payload.eventOrder) {
+        if (payload.eventOrder.order === 'post') {
+          this.permanentEvents.push(payload.eventOrder.event)
+        } else if (payload.eventOrder.order === 'put') {
+          this.permanentEvents.forEach((event, index) => {
+            if (event._id === payload.eventOrder.event._id) {
+              this.permanentEvents[index] = payload.eventOrder.event
+            }
+          })
+        } else if (payload.eventOrder.order === 'delete') {
+          this.permanentEvents = this.permanentEvents.filter((event) => { return event._id != payload.eventOrder.event._id })
+        }
+      }
+    }))}
+
 
   postEvent(event: EventModel,dayId:string,limitDate?:number) {
     let url = `${URL_SERVICES}/event/${dayId}/${limitDate}`;
@@ -249,6 +300,9 @@ export class CalendarService {
         this.eventsSource.next(eventOrder)
         if(res.event.permanent){
           this.permanentEvents.push(res.event)
+          this.emitEvent(eventOrder)
+        }else{
+          this.emitEvent()
         }
       })
     );
@@ -266,7 +320,11 @@ export class CalendarService {
               this.permanentEvents[index]=res.event
             }
           })
+          this.emitEvent(eventOrder)
+        }else{
+          this.emitEvent()
         }
+        
       })
     );
   }
@@ -283,17 +341,26 @@ export class CalendarService {
             }
           })
         }
+        let eventOrder = new EventOrder(res.event, 'put')
+        this.emitEvent(eventOrder)
+      }else{
+        this.emitEvent()
       }
+   
     }))
   }
 
-  deleteEvent(eventId:string,dayId:string){
-    let url = `${URL_SERVICES}/event/${eventId}/${dayId}`
+  deleteEvent(eventId:string){
+    let url = `${URL_SERVICES}/event/${eventId}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.eventsSource.next()
       if(res.event.permanent){
         this.permanentEvents = this.permanentEvents.filter((event)=>{return event._id != res.event._id})
-      }
+        let eventOrder = new EventOrder(res.event, 'delete')
+        this.emitEvent(eventOrder)
+      }else{
+        this.emitEvent()
+      }  
     }))
   }
 

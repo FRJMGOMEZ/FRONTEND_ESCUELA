@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarService } from '../../../providers/calendar.service';
 import { CalendarModalController } from '../../../modals/calendar-modal/calendar-modal.controller';
 import { FacilitiesService } from '../../../providers/facilities.service';
-import { Subscription } from 'rxjs';
 import { EventModalController } from '../../../modals/events-modal/eventsModal.controller';
 import { UserServices } from '../../../providers/user.service';
-import { User } from 'src/app/models/user.model';
 import Swal from "sweetalert2";
+import { Subscription } from 'rxjs'
+import * as html2canvas from "html2canvas"
+
 
 @Component({
   selector: "app-day",
@@ -17,137 +18,115 @@ import Swal from "sweetalert2";
 export class DayComponent implements OnInit, OnDestroy {
 
   @ViewChild("dayPlace") dayPlace: ElementRef;
-
-  userOnline:User
+  @ViewChild('printable') printable:ElementRef;
 
   inProgress: boolean = true;
 
   notification = new EventEmitter<any>();
 
-  weekSubscription: Subscription = null;
-  daySubscription: Subscription = null;
-  eventSubscription: Subscription = null;
-
-  weekId: string;
-  dayId: string;
-
   prevWeek: Date[] = []
   nextWeek: Date[] = []
 
-  currentDate: string;
+  eventSubscription: Subscription = null;
+  eventsSocket: Subscription = null;
+
   facilitieFrom: number = 0;
   cardWidth: string;
   position: number = 0;
   heightOfEventsFrame: number = 720;
 
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private _modalEventController: EventModalController,
-    private _userServices:UserServices,
+    public _userServices:UserServices,
     public _calendarServices: CalendarService,
     public _calendarModalController: CalendarModalController,
     public _facilitieServices: FacilitiesService
   ) {
-
-    this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
 
-    ///////// Activated Route //////////
-    this.activatedRoute.params.subscribe(params => {
-      if(!params['weekId'] && !params['dayId']){
-        let today = new Date();
-        today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),0,0,0);
-        this._calendarServices.getDayByDate(today.getTime()).subscribe((res:any)=>{
-          if(res=== 'no-day'){
-            this._calendarServices.postWeek(today).subscribe(() => {
-              setTimeout(() => {
-                this._calendarServices.checkWeekDay().then(dayId => {
-                  this.router.navigate(["./day", this._calendarServices.currentWeek._id, dayId]);
-                });
+    this.activatedRoute.params.subscribe((params)=>{
+      const dayId = params['dayId'];
+      const weekId = params['weekId'];
+        this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
+          if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
+            if (dayId === this._calendarServices.currentDay._id) {
+              setTimeout(()=>{
+                this.init()
+                return
+              })
+            } else {
+              if (weekId === this._calendarServices.currentWeek._id) {
+                this._calendarServices.getDayById(dayId).subscribe(() => {
+                  this.init()
+                  return
+                })
+              } else {
+                this._calendarServices.getWeekById(weekId).subscribe(() => {
+                  this._calendarServices.checkWeekDay(this._calendarServices.currentDay.date.getDay()).then((dayId: string) => {
+                    this._calendarServices.getDayById(dayId).subscribe(() => {
+                      this.init()
+                      return
+                    })
+                  })
+                })
+              }
+            }
+          }else{
+            this._calendarServices.getWeekById(weekId).subscribe(()=>{
+              this._calendarServices.getDayById(dayId).subscribe(()=>{
+                this.init()
+                return
               })
             })
           }
         })
-      }else{
-        this.dayId = params['dayId'];
-        this.weekId = params['weekId'];
-        if (this._calendarServices.currentWeek && this._calendarServices.currentDay) {
-          if (this._calendarServices.currentDay._id != this.dayId && this._calendarServices.currentWeek._id != this.weekId) {
-            this._calendarServices.getWeekById(this.weekId).subscribe();
-          } else if (this._calendarServices.currentWeek._id === this.weekId && this._calendarServices.currentDay._id != this.dayId) {
-            this._calendarServices.getDayById(this.dayId).subscribe();
-          }else{
-            setTimeout(()=>{
-              this.init()
-            })
-          }
-        } else {
-          this._calendarServices.getWeekById(this.weekId).subscribe()
-        }
-      }
-   });
+    })
 
-    /////// Getting permanent Events ////
-    this._calendarServices.getPermanentEvents().subscribe()
-
-    ////// Getting Facilities /////
-    this._facilitieServices.getFacilities(this.facilitieFrom).subscribe()
-
-    ///// Subscriptions ///////
-    this.weekSubscription = this._calendarServices.weeks$.subscribe((order: string) => {
-      if (order === 'getById') {
-        this._calendarServices.getDayById(this.dayId).subscribe();
-      } else if (order === 'getByDay') {
-        this.router.navigate(['./day', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id])
-      } else if (order === 'getByDate') {
-        this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then(dayId => {
-          this.router.navigate(["./day", this._calendarServices.currentWeek._id, dayId]);
-        });
-      }
-    }
-    );
-    this.daySubscription = this._calendarServices.day$.subscribe((order: string) => {
-      if (order === 'getById') {
-        this.init();
-      } else if (order === 'getByDate') {
-        this.inProgress=true;
-        setTimeout(()=>{
-          let dayOfTheWeek = new Date(this._calendarServices.currentDay.date).getDay();
-          this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, dayOfTheWeek).subscribe()
-        })
-      }
-    });
-
-    this.eventSubscription = this._calendarServices.events$.subscribe(
-      () => { 
-      this.inProgress = true;
-      this._calendarServices.getDayById(this._calendarServices.currentDay._id).subscribe()    
-      })
-    
-    ////// Notification from event component ////
     this.notification.subscribe(res => {
       this.position = res.position + 1 || this.position;
     });
+
+    this._calendarModalController.notification.subscribe(()=>{
+      this.inProgress = true;
+    })
+
+    this.eventsSocket = this._calendarServices.eventSocket().subscribe()
+    
+    this.eventSubscription = this._calendarServices.events$.subscribe(
+      () => {
+        this.inProgress=true;
+        this._calendarServices.getDayById(this._calendarServices.currentDay._id).subscribe(()=>{
+          this.init()
+        })
+    })
   }
-                                                    ////////// Init /////////
+                                                    
+  
+  ////////// Init /////////
   init() {
-    /// Reinit the space of each facilitie////
-    this.getWeeksAroundDates();
-    this._facilitieServices.facilities.forEach((facilitie:any) => {
-      let space = this.heightOfEventsFrame;
-      facilitie.space = space;
-    });
-    /// Reinit the initial position of the events renderization  //
-    this.position = 0;
-    /// Start the renderization ///
+    this._calendarServices.userIn().then(()=>{
+      /// Reinit the space of each facilitie////
+      this.getWeeksAroundDates();
+      this._facilitieServices.facilities.forEach((facilitie: any) => {
+        let space = this.heightOfEventsFrame;
+        facilitie.space = space;
+
+      });
+      /// Reinit the initial position of the events renderization  //
+      this.position = 0;
+      /// Start the renderization ///
       this.inProgress = false;
-    /// Get the width of each column ///
-    setTimeout(() => {
-      this.getWidth();
-    });
+      /// Get the width of each column ///
+      setTimeout(() => {
+        this.getWidth();
+      });
+
+    })
   }
 
   getWeeksAroundDates() {
@@ -165,8 +144,7 @@ export class DayComponent implements OnInit, OnDestroy {
       ((this.dayPlace.nativeElement.offsetWidth / 12) * 11) / 5
     )}px`;
   }
-
-                                               //////// After init ////////
+                                    //////// After init ////////
   switchFacilities(number: number = 0) {
     if (this.facilitieFrom + number >= 0) {
       this.inProgress = true;
@@ -178,27 +156,32 @@ export class DayComponent implements OnInit, OnDestroy {
     }
   }
 
-  toOtherDay(dayId) {
+ async toOtherDay(dayId) {
     this.inProgress=true;
-    this.router.navigate(["./day", this._calendarServices.currentWeek._id, dayId]);
+    await this._calendarServices.getDayById(dayId).subscribe()
+    this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);    
   }
 
   toOtherWeek(date: Date) {
     this.inProgress=true;
-    setTimeout(() => {
       date = new Date(date);
       this._calendarServices.getWeekByDate(date.getTime()).subscribe((res: any) => {
         if (res === 'no-week') {
           this._calendarServices.postWeek(date).subscribe(() => {
-            setTimeout(() => {
-              this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then(dayId => {
-                this.router.navigate(["./day", this._calendarServices.currentWeek._id, dayId]);
+              this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId:string) => {
+                  this._calendarServices.getDayById(dayId).subscribe(()=>{
+                    this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
+                  })
               });
+          })
+        }else{
+          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId:string)=>{
+            this._calendarServices.getDayById(dayId).subscribe(()=>{
+              this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
             })
           })
         }
       })
-    });
   }
 
   deletePermanentEvent(id: string) {
@@ -214,7 +197,7 @@ export class DayComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Eliminar'
     }).then((res) => {
       if (res) {
-        this._calendarServices.deleteEvent(id, this._calendarServices.currentDay._id).subscribe();
+        this._calendarServices.deleteEvent(id).subscribe();
       }
     })
   }
@@ -224,13 +207,16 @@ export class DayComponent implements OnInit, OnDestroy {
     this._modalEventController.notification.emit();
   }
 
+  snapshotCalendar() {
+    html2canvas(this.printable.nativeElement).then(function(canvas) {
+     window.open().document.body.appendChild(canvas);
+    });
+  }
+
   ngOnDestroy() {
-    this.weekSubscription.unsubscribe();
-    this.daySubscription.unsubscribe();
+    this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
-    this._calendarServices.currentDay = undefined;
-    this._calendarServices.currentWeek = undefined;
-    this._calendarServices.permanentEvents = [];
+    this.eventsSocket.unsubscribe();
   }
 }
 

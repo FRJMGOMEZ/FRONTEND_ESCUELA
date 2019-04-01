@@ -4,6 +4,7 @@ import { ProjectServices } from '../../providers/project.service';
 import * as _ from 'underscore';
 import { Router} from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserServices } from '../../providers/user.service';
 
 
 @Component({
@@ -18,19 +19,24 @@ export class MainProjectsComponent implements OnInit {
 
   constructor(private _projectModalController:ProjectModalController,
               public _projectServices:ProjectServices,
-              private router:Router) {
+              private router:Router,
+              private _userServices:UserServices) {
    }
 
   ngOnInit() { 
         this._projectServices.getProjects().subscribe(() => {
-          this.projectsSocket=this._projectServices.projectsSocket().subscribe()
-          this.usersSocket=this._projectServices.usersSocket().subscribe()
+          if(this._userServices.socket){
+            this.projectsSocket = this._projectServices.projectsSocket().subscribe()
+            this.usersSocket = this._projectServices.usersSocket().subscribe()
+          }
         })
   }
 
   toProject(id:string){
-    this.router.navigate(['/projects',id]).then(()=>{
-      this._projectServices.projectSelectedId = id;
+    this._projectServices.projectSelectedId = id;
+    setTimeout(()=>{
+      this.router.navigate(['/projects', this._projectServices.projectSelectedId]).then(() => {
+      })
     })
   }
 

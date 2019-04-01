@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { map, catchError } from 'rxjs/operators';
 import { Alumni} from '../models/alumni.model';
 import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
+import { ErrorHandlerService } from './error-handler.service';
+
 
 
 @Injectable({
@@ -16,7 +18,8 @@ export class AlumniServices {
   count:number
 
   constructor(private http:HttpClient,
-             private _userServices:UserServices) { 
+             private _userServices:UserServices,
+             private errorHandler:ErrorHandlerService) { 
   }
 
   getAlumnis(from: number = 0, limit: number = 5) {
@@ -29,12 +32,15 @@ export class AlumniServices {
 
   postAlumni(alumni:Alumni){
     let url = `${URL_SERVICES}/alumni`
-    return this.http.post(url,alumni, {headers:this._userServices.headers}).pipe(map((res:any)=>{
+    return this.http.post(url,alumni, {headers:this._userServices.headers})
+    .pipe(map((res:any)=>{
       this.count++
       if(this.alumnis.length < 5){
        this.alumnis.push(res.alumni)
       }
-    }))
+    })
+    ,catchError(this.errorHandler.handleError)
+    )
   }
 
   searchAlumnis(input: string, from:number=0,limit:number=5){

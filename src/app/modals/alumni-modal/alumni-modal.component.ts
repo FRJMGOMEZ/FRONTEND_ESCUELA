@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlumnniModalController } from './alumniModal.controller';
 import { AlumniServices } from '../../providers/alumni.service';
 import { SubjectServices } from '../../providers/subject.service';
-import { Subject } from 'src/app/models/subject.model';
+import { SubjectModel } from 'src/app/models/subject.model';
 
 @Component({
   selector: 'app-alumni-modal',
@@ -11,7 +11,7 @@ import { Subject } from 'src/app/models/subject.model';
 })
 export class AlumniModalComponent implements OnInit {
   
-  subject:Subject
+  subject:SubjectModel
 
   from:number = 0;
 

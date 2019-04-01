@@ -85,16 +85,15 @@ export class MessagesComponent implements OnInit, OnDestroy {
     });
     
     this.filesSubscription=this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
-      if (fileOrder.order === "push") {
-        setTimeout(() => {
-            let message = new Message(
-              this.userOnline._id,
-              this._projectServices.projectSelectedId,
-              this.message,
-              fileOrder.file._id
-            );
-            this._chatServices.postMessage(message).subscribe();
-        });
+      if (fileOrder.order === "post") {
+        let message;
+          message = new Message(
+            this.userOnline._id,
+            this._projectServices.projectSelectedId,
+            this.message,
+            fileOrder.file._id
+          );
+        this._chatServices.postMessage(message).subscribe();
       }else if(fileOrder.order === 'delete'){
         this.messages.forEach((message:any)=>{
           if(message.file){
@@ -118,7 +117,12 @@ export class MessagesComponent implements OnInit, OnDestroy {
           let from = this._projectServices.messagesCount - 15;
           resolve(from)
         } else {
-          resolve(this._projectServices.messagesCount - this.messages.length)
+
+          if(this.messages.length === 0){
+            resolve(0)
+          }else{
+            resolve(this._projectServices.messagesCount - this.messages.length)
+          }
         }
       } else {
         resolve(0)
@@ -207,6 +211,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.filesSubscription.unsubscribe()
     this.messagesSubscription.unsubscribe();
-   this.socketSubscription.unsubscribe()
+   this.socketSubscription.unsubscribe();
+   this._projectServices.messagesCount = 0;
   }
 }

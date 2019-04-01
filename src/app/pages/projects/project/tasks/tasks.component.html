@@ -1,6 +1,6 @@
 <div class="row d-flex justify-content-center" style='background: #F5F1E3'>
     <div class='col-12 d-flex justify-content-center'>
-        <div>
+        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
     </div>
@@ -31,8 +31,8 @@
                             <i *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>
-                    <td><i *ngIf="checkAdmin()" class="far fa-trash-alt" (click)='deleteTask(task._id)'></i></td>
-                    <td><i *ngIf="checkAdmin()" class="far fa-edit" (click)='putTask(task._id)'></i></td>
+                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-trash-alt" (click)='deleteTask(task._id)'></i></td>
+                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-edit" (click)='putTask(task._id)'></i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -66,8 +66,8 @@
                             <i *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>
-                    <td><i *ngIf="checkAdmin()" (click)='deleteTask(task._id)' class="far fa-trash-alt"></i></td>
-                    <td><i *ngIf="checkAdmin()" (click)='putTask(task._id)' class="far fa-edit"></i></td>
+                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='deleteTask(task._id)' class="far fa-trash-alt"></i></td>
+                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='putTask(task._id)' class="far fa-edit"></i></td>
                     <td></td>
                 </tr>
             </tbody>

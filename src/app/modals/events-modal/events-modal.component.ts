@@ -9,6 +9,8 @@ import { Day} from 'src/app/models/day.model';
 import { ProjectServices } from '../../providers/project.service';
 import { Subscription } from 'rxjs';
 import { FacilitiesService } from '../../providers/facilities.service';
+import { Facilitie } from 'src/app/models/facilitie.model';
+
 
 @Component({
   selector: "app-events-modal",
@@ -25,12 +27,13 @@ export class EventsModalComponent implements OnInit {
   page: string = "0";
   spaceAvailable: number 
   event: EventModel;
+  facilitie:Facilitie;
 
   eventsSubscription: Subscription = null;
 
   constructor(
     public  _modalController: EventModalController,
-    private _userServices: UserServices,
+    public _userServices: UserServices,
     public _calendarServices: CalendarService,
     public _projectServices:ProjectServices,
     private _facilitieServices:FacilitiesService
@@ -46,38 +49,36 @@ export class EventsModalComponent implements OnInit {
       }
       if (res) {    
       this.event = new EventModel("","",0,res.position,this.userOnline._id,res.facilitieId,Number(parseInt(String(res.position))),new Date(this._calendarServices.currentDay.date).getDay(),false,new Date(this._calendarServices.currentDay.date),null,null);
+      this.facilitie = this._facilitieServices.facilities.filter((facilite) => { return facilite._id === this.event.facilitie })[0];
       this.page = '1'; 
       this.createMode = true;
         this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-          if (eventOrder.order === 'post') {
-            this.resetValues().then(() => {
-              this.editMode = true;
-              this.event = eventOrder.event;
-              setTimeout(()=>{
-                this.page = '7'
+          if(eventOrder){
+            if (eventOrder.order === 'post') {
+              this.resetValues().then(async() => {
+                this.editMode = true;
+                this.event = await eventOrder.event;
+                  this.page = '7'
               })
-            })
+            }
           }
         })
       }else{
+        this._calendarServices.getEventById(this._modalController.id).subscribe(async(event: EventModel) => {
+          this.editMode = true;
+          this.event = await event;
+          this.facilitie = await this._facilitieServices.facilities.filter((facilite) => { return facilite._id === event.facilitie })[0];
+            this.page = "7";
+        });
           this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-              if (eventOrder.order === 'getById') {
-                this.editMode = true;
-                this.event = eventOrder.event;
-                setTimeout(() => {
-                  this.page = "7";
-                })
-              }else if (eventOrder.order === 'put'){
-                this.resetValues().then(()=>{
+             if (eventOrder.order === 'put'){
+                this.resetValues().then(async()=>{
                   this.editMode=true;
-                  this.event = eventOrder.event;
-                  setTimeout(()=>{
+                  this.event = await eventOrder.event;
                     this.page = "7";
-                  })
                 })
               } 
             });
-            this._calendarServices.getEventById(this._modalController.id).subscribe();
         }
     });
   }
@@ -94,6 +95,7 @@ export class EventsModalComponent implements OnInit {
         this.hoursPrevValue = 0;
       }
       this.spaceAvailable = 12;
+      this.spaceAvailable = this.spaceAvailable - this.event.position;
       let hour = this._calendarServices.currentDay[`hour${parseInt(String(this.event.position))}`];
       await this.checkOtherHoursEventsSpace(hour)
       await this.checkSpaceInEventHour(hour);
@@ -127,7 +129,7 @@ export class EventsModalComponent implements OnInit {
             hour.reverse()
             hour.forEach(event => {
               if (event.facilitie === this.event.facilitie) {
-                this.spaceAvailable = hourIndex - (hourIndex-event.position);
+                this.spaceAvailable = hourIndex - (hourIndex-event.position) - this.event.position;
               }
             });
           }
@@ -172,13 +174,10 @@ export class EventsModalComponent implements OnInit {
   }
 
   ////// PAGE 4 ///////
-
-
    page4() {
      this.prevSpaceAvailable = this.spaceAvailable;
      this.prevPosition = this.event.position;
-
-     this.spaceAvailable = this.spaceAvailable - this.event.position- this.startPosition;
+     this.spaceAvailable -=this.startPosition;
      this.event.duration = 0;
      this.event.position += this.startPosition - (this.event.position - parseInt(String(this.event.position)));
      this.timeValue1 = this.spaceAvailable;
@@ -200,8 +199,9 @@ export class EventsModalComponent implements OnInit {
     this.timeValue2 -= Number(value);
     this.minutesPrevValue = Number(value);
   }
- /////// PAGE 5 ////////
 
+
+ /////// PAGE 5 ////////
   dayWithPermanentEvents: Day[];
   availableDatesFrame: Date[] = [];
   weeksOfDuration: number = 0;
@@ -220,7 +220,7 @@ export class EventsModalComponent implements OnInit {
       }
     }else{
       if (this.event.permanent) {
-        this._calendarServices.checkPermanentEvents(this.event).subscribe(day => {
+        this._calendarServices.checkPermanentEvents(this.event).subscribe((day) => {
           if (day) {
             let ourDay = new Date(this.event.startDate);
             let followingDay = new Date(day.date);
@@ -228,7 +228,7 @@ export class EventsModalComponent implements OnInit {
             let milisecondsBetween = followingDay.getTime() - ourDay.getTime();
             let weeks = milisecondsBetween / 604800000;
             let referenceDay = new Date(ourDay);
-            for (let i = 0; i < weeks; i++) {
+           for (let i = 0; i < weeks; i++)  {
               referenceDay.setTime(referenceDay.getTime())
               this.availableDatesFrame.push(referenceDay)
             }
@@ -294,10 +294,6 @@ export class EventsModalComponent implements OnInit {
       return `hasta el día ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
     }
   }
-  facilitieName (){
-  return `${this._facilitieServices.facilities.filter((facilitie)=>{return facilitie._id != this.event.facilitie})[0].name}`
-  }
-
   ////////////// POST AND PUT /////////////
    postEvent() {
     if (this.event.endDate) {
@@ -421,7 +417,6 @@ export class EventsModalComponent implements OnInit {
       let hour = this._calendarServices.currentDay[`hour${parseInt(String(currentEvent.position))}`];
       hour = hour.filter(event => {
         return event.facilitie === currentEvent.facilitie && event._id != this.event._id
-
       })
       hour = _.sortBy(hour, (event: EventModel) => {
         return event.position;
@@ -468,6 +463,7 @@ export class EventsModalComponent implements OnInit {
       this.availableDatesFrame = []
       this.weeksOfDuration = 0;
       this.noLimit = false;
+
       resolve()
     })
   }
@@ -477,6 +473,7 @@ export class EventsModalComponent implements OnInit {
     this.resetValues().then(()=>{
       this._modalController.hideModal();
         this.eventsSubscription.unsubscribe()
+        this.facilitie = undefined;
     })
   }
 }

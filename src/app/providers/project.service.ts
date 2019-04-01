@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { URL_SERVICES } from '../config/config';
 import { Project, ProjectOrder } from '../models/project.model';
 import { UserServices } from './user.service';
@@ -11,7 +11,8 @@ import { Socket } from "ngx-socket-io";
 import { FileModel } from '../models/file.model';
 import { UploadFilesServices } from './upload-files.service';
 import * as _ from 'underscore';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,11 @@ export class ProjectServices {
               private _userServices: UserServices,
               private socket:Socket,
               private _uploadFilesServices:UploadFilesServices,
-              private router:Router) {}
+              private router:Router,
+              private _errorHandler:ErrorHandlerService,
+              private _ar:ActivatedRoute) {}
+
+  /////// Projects ////////
 
   getProjects() {
     let url = `${URL_SERVICES}/projects`
@@ -88,17 +93,29 @@ export class ProjectServices {
                     this.getProjects().subscribe()
                   })
                 }else{
-                  this.status = false;
+                  this.projects.forEach((project, index) => {
+                    if (project._id === projectOrder.project._id) {
+                      this.projects[index].status = projectOrder.project.status;
+                    }
+                  })
                 }
               } else {
-                this.status=true;
+                this.projects.forEach((project, index) => {
+                  if (project._id === projectOrder.project._id) {
+                    this.projects[index].status = projectOrder.project.status;
+                  }
+                })
               }
             }
-              this.projects.forEach((project, index) => {
-                if (project._id === projectOrder.project._id) {
-                  this.projects[index].status= projectOrder.project.status;
-                }
-              })
+              if(this.administrators.map((user)=>{return user._id}).indexOf(this._userServices.userOnline._id)<0){
+                this.projects = this.projects.filter((project)=>{return project._id != projectOrder.project._id})
+              }else{
+                this.projects.forEach((project, index) => {
+                  if (project._id === projectOrder.project._id) {
+                    this.projects[index].status = projectOrder.project.status;
+                  }
+                })
+              }
           }
         }else{
          if(projectOrder.project.participants.indexOf(this._userServices.userOnline._id)>=0){
@@ -114,7 +131,8 @@ export class ProjectServices {
     return this.http.post(url, project, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this._userServices.saveInStorage(res.user._id, res.user, this._userServices.token)
       this.projects.push(res.project)
-    }))
+    })
+      ,catchError(this._errorHandler.handleError))  
   }
 
   getProjectById(id: string) {
@@ -168,18 +186,8 @@ export class ProjectServices {
       this.description = res.project.description;
       let projectOrder = new ProjectOrder(res.project,'put')
       this.emitProject(projectOrder)
-    }))
-  }
-
-  deleteProject(id:string){
-    let url = `${URL_SERVICES}/project/${id}`
-    return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      res.files.forEach((file)=>{
-        this._uploadFilesServices.deleteFile(file,'projectFiles').subscribe()
-      })
-      let projectOrder = new ProjectOrder(res.project,'delete')
-      this.emitProject(projectOrder)
-    }))
+    })
+      , catchError(this._errorHandler.handleError))
   }
 
   changeProjectStatus(id:string){
@@ -195,12 +203,25 @@ export class ProjectServices {
       this.emitProject(projectOrder)
     }))
   }
+
+    deleteProject(id:string){
+    let url = `${URL_SERVICES}/project/${id}`
+    return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+      res.files.forEach((file)=>{
+        this._uploadFilesServices.deleteFile(file,'projectFiles').subscribe()
+      })
+      let projectOrder = new ProjectOrder(res.project,'delete')
+      this.emitProject(projectOrder)
+    }))
+  }
+
+
   /////// Users ////////////////
-  
+
   usersConnected(){
     return this.socket.fromEvent('usersOnline').pipe(map((usersOnline:string[])=>{
       this.participants.forEach((user,index)=>{
-        if(usersOnline.map((user:any)=>{return user.id}).indexOf(user._id)>=0){
+        if(usersOnline.indexOf(user._id)>=0){
           this.participants[index].connected = true;
         }else{
           this.participants[index].connected = undefined;
@@ -208,11 +229,12 @@ export class ProjectServices {
       })
     }))
   }
+
   userIn() {
     let payload = {user:this._userServices.userOnline._id,room:this.projectSelectedId}
     this.socket.emit('userIn', payload,(usersOnline)=>{
       this.participants.forEach((user, index) => {
-        if (usersOnline.map((user: any) => { return user.id }).indexOf(user._id) >= 0) {
+        if (usersOnline.indexOf(user._id) >= 0) {
           this.participants[index].connected = true;
         } else {
           this.participants[index].connected = undefined;
@@ -220,6 +242,7 @@ export class ProjectServices {
       })
     })
   }
+
   userOut(){
     let payload = { user: this._userServices.userOnline._id, room: this.projectSelectedId }
     this.socket.emit('userOut',payload)
@@ -233,14 +256,12 @@ export class ProjectServices {
   }
 
   emitUsers(userOrder:UserOrder,projectId){
-    let payload = {userOrder,projectId}
+    let payload = {userOrder,projectId,room:this.projectSelectedId}
     this.socket.emit('projectUser',payload)
   }
 
   usersSocket(){
-
     return this.socket.fromEvent('projectUser').pipe(map((payload:any)=>{
-
       if(payload.userOrder.order === 'pushParticipant'){
         if (this.projects.map((project) => { return project._id }).indexOf(payload.projectId) >= 0) {
           this.projects[this.projects.map((project) => { return project._id }).indexOf(payload.projectId)].participants.push(payload.userOrder.user._id)
@@ -249,37 +270,46 @@ export class ProjectServices {
           }
         } else {
           if (this._userServices.userOnline._id === payload.userOrder.user._id) {
-            this.router.navigate(['/projects']).then(()=>{
-              this.getProjects().subscribe(()=>{
-                setTimeout(()=>{
-                  let project = this.projects.filter((project: any) => { return project._id === payload.projectId })[0];
-                  let user = this._userServices.userOnline
-                  user.projects.push(project)
-                  this._userServices.saveInStorage(user._id, user, this._userServices.token)
-                })
+            if(this._ar.snapshot['_routerState'].url === '/projects'){
+              this.router.navigate(['/projects']).then(async () => {
+                await this.getProjects().subscribe()
               })
-            })
+            }
+            let date = new Date()
+            date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() - date.getTimezoneOffset())
+            let project = { _id: payload.projectId, lastConnection: date }
+            this._userServices.userOnline.projects.push(project)
+            this._userServices.saveInStorage(this._userServices.userOnline._id, this._userServices.userOnline, this._userServices.token)
           }
         }
       }else if (payload.userOrder.order === 'removeParticipant'){
         if (this.projects.map((project) => { return project._id }).indexOf(payload.projectId) >= 0) {
-          this.projects[this.projects.map((project) => { return project._id }).indexOf(payload.projectId)].participants = 
-          this.projects[this.projects.map((project) => { return project._id }).indexOf(payload.projectId)].participants.filter((user) => { user != payload.userOrder.user._id })
-          this._userServices.userOnline.projects = this._userServices.userOnline.projects.filter((project)=>{return })
+          if(this._userServices.userOnline._id === payload.userOrder.user._id){
+            this.projects = this.projects.filter((project) => { return project._id != payload.projectId })
+            this._userServices.userOnline.projects = this._userServices.userOnline.projects.filter((project) => { return project._id != payload.projectId })
+            this._userServices.saveInStorage(this._userServices.userOnline._id, this._userServices.userOnline, this._userServices.token)
+          }else{
+            this.projects[this.projects.map((project) => { return project._id }).indexOf(payload.projectId)].participants =
+              this.projects[this.projects.map((project) => { return project._id }).indexOf(payload.projectId)].participants.filter((user) => { user != payload.userOrder.user._id })
+          }
           if(this.projectSelectedId === payload.projectId){
             if(payload.userOrder.user._id === this._userServices.userOnline._id){
-              this.router.navigate(['/projects']).then(()=>{
-                this.getProjects().subscribe(()=>{
-                  setTimeout(()=>{
-                    let user = this._userServices.userOnline
-                    user.projects = user.projects.filter((project)=>{return project._id != payload.projectId})
-                    this._userServices.saveInStorage(user._id, user, this._userServices.token)
-                  })
-                })
+              this.router.navigate(['/projects']).then(async()=>{
+               await this.getProjects().subscribe()
+               this.projectSelectedId = undefined;
+               let user = this._userServices.userOnline
+               user.projects = user.projects.filter((project)=>{return project._id != payload.projectId})
+               this._userServices.saveInStorage(user._id, user, this._userServices.token) 
               })
             }else{
               this.participants = this.participants.filter((user)=>{return user._id != payload.userOrder.user._id})
             }
+          }
+        }else{
+          let projects = JSON.parse(localStorage.getItem('user')).projects;
+          if(projects.map((project)=>{return project._id}).indexOf(payload.projectId)>=0){
+            this._userServices.userOnline.projects = this._userServices.userOnline.projects.filter((project)=>{return project._id != payload.projectId})
+            this._userServices.saveInStorage(this._userServices.userOnline._id,this._userServices.userOnline,this._userServices.token)
           }
         }
       }else if(payload.userOrder.order === 'pushAdmin'){
@@ -352,22 +382,16 @@ export class ProjectServices {
     }))
   }
 
+
   //////// Tasks ////////
 
-  getTasks(){
-    let url = `${URL_SERVICES}/tasks`
-    return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      return res.tasks
-    }))
-  }
-
   emitTask(taskOrder){
-    this.socket.emit('task',taskOrder)
+    let payload = {taskOrder,room:this.projectSelectedId}
+    this.socket.emit('task',payload)
   }
 
   taskSocket(){
     return this.socket.fromEvent('task').pipe(map((taskOrder:TaskOrder)=>{
-      if(taskOrder.task.project === this.projectSelectedId){
       if (taskOrder && taskOrder.order === 'post') {
         if (taskOrder.task.user['_id'] === this._userServices.userOnline._id) {
           this.taskChecked(taskOrder.task._id).subscribe(() => {
@@ -387,7 +411,7 @@ export class ProjectServices {
         }else{
           this.groupTasks.forEach((task, index) => {
             if (task._id === taskOrder.task._id) {
-              this.groupTasks[index] = taskOrder.task;
+                 this.groupTasks[index] = taskOrder.task;
             }
           })
         }
@@ -397,63 +421,64 @@ export class ProjectServices {
         } else {
           this.groupTasks = this.groupTasks.filter((task) => { return task._id != taskOrder.task._id })
         }
-      }}
+      }
+    }))
+  }
+
+  postTask(task: Task) {
+    let url = `${URL_SERVICES}/task`
+    return this.http.post(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      if (res.task.user._id === this._userServices.userOnline._id) {
+        this.taskChecked(res.task._id).subscribe()
+        res.task.checked = true;
+        this.myTasks.push(res.task)
+      } else {
+        this.groupTasks.push(res.task)
+      }
+      let taskOrder = new TaskOrder(res.task, 'post')
+      this.emitTask(taskOrder)
+    }))
+  }
+
+  putTask(taskId: string, task: Task) {
+    let url = `${URL_SERVICES}/task/${taskId}`;
+    return this.http.put(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      if (this.myTasks.map((task) => { return task._id }).indexOf(res.task._id) >= 0) {
+        this.myTasks.forEach((task, index) => {
+          if (task._id === res.task._id) {
+            this.myTasks[index] = res.task;
+          }
+        })
+      } else {
+        this.groupTasks.forEach((task, index) => {
+          if (task._id === res.task._id) {
+            this.groupTasks[index] = res.task;
+          }
+        })
+      }
+      let taskOrder = new TaskOrder(res.task, 'put')
+      this.emitTask(taskOrder)
     }))
   }
 
   taskChecked(taskId:string){
     let url = `${URL_SERVICES}/checkTask/${taskId}`
-    return this.http.put(url,{},{headers: this._userServices.headers }).pipe(map((res:any)=>{
+    return this.http.put(url,{},{headers: this._userServices.headers }).pipe(map(()=>{
       setTimeout(()=>{
-         let taskOrder = new TaskOrder(this.myTasks.filter((task)=>{return task._id === taskId})[0],'put')
-       this.emitTask(taskOrder)
+        let taskOrder = new TaskOrder(this.myTasks.filter((task) => { return task._id === taskId })[0], 'put')
+        console.log(taskOrder)
+        this.emitTask(taskOrder)
       })
     }))
   }
 
   taskDone(taskId:string){
     let url = `${URL_SERVICES}/taskDone/${taskId}`
-    return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map((res:any)=>{
+    return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map(()=>{
       setTimeout(()=>{
         let taskOrder = new TaskOrder(this.myTasks.filter((task) => { return task._id === taskId })[0], 'put')
         this.emitTask(taskOrder)
       })
-    }))
-  }
-
-  postTask(task:Task){
-    let url = `${URL_SERVICES}/task`
-    return this.http.post(url,task,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      if (res.task.user._id === this._userServices.userOnline._id) {
-        this.taskChecked(res.task._id).subscribe()
-        res.task.checked=true;
-          this.myTasks.push(res.task)
-      } else {
-          this.groupTasks.push(res.task) 
-      }
-      let taskOrder = new TaskOrder(res.task,'post')
-      this.emitTask(taskOrder)
-    }))
-  }
-
-  putTask(taskId:string,task:Task){
-    let url = `${URL_SERVICES}/task/${taskId}`;
-    return this.http.put(url,task,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-       if(this.myTasks.map((task)=>{return task._id}).indexOf(res.task._id)>=0){
-         this.myTasks.forEach((task,index)=>{
-           if(task._id===res.task._id){
-             this.myTasks[index]=res.task;
-           }
-         })
-       }else{
-         this.groupTasks.forEach((task, index) => {
-           if (task._id === res.task._id) {
-             this.groupTasks[index] = res.task;
-           }
-         })
-       } 
-       let taskOrder = new TaskOrder(res.task,'put')   
-       this.emitTask(taskOrder)         
     }))
   }
 

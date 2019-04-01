@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Indexcard, IndexcardOrder } from '../models/indexcard.model';
 import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
 import { Subject } from 'rxjs';
 import { AlumniServices } from './alumni.service';
 import { ProfessorsServices } from './professor.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 
 @Injectable({
@@ -20,7 +21,8 @@ export class IndexcardServices {
   constructor(private http:HttpClient,
              private _userServices:UserServices,
              private _alumniServices:AlumniServices,
-             private _professorServices:ProfessorsServices) {          
+             private _professorServices:ProfessorsServices,
+             private _errorHandler:ErrorHandlerService) {          
               }
 
   postIndexcard(indexcard:Indexcard){
@@ -28,7 +30,8 @@ export class IndexcardServices {
     return this.http.post(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{ 
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'post')
       this.indexcardsSource.next(indexcardOrder)
-    }))    
+    })
+    ,catchError(this._errorHandler.handleError))    
   }
 
   putIndexcard(indexcard:Indexcard,idIndexcard:string){
@@ -39,7 +42,8 @@ export class IndexcardServices {
       } else if (res.PROFESSOR) {
         this._professorServices.putProfessor(res.PROFESSOR)
       }
-    }))
+    })
+    ,catchError(this._errorHandler.handleError))
 }
 
   searchIndexcardById(id:string){  

@@ -22,7 +22,7 @@ export class ProjectComponent implements OnInit {
 
   userOnline:User
 
-  public page: string
+  public page: string = 'chat';
 
   public filesSocket:Subscription = null;
   public filesSubscription:Subscription=null;
@@ -36,7 +36,7 @@ export class ProjectComponent implements OnInit {
     public _projectServices: ProjectServices,
     public _projectModalController: ProjectModalController,
     private _usersModalController: UserModalController,
-    private _ar:ActivatedRoute,
+    private ar:ActivatedRoute,
     public _uploadFilesModalController:UploadFilesModalController,
     private _filesUploadServices:UploadFilesServices
   ) {
@@ -46,7 +46,8 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
 
     this.usersSocket = this._projectServices.usersConnected().subscribe()
-    this._ar.params.subscribe(params => {
+    
+    this.ar.params.subscribe(params => {
       this._projectServices.getProjectById(params['id']).subscribe(() => {
         this.page = 'chat';
         this._projectServices.userIn()
@@ -55,6 +56,7 @@ export class ProjectComponent implements OnInit {
 
     this.filesSocket = this._filesUploadServices.filesSocket().subscribe()
     this.filesSubscription=this._filesUploadServices.files$.subscribe((fileOrder: FileOrder) => {
+
       if (fileOrder.order === 'delete') {
         if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.textFiles = this._projectServices.textFiles.filter((file) => { return file._id != fileOrder.file._id })
@@ -77,14 +79,6 @@ export class ProjectComponent implements OnInit {
     })
 
     this.tasksSocket = this._projectServices.taskSocket().subscribe()   
-  }
-
-  ngAfterContentChecked(): void {
-    setTimeout(()=>{
-      if (this._projectServices.status === false && this._projectServices.administrators.map((user) => { return user._id }).indexOf(this._userServices.userOnline._id) < 0) {
-        this.router.navigate(['/projects'])
-      }
-    })
   }
 
   putProject(id:string){
@@ -131,11 +125,9 @@ export class ProjectComponent implements OnInit {
     this.page = page;
   }
 
-  toOtherProject(id: string) {
-    this.page = null;
-    setTimeout(()=>{
-      this.router.navigate(['/projects', id])
-    })
+   async toOtherProject(id: string) {
+    this.page = await null
+    this.router.navigate(['/projects', id])
   }
 
   getOut(){
@@ -176,7 +168,9 @@ export class ProjectComponent implements OnInit {
       if(result.value){
         this._projectServices.deleteProject(id).subscribe(() => {
           this._projectServices.projects = this._projectServices.projects.filter((project) => { return project._id != id })
-          this.router.navigate(['/projects'])
+          this.router.navigate(['/projects']).then(()=>{
+            this._projectServices.getProjects()
+          })
         })
 
       }
@@ -200,6 +194,9 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnDestroy(): void { 
+    if(this._userServices.socket){
+      this._projectServices.userOut()
+    }
     this._projectServices.administrators = [];
     this._projectServices.participants = [];
     this._projectServices.name = undefined;
@@ -210,7 +207,6 @@ export class ProjectComponent implements OnInit {
     this._projectServices.textFiles = [];
     this._projectServices.imageFiles = [];
     this._projectServices.messagesCount = 0;
-    this._projectServices.userOut()
     this.usersSocket.unsubscribe()
     this.filesSocket.unsubscribe()
     this.filesSubscription.unsubscribe()

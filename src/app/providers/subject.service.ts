@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { URL_SERVICES } from '../config/config';
-import { Subject as SubjectModel} from '../models/subject.model';
+import { SubjectModel} from '../models/subject.model';
 import { ProfessorsServices } from './professor.service';
 import { AlumniServices } from './alumni.service';
 import { UserServices } from './user.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 
 @Injectable({
@@ -22,7 +23,8 @@ export class SubjectServices {
     constructor( private http:HttpClient,
                  private _userServices:UserServices,
                  private _professorServices:ProfessorsServices,
-                 private _alumnniServices:AlumniServices) {             
+                 private _alumnniServices:AlumniServices,
+                 private _errorHandler:ErrorHandlerService) {             
                  }
      
     postSubject(subject:SubjectModel){
@@ -32,7 +34,8 @@ export class SubjectServices {
             if(this.subjects.length < 5){
                 this.subjects.push(res.subject)
             }            
-        }))
+        })
+            , catchError(this._errorHandler.handleError)  )
      }
 
     getSubjects(from:number=0,limit:number=5){
@@ -59,7 +62,8 @@ export class SubjectServices {
                    this.subjects[index]=res.subject;
                }
            })
-        }))
+        })
+            ,catchError(this._errorHandler.handleError))
      }
 
     addOrDeleteAlumni(subjectId:string,alumniId:string){

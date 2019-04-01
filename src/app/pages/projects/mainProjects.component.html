@@ -1,4 +1,4 @@
-<div class="row m-2" style='background:#DCD4D2;height:800px;width:1100px'>
+<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:700px;width:1150px;border:1px solid black'>
     <div class="col-12" *ngIf="!_projectServices.projectSelectedId">
         <div class="row d-flex justify-content-center">
             <div class=' col-12 d-flex justify-content-center mt-3'>
@@ -7,7 +7,7 @@
             <div class='col-12 d-flex justify-content-center m-2 p-2 '>
                 <button (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
             </div>
-            <div *ngIf="_projectServices.projects.length > 0 " class="col-12" style='height:700px;background:#DCD4D2;width:900px '>
+            <div *ngIf="_projectServices.projects.length > 0 " class="col-12" style='height:500px;background:#DCD4D2;width:900px '>
                 <div class='scrollable ' style="height:500px;border:1px solid black;background:#F5F1E3">
                     <div *ngFor="let project of _projectServices.projects">
                         <div class="card-body">
@@ -24,7 +24,7 @@
                                     <p>{{project.description}}</p>
                                 </div>
                                 <div class="col-2">
-                                    <button *ngIf="!project.status" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Activar</button>
+                                    <button *ngIf="!project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Activar</button>
                                     <button *ngIf="project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Desactivar</button>
                                 </div>
                             </div>
@@ -36,5 +36,12 @@
     </div>
     <div class="col-12">
         <router-outlet></router-outlet>
+    </div>
+</div>
+<div class='row'>
+    <div class="col-12 d-flex justify-content-center">
+        <div>
+            <img class='img-fluid' src="../../../assets/cargo3.png" alt="" style='width:600px'>
+        </div>
     </div>
 </div>

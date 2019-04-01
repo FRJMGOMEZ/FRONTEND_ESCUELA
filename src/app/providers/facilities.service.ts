@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { URL_SERVICES } from '../config/config';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Facilitie} from '../models/facilitie.model';
 import { UserServices } from './user.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class FacilitiesService {
   count:number
 
   constructor(private http:HttpClient,
-              private _userServices:UserServices) {      
+              private _userServices:UserServices,
+              private errorHandler:ErrorHandlerService) {      
    }
 
    ////// Detectar problema /////
@@ -34,7 +36,8 @@ export class FacilitiesService {
        if(this.facilities.length < 5){
          this.facilities.push(res.facilitie)
        }
-     }))
+     })
+     ,catchError(this.errorHandler.handleError))
    }
 
    putFacilitie(id:string,facilitie:Facilitie){
@@ -45,12 +48,13 @@ export class FacilitiesService {
            this.facilities[index]= res.facilitie;
          }
        })
-     }))
+     })
+     ,catchError(this.errorHandler.handleError))
    }
 
   deleteFacilitie(id:string){
     let url = `${URL_SERVICES}/facilitie/${id}`;
-    return this.http.delete(url, { headers:this._userServices.headers }).pipe(map((res: any) => {
+    return this.http.delete(url, { headers:this._userServices.headers }).pipe(map(() => {
       this.count--
     }))
   }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Professor } from '../models/professor.model';
 import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class ProfessorsServices {
   public count:number
 
   constructor(private http:HttpClient,
-             private _userServices:UserServices) { 
+             private _userServices:UserServices,
+             private _errorHandler:ErrorHandlerService) { 
             }
 
   postProfessor(professor:Professor){
@@ -25,7 +27,9 @@ export class ProfessorsServices {
        if(this.professors.length < 5){
          this.professors.push(res.professor)
        }
-    }))
+    })
+    ,catchError(this._errorHandler.handleError)
+    )
   }
 
   getProfessors(from:number=0,limit:number=0) {

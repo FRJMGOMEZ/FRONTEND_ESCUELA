@@ -54,7 +54,7 @@ export class AlumniComponent implements OnInit,OnDestroy {
 
   addSubject(alumniId: string) {
     this._subjectModalController.showModal(alumniId);
-    this._subjectModalController.notification.emit('ALUMNI'); console.log(alumniId)
+    this._subjectModalController.notification.emit('ALUMNI');
   }
 
 
