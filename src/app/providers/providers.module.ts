@@ -9,7 +9,7 @@ import { UserServices } from "./user.service";
 import { UploadFilesServices } from './upload-files.service';
 import { SubjectServices } from "./subject.service";
 import { ProjectServices } from "./project.service";
-import { IndexcardServices } from './indexcard.service';
+import { indexcardServices } from './indexcard.service';
 import { ProfessorsServices } from './professor.service';
 import { ChatServices } from './chat.service';
 import { AlumniServices } from './alumni.service';
@@ -28,7 +28,7 @@ import { DashboardService } from './dashboard.service';
        UploadFilesServices,
        SubjectServices,
        ProjectServices,
-       IndexcardServices,
+       indexcardServices,
        ProfessorsServices,
        ChatServices,
        AlumniServices,

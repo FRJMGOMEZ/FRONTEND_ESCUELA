@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IndexCardModalController } from './indexCardModalController';
-import { IndexcardServices } from '../../providers/indexcard.service';
+import { indexcardModalController } from './indexcardModalController';
+import { indexcardServices } from '../../providers/indexcard.service';
 import { Indexcard, IndexcardOrder } from '../../models/indexcard.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlumniServices } from 'src/app/providers/alumni.service';
@@ -14,18 +14,18 @@ import { Subscription } from 'rxjs';
   templateUrl: "./index-card-modal.component.html",
   styles: []
 })
-export class IndexCardModalComponent implements OnInit {
+export class indexcardModalComponent implements OnInit {
   form: FormGroup;
   indexcardId: string;
   role: string;
-  indexCardSubscription: Subscription = null;
+  indexcardSubscription: Subscription = null;
 
   creation: boolean = false;
   edition: boolean = false;
 
   constructor(
-    public _modalController: IndexCardModalController,
-    private _indexcardServices: IndexcardServices,
+    public _modalController: indexcardModalController,
+    private _indexcardServices: indexcardServices,
     private _alumniServices: AlumniServices,
     private _professorServices: ProfessorsServices
   ) {}
@@ -42,7 +42,7 @@ export class IndexCardModalComponent implements OnInit {
 
     this._modalController.notification.subscribe(res => {
       this.role = res;
-        this.indexCardSubscription = this._indexcardServices.indexcards$.subscribe(
+        this.indexcardSubscription = this._indexcardServices.indexcards$.subscribe(
           (indexcardOrder: IndexcardOrder) => {
             if (indexcardOrder.order === "getById") {
               this.indexcardId = indexcardOrder.indexcard._id;
@@ -70,14 +70,14 @@ export class IndexCardModalComponent implements OnInit {
         );
       if (this._modalController.id) {
         this.edition = true;
-        this._indexcardServices.searchIndexcardById(this._modalController.id).subscribe();
+        this._indexcardServices.searchindexcardById(this._modalController.id).subscribe();
       } else {
         this.creation = true;
       }
     });
   }
 
-  putIndexcard() {
+  putindexcard() {
     if (this.form.valid) {
       let value = this.form.value;
       let indexcard = new Indexcard(
@@ -89,13 +89,13 @@ export class IndexCardModalComponent implements OnInit {
         value.home,
         value.address
       );
-      this._indexcardServices.putIndexcard(indexcard, this.indexcardId).subscribe(()=>{
+      this._indexcardServices.putindexcard(indexcard, this.indexcardId).subscribe(()=>{
         this.hideModal()
       }) 
     }
   }
 
-  postIndexcard() {
+  postindexcard() {
     if (this.form.valid) {
       let value = this.form.value;
       let indexcard = new Indexcard(
@@ -107,7 +107,7 @@ export class IndexCardModalComponent implements OnInit {
         value.home,
         value.address
       );
-      this._indexcardServices.postIndexcard(indexcard).subscribe()
+      this._indexcardServices.postindexcard(indexcard).subscribe()
       ;
     }
   }
@@ -125,7 +125,7 @@ export class IndexCardModalComponent implements OnInit {
     this.edition = false;
     this.indexcardId = "";
     this.role = "";
-    this.indexCardSubscription.unsubscribe();
+    this.indexcardSubscription.unsubscribe();
     this._modalController.hideModal();
   }
 }

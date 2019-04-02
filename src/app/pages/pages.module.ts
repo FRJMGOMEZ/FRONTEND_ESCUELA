@@ -72,7 +72,6 @@ import { CalendarManagerComponent } from './calendar/calendar.component';
     PipesModule,
     SharedModule,
     ScrollingModule
-
   ],
   exports: [],
   bootstrap: [],

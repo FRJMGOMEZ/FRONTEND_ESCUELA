@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from '../../../modals/subject-modal/subjectModalController';
-import { IndexCardModalController } from 'src/app/modals/index-card-modal/indexCardModalController';
+import { indexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
 import { AlumniServices } from '../../../providers/alumni.service';
 import { SubjectServices } from 'src/app/providers/subject.service';
 import { SwalService } from '../../../providers/swal.service';
@@ -22,7 +22,7 @@ export class AlumniComponent implements OnInit,OnDestroy {
     public _alumniServices:AlumniServices,
     public _subjectServices:SubjectServices,
     private _subjectModalController: SubjectModalController,
-    private _indexcardModalController: IndexCardModalController,
+    private _indexcardModalController: indexcardModalController,
     private _swalService:SwalService
   ) {
   }

@@ -11,7 +11,7 @@ import { SharedModule } from "../shared/shared.module";
 
 
 //// Components ////
-import { IndexCardModalComponent } from './index-card-modal/index-card-modal.component';
+import { indexcardModalComponent } from './index-card-modal/index-card-modal.component';
 import { AlumniModalComponent } from './alumni-modal/alumni-modal.component';
 import { ProfessorModalComponent } from './professor-modal/professor-modal.component';
 import { SubjectModalComponent } from './subject-modal/subject-modal.component';
@@ -29,7 +29,7 @@ import { EventsModalComponent } from "./events-modal/events-modal.component";
 import { CalendarModalComponent } from "./calendar-modal/calendar-modal.component";
 import { AlumnniModalController } from './alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from "./professor-modal/professorModalController";
-import { IndexCardModalController } from "./index-card-modal/indexCardModalController";
+import { indexcardModalController } from "./index-card-modal/indexcardModalController";
 import { ProjectModalController } from './project-modal/projectModalController';
 import { SubjectModalController } from './subject-modal/subjectModalController';
 import { UploadFilesModalController } from "./upload-files-modal/uploadFilesModalController";
@@ -46,7 +46,7 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
 
 @NgModule({
   declarations: [
-    IndexCardModalComponent,
+    indexcardModalComponent,
     ProjectModalComponent,
     AlumniModalComponent,
     ProfessorModalComponent,
@@ -72,7 +72,7 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
   ],
 
   exports: [
-    IndexCardModalComponent,
+    indexcardModalComponent,
     ProjectModalComponent,
     AlumniModalComponent,
     ProfessorModalComponent,
@@ -89,7 +89,7 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
 
   providers: [
     AlumnniModalController,
-    IndexCardModalController,
+    indexcardModalController,
     ProfessorModalController,
     ProjectModalController,
     SubjectModalController,

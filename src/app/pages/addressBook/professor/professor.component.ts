@@ -1,6 +1,6 @@
 import { Component,ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from 'src/app/modals/subject-modal/subjectModalController';
-import { IndexCardModalController } from 'src/app/modals/index-card-modal/indexCardModalController';
+import { indexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
 import { ProfessorsServices } from '../../../providers/professor.service';
 import { UserServices } from '../../../providers/user.service';
 import { SubjectServices } from '../../../providers/subject.service';
@@ -27,7 +27,7 @@ export class ProfessorComponent implements OnInit, OnDestroy {
     public _professorServices: ProfessorsServices,
     public _subjectServices: SubjectServices,
     private _subjectModalController: SubjectModalController,
-    private _indexCardModalController: IndexCardModalController,
+    private _indexcardModalController: indexcardModalController,
     private _swalService: SwalService
   ) {}
 
@@ -49,13 +49,13 @@ export class ProfessorComponent implements OnInit, OnDestroy {
   }
 
   postProfessor() {
-    this._indexCardModalController.showModal();
-    this._indexCardModalController.notification.emit("PROFESSOR");
+    this._indexcardModalController.showModal();
+    this._indexcardModalController.notification.emit("PROFESSOR");
   }
 
   putProfessor(id: string) {
-    this._indexCardModalController.showModal(id);
-    this._indexCardModalController.notification.emit("PROFESSOR");
+    this._indexcardModalController.showModal(id);
+    this._indexcardModalController.notification.emit("PROFESSOR");
   }
 
   deleteProfessor(id: string) {

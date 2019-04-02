@@ -13,7 +13,7 @@ import { ErrorHandlerService } from './error-handler.service';
 @Injectable({
   providedIn: 'root'
 })
-export class IndexcardServices {
+export class indexcardServices {
 
   indexcardsSource = new Subject<IndexcardOrder>();
   indexcards$ = this.indexcardsSource.asObservable()
@@ -25,7 +25,7 @@ export class IndexcardServices {
              private _errorHandler:ErrorHandlerService) {          
               }
 
-  postIndexcard(indexcard:Indexcard){
+  postindexcard(indexcard:Indexcard){
     let url = `${URL_SERVICES}/indexcard`
     return this.http.post(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{ 
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'post')
@@ -34,8 +34,8 @@ export class IndexcardServices {
     ,catchError(this._errorHandler.handleError))    
   }
 
-  putIndexcard(indexcard:Indexcard,idIndexcard:string){
-    let url = `${URL_SERVICES}/indexcard/${idIndexcard}`;
+  putindexcard(indexcard:Indexcard,idindexcard:string){
+    let url = `${URL_SERVICES}/indexcard/${idindexcard}`;
     return this.http.put(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       if (res.ALUMNI) {
         this._alumniServices.putAlumni(res.ALUMNI)
@@ -46,8 +46,8 @@ export class IndexcardServices {
     ,catchError(this._errorHandler.handleError))
 }
 
-  searchIndexcardById(id:string){  
-    let url = `${URL_SERVICES}/searchIndexcardById/${id}`
+  searchindexcardById(id:string){  
+    let url = `${URL_SERVICES}/searchindexcardById/${id}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'getById')
       this.indexcardsSource.next(indexcardOrder)

@@ -11,6 +11,9 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { LoginComponent } from './login/login/login.component';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { URL_SERVICES } from './config/config';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+
 registerLocaleData(localeEs);
 
 const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
@@ -30,6 +33,8 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
+    RouterModule,
+    RouterTestingModule,
     SocketIoModule.forRoot(config)
   ],
   providers: [{ provide: LOCALE_ID, useValue:'es-ES'}],

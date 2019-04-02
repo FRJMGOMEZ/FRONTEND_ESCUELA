@@ -11,7 +11,7 @@ import { User } from '../../models/user.model';
 })
 export class RegisterComponent implements OnInit {
 
-  form: FormGroup
+  form:FormGroup
 
   constructor(private _userServices: UserServices, private router: Router) { }
 
