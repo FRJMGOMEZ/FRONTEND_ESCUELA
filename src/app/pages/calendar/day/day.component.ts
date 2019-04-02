@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarService } from '../../../providers/calendar.service';
 import { CalendarModalController } from '../../../modals/calendar-modal/calendar-modal.controller';

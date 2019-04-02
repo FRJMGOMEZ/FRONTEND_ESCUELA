@@ -1,25 +1,27 @@
-<div class="row scrollable" style='background: #F5F1E3;height:300px'>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Fecha de inicio</th>
-                <th>Fecha de finalización</th>
-                <th>Horario:</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let event of events">
-                <td>{{event.name}}</td>
-                <td>{{event.description}}</td>
-                <td>{{event.startDate | date}}</td>
-                <td>{{event.endDate | date}}</td>
-                <td>{{event.position | timeConversor2: null }} - {{event.position | timeConversor2: event.duration }} </td>
-            </tr>
-        </tbody>
-    </table>
-    <div *ngIf="events.length === 0">
+<div class="row" style='background: #F5F1E3'>
+    <div class='col-12 scrollable' *ngIf="events.length > 0">
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de finalización</th>
+                    <th>Horario:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let event of events">
+                    <td>{{event.name}}</td>
+                    <td>{{event.description}}</td>
+                    <td>{{event.startDate | date}}</td>
+                    <td>{{event.endDate | date}}</td>
+                    <td>{{event.position | timeConversor2: null }} - {{event.position | timeConversor2: event.duration }} </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class='col-12 text-center' *ngIf="events.length === 0">
         <h5>No hay eventos asignados</h5>
     </div>
 </div>

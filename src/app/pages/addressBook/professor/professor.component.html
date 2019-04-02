@@ -3,13 +3,13 @@
         <h5 class='list-group-item-heading text-center mt-3'>PROFESORES</h5>
         <input #input placeholder="Buscar profesor" class='pb-2 mt-2' type="text" name="" id="">
         <div class='d-flex justify-content-center'>
-            <button class='btn btn-warning mb-2' (click)='_professorServices.searchProfessors(input.value,0).subscribe();searchMode = true;from =0;getMode=false;professors=[]'>BUSCAR
+            <button class='btn btn-warning mb-2' (click)='_professorServices.searchProfessors(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_professorServices.professors=[]'>BUSCAR
                 PROFESORES</button>
-            <button (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe();professors=[]' class='btn btn-warning mb-2'>TODOS</button>
+            <button (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe();_professorServices.professors=[]' class='btn btn-warning mb-2'>TODOS</button>
         </div>
         <button (click)='postProfessor()' class='btn btn-warning m-2'>CREAR PROFESOR</button>
     </div>
-    <div *ngIf="!cargando" class="col-12 animated fadeIn" style='background:#DCD4D2'>
+    <div class="col-12 animated fadeIn" style='background:#DCD4D2'>
         <table class='table mb-2' style='background:#F5F1E3;border:1px solid #F0B841'>
             <tr>
                 <th>Nombre</th>

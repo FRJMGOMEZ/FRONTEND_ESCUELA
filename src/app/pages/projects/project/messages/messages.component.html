@@ -46,7 +46,7 @@
             </div>
         </div>
         <div [ngStyle]="{'width': temporaryImg || fileUpload ? '75%' : '100%'}">
-            <textarea (keyup.enter)='sendMessage(input.value)' #input [(ngModel)]="message" class='form-control ' value="" placeholder="Send Message" style="border: none">
+            <textarea (keyup.enter)='sendMessage()' #input [(ngModel)]="message" class='form-control ' value="" placeholder="Send Message" style="border: none">
             </textarea>
         </div>
     </div>
