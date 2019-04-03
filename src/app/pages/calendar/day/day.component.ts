@@ -52,10 +52,11 @@ export class DayComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params)=>{
       const dayId = params['dayId'];
       const weekId = params['weekId'];
+      if(dayId && weekId){
         this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
           if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
             if (dayId === this._calendarServices.currentDay._id) {
-              setTimeout(()=>{
+              setTimeout(() => {
                 this.init()
                 return
               })
@@ -76,15 +77,16 @@ export class DayComponent implements OnInit, OnDestroy {
                 })
               }
             }
-          }else{
-            this._calendarServices.getWeekById(weekId).subscribe(()=>{
-              this._calendarServices.getDayById(dayId).subscribe(()=>{
+          } else {
+            this._calendarServices.getWeekById(weekId).subscribe(() => {
+              this._calendarServices.getDayById(dayId).subscribe(() => {
                 this.init()
                 return
               })
             })
           }
         })
+      }
     })
 
     this.notification.subscribe(res => {
