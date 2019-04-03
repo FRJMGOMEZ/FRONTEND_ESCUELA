@@ -49,9 +49,9 @@ export class DayComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.activatedRoute.params.subscribe((params)=>{
-      let dayId = params['dayId'];
-      let weekId = params['weekId'];
+    this.activatedRoute.params.subscribe(async(params)=>{
+      let dayId = await params['dayId'];
+      let weekId = await params['weekId'];
       if(dayId.length >0 && weekId.length > 0){
         this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
           if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
