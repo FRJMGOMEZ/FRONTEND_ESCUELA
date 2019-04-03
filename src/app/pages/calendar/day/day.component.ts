@@ -50,19 +50,23 @@ export class DayComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.activatedRoute.params.subscribe((params)=>{
-      const dayId = params['dayId'];
-      const weekId = params['weekId'];
+      let dayId = params['dayId'];
+      let weekId = params['weekId'];
       if(dayId && weekId){
         this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
           if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
             if (dayId === this._calendarServices.currentDay._id) {
               setTimeout(() => {
+                dayId = undefined;
+                weekId=undefined;
                 this.init()
                 return
               })
             } else {
               if (weekId === this._calendarServices.currentWeek._id) {
                 this._calendarServices.getDayById(dayId).subscribe(() => {
+                  dayId = undefined;
+                  weekId = undefined;
                   this.init()
                   return
                 })
@@ -70,6 +74,8 @@ export class DayComponent implements OnInit, OnDestroy {
                 this._calendarServices.getWeekById(weekId).subscribe(() => {
                   this._calendarServices.checkWeekDay(this._calendarServices.currentDay.date.getDay()).then((dayId: string) => {
                     this._calendarServices.getDayById(dayId).subscribe(() => {
+                      dayId = undefined;
+                      weekId = undefined;
                       this.init()
                       return
                     })
@@ -80,6 +86,8 @@ export class DayComponent implements OnInit, OnDestroy {
           } else {
             this._calendarServices.getWeekById(weekId).subscribe(() => {
               this._calendarServices.getDayById(dayId).subscribe(() => {
+                dayId = undefined;
+                weekId = undefined;
                 this.init()
                 return
               })
@@ -216,6 +224,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+
     this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
     this.eventsSocket.unsubscribe();
