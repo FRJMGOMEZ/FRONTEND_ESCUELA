@@ -52,7 +52,7 @@ export class DayComponent implements OnInit, OnDestroy {
     this.activatedRoute.params.subscribe((params)=>{
       let dayId = params['dayId'];
       let weekId = params['weekId'];
-      if(dayId && weekId){
+      if(dayId.length >0 && weekId.length > 0){
         this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
           if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
             if (dayId === this._calendarServices.currentDay._id) {
