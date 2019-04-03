@@ -35,7 +35,7 @@ export class UserServices {
     }
 
     updateToken(){
-        let url = `${URL_SERVICES}/updateToken`
+        let url = `${URL_SERVICES}updateToken`
         return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.token = res.token;
             localStorage.setItem('token',this.token)
@@ -45,7 +45,7 @@ export class UserServices {
     }
 
     postUser(user: User) {
-        let url = `${URL_SERVICES}/user`;
+        let url = `${URL_SERVICES}user`;
         return this.http.post(url, user).pipe(
          catchError(this._errorHandler.handleError)
         )
@@ -57,7 +57,7 @@ export class UserServices {
            } else {
                localStorage.removeItem("email");
            }
-        let url = `${URL_SERVICES}/login`;
+        let url = `${URL_SERVICES}login`;
         return this.http.post(url, user).pipe(map((res: any) => {
                 this.saveInStorage(res.id, res.user, res.token)
         })
@@ -91,7 +91,7 @@ export class UserServices {
     }
 
     getUsers(from: number = 0, limit: number = 5) {
-        let url = `${URL_SERVICES}/users?from=${from}&limit=${limit}`;
+        let url = `${URL_SERVICES}users?from=${from}&limit=${limit}`;
         return this.http.get(url, { headers: this.headers }).pipe(map((res: any) => {
             this.count = res.count;
             this.users = res.users;
@@ -99,7 +99,7 @@ export class UserServices {
     }
 
     putUser(id:string, user:User){
-        let url = `${URL_SERVICES}/user/${id}`
+        let url = `${URL_SERVICES}user/${id}`
         return this.http.put(url,user,{headers:this.headers}).pipe((map((res:any)=>{
             if (res.user._id === this.userOnline._id) {
                 this.saveInStorage(res.user._id, res.user, localStorage.getItem('token'))
@@ -117,7 +117,7 @@ export class UserServices {
     }
 
     searchUsers(input: string, from: number = 0, limit: number = 5){
-        let url = `${URL_SERVICES}/search/users/${input}?from=${from}&limit=${limit}`;
+        let url = `${URL_SERVICES}search/users/${input}?from=${from}&limit=${limit}`;
         return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count = res.count;
             this.users = res.users;
@@ -125,7 +125,7 @@ export class UserServices {
     }
 
     changeUserStatus(id:string){
-        let url = `${URL_SERVICES}/changeUserStatus/${id}`
+        let url = `${URL_SERVICES}changeUserStatus/${id}`
         return this.http.put(url,{},{headers:this.headers}).pipe(map((res:any)=>{ 
                 this.users.forEach((user, index) => {
                     if (user._id === res.user._id) {
@@ -136,21 +136,21 @@ export class UserServices {
     }
 
     deleteUser(id:string){
-        let url = `${URL_SERVICES}/user/${id}`
+        let url = `${URL_SERVICES}user/${id}`
         return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count--
         }))
     }
 
     changePassword(password1: string,password2:string) {
-        let url = `${URL_SERVICES}/changePassword/${password1}/${password2}`
+        let url = `${URL_SERVICES}changePassword/${password1}/${password2}`
         return this.http.put(url,{},{ headers: this.headers }).pipe(
             catchError(this._errorHandler.handleError)
         )
     }
 
     changeRole(userId:string,role:string){
-        let url = `${URL_SERVICES}/changeRole/${userId}/${role}`
+        let url = `${URL_SERVICES}changeRole/${userId}/${role}`
         return this.http.put(url,{},{headers:this.headers})
     }
 

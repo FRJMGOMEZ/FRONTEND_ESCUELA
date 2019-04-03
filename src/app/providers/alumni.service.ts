@@ -23,7 +23,7 @@ export class AlumniServices {
   }
 
   getAlumnis(from: number = 0, limit: number = 5) {
-    let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
+    let url = `${URL_SERVICES}alumni?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.alumnis = res.alumnis;
