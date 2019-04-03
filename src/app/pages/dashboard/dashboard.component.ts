@@ -87,7 +87,6 @@ export class DashboardComponent implements OnInit {
     date =new Date(date)
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
     this._calendarServices.getDayByDate(date.getTime()).subscribe(() => {
-        console.log(this._calendarServices.currentDay)
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, new Date(this._calendarServices.currentDay.date).getDay()).subscribe(() => {
           setTimeout(()=>{
             this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {

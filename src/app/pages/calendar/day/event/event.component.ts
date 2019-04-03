@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
@@ -10,7 +10,7 @@ import { UserServices } from '../../../../providers/user.service';
   templateUrl: "./event.component.html",
   styleUrls: ["./event.component.scss"],
 })
-export class EventComponent implements OnInit,AfterViewInit, OnDestroy{
+export class EventComponent implements OnInit,AfterViewInit{
 
   @Input() facilitie:any;
   @Input() position: number = 0
@@ -344,10 +344,6 @@ fixHeight(height: number) {
   showEventInfo(id:string){ 
     this._modalEventController.showModal(id) 
     this._modalEventController.notification.emit()
-  }
-
-  ngOnDestroy(): void {
-    console.log('DESTROYED')
   }
 }
 

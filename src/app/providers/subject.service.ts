@@ -28,7 +28,7 @@ export class SubjectServices {
                  }
      
     postSubject(subject:SubjectModel){
-        let url = `${URL_SERVICES}/subject`;
+        let url = `${URL_SERVICES}subject`;
         return this.http.post(url,subject,{headers:this._userServices.headers}).pipe(map((res:any)=>{
             this.count++
             if(this.subjects.length < 5){
@@ -39,7 +39,7 @@ export class SubjectServices {
      }
 
     getSubjects(from:number=0,limit:number=5){
-        let url = `${URL_SERVICES}/subject?from=${from}&limit=${limit}`;
+        let url = `${URL_SERVICES}subject?from=${from}&limit=${limit}`;
         return this.http.get(url, {headers:this._userServices.headers}).pipe(map((res:any)=>{
             this.count = res.count;
             this.subjects = res.subjects;        
@@ -47,14 +47,14 @@ export class SubjectServices {
      }
 
      deleteSubject (id:string){
-        let url = `${URL_SERVICES}/subject/${id}`
+        let url = `${URL_SERVICES}subject/${id}`
         return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
             this.count--
         }))
      }
 
      putSubject(id:string,subject:SubjectModel){
-        let url = `${URL_SERVICES}/subject/${id}`
+        let url = `${URL_SERVICES}subject/${id}`
         return this.http.put(url,subject,{headers:this._userServices.headers}).pipe(map((res:any)=>{
             this.subjectSelected = res.subject;
            this.subjects.forEach((subject,index)=>{
@@ -67,7 +67,7 @@ export class SubjectServices {
      }
 
     addOrDeleteAlumni(subjectId:string,alumniId:string){
-      let url = `${URL_SERVICES}/addOrDeleteAlumni/${subjectId}`;
+      let url = `${URL_SERVICES}addOrDeleteAlumni/${subjectId}`;
       return this.http.put(url,{alumniId},{headers:this._userServices.headers}).pipe(map((res:any)=>{
           this.subjectSelected = res.subject;
           this.subjects.forEach((subject, index) => {
@@ -80,7 +80,7 @@ export class SubjectServices {
     }  
 
     addOrDeleteProfessor(subjectId:string,professorId: string) {
-        let url = `${URL_SERVICES}/addOrDeleteProfessor/${subjectId}`;
+        let url = `${URL_SERVICES}addOrDeleteProfessor/${subjectId}`;
         return this.http.put(url, { professorId }, { headers:this._userServices.headers }).pipe(map((res: any) => {
             this.subjectSelected = res.subject;
             this.subjects.forEach((subject, index) => {

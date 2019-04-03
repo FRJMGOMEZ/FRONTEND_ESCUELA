@@ -26,7 +26,7 @@ export class indexcardServices {
               }
 
   postindexcard(indexcard:Indexcard){
-    let url = `${URL_SERVICES}/indexcard`
+    let url = `${URL_SERVICES}indexcard`
     return this.http.post(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{ 
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'post')
       this.indexcardsSource.next(indexcardOrder)
@@ -35,7 +35,7 @@ export class indexcardServices {
   }
 
   putindexcard(indexcard:Indexcard,idindexcard:string){
-    let url = `${URL_SERVICES}/indexcard/${idindexcard}`;
+    let url = `${URL_SERVICES}indexcard/${idindexcard}`;
     return this.http.put(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       if (res.ALUMNI) {
         this._alumniServices.putAlumni(res.ALUMNI)
@@ -47,7 +47,7 @@ export class indexcardServices {
 }
 
   searchindexcardById(id:string){  
-    let url = `${URL_SERVICES}/searchindexcardById/${id}`
+    let url = `${URL_SERVICES}searchindexcardById/${id}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'getById')
       this.indexcardsSource.next(indexcardOrder)

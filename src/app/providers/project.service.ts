@@ -55,7 +55,7 @@ export class ProjectServices {
   /////// Projects ////////
 
   getProjects() {
-    let url = `${URL_SERVICES}/projects`
+    let url = `${URL_SERVICES}projects`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
         this.projects = res.projects
     }))
@@ -127,7 +127,7 @@ export class ProjectServices {
   }
 
   postProject(project: Project) {
-    let url = `${URL_SERVICES}/project`
+    let url = `${URL_SERVICES}project`
     return this.http.post(url, project, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this._userServices.saveInStorage(res.user._id, res.user, this._userServices.token)
       this.projects.push(res.project)
@@ -136,7 +136,7 @@ export class ProjectServices {
   }
 
   getProjectById(id: string) {
-    let url = `${URL_SERVICES}/searchById/project/${id}`
+    let url = `${URL_SERVICES}searchById/project/${id}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.projectSelectedId = res.project._id
       this.administrators = res.project.administrators;
@@ -175,7 +175,7 @@ export class ProjectServices {
   }
 
   putProject(id: string, project: Project) {
-    let url = `${URL_SERVICES}/project/${id}`
+    let url = `${URL_SERVICES}project/${id}`
     return this.http.put(url, project, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.projects.forEach((project,index)=>{
         if(project._id === res.project._id){
@@ -191,7 +191,7 @@ export class ProjectServices {
   }
 
   changeProjectStatus(id:string){
-    let url = `${URL_SERVICES}/project/changeStatus/${id}`
+    let url = `${URL_SERVICES}project/changeStatus/${id}`
     return this.http.put(url,{},{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.status = res.project.status;
       this.projects.forEach((project,index)=>{
@@ -205,7 +205,7 @@ export class ProjectServices {
   }
 
     deleteProject(id:string){
-    let url = `${URL_SERVICES}/project/${id}`
+    let url = `${URL_SERVICES}project/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       res.files.forEach((file)=>{
         this._uploadFilesServices.deleteFile(file,'projectFiles').subscribe()
@@ -249,7 +249,7 @@ export class ProjectServices {
   }
 
   lastConnection() {
-    let url = `${URL_SERVICES}/lastConnection/${this.projectSelectedId}`
+    let url = `${URL_SERVICES}lastConnection/${this.projectSelectedId}`
     return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map((res: any) => {
       this._userServices.saveInStorage(res.user._id,res.user, this._userServices.token)
     }))
@@ -345,7 +345,7 @@ export class ProjectServices {
   }
 
   addOrRemoveParticipant( userId: string) {
-    let url = `${URL_SERVICES}/pullOrPushOutParticipant/${this.projectSelectedId}`;
+    let url = `${URL_SERVICES}pullOrPushOutParticipant/${this.projectSelectedId}`;
     let body = { participant: userId };
     return this.http.put(url, body, { headers: this._userServices.headers }).pipe(map((res: any) => {
       let participantsIds = this.participants.map((user)=>{return user._id})
@@ -364,7 +364,7 @@ export class ProjectServices {
   }
 
   addOrRemoveAdmin(userId: string) {
-    let url = `${URL_SERVICES}/pullOrPushAdmin/${this.projectSelectedId}`;
+    let url = `${URL_SERVICES}pullOrPushAdmin/${this.projectSelectedId}`;
     let body = { participant: userId };
     return this.http.put(url, body, { headers: this._userServices.headers }).pipe(map((res: any) => {
       let adminsIds = this.administrators.map((user) => { return user._id })
@@ -426,7 +426,7 @@ export class ProjectServices {
   }
 
   postTask(task: Task) {
-    let url = `${URL_SERVICES}/task`
+    let url = `${URL_SERVICES}task`
     return this.http.post(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
       if (res.task.user._id === this._userServices.userOnline._id) {
         this.taskChecked(res.task._id).subscribe()
@@ -441,7 +441,7 @@ export class ProjectServices {
   }
 
   putTask(taskId: string, task: Task) {
-    let url = `${URL_SERVICES}/task/${taskId}`;
+    let url = `${URL_SERVICES}task/${taskId}`;
     return this.http.put(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
       if (this.myTasks.map((task) => { return task._id }).indexOf(res.task._id) >= 0) {
         this.myTasks.forEach((task, index) => {
@@ -462,18 +462,17 @@ export class ProjectServices {
   }
 
   taskChecked(taskId:string){
-    let url = `${URL_SERVICES}/checkTask/${taskId}`
+    let url = `${URL_SERVICES}checkTask/${taskId}`
     return this.http.put(url,{},{headers: this._userServices.headers }).pipe(map(()=>{
       setTimeout(()=>{
         let taskOrder = new TaskOrder(this.myTasks.filter((task) => { return task._id === taskId })[0], 'put')
-        console.log(taskOrder)
         this.emitTask(taskOrder)
       })
     }))
   }
 
   taskDone(taskId:string){
-    let url = `${URL_SERVICES}/taskDone/${taskId}`
+    let url = `${URL_SERVICES}taskDone/${taskId}`
     return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map(()=>{
       setTimeout(()=>{
         let taskOrder = new TaskOrder(this.myTasks.filter((task) => { return task._id === taskId })[0], 'put')
@@ -483,7 +482,7 @@ export class ProjectServices {
   }
 
   deleteTask(taskId:string){
-    let url = `${URL_SERVICES}/task/${taskId}`
+    let url = `${URL_SERVICES}task/${taskId}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
      let taskOrder = new TaskOrder(res.task,'delete')
      this.emitTask(taskOrder)

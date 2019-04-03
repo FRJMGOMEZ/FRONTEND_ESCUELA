@@ -41,7 +41,7 @@ export class UploadFilesServices {
        let xhr = new XMLHttpRequest();
        let url;     
          formData.append('file',file,file.name);
-         url = `${URL_SERVICES}/upload/${type}/${id}/${download}`
+         url = `${URL_SERVICES}upload/${type}/${id}/${download}`
        xhr.onreadystatechange = () => {
          if (xhr.readyState === 4) {
            if (xhr.status === 200) {
@@ -63,7 +63,7 @@ export class UploadFilesServices {
   }
 
   deleteFile(fileId:string,type:string){
-    let url = `${URL_SERVICES}/deleteFile/${fileId}/${type}`;
+    let url = `${URL_SERVICES}deleteFile/${fileId}/${type}`;
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
         let fileOrder = new FileOrder(res.file,'delete')
         this.fileSource.next(fileOrder)
@@ -72,7 +72,7 @@ export class UploadFilesServices {
   }
 
   getFileById(id:string){
-    let url = `${URL_SERVICES}/searchById/file/${id}`
+    let url = `${URL_SERVICES}searchById/file/${id}`
     return this.http.get(url, {headers:this._userServices.headers}).pipe(map((res:any)=>{
       return res.file
     }))

@@ -23,7 +23,7 @@ export class ChatServices {
      }
 
     getMessages(projectId: string, from: number, limit: number = 15) {
-        let url = `${URL_SERVICES}/messages/${projectId}?from=${from}&limit=${limit}`;
+        let url = `${URL_SERVICES}messages/${projectId}?from=${from}&limit=${limit}`;
         return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
             res.messages.reverse()
             res.messages.forEach((message) => {
@@ -34,7 +34,7 @@ export class ChatServices {
     }
 
     postMessage(message: Message) {
-        let url = `${URL_SERVICES}/message`
+        let url = `${URL_SERVICES}message`
         return this.http.post(url, message, { headers: this._userServices.headers }).pipe(map((res: any) => {
             this._projectServices.messagesCount++
             let messageOrder = new MessageOrder(res.message,'post')
@@ -55,7 +55,7 @@ export class ChatServices {
     } 
 
     deleteMessage(messageId: string) {
-        let url = `${URL_SERVICES}/message/${messageId}`
+        let url = `${URL_SERVICES}message/${messageId}`
         return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
             this._projectServices.messagesCount--;
             let messageOrder = new MessageOrder(res.message, 'delete')

@@ -29,7 +29,7 @@ export class DashboardService {
   ) {}
 
   getLastMessages() {
-    let url = `${URL_SERVICES}/lastMessages`;
+    let url = `${URL_SERVICES}lastMessages`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map(async(res: any) => {
         await this.projects.forEach((project)=>{
@@ -67,7 +67,7 @@ export class DashboardService {
   }
 
   getTasks() {
-    let url = `${URL_SERVICES}/tasks`;
+    let url = `${URL_SERVICES}tasks`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map(async(res: any) => {
         await this.projects.forEach((project) => {
@@ -131,7 +131,7 @@ export class DashboardService {
   }
 
   getEvents() {
-    let url = `${URL_SERVICES}/events`;
+    let url = `${URL_SERVICES}events`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         this.eventsToday = []

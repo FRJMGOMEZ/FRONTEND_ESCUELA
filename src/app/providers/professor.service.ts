@@ -21,7 +21,7 @@ export class ProfessorsServices {
             }
 
   postProfessor(professor:Professor){
-    let url = `${URL_SERVICES}/professor`
+    let url = `${URL_SERVICES}professor`
     return this.http.post(url,professor,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count++
        if(this.professors.length < 5){
@@ -33,7 +33,7 @@ export class ProfessorsServices {
   }
 
   getProfessors(from:number=0,limit:number=0) {
-    let url = `${URL_SERVICES}/professor?from=${from}&limit=${limit}`
+    let url = `${URL_SERVICES}professor?from=${from}&limit=${limit}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count = res.count;
       this.professors = res.professors;
@@ -41,7 +41,7 @@ export class ProfessorsServices {
   }
 
   searchProfessors(input: string,from:number=0) {
-    let url = `${URL_SERVICES}/search/professors/${input}?from=${from}`
+    let url = `${URL_SERVICES}search/professors/${input}?from=${from}`
     return this.http.get(url, { headers:this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.professors = res.professors;
@@ -49,7 +49,7 @@ export class ProfessorsServices {
   }
 
   deleteProfessor(id:string){
-    let url = `${URL_SERVICES}/professor/${id}`
+    let url = `${URL_SERVICES}professor/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count--
     }))

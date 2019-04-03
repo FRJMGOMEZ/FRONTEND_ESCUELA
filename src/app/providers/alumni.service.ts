@@ -23,7 +23,7 @@ export class AlumniServices {
   }
 
   getAlumnis(from: number = 0, limit: number = 5) {
-    let url = `${URL_SERVICES}/alumni?from=${from}&limit=${limit}`
+    let url = `${URL_SERVICES}alumni?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.alumnis = res.alumnis;
@@ -31,7 +31,7 @@ export class AlumniServices {
   }
 
   postAlumni(alumni:Alumni){
-    let url = `${URL_SERVICES}/alumni`
+    let url = `${URL_SERVICES}alumni`
     return this.http.post(url,alumni, {headers:this._userServices.headers})
     .pipe(map((res:any)=>{
       this.count++
@@ -44,7 +44,7 @@ export class AlumniServices {
   }
 
   searchAlumnis(input: string, from:number=0,limit:number=5){
-     let url = `${URL_SERVICES}/search/alumnis/${input}?from=${from}&limit=${limit}`
+     let url = `${URL_SERVICES}search/alumnis/${input}?from=${from}&limit=${limit}`
      return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        this.count = res.count;
        this.alumnis = res.alumnis; 
@@ -52,7 +52,7 @@ export class AlumniServices {
   }
 
   deleteAlumni(id:string){
-    let url  = `${URL_SERVICES}/alumni/${id}`
+    let url  = `${URL_SERVICES}alumni/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count--
     }))

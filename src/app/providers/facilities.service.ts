@@ -22,7 +22,7 @@ export class FacilitiesService {
 
    ////// Detectar problema /////
    getFacilities(from:number=0,limit:number=5){
-    let url = `${URL_SERVICES}/facilities?from=${from}&limit=${limit}`
+    let url = `${URL_SERVICES}facilities?from=${from}&limit=${limit}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.count = res.count;
       this.facilities = res.facilities;
@@ -30,7 +30,7 @@ export class FacilitiesService {
    }
 
    postFacilitie(facilitie:Facilitie){
-     let url = `${URL_SERVICES}/facilitie`;
+     let url = `${URL_SERVICES}facilitie`;
      return this.http.post(url,facilitie,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        this.count++
        if(this.facilities.length < 5){
@@ -41,7 +41,7 @@ export class FacilitiesService {
    }
 
    putFacilitie(id:string,facilitie:Facilitie){
-     let url = `${URL_SERVICES}/facilitie/${id}`;
+     let url = `${URL_SERVICES}facilitie/${id}`;
      return this.http.put(url, facilitie, { headers:this._userServices.headers }).pipe(map((res: any) => {
        this.facilities.forEach((facilitie,index)=>{
          if(facilitie._id === res.facilitie._id){
@@ -53,7 +53,7 @@ export class FacilitiesService {
    }
 
   deleteFacilitie(id:string){
-    let url = `${URL_SERVICES}/facilitie/${id}`;
+    let url = `${URL_SERVICES}facilitie/${id}`;
     return this.http.delete(url, { headers:this._userServices.headers }).pipe(map(() => {
       this.count--
     }))

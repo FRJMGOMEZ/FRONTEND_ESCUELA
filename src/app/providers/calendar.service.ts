@@ -36,7 +36,7 @@ export class CalendarService {
   //////// WEEK ///////
 
   getWeekByDate(date:number) {
-    let url = `${URL_SERVICES}/week/${date}`;
+    let url = `${URL_SERVICES}week/${date}`;
     return this.http.get(url, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         if(res.week === null){
@@ -49,7 +49,7 @@ export class CalendarService {
   }
 
   getWeekById(id: string) {
-    let url = `${URL_SERVICES}/searchById/week/${id}`;
+    let url = `${URL_SERVICES}searchById/week/${id}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         this.currentWeek = res.week;
@@ -58,7 +58,7 @@ export class CalendarService {
   }
 
   getWeekByDay(dayId: string, dayOfTheWeek: number) {
-    let url = `${URL_SERVICES}/weekByDay/${dayId}/${dayOfTheWeek}`;
+    let url = `${URL_SERVICES}weekByDay/${dayId}/${dayOfTheWeek}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         this.currentWeek = res.week;
@@ -90,7 +90,7 @@ export class CalendarService {
         weekDay.setDate(weekDay.getDate() - 6);
         break;
     }
-    let url = `${URL_SERVICES}/week`;
+    let url = `${URL_SERVICES}week`;
     return this.http
       .post(url, { date: weekDay.toUTCString() }, { headers: this._userServices.headers })
       .pipe(
@@ -181,7 +181,7 @@ export class CalendarService {
   /////////// DAY //////////
 
   getDayByDate(date:number) {
-    let url = `${URL_SERVICES}/dayByDate/${date}`;
+    let url = `${URL_SERVICES}dayByDate/${date}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         if(res.day === null){
@@ -202,7 +202,7 @@ export class CalendarService {
   }
 
   getDayById(id: string) {
-    let url = `${URL_SERVICES}/searchById/day/${id}`;
+    let url = `${URL_SERVICES}searchById/day/${id}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
       map((res: any) => {
         if(this.currentDay){
@@ -238,21 +238,21 @@ export class CalendarService {
     //////////// EVENTS ///////////
 
   getEventsInProject(projectId: string) {
-    let url = `${URL_SERVICES}/events/projects/${projectId}`
+    let url = `${URL_SERVICES}events/projects/${projectId}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       return res.events
     }))
   }
 
   getPermanentEvents() {
-    let url = `${URL_SERVICES}/permanentEvents`;
+    let url = `${URL_SERVICES}permanentEvents`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.permanentEvents = res.events;
     }))
   }
 
   getEventById(eventId: string) {
-    let url = `${URL_SERVICES}/searchById/event/${eventId}`;
+    let url = `${URL_SERVICES}searchById/event/${eventId}`;
     return this.http.get(url, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         return res.event
@@ -293,7 +293,7 @@ export class CalendarService {
 
 
   postEvent(event: EventModel,dayId:string,limitDate?:number) {
-    let url = `${URL_SERVICES}/event/${dayId}/${limitDate}`;
+    let url = `${URL_SERVICES}event/${dayId}/${limitDate}`;
     return this.http.post(url, event, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         let eventOrder = new EventOrder(res.event,'post')
@@ -309,7 +309,7 @@ export class CalendarService {
   }
 
   putEvent(eventId: string, event: any) {
-    let url = `${URL_SERVICES}/event/${eventId}`;
+    let url = `${URL_SERVICES}event/${eventId}`;
     return this.http.put(url, event, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         let eventOrder = new EventOrder(res.event,'put')
@@ -330,7 +330,7 @@ export class CalendarService {
   }
 
   pullEvent(dayId:string,eventId:string){
-    let url = `${URL_SERVICES}/pullEvent/${dayId}/${eventId}`
+    let url = `${URL_SERVICES}pullEvent/${dayId}/${eventId}`
     return this.http.put(url,event,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.eventsSource.next()
       if (res.event.permanent) {
@@ -351,7 +351,7 @@ export class CalendarService {
   }
 
   deleteEvent(eventId:string){
-    let url = `${URL_SERVICES}/event/${eventId}`
+    let url = `${URL_SERVICES}event/${eventId}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.eventsSource.next()
       if(res.event.permanent){
@@ -365,7 +365,7 @@ export class CalendarService {
   }
 
   checkPermanentEvents(event:EventModel){
-    let url = `${URL_SERVICES}/checkPermanentEvents`
+    let url = `${URL_SERVICES}checkPermanentEvents`
     return this.http.put(url,event,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        return res.day
     }))
