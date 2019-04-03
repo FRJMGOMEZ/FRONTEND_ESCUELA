@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverUrl: 'https://cargomusicdemo.herokuapp'
+  baseUrl:'https://cargomusicdemo.herokuapp.com'
 };
