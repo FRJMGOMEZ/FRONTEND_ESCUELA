@@ -5,6 +5,7 @@ import { ProvidersModule } from "../providers/providers.module";
 
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { CalendarComponent } from './calendar/calendar.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     imports: [
         CommonModule,
         RouterModule,
-        ProvidersModule],
+        ProvidersModule,
+        PipesModule],
 
     exports: [
         SidebarComponent,

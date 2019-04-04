@@ -13,6 +13,8 @@ import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { URL_SERVICES } from './config/config';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
+import { PipesModule } from './pipes/pipes.module';
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
 registerLocaleData(localeEs);
 
@@ -26,6 +28,7 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     PageNotFoundComponent,
   ],
   imports: [
+    PipesModule,
     BrowserModule,
     APPROUTES,
     PagesModule,
@@ -37,7 +40,7 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     RouterTestingModule,
     SocketIoModule.forRoot(config)
   ],
-  providers: [{ provide: LOCALE_ID, useValue:'es-ES'}],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent],
 })
 

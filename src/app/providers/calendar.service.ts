@@ -247,6 +247,7 @@ export class CalendarService {
   getPermanentEvents() {
     let url = `${URL_SERVICES}permanentEvents`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      console.log(res.events)
       this.permanentEvents = res.events;
     }))
   }

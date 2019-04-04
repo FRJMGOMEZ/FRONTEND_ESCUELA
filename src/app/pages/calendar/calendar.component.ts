@@ -14,7 +14,6 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
              private activatedRoute:ActivatedRoute) { }
 
   ngOnInit() {
-    this._calendarServices.getPermanentEvents().subscribe()
     this.activatedRoute.params.subscribe(params => {
       if (!params['weekId'] && !params['dayId']) {
         let today = new Date();
@@ -43,6 +42,7 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
         })
       }
     });
+    this._calendarServices.getPermanentEvents()
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 <div class="lateral_bar col-md-12 col-sm-auto">
     <div class="logo text-center">
-        <img [routerLink]="['/dashboard']" routerLinkActive="router-link-active" class='img-fluid' src="../../assets/cargo.jpg" alt="">
+        <img [routerLink]="['/dashboard']" routerLinkActive="router-link-active" class='img-fluid' [src]="'cargo.jpg' | frontImg" alt="">
     </div>
     <nav class='menu d-flex d-sm-block justify-content-center text-center flex-column flex-md-row '>
         <a [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI PERFIL</span></a>
