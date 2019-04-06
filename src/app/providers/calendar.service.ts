@@ -20,7 +20,7 @@ export class CalendarService {
   currentDay:Day
   currentWeek:Week
 
-  permanentEvents:EventModel[]
+  permanentEvents:EventModel[] = []
 
   public eventsSource = new Subject<any>();
   public events$ = this.eventsSource.asObservable();
@@ -30,7 +30,7 @@ export class CalendarService {
             private socket:Socket,
             private _calendarModalController:CalendarModalController,
             private _eventModalController:EventModalController
-            ) {
+          ) {
   }
 
   //////// WEEK ///////
@@ -68,25 +68,25 @@ export class CalendarService {
 
   postWeek(weekDay: Date) {
     switch (weekDay.getDay()) {
-      case 1:
+      case 0:
         weekDay = weekDay;
         break;
-      case 2:
+      case 1:
         weekDay.setDate(weekDay.getDate() - 1);
         break;
-      case 3:
+      case 2:
         weekDay.setDate(weekDay.getDate() - 2);
         break;
-      case 4:
+      case 3:
         weekDay.setDate(weekDay.getDate() - 3);
         break;
-      case 5:
+      case 4:
         weekDay.setDate(weekDay.getDate() - 4);
         break;
-      case 6:
+      case 5:
         weekDay.setDate(weekDay.getDate() - 5);
         break;
-      case 0:
+      case 6:
         weekDay.setDate(weekDay.getDate() - 6);
         break;
     }
@@ -105,31 +105,31 @@ export class CalendarService {
       let dayId;
       if (day >= 0) {
         switch (day) {
-          case 1:
+          case 0:
             dayId = this.currentWeek.monday._id;
             resolve(dayId);
             break;
-          case 2:
+          case 1:
             dayId = this.currentWeek.tuesday._id;
             resolve(dayId);
             break;
-          case 3:
+          case 2:
             dayId = this.currentWeek.wednesday._id;
             resolve(dayId);
             break;
-          case 4:
+          case 3:
             dayId = this.currentWeek.thursday._id;
             resolve(dayId);
             break;
-          case 5:
+          case 4:
             dayId = this.currentWeek.friday._id;
             resolve(dayId);
             break;
-          case 6:
+          case 5:
             dayId = this.currentWeek.saturday._id;
             resolve(dayId);
             break;
-          case 0:
+          case 6:
             dayId = this.currentWeek.sunday._id;
             resolve(dayId);
             break;
@@ -141,31 +141,31 @@ export class CalendarService {
       } else {
         let today = new Date();
         switch (today.getDay()) {
-          case 1:
+          case 0:
             dayId = this.currentWeek.monday._id;
             resolve(dayId);
             break;
-          case 2:
+          case 1:
             dayId = this.currentWeek.tuesday._id;
             resolve(dayId);
             break;
-          case 3:
+          case 2:
             dayId = this.currentWeek.wednesday._id;
             resolve(dayId);
             break;
-          case 4:
+          case 3:
             dayId = this.currentWeek.thursday._id;
             resolve(dayId);
             break;
-          case 5:
+          case 4:
             dayId = this.currentWeek.friday._id;
             resolve(dayId);
             break;
-          case 6:
+          case 5:
             dayId = this.currentWeek.saturday._id;
             resolve(dayId);
             break;
-          case 0:
+          case 6:
             dayId = this.currentWeek.sunday._id;
             resolve(dayId);
             break;

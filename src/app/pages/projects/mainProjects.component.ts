@@ -5,6 +5,7 @@ import * as _ from 'underscore';
 import { Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserServices } from '../../providers/user.service';
+import { DemoService } from '../../providers/demo.service';
 
 
 @Component({
@@ -20,15 +21,17 @@ export class MainProjectsComponent implements OnInit {
   constructor(private _projectModalController:ProjectModalController,
               public _projectServices:ProjectServices,
               private router:Router,
-              private _userServices:UserServices) {
+              private _userServices:UserServices,
+              public _demoServices:DemoService) {
    }
 
   ngOnInit() { 
+    this._demoServices.projectsPopup()
+
         this._projectServices.getProjects().subscribe(() => {
-          if(this._userServices.socket){
+          console.log(this._projectServices.projects)
             this.projectsSocket = this._projectServices.projectsSocket().subscribe()
             this.usersSocket = this._projectServices.usersSocket().subscribe()
-          }
         })
   }
 

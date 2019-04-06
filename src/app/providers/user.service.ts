@@ -5,6 +5,7 @@ import { URL_SERVICES } from "../config/config";
 import { map, catchError } from "rxjs/operators";
 import { User} from '../models/user.model'
 import { ErrorHandlerService } from './error-handler.service';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
     providedIn: 'root'
@@ -19,13 +20,14 @@ export class UserServices {
 
     users:User[]=[]
 
-    socket:boolean=false;
+    socketOn:boolean=false
 
     count:number
 
     constructor(private http:HttpClient,
                 private router:Router,
-                private _errorHandler:ErrorHandlerService) { 
+                private _errorHandler:ErrorHandlerService,
+                private socket:Socket) { 
         this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
         this.uploadFromStorage();
     }
@@ -62,6 +64,29 @@ export class UserServices {
                 this.saveInStorage(res.id, res.user, res.token)
         })
         ,catchError(this._errorHandler.handleError))
+    }
+
+    userSocketEmit(order:string,user:string){
+        let payload = {order,user}
+        this.socket.emit('userSocket',payload)
+    }
+
+    userOnlineSocket() {
+        return this.socket.fromEvent('userSocket').pipe(map((payload: any) => {
+            if (this.userOnline._id === payload.user) {
+                if (payload.order === 'delete' || payload.order === 'changeStatus') {
+                    this.logout()
+                }else if (payload.order === 'changeRole') {
+                    if (this.userOnline.role === 'ADMIN_ROLE') {
+                        this.userOnline.role = 'USER_ROLE'
+                    } else {
+                        this.userOnline.role = 'ADMIN_ROLE'
+                    }
+                    this.saveInStorage(this.userOnline._id, this.userOnline, this.token)
+                    this.router.navigate(['/dashboard'])
+                }
+            } 
+        }))
     }
 
     checkRole(){
@@ -130,6 +155,7 @@ export class UserServices {
                 this.users.forEach((user, index) => {
                     if (user._id === res.user._id) {
                         this.users[index].status = res.user.status;
+                        this.userSocketEmit('changeStatus',id)
                     }
                 })
         }))
@@ -139,6 +165,7 @@ export class UserServices {
         let url = `${URL_SERVICES}user/${id}`
         return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count--
+            this.userSocketEmit('delete',id)
         }))
     }
 
@@ -148,10 +175,13 @@ export class UserServices {
             catchError(this._errorHandler.handleError)
         )
     }
+    
 
     changeRole(userId:string,role:string){
         let url = `${URL_SERVICES}changeRole/${userId}/${role}`
-        return this.http.put(url,{},{headers:this.headers})
+        return this.http.put(url,{},{headers:this.headers}).pipe(map(()=>{
+            this.userSocketEmit('changeRole',userId)
+        }))
     }
 
     logout() {

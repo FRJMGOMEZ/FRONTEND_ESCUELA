@@ -11,6 +11,7 @@ import { MainProjectsComponent } from '../mainProjects.component';
 import { Subscription } from 'rxjs';
 import { UploadFilesServices } from 'src/app/providers/upload-files.service';
 import { FileOrder } from 'src/app/models/file.model';
+import { DemoService } from 'src/app/providers/demo.service';
 
 @Component({
   selector: "app-project",
@@ -38,12 +39,15 @@ export class ProjectComponent implements OnInit {
     private _usersModalController: UserModalController,
     private ar:ActivatedRoute,
     public _uploadFilesModalController:UploadFilesModalController,
-    private _filesUploadServices:UploadFilesServices
+    private _filesUploadServices:UploadFilesServices,
+    public _demoServices:DemoService
   ) {
     this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
+
+    this._demoServices.oneProjectPopup()
 
     this.usersSocket = this._projectServices.usersConnected().subscribe()
     
@@ -194,7 +198,7 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnDestroy(): void { 
-    if(this._userServices.socket){
+    if(this._userServices.socketOn){
       this._projectServices.userOut()
     }
     this._projectServices.administrators = [];

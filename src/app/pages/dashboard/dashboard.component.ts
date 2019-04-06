@@ -7,6 +7,8 @@ import * as _ from 'underscore';
 import { DashboardService } from '../../providers/dashboard.service';
 import { Subscription } from 'rxjs';
 import { ProjectServices } from '../../providers/project.service';
+import { DemoService } from '../../providers/demo.service';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -25,31 +27,35 @@ export class DashboardComponent implements OnInit {
     private _calendarServices:CalendarService,
     private router:Router,
     public _dashboardServices:DashboardService,
-    private _projectServices:ProjectServices) {
+    private _projectServices:ProjectServices,
+    public _demoServices:DemoService) {
      }
 
- async ngOnInit() {
+ ngOnInit() {
 
-   this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id }) 
+  this._demoServices.dashboardPopup()
 
-  this.projectsUsersSocket=this._projectServices.usersSocket().subscribe(()=>{
-    if (this.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })){
-       this._dashboardServices.getTasks().subscribe()
-       this._dashboardServices.getLastMessages().subscribe()
-    }
-    this.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id }) 
- })
+  setTimeout(async()=>{
+    this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
 
-   this._dashboardServices.dashboardIn()  
-   
-  this.dashboardSubscription=this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
+    this.projectsUsersSocket = this._projectServices.usersSocket().subscribe(() => {
+      if (this.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
+        this._dashboardServices.getTasks().subscribe()
+        this._dashboardServices.getLastMessages().subscribe()
+      }
+      this.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
+    })
+
+    this._dashboardServices.dashboardIn()
+
+    this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
 
     this._dashboardServices.getTasks().subscribe()
 
     this._dashboardServices.getLastMessages().subscribe()
 
     this._dashboardServices.getEvents().subscribe()
-
+  })
   }
 
   toProject(projectId:Project){

@@ -10,16 +10,15 @@ export class ImgPipe implements PipeTransform {
 
   transform(file:any) {
     let url;
-    
     if (!file) {
-      return url = `${URL_SERVICES}/files/x/x `
+      return url = `${URL_SERVICES}files/x/x `
     }
 
     if(!file.format){
       if (file.name) {
         let ext = file.name.split('.');
         ext = ext[ext.length-1];
-        url = `${URL_SERVICES}/files/`
+        url = `${URL_SERVICES}files/`
         switch(ext){
          case 'pdf' : url += 'icons/pdf.png';
          break;
@@ -38,7 +37,7 @@ export class ImgPipe implements PipeTransform {
       let textFormats = ['pdf'];
       let imgFormats = ['png', 'jpg', 'gif', 'jpeg'];
       if (imgFormats.indexOf(file.format) >= 0) {
-        url = `${URL_SERVICES}/files/`
+        url = `${URL_SERVICES}files/`
         switch (file.type) {
           case "alumnis":
             url += `alumnis/${file.name}`;
@@ -63,7 +62,7 @@ export class ImgPipe implements PipeTransform {
         }
         return url;
       } else if (textFormats.indexOf(file.format) >= 0) {
-        url = `${URL_SERVICES}/files/icons`
+        url = `${URL_SERVICES}files/icons`
         switch (file.format) {
           case 'pdf': url += '/pdf.png';
             break;

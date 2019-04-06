@@ -7,7 +7,18 @@
 }
 
 .lateral_bar a {
-    color: white
+    color: white;
+    cursor: pointer
+}
+
+.lateral_bar .data a {
+    color: black;
+    cursor: pointer
+}
+
+.lateral_bar .data i {
+    color: black;
+    cursor: pointer
 }
 
 .lateral_bar .logo {
@@ -24,7 +35,7 @@
 
 .lateral_bar .menu a {
     display: block;
-    padding: 20px
+    padding: 20px;
 }
 
 .lateral_bar .menu .footer {
@@ -38,4 +49,10 @@
     background: #F0B841;
     color: black;
     text-decoration: none
+}
+
+.lateral_bar .menu .data a:hover {
+    background: black;
+    color: white;
+    text-decoration: none;
 }

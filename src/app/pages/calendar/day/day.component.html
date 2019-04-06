@@ -5,8 +5,13 @@
         </div>
     </ng-container>
     <div *ngIf="!inProgress" class="row m-1 animated fadeIn m-2">
-        <div class="col-4 mt-3 pl-0">
+        <div class="col-4 mt-0 pl-0">
             <div class="row ">
+                <div class="col-12">
+                    <button class='btn btn-warning' (click)="_demoServices.calendarPopup(true)" style='cursor:pointer'>
+                         <i style="color:blue" class="fas fa-info"></i>
+                    </button>
+                </div>
                 <div class="col-12 d-flex flex-column text-center mt-2 ">
                     <h5 *ngIf="_calendarServices.currentDay">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
                 </div>

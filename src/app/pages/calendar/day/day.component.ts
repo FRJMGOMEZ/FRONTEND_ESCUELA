@@ -8,6 +8,7 @@ import { UserServices } from '../../../providers/user.service';
 import Swal from "sweetalert2";
 import { Subscription } from 'rxjs'
 import * as html2canvas from "html2canvas"
+import { DemoService } from '../../../providers/demo.service';
 
 
 @Component({
@@ -43,7 +44,8 @@ export class DayComponent implements OnInit, OnDestroy {
     public _userServices:UserServices,
     public _calendarServices: CalendarService,
     public _calendarModalController: CalendarModalController,
-    public _facilitieServices: FacilitiesService
+    public _facilitieServices: FacilitiesService,
+    public _demoServices:DemoService
   ) {
   }
 
@@ -86,8 +88,7 @@ export class DayComponent implements OnInit, OnDestroy {
           } else {
             this._calendarServices.getWeekById(weekId).subscribe(() => {
               this._calendarServices.getDayById(dayId).subscribe(() => {
-                dayId = undefined;
-                weekId = undefined;
+               console.log('ei')
                 this.init()
                 return
               })
@@ -224,7 +225,6 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
     this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
     this.eventsSocket.unsubscribe();

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarService } from 'src/app/providers/calendar.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DemoService } from '../../providers/demo.service';
 
 @Component({
   selector: 'app-calendar',
@@ -11,9 +12,13 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
 
   constructor(public _calendarServices:CalendarService,
              private router:Router,
-             private activatedRoute:ActivatedRoute) { }
+             private activatedRoute:ActivatedRoute,
+             private _demoServices:DemoService) { }
 
   ngOnInit() {
+
+    this._demoServices.calendarPopup()
+
     this.activatedRoute.params.subscribe(params => {
       if (!params['weekId'] && !params['dayId']) {
         let today = new Date();

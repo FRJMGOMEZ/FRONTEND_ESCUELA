@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
 import { PipesModule } from './pipes/pipes.module';
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { DemoService } from './providers/demo.service';
 
 registerLocaleData(localeEs);
 
@@ -40,9 +41,10 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     RouterTestingModule,
     SocketIoModule.forRoot(config)
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
+              { provide: LocationStrategy, useClass: HashLocationStrategy },
+                DemoService],
   bootstrap: [AppComponent],
 })
 
 export class AppModule { }
-

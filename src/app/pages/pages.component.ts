@@ -16,15 +16,14 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
     this.socket.on('connect', () => {
-      this._userServices.socket = true;
+      this._userServices.socketOn = true;
     })
     this.socket.on('disconnect',()=>{
-      this._userServices.socket = false;
+      this._userServices.socketOn = false;
       this.router.navigate(['/dashboard']).then(()=>{
         alert('El servidor está fallando disculpa las molestias')
       })
     })
-
-    
+    this._userServices.userOnlineSocket().subscribe()
   }
 }

@@ -3,6 +3,7 @@ import { UserServices } from '../../providers/user.service';
 import { ProjectServices } from '../../providers/project.service';
 import { Router } from '@angular/router';
 import { CalendarService } from '../../providers/calendar.service';
+import { DemoService } from '../../providers/demo.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,7 +15,8 @@ export class SidebarComponent{
   constructor(public _userServices:UserServices,
               private _projectServices:ProjectServices,
               private router:Router,
-              private _calendarServices:CalendarService) {}
+              private _calendarServices:CalendarService,
+              public _demoServices:DemoService) {}
 
   logOut(){
     setTimeout(()=>{

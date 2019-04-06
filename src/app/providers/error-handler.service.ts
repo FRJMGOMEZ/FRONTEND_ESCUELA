@@ -11,6 +11,10 @@ export class ErrorHandlerService {
 
   handleError(error) {
     let errorMessage = '';
+  if(error.error.err){
+    
+  }
+
     if (error.error.message) {
       errorMessage = `Error: ${error.error.message}`;
     } else {

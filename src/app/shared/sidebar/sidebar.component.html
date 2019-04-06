@@ -10,14 +10,13 @@
             <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-address-book m-1"></i> <span>DATA</span>
             </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
+            <div (click)='_demoServices.dataPopup()' class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
                 <div class='d-flex justify-content-end flex-column'>
-                    <a class='dropdown-item' [routerLink]="['/alumnis']" routerLinkActive="router-link-active" href="" style='color:black'><i class="fas fa-user-graduate mr-1"style='color:black'></i>ALUMNOS</a>
-                    <a class='dropdown-item' [routerLink]="['/professors']" routerLinkActive="router-link-active" style='color:black'><i class="fas fa-chalkboard-teacher mr-1"style='color:black'></i>PROFESORES</a>
-                    <a [routerLink]="['/subjects']" routerLinkActive="router-link-active" href=" " style='color:black'><i class="fas fa-guitar mr-1" style='color:black'></i><span>MATERIAS</span></a>
-                    <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" " style='color:black'><i class="fas fa-id-card mr-1" style='color:black'></i><span>USUARIOS</span></a>
-                    <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" " style='color:black'><i class="fas fa-door-open mr-1" style='color:black'></i><span>INSTALACIONES</span></a>
-
+                    <a class='dropdown-item' [routerLink]="['/alumnis']" routerLinkActive="router-link-active" href=""><i class="fas fa-user-graduate mr-1"style='color:black'></i>ALUMNOS</a>
+                    <a class='dropdown-item' [routerLink]="['/professors']" routerLinkActive="router-link-active"><i class="fas fa-chalkboard-teacher mr-1"style='color:black'></i>PROFESORES</a>
+                    <a [routerLink]="['/subjects']" routerLinkActive="router-link-active" href=" "><i class="fas fa-guitar mr-1" style='color:black'></i><span>MATERIAS</span></a>
+                    <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:black'></i><span>USUARIOS</span></a>
+                    <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" "><i class="fas fa-door-open mr-1" style='color:black'></i><span>INSTALACIONES</span></a>
                 </div>
             </div>
         </div>
