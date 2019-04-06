@@ -69,10 +69,10 @@ export class CalendarService {
   postWeek(weekDay: Date) {
     switch (weekDay.getDay()) {
       case 0:
-        weekDay = weekDay;
+        weekDay.setDate(weekDay.getDate());
         break;
       case 1:
-        weekDay.setDate(weekDay.getDate() - 1);
+        weekDay.setDate(weekDay.getDate() -1);
         break;
       case 2:
         weekDay.setDate(weekDay.getDate() - 2);
@@ -92,7 +92,7 @@ export class CalendarService {
     }
     let url = `${URL_SERVICES}week`;
     return this.http
-      .post(url, { date: weekDay.toUTCString() }, { headers: this._userServices.headers })
+      .post(url, { date: weekDay }, { headers: this._userServices.headers })
       .pipe(
         map((res: any) => {
           this.currentWeek = res.week;
