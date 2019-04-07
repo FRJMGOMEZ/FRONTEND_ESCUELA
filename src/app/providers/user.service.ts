@@ -61,6 +61,7 @@ export class UserServices {
            }
         let url = `${URL_SERVICES}login`;
         return this.http.post(url, user).pipe(map((res: any) => {
+            console.log(res.user)
                 this.saveInStorage(res.id, res.user, res.token)
         })
         ,catchError(this._errorHandler.handleError))
