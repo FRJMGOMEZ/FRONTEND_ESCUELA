@@ -67,32 +67,30 @@ export class CalendarService {
   }
 
   postWeek(weekDay: Date) {
-    console.log(weekDay.getDay())
     switch (weekDay.getDay()) {
-      case 0:
+      case 1:
         weekDay.setDate(weekDay.getDate());
         break;
-      case 1:
+      case 2:
         weekDay.setDate(weekDay.getDate() -1);
         break;
-      case 2:
+      case 3:
         weekDay.setDate(weekDay.getDate() - 2);
         break;
-      case 3:
+      case 4:
         weekDay.setDate(weekDay.getDate() - 3);
         break;
-      case 4:
+      case 5:
         weekDay.setDate(weekDay.getDate() - 4);
         break;
-      case 5:
+      case 6:
         weekDay.setDate(weekDay.getDate() - 5);
         break;
-      case 6:
+      case 0:
         weekDay.setDate(weekDay.getDate() - 6);
         break;
     }
 
-    console.log(weekDay)
     let url = `${URL_SERVICES}week`;
     return this.http
       .post(url, { date: weekDay.getTime() }, { headers: this._userServices.headers })
@@ -108,31 +106,31 @@ export class CalendarService {
       let dayId;
       if (day >= 0) {
         switch (day) {
-          case 0:
+          case 1:
             dayId = this.currentWeek.monday._id;
             resolve(dayId);
             break;
-          case 1:
+          case 2:
             dayId = this.currentWeek.tuesday._id;
             resolve(dayId);
             break;
-          case 2:
+          case 3:
             dayId = this.currentWeek.wednesday._id;
             resolve(dayId);
             break;
-          case 3:
+          case 4:
             dayId = this.currentWeek.thursday._id;
             resolve(dayId);
             break;
-          case 4:
+          case 5:
             dayId = this.currentWeek.friday._id;
             resolve(dayId);
             break;
-          case 5:
+          case 6:
             dayId = this.currentWeek.saturday._id;
             resolve(dayId);
             break;
-          case 6:
+          case 0:
             dayId = this.currentWeek.sunday._id;
             resolve(dayId);
             break;
@@ -144,31 +142,31 @@ export class CalendarService {
       } else {
         let today = new Date();
         switch (today.getDay()) {
-          case 0:
+          case 1:
             dayId = this.currentWeek.monday._id;
             resolve(dayId);
             break;
-          case 1:
+          case 2:
             dayId = this.currentWeek.tuesday._id;
             resolve(dayId);
             break;
-          case 2:
+          case 3:
             dayId = this.currentWeek.wednesday._id;
             resolve(dayId);
             break;
-          case 3:
+          case 4:
             dayId = this.currentWeek.thursday._id;
             resolve(dayId);
             break;
-          case 4:
+          case 5:
             dayId = this.currentWeek.friday._id;
             resolve(dayId);
             break;
-          case 5:
+          case 6:
             dayId = this.currentWeek.saturday._id;
             resolve(dayId);
             break;
-          case 6:
+          case 0:
             dayId = this.currentWeek.sunday._id;
             resolve(dayId);
             break;
