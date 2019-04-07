@@ -17,17 +17,18 @@ export class CalendarModalComponent {
   navigateToDay(date:Date){
     date = new Date(date);
     date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),6,0,0,0)
-    console.log(date)
     this._calendarServices.getDayByDate(date.getTime()).subscribe((res:any)=>{
       this._modalController.notification.emit()
       if(res==='no-day'){
         this._calendarServices.postWeek(date).subscribe(()=>{
-          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId:string)=>{
-             this._calendarServices.getDayById(dayId).subscribe(()=>{
-               this.router.navigate(['/calendar',this._calendarServices.currentWeek._id,this._calendarServices.currentDay._id]).then(()=>{
+          setTimeout(()=>{
+            this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId: string) => {
+              this._calendarServices.getDayById(dayId).subscribe(() => {
+                this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
                   this.hideModal()
-               })
-             })
+                })
+              })
+            })
           })
         })
       }else{
