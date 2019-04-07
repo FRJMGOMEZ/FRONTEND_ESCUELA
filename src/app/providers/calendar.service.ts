@@ -91,6 +91,7 @@ export class CalendarService {
         break;
     }
 
+    console.log(weekDay)
     let url = `${URL_SERVICES}week`;
     return this.http
       .post(url, { date: weekDay.getTime() }, { headers: this._userServices.headers })
