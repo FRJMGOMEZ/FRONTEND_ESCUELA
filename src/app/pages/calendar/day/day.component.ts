@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs'
 import * as html2canvas from "html2canvas"
 import { DemoService } from '../../../providers/demo.service';
 
-
 @Component({
   selector: "app-day",
   templateUrl: "./day.component.html",
@@ -46,8 +45,7 @@ export class DayComponent implements OnInit, OnDestroy {
     public _calendarModalController: CalendarModalController,
     public _facilitieServices: FacilitiesService,
     public _demoServices:DemoService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
 
@@ -141,10 +139,10 @@ export class DayComponent implements OnInit, OnDestroy {
 
   getWeeksAroundDates() {
     let weekDate = new Date(this._calendarServices.currentWeek.date);
-    let date1= new Date(weekDate.getFullYear(),weekDate.getMonth(),weekDate.getDate()-7,0,0,0,0);
-    let date2 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 1, 0, 0, 0, 0);
-    let date3 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 7, 0, 0, 0, 0);
-    let date4 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 14, -24, 0, 0, 0);
+    let date1= new Date(weekDate.getFullYear(),weekDate.getMonth(),weekDate.getDate()-7,6,0,0,0);
+    let date2 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 1, 6, 0, 0, 0);
+    let date3 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 7, 6, 0, 0, 0);
+    let date4 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 14, -30, 0, 0, 0);
     this.prevWeek = [date1,date2];
     this.nextWeek = [date3,date4];
   }
@@ -175,7 +173,6 @@ export class DayComponent implements OnInit, OnDestroy {
   toOtherWeek(date: Date) {
     this.inProgress=true;
       date = new Date(date);
-      console.log(date)
       this._calendarServices.getWeekByDate(date.getTime()).subscribe((res: any) => {
         if (res === 'no-week') {
           this._calendarServices.postWeek(date).subscribe(() => {
