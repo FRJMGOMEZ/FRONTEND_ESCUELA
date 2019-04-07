@@ -50,7 +50,7 @@ export class TaskModalComponent implements OnInit {
         })
       }else{
         this.startDate = new Date();
-        this.startDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), 0, 1, 0, 0);
+        this.startDate = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate(), 6, 0, 0, 0);
         this.form = new FormGroup({
           description: new FormControl('', Validators.required),
           user: new FormControl(undefined, Validators.required)
@@ -61,7 +61,7 @@ export class TaskModalComponent implements OnInit {
 
   putTask(){
     if(this.form.valid){
-      this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 0, 0, 0, 0);
+      this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 6, 0, 0, 0);
       let task = new Task(this.form.value.description, this._userServices.userOnline._id,this.taskUserId , this._projectServices.projectSelectedId, this.startDate, this.dateLimit);
       this._projectServices.putTask(this.taskId,task).subscribe(()=>{
         this.hideModal()
@@ -71,7 +71,7 @@ export class TaskModalComponent implements OnInit {
 
   postTask(){
     if(this.form.valid){
-      this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 0, 0, 0, 0);
+      this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 6, 0, 0, 0);
       let task = new Task(this.form.value.description,this._userServices.userOnline._id,this.form.value.user,this._projectServices.projectSelectedId,this.startDate,this.dateLimit);
       this._projectServices.postTask(task).subscribe(()=>{
         this.hideModal()

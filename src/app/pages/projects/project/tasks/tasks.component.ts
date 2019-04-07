@@ -61,7 +61,7 @@ export class TasksComponent implements OnInit {
 
   checkTime(date:Date){
     let today = new Date();
-    today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),0,0,0,0);
+    today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),6,0,0,0);
     if(new Date(date).getTime()<today.getTime()){
       return '#E88C5A'  
     }

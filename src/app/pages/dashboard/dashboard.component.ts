@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
 
   toEvent(date?:Date){
     date =new Date(date)
-    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0)
     this._calendarServices.getDayByDate(date.getTime()).subscribe(() => {
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, new Date(this._calendarServices.currentDay.date).getDay()).subscribe(() => {
           setTimeout(()=>{
