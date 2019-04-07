@@ -92,7 +92,7 @@ export class CalendarService {
     }
     let url = `${URL_SERVICES}week`;
     return this.http
-      .post(url, { date: weekDay }, { headers: this._userServices.headers })
+      .post(url, { date: weekDay.getTime() }, { headers: this._userServices.headers })
       .pipe(
         map((res: any) => {
           this.currentWeek = res.week;
@@ -247,7 +247,6 @@ export class CalendarService {
   getPermanentEvents() {
     let url = `${URL_SERVICES}permanentEvents`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      console.log(res.events)
       this.permanentEvents = res.events;
     }))
   }
