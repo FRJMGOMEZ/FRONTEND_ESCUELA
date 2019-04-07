@@ -21,7 +21,6 @@ export class MainProjectsComponent implements OnInit {
   constructor(private _projectModalController:ProjectModalController,
               public _projectServices:ProjectServices,
               private router:Router,
-              private _userServices:UserServices,
               public _demoServices:DemoService) {
    }
 
@@ -29,7 +28,6 @@ export class MainProjectsComponent implements OnInit {
     this._demoServices.projectsPopup()
 
         this._projectServices.getProjects().subscribe(() => {
-          console.log(this._projectServices.projects)
             this.projectsSocket = this._projectServices.projectsSocket().subscribe()
             this.usersSocket = this._projectServices.usersSocket().subscribe()
         })

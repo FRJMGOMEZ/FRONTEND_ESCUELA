@@ -20,7 +20,6 @@ export class ProfileComponent {
               private _uploadFilesModal:UploadFilesModalController,
               private _passwordModalController:PasswordModalController,
               private _filesUploadService:UploadFilesServices) {
-                console.log(this._userServices.userOnline.img)
    }
 
   saveChanges(form:NgForm){
