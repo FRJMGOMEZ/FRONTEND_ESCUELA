@@ -14,8 +14,6 @@ export class ImgPipe implements PipeTransform {
       return url = `${URL_SERVICES}files/x/x `
     }
 
-    console.log(file)
-
     if(!file.format){
       if (file.name) {
         let ext = file.name.split('.');
