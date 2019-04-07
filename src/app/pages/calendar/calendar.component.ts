@@ -23,6 +23,7 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
       if (!params['weekId'] && !params['dayId']) {
         let today = new Date();
         today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),6,0,0,0)
+        console.log(today)
         this._calendarServices.getDayByDate(today.getTime()).subscribe((res: any) => {
           if (res === 'no-day') {
             this._calendarServices.postWeek(today).subscribe(() => {
