@@ -67,6 +67,7 @@ export class CalendarService {
   }
 
   postWeek(weekDay: Date) {
+    console.log(weekDay.getDay())
     switch (weekDay.getDay()) {
       case 0:
         weekDay.setDate(weekDay.getDate());
@@ -90,6 +91,7 @@ export class CalendarService {
         weekDay.setDate(weekDay.getDate() - 6);
         break;
     }
+
     console.log(weekDay)
     let url = `${URL_SERVICES}week`;
     return this.http
