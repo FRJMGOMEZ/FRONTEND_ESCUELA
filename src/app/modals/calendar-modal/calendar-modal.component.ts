@@ -15,6 +15,8 @@ export class CalendarModalComponent {
              private router:Router) {}
 
   navigateToDay(date:Date){
+    date = new Date();
+    date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),6,0,0,0)
     this._calendarServices.getDayByDate(date.getTime()).subscribe((res:any)=>{
       this._modalController.notification.emit()
       if(res==='no-day'){
