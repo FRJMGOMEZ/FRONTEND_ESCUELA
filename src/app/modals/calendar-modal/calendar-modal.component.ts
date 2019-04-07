@@ -21,16 +21,15 @@ export class CalendarModalComponent {
       this._modalController.notification.emit()
       if(res==='no-day'){
         this._calendarServices.postWeek(date).subscribe(()=>{
-          setTimeout(()=>{
-            console.log(this._calendarServices.currentWeek)
             this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId: string) => {
               this._calendarServices.getDayById(dayId).subscribe(() => {
-                this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
-                  this.hideModal()
-                })
+                setTimeout(()=>{
+                  this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
+                    this.hideModal()
+                  })
+                },1000)
               })
             })
-          },1000)
         })
       }else{
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id,new Date(this._calendarServices.currentDay.date).getDay()).subscribe(()=>{
