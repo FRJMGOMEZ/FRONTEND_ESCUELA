@@ -57,6 +57,7 @@ export class EventsModalComponent implements OnInit {
             if (eventOrder.order === 'post') {
               this.resetValues().then(async() => {
                 this.editMode = true;
+                console.log(this.event)
                 this.event = await eventOrder.event;
                   this.page = '7'
               })
@@ -297,7 +298,6 @@ export class EventsModalComponent implements OnInit {
   ////////////// POST AND PUT /////////////
    postEvent() {
     if (this.event.endDate) {
-      console.log(this.event.endDate)
       this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id, this.event.endDate.getTime()).subscribe()
     } else {
         this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id).subscribe()        
