@@ -292,8 +292,8 @@ export class CalendarService {
     }))}
 
 
-  postEvent(event: EventModel,dayId:string,limitDate?:number) {
-    let url = `${URL_SERVICES}event/${dayId}/${limitDate}`;
+  postEvent(event: EventModel, dayId: string, limitDate:number= 8630000000000000) {
+    let url = `${URL_SERVICES}event/${dayId}/${limitDate}s`;
     return this.http.post(url, event, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         let eventOrder = new EventOrder(res.event,'post')
