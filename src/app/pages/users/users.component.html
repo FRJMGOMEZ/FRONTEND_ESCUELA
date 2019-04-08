@@ -25,7 +25,7 @@
 
             <tr *ngFor="let user of _userServices.users">
                 <td>
-                    <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' (click)='changeImg(user._id)' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
+                    <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
                 </td>
                 <td>{{user.email}}</td>
                 <td>{{user.name}}</td>
@@ -35,11 +35,11 @@
                       <option value="ADMIN_ROLE">ADMIN_ROLE</option>
                     </select>
                 </td>
-                <td>
+                <td *ngIf="!_userServices.checkRole()">
                     <button *ngIf="!user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">activar</button>
                     <button *ngIf="user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">desactivar</button>
                 </td>
-                <td>
+                <td *ngIf="!_userServices.checkRole()">
                     <div class="col-12 d-flex flex-row">
                         <button (click)='deleteUser(user._id)' class='btn btn-danger'>
                          <i class="far fa-trash-alt"></i>
