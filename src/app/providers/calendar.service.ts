@@ -221,7 +221,7 @@ export class CalendarService {
   userIn(){
     return new Promise((resolve,reject)=>{
       let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
-      this.socket.emit('userIn', payload, (usersOnline) => {
+      this.socket.emit('userIn', payload, () => {
         resolve()
       })
     })

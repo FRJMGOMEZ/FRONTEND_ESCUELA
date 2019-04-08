@@ -58,6 +58,7 @@ export class EventsModalComponent implements OnInit {
               this.resetValues().then(async() => {
                 this.editMode = true;
                 console.log(this.event)
+                console.log(this._calendarServices.currentDay)
                 this.event = await eventOrder.event;
                   this.page = '7'
               })

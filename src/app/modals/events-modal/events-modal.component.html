@@ -122,7 +122,7 @@
                             <p>duracion : {{event.duration | timeConversor1}}</p>
                             <hr>
                             <div class="row ml-1">
-                                <p *ngIf="event.permanent">Se repite cada {{_calendarServices.currentDay.date | date : 'EEEE'}}</p>
+                                <p *ngIf="event.permanent">Se repite cada {{event.startDate | date : 'EEEE'}}</p>
                                 <p *ngIf="!noLimit && event.endDate"> {{dateFixer(event.endDate)}}</p>
                             </div>
                             <div *ngIf="_userServices.checkRole()">
