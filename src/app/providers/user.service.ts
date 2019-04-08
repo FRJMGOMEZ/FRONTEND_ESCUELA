@@ -28,7 +28,8 @@ export class UserServices {
                 private router:Router,
                 private _errorHandler:ErrorHandlerService,
                 private socket:Socket) { 
-        this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+        this.token = localStorage.getItem('token');
+        this.headers = new HttpHeaders().set('token',this.token)
         this.uploadFromStorage();
     }
 
