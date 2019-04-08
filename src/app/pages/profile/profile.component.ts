@@ -19,8 +19,7 @@ export class ProfileComponent {
   constructor(public _userServices:UserServices,
               private _uploadFilesModal:UploadFilesModalController,
               private _passwordModalController:PasswordModalController,
-              private _filesUploadService:UploadFilesServices) {
-   }
+              private _filesUploadService:UploadFilesServices) {}
 
   saveChanges(form:NgForm){
     if(form.valid){

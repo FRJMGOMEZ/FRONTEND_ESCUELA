@@ -299,7 +299,7 @@ export class EventsModalComponent implements OnInit {
     if (this.event.endDate) {
       this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id, this.event.endDate.getTime()).subscribe()
     } else {
-        this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id).subscribe()        
+        this._calendarServices.postEvent(this.event, this._calendarServices.currentDay._id,null).subscribe()        
       }  
   }
 

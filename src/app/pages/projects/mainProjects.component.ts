@@ -4,7 +4,6 @@ import { ProjectServices } from '../../providers/project.service';
 import * as _ from 'underscore';
 import { Router} from '@angular/router';
 import { Subscription } from 'rxjs';
-import { UserServices } from '../../providers/user.service';
 import { DemoService } from '../../providers/demo.service';
 
 
