@@ -1,4 +1,4 @@
-import { Facilitie } from './facilitie.model';
+
 export class EventModel{
     constructor(public name:string,
                 public description:string,

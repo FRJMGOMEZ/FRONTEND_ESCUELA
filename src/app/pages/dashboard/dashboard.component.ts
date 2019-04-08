@@ -31,11 +31,10 @@ export class DashboardComponent implements OnInit {
     public _demoServices:DemoService) {
      }
 
- ngOnInit() {
+async ngOnInit() {
 
   this._demoServices.dashboardPopup()
 
-  setTimeout(async()=>{
     this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
 
     this.projectsUsersSocket = this._projectServices.usersSocket().subscribe(() => {
@@ -50,12 +49,13 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
 
+
     this._dashboardServices.getTasks().subscribe()
 
     this._dashboardServices.getLastMessages().subscribe()
 
     this._dashboardServices.getEvents().subscribe()
-  })
+  
   }
 
   toProject(projectId:Project){

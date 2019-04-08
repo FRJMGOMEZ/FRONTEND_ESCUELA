@@ -27,7 +27,7 @@ export class ProfileComponent {
       this._userServices.putUser(this._userServices.userOnline._id,user).subscribe()
     }
   }
-
+   
   changeImg(){
     this._uploadFilesModal.showModal(this._userServices.userOnline._id,'users')
     this.fileSubscription = this._filesUploadService.files$.subscribe((fileOrder) => {
