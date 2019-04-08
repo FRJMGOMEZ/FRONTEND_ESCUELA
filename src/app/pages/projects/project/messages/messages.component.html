@@ -53,7 +53,7 @@
     <div class='input-group d-flex justify-content-around mt-2 '>
         <div>
             <label class="uploadBtnWrap bg-warning" for="thefile">
-                    <input class='' type="file" id="thefile" (change)=' selectFile($event.target.files[0]) ' />
+                    <input enctype="multipart/form-data" class='' type="file" id="thefile" (change)=' selectFile($event.target.files[0]) ' />
                     <span class="btn">COMPARTIR ARCHIVO</span>
                 </label>
         </div>
