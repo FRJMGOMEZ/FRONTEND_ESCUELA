@@ -61,8 +61,7 @@ export class UserServices {
            }
         let url = `${URL_SERVICES}login`;
         return this.http.post(url, user).pipe(map((res: any) => {
-            console.log(res.user)
-                this.saveInStorage(res.id, res.user, res.token)
+                this.saveInStorage(res.user._id, res.user, res.token)
         })
         ,catchError(this._errorHandler.handleError))
     }
@@ -85,7 +84,7 @@ export class UserServices {
                     }
                     this.saveInStorage(this.userOnline._id, this.userOnline, this.token)
                     this.router.navigate(['/dashboard'])
-                }
+                 }
             } 
         }))
     }
@@ -110,6 +109,7 @@ export class UserServices {
         if (localStorage.getItem("token")) {
             this.token = localStorage.getItem("token");
             this.userOnline = JSON.parse(localStorage.getItem("user"));
+            
         } else {
             this.token = "";
             this.userOnline = null;
