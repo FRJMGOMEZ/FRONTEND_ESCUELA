@@ -34,7 +34,7 @@ export class ImgPipe implements PipeTransform {
       }
     }else{
         let textFormats = ['pdf'];
-        let imgFormats = ['png', 'jpg', 'gif', 'jpeg'];
+        let imgFormats = ['png', 'jpg', 'gif', 'jpeg','JPG'];
         if (imgFormats.indexOf(file.format) >= 0) {
           if (file.location) {
             return file.location
