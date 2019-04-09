@@ -44,6 +44,7 @@ export class ImgPipe implements PipeTransform {
         switch (file.format) {
           case 'pdf': url += '/pdf.png';
             break;
+            
         }
         return url
       }
