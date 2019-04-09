@@ -34,42 +34,46 @@ export class ImgPipe implements PipeTransform {
         }
       }
     }else{
-      let textFormats = ['pdf'];
-      let imgFormats = ['png', 'jpg', 'gif', 'jpeg'];
-      if (imgFormats.indexOf(file.format) >= 0) {
-        url = `${URL_SERVICES}files/`
-        switch (file.type) {
-          case "alumnis":
-            url += `alumnis/${file.name}`;
-            break;
-          case "professors":
-            url += `professors/${file.name}`;
-            break;
-          case "users":
-            url += `users/${file.name}`;
-            break;
-          case "projects":
-            url += `projects/${file.name}`;
-            break;
-          case "projectFiles":
-            url += `projectFiles/${file.name}`;
-            break;
-          case 'icons':
-            url += `icons/${file.name}`;
-            break;
-          default:
-            url += `x/x`;
+      if (file.location) {
+        return file.location
+      }else{
+        let textFormats = ['pdf'];
+        let imgFormats = ['png', 'jpg', 'gif', 'jpeg'];
+        if (imgFormats.indexOf(file.format) >= 0) {
+          url = `${URL_SERVICES}files/`
+          switch (file.type) {
+            case "alumnis":
+              url += `alumnis/${file.name}`;
+              break;
+            case "professors":
+              url += `professors/${file.name}`;
+              break;
+            case "users":
+              url += `users/${file.name}`;
+              break;
+            case "projects":
+              url += `projects/${file.name}`;
+              break;
+            case "projectFiles":
+              url += `projectFiles/${file.name}`;
+              break;
+            case 'icons':
+              url += `icons/${file.name}`;
+              break;
+            default:
+              url += `x/x`;
+          }
+          return url;
+        } else if (textFormats.indexOf(file.format) >= 0) {
+          url = `${URL_SERVICES}files/icons`
+          switch (file.format) {
+            case 'pdf': url += '/pdf.png';
+              break;
+          }
+          return url
         }
-        return url;
-      } else if (textFormats.indexOf(file.format) >= 0) {
-        url = `${URL_SERVICES}files/icons`
-        switch (file.format) {
-          case 'pdf': url += '/pdf.png';
-            break;
-        }
-        return url
       }
-    }  
-  } 
+    } 
+      }
   }
 
