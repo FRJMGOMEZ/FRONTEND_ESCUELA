@@ -8,11 +8,12 @@ import { URL_SERVICES } from '../config/config';
 })
 export class ImgPipe implements PipeTransform {
 
- async transform(file:any) {
+  transform(file:any) {
     let url;
     if (!file) {
       return url = `${URL_SERVICES}files/x/x `
     }
+
     if(!file.format){
       if (file.name) {
         let ext = file.name.split('.');
@@ -36,15 +37,35 @@ export class ImgPipe implements PipeTransform {
       let textFormats = ['pdf'];
       let imgFormats = ['png', 'jpg', 'gif', 'jpeg'];
       if (imgFormats.indexOf(file.format) >= 0) {
-        let buff = await new Buffer(file['file'].data)
-        let base64data = await buff.toString('base64');
-       return base64data
+        url = `${URL_SERVICES}files/`
+        switch (file.type) {
+          case "alumnis":
+            url += `alumnis/${file.name}`;
+            break;
+          case "professors":
+            url += `professors/${file.name}`;
+            break;
+          case "users":
+            url += `users/${file.name}`;
+            break;
+          case "projects":
+            url += `projects/${file.name}`;
+            break;
+          case "projectFiles":
+            url += `projectFiles/${file.name}`;
+            break;
+          case 'icons':
+            url += `icons/${file.name}`;
+            break;
+          default:
+            url += `x/x`;
+        }
+        return url;
       } else if (textFormats.indexOf(file.format) >= 0) {
         url = `${URL_SERVICES}files/icons`
         switch (file.format) {
           case 'pdf': url += '/pdf.png';
             break;
-            
         }
         return url
       }
