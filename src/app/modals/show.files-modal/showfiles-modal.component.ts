@@ -17,7 +17,7 @@ export class ShowFilesModalComponent implements OnInit {
   file:FileModel;
 
   textFormats:string[] = ['pdf'];
-  imgFormats: string[] = ['png', 'jpg', 'gif', 'jpeg'];
+  imgFormats: string[] = ['png', 'jpg', 'gif', 'jpeg','JPG'];
 
   constructor(
     public _modalController: ShowFilesModalController,
