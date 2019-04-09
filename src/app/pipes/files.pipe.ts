@@ -8,7 +8,11 @@ import { FileModel } from '../models/file.model';
 })
 export class FilesPipe implements PipeTransform {
   transform(file:FileModel) {
-    let url = `${URL_SERVICES}/files/${file.type}/${file.name}`;
-    return url
+    if(file.location){
+      return file.location
+    }else{
+      let url = `${URL_SERVICES}/files/${file.type}/${file.name}`;
+      return url
+    }
   }
 }

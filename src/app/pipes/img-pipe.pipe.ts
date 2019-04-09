@@ -13,7 +13,6 @@ export class ImgPipe implements PipeTransform {
     if (!file) {
       return url = `${URL_SERVICES}files/x/x `
     }
-
     if(!file.format){
       if (file.name) {
         let ext = file.name.split('.');
@@ -24,7 +23,6 @@ export class ImgPipe implements PipeTransform {
          break;
         }
       return url 
-
       }else{
         if (file.indexOf("https") >= 0) {
           return file;
