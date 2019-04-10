@@ -1,14 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { RouterModule} from "@angular/router";
 import{ScrollingModule} from '@angular/cdk/scrolling';
 
 //My modules//
-import { ProvidersModule } from "../providers/providers.module";
-import { ModalsModule } from "../modals/modals.module";
 import { PipesModule } from "../pipes/pipes.module";
-import { SharedModule } from "../shared/shared.module";
 
 ///Manteinance//
 import { SubjectComponent } from './addressBook/subject/subject.component';
@@ -59,15 +55,11 @@ import { CalendarManagerComponent } from './calendar/calendar.component';
   ],
   imports: [
     PAGESROUTES,
-    FormsModule,
-    ReactiveFormsModule,
     CommonModule,
-    RouterModule,
-    ProvidersModule,
-    ModalsModule,
+    ScrollingModule,
     PipesModule,
-    SharedModule,
-    ScrollingModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [],
   bootstrap: [],

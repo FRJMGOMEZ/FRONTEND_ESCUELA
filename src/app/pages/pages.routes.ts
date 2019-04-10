@@ -1,10 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
-import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MainProjectsComponent } from './projects/mainProjects.component';
 import { UsersComponent } from './users/users.component';
-import { LoginGuard } from '../guards/login.guard';
 import { DayComponent } from './calendar/day/day.component';
 import { FacilitiesComponent } from './facilities/facilities.component';
 import { SubjectComponent } from './addressBook/subject/subject.component';

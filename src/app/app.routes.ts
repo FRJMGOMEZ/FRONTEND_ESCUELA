@@ -26,5 +26,4 @@ const ROUTES: Routes = [
 ];
 
 
-
 export const APPROUTES = RouterModule.forRoot(ROUTES, {initialNavigation: 'enabled',paramsInheritanceStrategy: 'always',useHash: true});
