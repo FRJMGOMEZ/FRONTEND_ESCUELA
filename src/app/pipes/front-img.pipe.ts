@@ -8,12 +8,12 @@ import { URL_SERVICES } from '../config/config';
 export class FrontImgPipe implements PipeTransform {
   transform(img:string): any {
     let url;
-   if(URL_SERVICES.indexOf('localhost')>=0){
+ 
      url = `${URL_SERVICES}files/front/${img}`;
      return url
-   }else{
+
      url=`https://cargomusicfilesstorage.s3.amazonaws.com/${img}`
      return url
-   }
+   
   }
 }
