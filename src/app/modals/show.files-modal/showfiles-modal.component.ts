@@ -30,7 +30,6 @@ export class ShowFilesModalComponent implements OnInit {
       if(this._modalController.id){
         this._uploadFilesService.getFileById(this._modalController.id).subscribe((file)=>{
           this.file=file;
-          console.log(this.file)
         })
       }
     })  

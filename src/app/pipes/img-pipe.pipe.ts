@@ -10,7 +10,6 @@ export class ImgPipe implements PipeTransform {
 
   transform(file:any) {
     let url;
-    console.log(file)
     if (!file) {
       return url = `${URL_SERVICES}files/x/x `
     }

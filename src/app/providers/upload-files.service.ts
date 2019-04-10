@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { FileOrder } from '../models/file.model';
 import { Socket } from "ngx-socket-io";
 import { UserServices } from './user.service';
-import { ProjectServices } from './project.service';
 
 @Injectable({
   providedIn: 'root'

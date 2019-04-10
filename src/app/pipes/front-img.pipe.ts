@@ -6,10 +6,14 @@ import { URL_SERVICES } from '../config/config';
   name: 'frontImg'
 })
 export class FrontImgPipe implements PipeTransform {
-
   transform(img:string): any {
-    let url = `${URL_SERVICES}files/front/${img}`;
-    return url
+    let url;
+   if(URL_SERVICES.indexOf('localhost')>=0){
+     url = `${URL_SERVICES}files/front/${img}`;
+     return url
+   }else{
+     url=`https://cargomusicfilesstorage.s3.amazonaws.com/${img}`
+     return url
+   }
   }
-
 }
