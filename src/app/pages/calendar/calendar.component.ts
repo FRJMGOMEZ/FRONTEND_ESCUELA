@@ -47,7 +47,7 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
         })
       }
     });
-    this._calendarServices.getPermanentEvents()
+    this._calendarServices.getPermanentEvents().subscribe()
   }
 
   ngOnDestroy(): void {
