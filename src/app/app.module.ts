@@ -6,7 +6,6 @@ import localeEs from "@angular/common/locales/Es";
 import { AppComponent } from './app.component';
 import { APPROUTES } from './app.routes';
 import { RegisterComponent } from './login/register/register.component';
-import { PagesModule } from './pages/pages.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { LoginComponent } from './login/login/login.component';
 import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
@@ -16,6 +15,9 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { PipesModule } from './pipes/pipes.module';
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { DemoService } from './providers/demo.service';
+import { PagesComponent } from './pages/pages.component';
+import { SharedModule } from './shared/shared.module';
+import { ModalsModule } from './modals/modals.module';
 
 registerLocaleData(localeEs);
 
@@ -27,12 +29,14 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
+    PagesComponent
   ],
   imports: [
+    SharedModule,
+    ModalsModule,
     PipesModule,
     BrowserModule,
     APPROUTES,
-    PagesModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

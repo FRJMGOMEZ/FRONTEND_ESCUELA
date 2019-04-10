@@ -16,15 +16,11 @@ import { CalendarManagerComponent } from './calendar/calendar.component'
 import { VerifyTokenGuard } from '../guards/verify-token.guard';
 
 const pagesRoutes: Routes = [
-  {
-    path: "",
-    component: PagesComponent,
-    canActivate: [LoginGuard],
-    children: [
+
       {
-        canActivate: [VerifyTokenGuard],
-        path: "dashboard",
-        component: DashboardComponent
+       canActivate: [VerifyTokenGuard],
+       path: "dashboard",
+       component: DashboardComponent
       },
 
       { path: "profile", component: ProfileComponent },
@@ -67,8 +63,7 @@ const pagesRoutes: Routes = [
         children: [{ path: ":weekId/:dayId", component: DayComponent }]
       },
       { path: "", redirectTo: "/dashboard", pathMatch: "full" }
-    ]
-  }
+    
 ];
 
 export const PAGESROUTES = RouterModule.forChild(pagesRoutes);

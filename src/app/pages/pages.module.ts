@@ -1,4 +1,3 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -10,7 +9,6 @@ import { ProvidersModule } from "../providers/providers.module";
 import { ModalsModule } from "../modals/modals.module";
 import { PipesModule } from "../pipes/pipes.module";
 import { SharedModule } from "../shared/shared.module";
-import { PagesComponent } from './pages.component';
 
 ///Manteinance//
 import { SubjectComponent } from './addressBook/subject/subject.component';
@@ -40,7 +38,6 @@ import { CalendarManagerComponent } from './calendar/calendar.component';
 
 @NgModule({
   declarations: [
-    PagesComponent,
     AlumniComponent,
     ProfessorComponent,
     SubjectComponent,
@@ -61,7 +58,6 @@ import { CalendarManagerComponent } from './calendar/calendar.component';
     
   ],
   imports: [
-    BrowserModule,
     PAGESROUTES,
     FormsModule,
     ReactiveFormsModule,
