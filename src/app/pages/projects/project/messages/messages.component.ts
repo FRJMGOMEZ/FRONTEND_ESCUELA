@@ -42,7 +42,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
 
   constructor(
     private _uploadFilesServices: UploadFilesServices,
-    private _chatServices: ChatServices,
+    public _chatServices: ChatServices,
     public projectComponent: ProjectComponent,
     public mainProjectsComponent:MainProjectsComponent,
     public _projectServices: ProjectServices,
