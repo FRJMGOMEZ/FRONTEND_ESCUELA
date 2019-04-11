@@ -210,7 +210,6 @@ export class ProjectComponent implements OnInit {
     this._projectServices.myTasks = [];
     this._projectServices.textFiles = [];
     this._projectServices.imageFiles = [];
-    this._projectServices.messagesCount = 0;
     this.usersSocket.unsubscribe()
     this.filesSocket.unsubscribe()
     this.filesSubscription.unsubscribe()

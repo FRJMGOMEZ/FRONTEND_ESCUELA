@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterContentChecked } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { Message  } from 'src/app/models/message.model';
 import { ChatServices } from '../../../../providers/chat.service';
@@ -18,7 +18,7 @@ import { ProjectComponent } from '../project.component';
   templateUrl: "./messages.component.html",
   styleUrls: ["./messages.component.less"]
 })
-export class MessagesComponent implements OnInit, OnDestroy {
+export class MessagesComponent implements OnInit, OnDestroy{
   @ViewChild("scroll") scroll: ElementRef;
 
   userOnline: User;
@@ -55,7 +55,6 @@ export class MessagesComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.socketSubscription = this._chatServices.messagesSocket().subscribe()
-
     this.messagesSubscription = this._chatServices.messages$.subscribe(
       (messageOrder: MessageOrder) => {
         if (messageOrder.order === "get") {
@@ -68,6 +67,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
             }
           this.messages.unshift(messageOrder.message);    
         }else if (messageOrder.order === 'post'){
+          this._chatServices.messagesCount++
             setTimeout(() => {
               this.scrollToBottom();
             });
@@ -93,7 +93,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
             this.message,
             fileOrder.file._id
           );
-        this._chatServices.postMessage(message).subscribe();
+        this._chatServices.postMessage(message,this._projectServices.projectSelectedId).subscribe();
       }else if(fileOrder.order === 'delete'){
         this.messages.forEach((message:any)=>{
           if(message.file){
@@ -109,42 +109,44 @@ export class MessagesComponent implements OnInit, OnDestroy {
   scrollToBottom(): void {
       this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
   }
-
   checkFrom() {
     return new Promise((resolve, reject) => {
-      if (this.messages.length < this._projectServices.messagesCount) {
-        if (this._projectServices.messagesCount - 15 >= 0) {
-          let from = this._projectServices.messagesCount - 15;
-          resolve(from)
-        } else {
-
-          if(this.messages.length === 0){
+        if(this.messages.length === 0){
+          if(this._chatServices.messagesCount <= 15){
             resolve(0)
           }else{
-            resolve(this._projectServices.messagesCount - this.messages.length)
+            resolve(this._chatServices.messagesCount - 15)
+          }
+        }else{
+          if(this._chatServices.messagesCount <= 15){
+            resolve(0)
+          }else{
+              if(this._chatServices.messagesCount-this.messages.length >0){
+                  resolve(this.messages.length)
+              }
           }
         }
-      } else {
-        resolve(0)
-      }
     });
   }
 
-  getMoreMessages(){
-    setTimeout(()=>{
+ async getMoreMessages(){
+  if (this.messages.length < this._chatServices.messagesCount) {
       if(this.scroll.nativeElement.scrollTop === 0){
-        if (this.messages.length < this._projectServices.messagesCount) {
           let from;
-          if (this._projectServices.messagesCount - 15 >= 0) {
-            from = this._projectServices.messagesCount - 15;
+          if (this._chatServices.messagesCount - 15 >= 0) {
+            from = await this._chatServices.messagesCount - 15;
+            console.log(from)
           } else {
-            from = this._projectServices.messagesCount - this.messages.length;
+            from = await this._chatServices.messagesCount - this.messages.length;
+            console.log(from)
           }
-          this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(()=>{
-          })
+        this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(() => {
+          return
+        })
         } else { return }
-      }
-    },3000)
+  }else{
+    return
+  }
   }
 
   selectFile(file: File) {
@@ -194,7 +196,7 @@ export class MessagesComponent implements OnInit, OnDestroy {
           this._projectServices.projectSelectedId,
           this.message
         );
-        this._chatServices.postMessage(message).subscribe(()=>{
+        this._chatServices.postMessage(message,this._projectServices.projectSelectedId).subscribe(()=>{
           this.message='';
         });
       }else{
@@ -212,6 +214,5 @@ export class MessagesComponent implements OnInit, OnDestroy {
     this.filesSubscription.unsubscribe()
     this.messagesSubscription.unsubscribe();
    this.socketSubscription.unsubscribe();
-   this._projectServices.messagesCount = 0;
   }
 }

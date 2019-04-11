@@ -13,6 +13,7 @@ import { UploadFilesServices } from './upload-files.service';
 import * as _ from 'underscore';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from './error-handler.service';
+import { ChatServices } from './chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,6 @@ export class ProjectServices {
   groupTasks:Task[]
   myTasks:Task[]
 
-  messagesCount:number=0;
-
   public textFiles: any[] = [];
   public imageFiles: any[] = [];
 
@@ -50,7 +49,8 @@ export class ProjectServices {
               private _uploadFilesServices:UploadFilesServices,
               private router:Router,
               private _errorHandler:ErrorHandlerService,
-              private _ar:ActivatedRoute) {}
+              private _ar:ActivatedRoute,
+              private _chatServices:ChatServices) {}
 
   /////// Projects ////////
 
@@ -147,8 +147,9 @@ export class ProjectServices {
       this.status = res.project.status;
       this.textFiles = [];
       this.imageFiles = []; 
+      this._chatServices.messagesCount = res.project.messages.length;
+      console.log(this._chatServices.messagesCount)
       res.project.messages.forEach((message:any) => {
-        this.messagesCount ++
         if (message.file) {
           if (this._uploadFilesServices.textFormats.indexOf(message.file.format) >= 0) {
             this.textFiles.push(message.file)
