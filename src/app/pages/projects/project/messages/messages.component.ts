@@ -56,16 +56,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
     this.socketSubscription = this._chatServices.messagesSocket().subscribe()
     this.messagesSubscription = this._chatServices.messages$.subscribe(
       (messageOrder: MessageOrder) => {
-        if (messageOrder.order === "get") {
-            if(this.messages.length < 15){
-              setTimeout(() => {
-                this.scrollToBottom()
-              })
-            }else{
-              this.scroll.nativeElement.scrollTop = 1;
-            }
-          this.messages.unshift(messageOrder.message);    
-        }else if (messageOrder.order === 'post'){
+       if (messageOrder.order === 'post'){
           this._chatServices.messagesCount++
             setTimeout(() => {
               this.scrollToBottom();
@@ -79,10 +70,8 @@ export class MessagesComponent implements OnInit, OnDestroy{
       }
     );
 
-    this.checkFrom().then((res: any) => {
-      this._chatServices.getMessages(this._projectServices.projectSelectedId, res).subscribe();
-    });
-    
+    this.getMessages()
+      
     this.filesSubscription=this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "post") {
         let message;
@@ -104,9 +93,30 @@ export class MessagesComponent implements OnInit, OnDestroy{
       }
     });
   }
- 
-  scrollToBottom(): void {
-      this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
+
+  getMessages() {
+    this.checkFrom().then((from: number) => {
+      this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe((messages) => {
+        if (this.messages.length === 0) {
+          this.messages = messages;
+          setTimeout(()=>{
+            this.scrollToBottom()
+            return
+          })
+        } else {
+          let percent = this.messages.length * 100 / this._chatServices.messagesCount;
+          percent = percent / 100;
+          this.messages.forEach((message)=>{
+            this.messages.unshift(message)
+          })
+          setTimeout(()=>{
+            this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight * percent;
+            let heightPerCard = this.scroll.nativeElement.scrollHeight / this.messages.length;
+            this.scroll.nativeElement.scrollTop -=heightPerCard*3;
+          })
+        }
+      });
+    })
   }
 
   checkFrom() {
@@ -127,12 +137,8 @@ export class MessagesComponent implements OnInit, OnDestroy{
     });
   }
 
-  async getMoreMessages(){
-  this.checkFrom().then((from:number)=>{
-      this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(() => {
-        return
-      })
-  })
+  scrollToBottom(): void {
+    this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
   }
 
   selectFile(file: File) {

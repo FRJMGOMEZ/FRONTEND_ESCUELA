@@ -33,12 +33,6 @@ export class FacilitiesComponent implements OnInit,OnDestroy {
   }
 
   changeStatus(facilitie:Facilitie){
-    switch(facilitie.status){
-      case true: facilitie.status = false; 
-      break;
-      case false: facilitie.status = true; 
-      break;
-    }
     this._facilitieServices.putFacilitie(facilitie._id,facilitie).subscribe()
   }
 
@@ -59,6 +53,7 @@ export class FacilitiesComponent implements OnInit,OnDestroy {
         }
     })
   }
+
   ngOnDestroy(){
     this._facilitieServices.facilities=[]
     this.facilitiesSocket.unsubscribe()

@@ -26,10 +26,7 @@ export class ChatServices {
         let url = `${URL_SERVICES}messages/${projectId}?from=${from}&limit=${limit}`;
         return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
             res.messages.reverse()
-            res.messages.forEach((message) => {
-                let messageOrder = new MessageOrder(message, 'get')
-                this.messagesSource.next(messageOrder)
-            })
+            return res.messages
         }))
     }
 
