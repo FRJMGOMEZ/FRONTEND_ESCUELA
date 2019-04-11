@@ -109,6 +109,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
   scrollToBottom(): void {
       this.scroll.nativeElement.scrollTop = this.scroll.nativeElement.scrollHeight;
   }
+
   checkFrom() {
     return new Promise((resolve, reject) => {
         if(this.messages.length === 0){
@@ -118,35 +119,21 @@ export class MessagesComponent implements OnInit, OnDestroy{
             resolve(this._chatServices.messagesCount - 15)
           }
         }else{
-          if(this._chatServices.messagesCount <= 15){
-            resolve(0)
+          if(this._chatServices.messagesCount-this.messages.length -15 >=0){
+            resolve(this._chatServices.messagesCount-this.messages.length-15)
           }else{
-              if(this._chatServices.messagesCount-this.messages.length >0){
-                  resolve(this.messages.length)
-              }
+             resolve(0)
           }
         }
     });
   }
 
- async getMoreMessages(){
-  if (this.messages.length < this._chatServices.messagesCount) {
-      if(this.scroll.nativeElement.scrollTop === 0){
-          let from;
-          if (this._chatServices.messagesCount - 15 >= 0) {
-            from = await this._chatServices.messagesCount - 15;
-            console.log(from)
-          } else {
-            from = await this._chatServices.messagesCount - this.messages.length;
-            console.log(from)
-          }
-        this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(() => {
-          return
-        })
-        } else { return }
-  }else{
-    return
-  }
+  async getMoreMessages(){
+  this.checkFrom().then((from:number)=>{
+      this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe(() => {
+        return
+      })
+  })
   }
 
   selectFile(file: File) {

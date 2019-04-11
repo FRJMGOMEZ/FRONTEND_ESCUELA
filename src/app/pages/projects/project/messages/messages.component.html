@@ -1,7 +1,7 @@
 <div class="row pt-2" style='background: #F5F1E3'>
     <div class="col-12">
         <div class='col-12 scroll-box' #scroll>
-            <div class='row d-flex justify-content-center'>
+            <div *ngIf="messages.length > 0" class='row d-flex justify-content-center'>
                 <button class='btn btn-warning' (click)='getMoreMessages()' *ngIf="_chatServices.messagesCount > messages.length">CARGAR MÁS</button>
             </div>
             <div *ngFor="let message of messages">
