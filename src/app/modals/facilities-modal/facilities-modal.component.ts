@@ -21,6 +21,8 @@ export class FacilitiesModalComponent implements OnInit {
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
         this.facilitie = this._facilitieServices.facilities.filter((facilitie)=>{return facilitie._id === this._modalController.id})[0];
+        this.edition=true;
+        this.creation=false;
     })
   }
 
