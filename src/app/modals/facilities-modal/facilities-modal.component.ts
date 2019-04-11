@@ -14,13 +14,14 @@ export class FacilitiesModalComponent implements OnInit {
   creation:boolean=true;
   edition:boolean=false;
 
-  facilitie:Facilitie=new Facilitie('',undefined)
+  facilitie:Facilitie=new Facilitie('')
 
   constructor(public _modalController:FacilitiesModalController,
               private _facilitieServices:FacilitiesService) {}
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
-        this.facilitie = this._facilitieServices.facilities.filter((facilitie)=>{return facilitie._id === this._modalController.id})[0];
+      let newFacilitie = this._facilitieServices.facilities.filter((facilitie) => { return facilitie._id === this._modalController.id })[0];
+        this.facilitie = newFacilitie;
         this.edition=true;
         this.creation=false;
     })
@@ -41,7 +42,7 @@ export class FacilitiesModalComponent implements OnInit {
   }
   
   hideModal() {
-    this.facilitie.name = '';
+    this.facilitie.name='';
     this.creation = true;
     this.edition = false;
     this._modalController.hideModal()

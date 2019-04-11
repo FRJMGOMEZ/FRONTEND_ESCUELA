@@ -3,6 +3,7 @@ import { FacilitiesService } from '../../providers/facilities.service';
 import { Facilitie } from '../../models/facilitie.model';
 import { FacilitiesModalController } from '../../modals/facilities-modal/facilities-modalController';
 import { SwalService } from '../../providers/swal.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-facilities',
@@ -12,6 +13,7 @@ import { SwalService } from '../../providers/swal.service';
 export class FacilitiesComponent implements OnInit,OnDestroy {
 
   facilities:Facilitie[] = []
+  facilitiesSocket:Subscription=null;
 
   from:number = 0;
 
@@ -22,6 +24,7 @@ export class FacilitiesComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     this._facilitieServices.getFacilities().subscribe();
+    this.facilitiesSocket = this._facilitieServices.facililiteSocket().subscribe()
   }
 
   putFacilitie(id:string){
@@ -58,5 +61,6 @@ export class FacilitiesComponent implements OnInit,OnDestroy {
   }
   ngOnDestroy(){
     this._facilitieServices.facilities=[]
+    this.facilitiesSocket.unsubscribe()
   }
 }

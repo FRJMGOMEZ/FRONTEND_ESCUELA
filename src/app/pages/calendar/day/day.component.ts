@@ -29,6 +29,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   eventSubscription: Subscription = null;
   eventsSocket: Subscription = null;
+  facilitiesSocket:Subscription=null;
 
   facilitieFrom: number = 0;
   cardWidth: string;
@@ -91,6 +92,12 @@ export class DayComponent implements OnInit, OnDestroy {
               })
             })
           }
+     this.facilitiesSocket= this._facilitieServices.facililiteSocket().subscribe(()=>{
+        this.inProgress=true;
+        setTimeout(()=>{
+          this.resetEventRenderValues()
+        })
+      })
         })
       }
     })
@@ -118,23 +125,25 @@ export class DayComponent implements OnInit, OnDestroy {
   ////////// Init /////////
   init() {
     this._calendarServices.userIn().then(()=>{
-      /// Reinit the space of each facilitie////
       this.getWeeksAroundDates();
-      this._facilitieServices.facilities.forEach((facilitie: any) => {
-        let space = this.heightOfEventsFrame;
-        facilitie.space = space;
-
-      });
-      /// Reinit the initial position of the events renderization  //
-      this.position = 0;
-      /// Start the renderization ///
-      this.inProgress = false;
-      /// Get the width of each column ///
-      setTimeout(() => {
-        this.getWidth();
-      });
-
+      this.resetEventRenderValues()
     })
+  }
+
+  resetEventRenderValues(){
+    /// Reinit the space of each facilitie////
+    this._facilitieServices.facilities.forEach((facilitie: any) => {
+      let space = this.heightOfEventsFrame;
+      facilitie.space = space;
+    });
+    /// Reinit the initial position of the events renderization  //
+    this.position = 0;
+    /// Start the renderization ///
+    this.inProgress = false;
+    /// Get the width of each column ///
+    setTimeout(() => {
+      this.getWidth();
+    });
   }
 
   getWeeksAroundDates() {
@@ -192,6 +201,11 @@ export class DayComponent implements OnInit, OnDestroy {
       })
   }
 
+  showEventPermanentInfo(id: string) {
+    this._modalEventController.showModal(id);
+    this._modalEventController.notification.emit();
+  }
+
   deletePermanentEvent(id: string) {
     Swal.fire({
       title: '¿Estás segura/o?',
@@ -209,11 +223,6 @@ export class DayComponent implements OnInit, OnDestroy {
       }
     })
   }
-  
-  showEventPermanentInfo(id: string) {
-    this._modalEventController.showModal(id);
-    this._modalEventController.notification.emit();
-  }
 
   snapshotCalendar() {
     html2canvas(this.printable.nativeElement).then(function(canvas) {
@@ -225,6 +234,7 @@ export class DayComponent implements OnInit, OnDestroy {
     this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
     this.eventsSocket.unsubscribe();
+    this.facilitiesSocket.unsubscribe()
   }
 }
 
