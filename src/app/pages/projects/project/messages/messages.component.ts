@@ -12,7 +12,6 @@ import { UserServices } from '../../../../providers/user.service';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { ProjectComponent } from '../project.component';
 
-
 @Component({
   selector: "app-messages",
   templateUrl: "./messages.component.html",
