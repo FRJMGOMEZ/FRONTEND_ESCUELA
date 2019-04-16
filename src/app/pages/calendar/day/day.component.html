@@ -25,6 +25,7 @@
                         {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
                     </button>
                 </div>
+
                 <div class="col-12 d-flex justify-content-center mt-2">
                     <button class='btn btn-warning' (click)=' _calendarModalController.showModal()'><i class="fas fa-search "></i></button>
                 </div>
@@ -57,7 +58,7 @@
         <div #printable class="col-8 p-2">
             <div class="row">
                 <div class="col-11 mb-1">
-                    <div class="row card-group mt-1">
+                    <div class="row card-group mt-1" style='height:50px'>
                         <div *ngIf="_calendarServices.currentWeek.monday['_id'] !=_calendarServices.currentDay._id " class="card">
                             <div (click)="toOtherDay(_calendarServices.currentWeek.monday['_id'])" style='background-color:#F5F1E3' class="card-body ">
                                 <p class='text-center day'>
@@ -109,7 +110,6 @@
                         </div>
 
                     </div>
-
                 </div>
                 <div class='col-1 p-1'>
                     <div>
@@ -121,7 +121,7 @@
                         <button *ngIf="facilitieFrom && facilitieFrom > 0" (click)='switchFacilities(-5)' class='fluid'><i class="fas fa-arrow-left"></i></button>
                     </div>
                     <div>
-                        <button *ngIf="_facilitieServices.count >= facilitieFrom+5" (click)='switchFacilities(5)' class='fluid'><i
+                        <button *ngIf="_facilitieServices.count > facilitieFrom+5" (click)='switchFacilities(5)' class='fluid'><i
                                     class="fas fa-arrow-right"></i></button>
                     </div>
                 </div>

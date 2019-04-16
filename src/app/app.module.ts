@@ -20,7 +20,6 @@ import { SharedModule } from './shared/shared.module';
 import { ModalsModule } from './modals/modals.module';
 import { ProvidersModule } from './providers/providers.module';
 
-
 registerLocaleData(localeEs);
 
 const config: SocketIoConfig = { url: URL_SERVICES, options: {} };

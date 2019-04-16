@@ -3,6 +3,8 @@ import { ProjectServices } from '../../../../providers/project.service';
 import { TaskModalController } from '../../../../modals/task-modal/task.modalController';
 import { UserServices } from '../../../../providers/user.service';
 import { SwalService } from '../../../../providers/swal.service';
+import * as _ from 'underscore';
+
 
 @Component({
   selector: 'app-tasks',
@@ -23,6 +25,7 @@ export class TasksComponent implements OnInit {
           this._projectServices.taskChecked(task._id).subscribe(()=>{
            this._projectServices.myTasks[index].checked = true;
           })
+
         }
     })
   }

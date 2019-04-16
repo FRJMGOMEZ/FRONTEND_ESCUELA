@@ -49,7 +49,6 @@ async ngOnInit() {
 
     this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
 
-
     this._dashboardServices.getTasks().subscribe()
 
     this._dashboardServices.getLastMessages().subscribe()
@@ -91,18 +90,18 @@ async ngOnInit() {
 
   toEvent(date?:Date){
     date =new Date(date)
-    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0)
-    this._calendarServices.getDayByDate(date.getTime()).subscribe(() => {
+    if(date.getTime()< new Date().getTime()){
+      date = new Date()
+    }
+    date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0);
+    this._calendarServices.getDayByDate(date.getTime()).subscribe((res) => {
+      setTimeout(()=>{
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, new Date(this._calendarServices.currentDay.date).getDay()).subscribe(() => {
-          setTimeout(()=>{
-            this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
-            })
+          this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
           })
         })
-      
+      })
     })
-    
-    
   }
 
   ngOnDestroy(): void {

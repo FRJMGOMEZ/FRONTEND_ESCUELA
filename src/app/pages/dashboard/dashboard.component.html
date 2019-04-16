@@ -20,7 +20,7 @@
                 <div class="scrollable" style="height:120px">
                     <table class='table'>
                         <tr>
-                            <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
+                            <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3;width:100%'>
                                 <div>
                                     <p><i class="far fa-bell"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
                                     </p>

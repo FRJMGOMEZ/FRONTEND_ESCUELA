@@ -33,6 +33,11 @@ export class FacilitiesComponent implements OnInit,OnDestroy {
   }
 
   changeStatus(facilitie:Facilitie){
+    if(facilitie.status){
+      facilitie.status=false
+    }else{
+      facilitie.status=true
+    }
     this._facilitieServices.putFacilitie(facilitie._id,facilitie).subscribe()
   }
 

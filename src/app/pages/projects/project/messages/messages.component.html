@@ -6,11 +6,11 @@
             </div>
             <div *ngFor="let message of messages">
                 <div class="card">
-                    <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == userOnline._id }" style='height:25px;background:white;border:none'>
-                        <strong [ngClass]="{'badge badge': message.user._id == userOnline._id  , 'badge badge-warning': message.user._id != userOnline._id  }">{{message.user['name']}}</strong>
+                    <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == _userServices.userOnline._id }" style='height:25px;background:white;border:none'>
+                        <strong [ngClass]="{'badge badge': message.user._id == _userServices.userOnline._id  , 'badge badge-warning': message.user._id != _userServices.userOnline._id  }">{{message.user['name']}}</strong>
                     </div>
                     <div class="card-body m-0 pt-0 pb-0 ">
-                        <div class="row d-flex" [ngClass]="{'justify-content-end': message.user._id == userOnline._id }">
+                        <div class="row d-flex" [ngClass]="{'justify-content-end': message.user._id == _userServices.userOnline._id }">
                             <div>
                                 <p>{{message.message}}</p>
                             </div>

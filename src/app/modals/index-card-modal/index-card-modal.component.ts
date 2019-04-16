@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
   styles: []
 })
 export class indexcardModalComponent implements OnInit {
+  
   form: FormGroup;
   indexcardId: string;
   role: string;
@@ -31,6 +32,7 @@ export class indexcardModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+
     this.form = new FormGroup({
       name: new FormControl("", Validators.required),
       surname: new FormControl(""),
@@ -70,7 +72,7 @@ export class indexcardModalComponent implements OnInit {
         );
       if (this._modalController.id) {
         this.edition = true;
-        this._indexcardServices.searchindexcardById(this._modalController.id).subscribe();
+        this._indexcardServices.searchIndexcardById(this._modalController.id).subscribe();
       } else {
         this.creation = true;
       }
@@ -89,7 +91,7 @@ export class indexcardModalComponent implements OnInit {
         value.home,
         value.address
       );
-      this._indexcardServices.putindexcard(indexcard, this.indexcardId).subscribe(()=>{
+      this._indexcardServices.putIndexcard(indexcard, this.indexcardId).subscribe(()=>{
         this.hideModal()
       }) 
     }
@@ -107,7 +109,7 @@ export class indexcardModalComponent implements OnInit {
         value.home,
         value.address
       );
-      this._indexcardServices.postindexcard(indexcard).subscribe()
+      this._indexcardServices.postIndexcard(indexcard).subscribe()
       ;
     }
   }

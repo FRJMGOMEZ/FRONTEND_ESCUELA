@@ -9,7 +9,6 @@ import { AlumniServices } from './alumni.service';
 import { ProfessorsServices } from './professor.service';
 import { ErrorHandlerService } from './error-handler.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,10 +21,9 @@ export class indexcardServices {
              private _userServices:UserServices,
              private _alumniServices:AlumniServices,
              private _professorServices:ProfessorsServices,
-             private _errorHandler:ErrorHandlerService) {          
-              }
+             private _errorHandler:ErrorHandlerService) {}
 
-  postindexcard(indexcard:Indexcard){
+  postIndexcard(indexcard:Indexcard){
     let url = `${URL_SERVICES}indexcard`
     return this.http.post(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{ 
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'post')
@@ -34,7 +32,7 @@ export class indexcardServices {
     ,catchError(this._errorHandler.handleError))    
   }
 
-  putindexcard(indexcard:Indexcard,idindexcard:string){
+  putIndexcard(indexcard:Indexcard,idindexcard:string){
     let url = `${URL_SERVICES}indexcard/${idindexcard}`;
     return this.http.put(url,indexcard,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       if (res.ALUMNI) {
@@ -44,13 +42,14 @@ export class indexcardServices {
       }
     })
     ,catchError(this._errorHandler.handleError))
-}
+  }
 
-  searchindexcardById(id:string){  
+  searchIndexcardById(id:string){  
     let url = `${URL_SERVICES}searchindexcardById/${id}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'getById')
       this.indexcardsSource.next(indexcardOrder)
-    }))
+    })
+    ,catchError(this._errorHandler.handleError))
   }
 }

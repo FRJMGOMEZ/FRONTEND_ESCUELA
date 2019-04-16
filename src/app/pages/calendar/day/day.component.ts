@@ -40,7 +40,7 @@ export class DayComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private _modalEventController: EventModalController,
+    public _modalEventController: EventModalController,
     public _userServices:UserServices,
     public _calendarServices: CalendarService,
     public _calendarModalController: CalendarModalController,
@@ -57,12 +57,10 @@ export class DayComponent implements OnInit, OnDestroy {
         this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
           if (this._calendarServices.currentDay && this._calendarServices.currentWeek) {
             if (dayId === this._calendarServices.currentDay._id) {
-              setTimeout(() => {
                 dayId = undefined;
                 weekId=undefined;
                 this.init()
                 return
-              })
             } else {
               if (weekId === this._calendarServices.currentWeek._id) {
                 this._calendarServices.getDayById(dayId).subscribe(() => {
@@ -92,16 +90,17 @@ export class DayComponent implements OnInit, OnDestroy {
               })
             })
           }
-     this.facilitiesSocket= this._facilitieServices.facililiteSocket().subscribe(()=>{
-        this.inProgress=true;
-        setTimeout(()=>{
-          this.resetEventRenderValues()
-        })
-      })
         })
       }
     })
 
+    this.facilitiesSocket = this._facilitieServices.facililiteSocket().subscribe(() => {
+      this.inProgress = true;
+      setTimeout(() => {
+        this.resetEventRenderValues()
+      })
+    })
+    
     this.notification.subscribe(res => {
       this.position = res.position + 1 || this.position;
     });
@@ -133,8 +132,12 @@ export class DayComponent implements OnInit, OnDestroy {
   resetEventRenderValues(){
     /// Reinit the space of each facilitie////
     this._facilitieServices.facilities.forEach((facilitie: any) => {
-      let space = this.heightOfEventsFrame;
-      facilitie.space = space;
+      if(facilitie.status === false){
+        this._facilitieServices.facilities = this._facilitieServices.facilities.filter((eachFacilitie)=>{return eachFacilitie._id != facilitie._id })
+      }else{
+        let space = this.heightOfEventsFrame;
+        facilitie.space = space;
+      }
     });
     /// Reinit the initial position of the events renderization  //
     this.position = 0;

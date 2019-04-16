@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterContentChecked } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Message  } from 'src/app/models/message.model';
 import { ChatServices } from '../../../../providers/chat.service';
 import { UploadFilesServices } from '../../../../providers/upload-files.service';
@@ -18,10 +17,8 @@ import { ProjectComponent } from '../project.component';
   styleUrls: ["./messages.component.less"]
 })
 export class MessagesComponent implements OnInit, OnDestroy{
+  
   @ViewChild("scroll") scroll: ElementRef;
-
-  userOnline: User;
-
   messages: Message[] = [];
 
   message: string;
@@ -45,15 +42,15 @@ export class MessagesComponent implements OnInit, OnDestroy{
     public projectComponent: ProjectComponent,
     public mainProjectsComponent:MainProjectsComponent,
     public _projectServices: ProjectServices,
-    private _userServices: UserServices,
+    public _userServices: UserServices,
     private _showFilesModalController: ShowFilesModalController
   ) {
-    this.userOnline = this._userServices.userOnline;
   }
 
   ngOnInit() {
 
     this.socketSubscription = this._chatServices.messagesSocket().subscribe()
+    
     this.messagesSubscription = this._chatServices.messages$.subscribe(
       (messageOrder: MessageOrder) => {
        if (messageOrder.order === 'post'){
@@ -76,7 +73,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
       if (fileOrder.order === "post") {
         let message;
           message = new Message(
-            this.userOnline._id,
+            this._userServices.userOnline._id,
             this._projectServices.projectSelectedId,
             this.message,
             fileOrder.file._id
@@ -167,7 +164,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
     if (this.imgUpload) {
       this._uploadFilesServices.uploadFile(
         this.imgUpload,
-        "projectFiles",
+        "Project",
         this._projectServices.projectSelectedId,
          this.download
       );
@@ -176,7 +173,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
     } else if (this.fileUpload) {
       this._uploadFilesServices.uploadFile(
         this.fileUpload,
-        "projectFiles",
+        "Project",
         this._projectServices.projectSelectedId,
         this.download
       )
@@ -184,7 +181,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
     } else {
       if(this.message.trim().length >0){
         let message = new Message(
-          this.userOnline._id,
+          this._userServices.userOnline._id,
           this._projectServices.projectSelectedId,
           this.message
         );

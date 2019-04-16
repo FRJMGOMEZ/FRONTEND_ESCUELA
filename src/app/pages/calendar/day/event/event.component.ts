@@ -224,21 +224,20 @@ export class EventComponent implements OnInit,AfterViewInit{
       this.renderer.listen(child2, "click", () => {
           this._swalServices.confirmDelete().then((res) => {
             this._modalEventController.hideModal()
-            if (res) {
-            if(this.ourEvents[String(position)].permanent){
-              this._calendarServices.pullEvent(this._calendarServices.currentDay._id, this.ourEvents[String(position)]._id).subscribe()
-            }else{
-              this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id).subscribe();
-            }
-            }
+            setTimeout(()=>{
+              if (res) {
+                if (this.ourEvents[String(position)].permanent) {
+                  this._calendarServices.pullEvent(this._calendarServices.currentDay._id, this.ourEvents[String(position)]._id).subscribe()
+                } else {
+                  this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id).subscribe();
+                }
+              }
+            })
           })   
       });
       this.renderer.appendChild(div3, child2)
     this.renderer.appendChild(div,div3)
     }
-
-
-
       let parent = this.renderer.parentNode(this.eventCard.nativeElement);
       let parent2 = this.renderer.parentNode(parent);
      

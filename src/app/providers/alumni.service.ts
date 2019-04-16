@@ -6,8 +6,6 @@ import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
 import { ErrorHandlerService } from './error-handler.service';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -48,7 +46,8 @@ export class AlumniServices {
      return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        this.count = res.count;
        this.alumnis = res.alumnis; 
-     }))
+     })
+     ,catchError(this.errorHandler.handleError))
   }
 
   deleteAlumni(id:string){

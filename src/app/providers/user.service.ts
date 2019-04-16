@@ -148,7 +148,8 @@ export class UserServices {
         return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count = res.count;
             this.users = res.users;
-        }))
+        })
+        ,catchError(this._errorHandler.handleError))
     }
 
     changeUserStatus(id:string){

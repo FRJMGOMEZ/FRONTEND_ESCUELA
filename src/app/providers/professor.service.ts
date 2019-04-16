@@ -45,7 +45,8 @@ export class ProfessorsServices {
     return this.http.get(url, { headers:this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.professors = res.professors;
-    }))
+    })
+    ,catchError(this._errorHandler.handleError))
   }
 
   deleteProfessor(id:string){

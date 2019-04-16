@@ -47,7 +47,6 @@ export class ChatServices {
 
     messagesSocket() {
         return this.socket.fromEvent('message').pipe(map((messageOrder:MessageOrder)=>{
-            console.log(messageOrder)
             this.messagesSource.next(messageOrder)
         }))  
     } 

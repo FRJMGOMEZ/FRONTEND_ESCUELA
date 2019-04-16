@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UploadFilesModalController } from './uploadFilesModalController';
 import { UploadFilesServices } from '../../providers/upload-files.service';
-import { UserServices } from '../../providers/user.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -18,11 +17,7 @@ export class UploadFilesModalComponent {
   temporaryImg:any
 
   constructor(public _modalService: UploadFilesModalController,
-              private _uploadFilesServices:UploadFilesServices,
-              private _userServices:UserServices) {
-
-    this.userOnline = this._userServices.userOnline;
-    this.token = this._userServices.token;
+              private _uploadFilesServices:UploadFilesServices) {
   }
 
   uploadImg() {

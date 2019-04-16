@@ -148,7 +148,6 @@ export class ProjectServices {
       this.textFiles = [];
       this.imageFiles = []; 
       this._chatServices.messagesCount = res.project.messages.length;
-      console.log(this._chatServices.messagesCount)
       res.project.messages.forEach((message:any) => {
         if (message.file) {
           if (this._uploadFilesServices.textFormats.indexOf(message.file.format) >= 0) {
@@ -167,6 +166,13 @@ export class ProjectServices {
           this.groupTasks.push(task)
         }
       })
+      this.groupTasks = _.sortBy(this.groupTasks, (task) => {
+        return task.dateLimit
+      })
+      this.myTasks = _.sortBy(this.myTasks, (task) => {
+        return task.dateLimit
+      })
+
       this._userServices.userOnline.projects.forEach((project,index)=>{
         if(project._id === this.projectSelectedId){
           this._userServices.userOnline.projects[index].lastConnection = null;
@@ -423,6 +429,16 @@ export class ProjectServices {
           this.groupTasks = this.groupTasks.filter((task) => { return task._id != taskOrder.task._id })
         }
       }
+
+      if (taskOrder.task.user['_id'] === this._userServices.userOnline._id) {
+        this.myTasks = _.sortBy(this.myTasks, (task) => {
+          return task.dateLimit
+        })
+      }else{
+        this.groupTasks = _.sortBy(this.groupTasks, (task) => {
+          return task.dateLimit
+        })
+      }
     }))
   }
 
@@ -433,8 +449,14 @@ export class ProjectServices {
         this.taskChecked(res.task._id).subscribe()
         res.task.checked = true;
         this.myTasks.push(res.task)
+        this.myTasks = _.sortBy(this.myTasks, (task) => {
+          return task.dateLimit
+        })
       } else {
         this.groupTasks.push(res.task)
+        this.groupTasks = _.sortBy(this.groupTasks, (task) => {
+          return task.dateLimit
+        })
       }
       let taskOrder = new TaskOrder(res.task, 'post')
       this.emitTask(taskOrder)

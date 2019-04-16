@@ -6,7 +6,6 @@ import { URL_SERVICES } from '../config/config';
 import { HttpClient } from '@angular/common/http';
 import { EventModel } from '../models/event.model';
 
-
 @Injectable({
   providedIn: "root"
 })
@@ -26,7 +25,12 @@ export class DashboardService {
     private socket: Socket,
     private _userServices: UserServices,
     private http: HttpClient
-  ) {}
+  ){}
+
+  dashboardIn() {
+    let payload = { user: this._userServices.userOnline._id };
+    this.socket.emit("dashboardIn", payload);
+  }
 
   getLastMessages() {
     let url = `${URL_SERVICES}lastMessages`;
@@ -39,8 +43,8 @@ export class DashboardService {
         this.unreadMessages=false;
         }
         res.messages.forEach((message: any) => {
+          message.project.messages = [];
           if (this.projects.length === 0) {
-            message.project.messages = [];
             message.project.messages.push(message.message)
             this.unreadMessages = true;
             this.projects.push(message.project);
@@ -107,7 +111,7 @@ export class DashboardService {
             } else {
               let index = this.projects.map((project: any) => { return project._id }).indexOf(task.project._id);
               if (!task.checked) {
-                if (this.projects[index].uncheckedTasks === undefined) {
+                if (this.projects[index].uncheckedTasks.length === 0) {
                   this.projects[index].uncheckedTasks = [];
                   this.uncheckedTasks = true;
                   this.projects[index].uncheckedTasks.push(task.description)
@@ -115,7 +119,7 @@ export class DashboardService {
                   this.projects[index].uncheckedTasks.push(task.description)
                 }
               } else {
-                if (this.projects[index].pendingTasks === undefined) {
+                if (this.projects[index].pendingTasks.length === 0) {
                   this.projects[index].pendingTasks = [];
                   this.projects[index].pendingTasks.push(task.description)
                   this.pendingTasks = true;
@@ -127,7 +131,7 @@ export class DashboardService {
           }
         })
       })
-    );
+    )
   }
 
   getEvents() {
@@ -152,11 +156,6 @@ export class DashboardService {
     );
   }
 
-  dashboardIn() {
-    let payload = { user: this._userServices.userOnline._id };
-    this.socket.emit("dashboardIn", payload);
-  }
-
   dashboardSocket(userProjects: string[]) {
     return this.socket.fromEvent("dashboard").pipe(
       map((payload: any) => {
@@ -174,6 +173,7 @@ export class DashboardService {
       })
     );
   }
+
   dashboardOut() {
     let payload = { user: this._userServices.userOnline._id };
     this.socket.emit("dashboardOut", payload);

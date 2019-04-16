@@ -52,13 +52,15 @@ export class EventsModalComponent implements OnInit {
       this.facilitie = this._facilitieServices.facilities.filter((facilite) => { return facilite._id === this.event.facilitie })[0];
       this.page = '1'; 
       this.createMode = true;
+      this.editMode=false;
+      this.modifyMode=false;
         this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
           if(eventOrder){
             if (eventOrder.order === 'post') {
               this.resetValues().then(async() => {
                 this.editMode = true;
-                console.log(this.event)
-                console.log(this._calendarServices.currentDay)
+                this.createMode=false;
+                this.modifyMode=false;
                 this.event = await eventOrder.event;
                   this.page = '7'
               })
@@ -68,20 +70,24 @@ export class EventsModalComponent implements OnInit {
       }else{
         this._calendarServices.getEventById(this._modalController.id).subscribe(async(event: EventModel) => {
           this.editMode = true;
+          this.createMode=false;
+          this.modifyMode=false;
           this.event = await event;
           this.facilitie = await this._facilitieServices.facilities.filter((facilite) => { return facilite._id === event.facilitie })[0];
             this.page = "7";
         });
-          this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
-             if (eventOrder.order === 'put'){
-                this.resetValues().then(async()=>{
-                  this.editMode=true;
-                  this.event = await eventOrder.event;
-                    this.page = "7";
-                })
-              } 
-            });
         }
+      this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
+        if (eventOrder.order === 'put') {
+          this.resetValues().then(async () => {
+            this.editMode = true;
+            this.createMode=false;
+            this.modifyMode=false;
+            this.event = await eventOrder.event;
+            this.page = "7";
+          })
+        }
+      });
     });
   }
 

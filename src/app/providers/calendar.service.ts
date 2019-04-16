@@ -323,8 +323,7 @@ export class CalendarService {
           this.emitEvent(eventOrder)
         }else{
           this.emitEvent()
-        }
-        
+        }     
       })
     );
   }
