@@ -60,7 +60,6 @@ export class FacilitiesService {
          this.facilities.push(res.facilitie)
        }
        let facilitieOrder = new FacilitieOrder(res.facilitie, 'post')
-       console.log(facilitieOrder)
        this.emitFacilitie(facilitieOrder)
      })
      ,catchError(this.errorHandler.handleError))
