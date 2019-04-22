@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/node_modules
 
 # dependencies
 /node_modules
@@ -41,4 +42,4 @@ Dinahosting.
 
 Task manager.
 
-Rastreo edición documentos. 
+Rastreo ediciï¿½n documentos. 
