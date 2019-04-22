@@ -18,7 +18,7 @@ import { DemoService } from '../../../providers/demo.service';
 export class DayComponent implements OnInit, OnDestroy {
 
   @ViewChild('printable') printable: ElementRef;
-  @ViewChild("dayPlace") dayPlace: ElementRef;
+  @ViewChild("dayPlace", { read: ElementRef }) dayPlace: ElementRef;
   
   inProgress: boolean = true;
 
@@ -125,7 +125,8 @@ export class DayComponent implements OnInit, OnDestroy {
   init() {
     this._calendarServices.userIn().then(()=>{
       this.getWeeksAroundDates();
-      this.resetEventRenderValues()
+      this.resetEventRenderValues();
+      this.getWidth();
     })
   }
 
@@ -144,8 +145,6 @@ export class DayComponent implements OnInit, OnDestroy {
     /// Start the renderization ///
     this.inProgress = false;
     /// Get the width of each column ///
-    this.getWidth();
-    
   }
 
   getWeeksAroundDates() {
@@ -160,9 +159,13 @@ export class DayComponent implements OnInit, OnDestroy {
 
   getWidth() {
     setTimeout(()=>{
-      this.cardWidth = `${Math.round(
-        ((this.dayPlace['nativeElement'].offsetWidth / 12) * 11) / 5
-      )}px`;
+      if (this.dayPlace) {
+        let rowWidth = this.dayPlace.nativeElement.offsetWidth;
+        let width = Math.round(
+          ((rowWidth / 12) * 11) / 5
+        );
+        this.cardWidth = `${width}px`;
+      }
     })
   }
                                     //////// After init ////////
