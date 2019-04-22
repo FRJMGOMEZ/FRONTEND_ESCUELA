@@ -23,8 +23,8 @@ export class ShowFilesModalComponent implements OnInit {
     public _modalController: ShowFilesModalController,
     private http:HttpClient,
     private _uploadFilesService:UploadFilesServices
-  ) {
-  }
+  ) {}
+  
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
       if(this._modalController.id){
@@ -36,7 +36,6 @@ export class ShowFilesModalComponent implements OnInit {
   }
 
   downloadFile(source:string) {
-    if(this.file.format === 'pdf'){
       this.getFileBlob(source).subscribe(res => {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(res);
@@ -44,15 +43,6 @@ export class ShowFilesModalComponent implements OnInit {
         document.body.appendChild(a);
         a.click();
       });
-    }else if (this.imgFormats.indexOf(this.file.format)>=0){
-      this.getFileBlob(source).subscribe(res => {
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(res);
-        a.download = this.file.title;
-        document.body.appendChild(a);
-        a.click();
-      });
-    }
   }
 
   getFileBlob(url: string) {

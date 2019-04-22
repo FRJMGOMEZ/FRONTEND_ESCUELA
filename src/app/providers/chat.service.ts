@@ -25,7 +25,6 @@ export class ChatServices {
     getMessages(projectId: string, from: number, limit: number = 15) {
         let url = `${URL_SERVICES}messages/${projectId}?from=${from}&limit=${limit}`;
         return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-            res.messages.reverse()
             return res.messages
         }))
     }

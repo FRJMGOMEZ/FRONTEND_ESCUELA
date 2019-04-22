@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { Subscription } from 'rxjs'
 import * as html2canvas from "html2canvas"
 import { DemoService } from '../../../providers/demo.service';
+import { resolve } from 'url';
 
 @Component({
   selector: "app-day",
@@ -35,7 +36,6 @@ export class DayComponent implements OnInit, OnDestroy {
   cardWidth: string;
   position: number = 0;
   heightOfEventsFrame: number = 720;
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,14 +82,7 @@ export class DayComponent implements OnInit, OnDestroy {
                 })
               }
             }
-          } else {
-            this._calendarServices.getWeekById(weekId).subscribe(() => {
-              this._calendarServices.getDayById(dayId).subscribe(() => {
-                this.init()
-                return
-              })
-            })
-          }
+          } 
         })
       }
     })
@@ -124,49 +117,47 @@ export class DayComponent implements OnInit, OnDestroy {
   ////////// Init /////////
   init() {
     this._calendarServices.userIn().then(()=>{
-      this.getWeeksAroundDates();
-      this.resetEventRenderValues();
-      this.getWidth();
-    })
+    this.resetEventRenderValues();
+    this.getWeeksAroundDates();
+     setTimeout(()=>{
+       this.getWidth(); 
+     })})
   }
 
-  resetEventRenderValues(){
-    /// Reinit the space of each facilitie////
-    this._facilitieServices.facilities.forEach((facilitie: any) => {
-      if(facilitie.status === false){
-        this._facilitieServices.facilities = this._facilitieServices.facilities.filter((eachFacilitie)=>{return eachFacilitie._id != facilitie._id })
-      }else{
-        let space = this.heightOfEventsFrame;
-        facilitie.space = space;
-      }
-    });
-    /// Reinit the initial position of the events renderization  //
-    this.position = 0;
+ async resetEventRenderValues(){
+      /// Reinit the space of each facilitie////
+    await  this._facilitieServices.facilities.forEach((facilitie: any) => {
+        if (facilitie.status === false) {
+          this._facilitieServices.facilities = this._facilitieServices.facilities.filter((eachFacilitie) => { return eachFacilitie._id != facilitie._id })
+        } else {
+          let space = this.heightOfEventsFrame;
+          facilitie.space = space;
+        }
+      });
+      /// Reinit the initial position of the events renderization  //
+      this.position = await 0;
+      this.inProgress = await false
+      return
     /// Start the renderization ///
-    this.inProgress = false;
-    /// Get the width of each column ///
+    /// Get the width of each column ///  
   }
 
   getWeeksAroundDates() {
-    let weekDate = new Date(this._calendarServices.currentWeek.date);
-    let date1= new Date(weekDate.getFullYear(),weekDate.getMonth(),weekDate.getDate()-7,6,0,0,0);
-    let date2 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 1, 6, 0, 0, 0);
-    let date3 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 7, 6, 0, 0, 0);
-    let date4 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 14, -30, 0, 0, 0);
-    this.prevWeek = [date1,date2];
-    this.nextWeek = [date3,date4];
+      let weekDate = new Date(this._calendarServices.currentWeek.date);
+      let date1 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 7, 6, 0, 0, 0);
+      let date2 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 1, 6, 0, 0, 0);
+      let date3 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 7, 6, 0, 0, 0);
+      let date4 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() + 14, -30, 0, 0, 0);
+      this.prevWeek = [date1, date2];
+      this.nextWeek = [date3, date4];
   }
 
   getWidth() {
-    setTimeout(()=>{
-      if (this.dayPlace) {
         let rowWidth = this.dayPlace.nativeElement.offsetWidth;
         let width = Math.round(
           ((rowWidth / 12) * 11) / 5
         );
         this.cardWidth = `${width}px`;
-      }
-    })
   }
                                     //////// After init ////////
   switchFacilities(number: number = 0) {
@@ -238,7 +229,6 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.inProgress=true;
     this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
     this.eventsSocket.unsubscribe();

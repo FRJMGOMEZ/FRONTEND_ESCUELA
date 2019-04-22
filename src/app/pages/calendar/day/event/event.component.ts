@@ -105,7 +105,6 @@ export class EventComponent implements OnInit,AfterViewInit{
         this.facilitie.space -= 60;
         return
       } else if ((Number(this.facilitie.space) != spaceWithoutEvents)) {
-      
           if (spaceWithoutEvents - this.facilitie.space >= 60) {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", "0");
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0"); return    

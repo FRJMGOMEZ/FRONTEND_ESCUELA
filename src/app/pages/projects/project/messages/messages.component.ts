@@ -10,6 +10,8 @@ import { MainProjectsComponent } from '../../mainProjects.component';
 import { UserServices } from '../../../../providers/user.service';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { ProjectComponent } from '../project.component';
+import { SwalService } from '../../../../providers/swal.service';
+import * as _ from 'underscore';
 
 @Component({
   selector: "app-messages",
@@ -43,7 +45,8 @@ export class MessagesComponent implements OnInit, OnDestroy{
     public mainProjectsComponent:MainProjectsComponent,
     public _projectServices: ProjectServices,
     public _userServices: UserServices,
-    private _showFilesModalController: ShowFilesModalController
+    private _showFilesModalController: ShowFilesModalController,
+    private _swalServices:SwalService
   ) {
   }
 
@@ -54,7 +57,6 @@ export class MessagesComponent implements OnInit, OnDestroy{
     this.messagesSubscription = this._chatServices.messages$.subscribe(
       (messageOrder: MessageOrder) => {
        if (messageOrder.order === 'post'){
-          this._chatServices.messagesCount++
             setTimeout(() => {
               this.scrollToBottom();
             });
@@ -95,7 +97,9 @@ export class MessagesComponent implements OnInit, OnDestroy{
     this.checkFrom().then((from: number) => {
       this._chatServices.getMessages(this._projectServices.projectSelectedId, from).subscribe((messages) => {
         if (this.messages.length === 0) {
-          this.messages = messages;
+          this.messages = _.sortBy(messages,(message)=>{
+            return message.date
+          })
           setTimeout(()=>{
             this.scrollToBottom()
             return
@@ -157,6 +161,8 @@ export class MessagesComponent implements OnInit, OnDestroy{
         this.temporaryImg = reader.result;
       };
       this.fileUpload = null;
+    }else{
+     this._swalServices.notSupported
     }
   }
 

@@ -27,5 +27,13 @@ export class SwalService {
       })
     })
   }
+
+  notSupported(){
+    Swal.fire({
+      text: 'Formato de archivo no soportado',
+      type: 'info',
+      showCloseButton: true
+    })
+  }
 }
 

@@ -51,8 +51,11 @@ export class MainProjectsComponent implements OnInit {
 
   ngOnDestroy(): void {
    this._projectServices.projects=[]
-   this.projectsSocket.unsubscribe()
-   this.usersSocket.unsubscribe()
-       
+   if(this.projectsSocket!=null){
+     this.projectsSocket.unsubscribe()
+   }
+   if(this.usersSocket!=null){
+     this.usersSocket.unsubscribe()
+   }
   }
 }
