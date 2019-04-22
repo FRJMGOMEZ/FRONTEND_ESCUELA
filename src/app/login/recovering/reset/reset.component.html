@@ -1,0 +1,50 @@
+<div *ngIf="_modalService.type === 'reset'">
+    <div class='backgroundBlack animated fadeIn' [ngClass]="_modalService.hidden">
+        <div class="modal" style='display: block' tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                    </div>
+                    <div class="modal-body">
+                        <form *ngIf="!resetCodeOk" ngNativeValidate #form='ngForm' role="form">
+                            <div class="checkbox">
+                                <label class='d-flex justify-content-around'>
+                                    <input [(ngModel)]="keepPassword" name="rememberMe" type="checkbox" value="rememberMe">
+                                    <p style='color:black'>Quiero que el código generado sea mi contraseña</p>
+                                </label>
+                            </div>
+                            <hr>
+                            <div *ngIf="!keepPassword" class="form-group text-center">
+                                <p style='color:black'>Para reestablecer una nueva contraseña, en primer lugar introduce el código enviado a tu email</p>
+                                <input [(ngModel)]="resetCode" name='resetCode' class="form-control" placeholder="Introducido el código recibido por email" name="resetCode" type="email" autofocus="">
+                            </div>
+                            <button class='btn btn-warning' *ngIf="resetCode" (click)='checkResetCode()'> <strong>Enviar</strong></button>
+                            <button class='btn btn-warning' *ngIf="keepPassword" (click)='hideModal()'> <strong>Ok</strong></button>
+                        </form>
+                        <form ngNativeValidate *ngIf="form && resetCodeOk" [formGroup]='form' id="loginform">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input formControlName='password' name='password' class="form-control" placeholder="Password1" type="password" required>
+                                </div>
+                                <div class="form-group">
+                                    <input formControlName='password2' name='password2' class="form-control" placeholder="Password2" type="password" required>
+                                </div>
+                                <div *ngIf="form.errors && form['errors'].areTheyEqual && !form.pristine" class='form-group'>
+                                    <p class='text-danger'>Las contraseñas deben de ser iguales</p>
+                                </div>
+                                <button *ngIf="!form.errors" (click)='changePassword()' class='btn btn-lg btn-warning btn-block' type='submit'> 
+                                <strong>Restablecer contraseña</strong>
+                                </button>
+                                <br>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

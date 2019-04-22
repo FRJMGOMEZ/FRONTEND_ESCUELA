@@ -17,9 +17,9 @@ import { DemoService } from '../../../providers/demo.service';
 })
 export class DayComponent implements OnInit, OnDestroy {
 
+  @ViewChild('printable') printable: ElementRef;
   @ViewChild("dayPlace") dayPlace: ElementRef;
-  @ViewChild('printable') printable:ElementRef;
-
+  
   inProgress: boolean = true;
 
   notification = new EventEmitter<any>();
@@ -144,9 +144,8 @@ export class DayComponent implements OnInit, OnDestroy {
     /// Start the renderization ///
     this.inProgress = false;
     /// Get the width of each column ///
-    setTimeout(() => {
-      this.getWidth();
-    });
+    this.getWidth();
+    
   }
 
   getWeeksAroundDates() {
@@ -160,9 +159,11 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   getWidth() {
-    this.cardWidth = `${Math.round(
-      ((this.dayPlace.nativeElement.offsetWidth / 12) * 11) / 5
-    )}px`;
+    setTimeout(()=>{
+      this.cardWidth = `${Math.round(
+        ((this.dayPlace['nativeElement'].offsetWidth / 12) * 11) / 5
+      )}px`;
+    })
   }
                                     //////// After init ////////
   switchFacilities(number: number = 0) {
@@ -234,6 +235,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.inProgress=true;
     this._facilitieServices.facilities = [] 
     this.eventSubscription.unsubscribe();
     this.eventsSocket.unsubscribe();

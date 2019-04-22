@@ -13,7 +13,8 @@ export class RegisterComponent implements OnInit {
 
   form:FormGroup
 
-  constructor(private _userServices: UserServices, private router: Router) { }
+  constructor(private _userServices: UserServices,
+              private router: Router) { }
 
   ngOnInit() {
     
@@ -51,7 +52,7 @@ export class RegisterComponent implements OnInit {
     let values = this.form.value;
     let user = new User(values.name, values.email, values.password)
     this._userServices.postUser(user).subscribe(()=>{
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login']).then(()=>{})
     })
   }
 }

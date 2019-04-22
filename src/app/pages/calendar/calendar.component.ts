@@ -51,9 +51,8 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._calendarServices.userOut()
-    this._calendarServices.currentDay=undefined;
-    this._calendarServices.currentWeek=undefined;
-    this._calendarServices.permanentEvents = [];
+      this._calendarServices.currentDay = undefined;
+      this._calendarServices.currentWeek = undefined;
+      this._calendarServices.permanentEvents = [];
   }
 }

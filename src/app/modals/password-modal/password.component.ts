@@ -1,9 +1,8 @@
 import { Component} from '@angular/core';
 import { PasswordModalController } from './passwordModalController.service';
 import { NgForm } from '@angular/forms';
-import { UserServices } from '../../providers/user.service';
 import Swal from 'sweetalert2';
-import { User } from 'src/app/models/user.model';
+import { PasswordService } from '../../providers/password.service';
 
 @Component({
   selector: 'app-password',
@@ -12,19 +11,20 @@ import { User } from 'src/app/models/user.model';
 })
 export class PasswordComponent {
 
-  constructor(public _modalService:PasswordModalController, private _userServices:UserServices) {
+  constructor(public _modalService:PasswordModalController,
+             private _passwordServices:PasswordService) {
    }
 
   changePassword(form:NgForm){
     if (form.value.password2 === form.value.password3) {
     let password1 = form.value.password1
     let password2 = form.value.password2;
-    let user:User = this._userServices.userOnline;
-    user.password = password1;
-      this._userServices.changePassword(password1,password2).subscribe(()=>{
+      this._passwordServices.changePassword(password1,password2).subscribe(()=>{
         Swal.fire({
           showCloseButton: true,
           text: 'La contraseña ha sido cambiada'
+        }).then(()=>{
+          this.hideModal()
         })
       })
   }else{

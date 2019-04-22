@@ -22,7 +22,8 @@ import { PasswordComponent } from "./password-modal/password.component";
 import { ShowFilesModalComponent } from "./show.files-modal/showfiles-modal.component";
 import { TaskModalComponent } from "./task-modal/task-modal.component";
 import { EventsModalComponent } from "./events-modal/events-modal.component";
-
+import { ResetComponent } from '../login/recovering/reset/reset.component';
+import { ForgotComponent } from '../login/recovering/forgot/forgot.component';
 
 
 /////Controllers///
@@ -41,6 +42,7 @@ import { FacilitiesModalComponent } from './facilities-modal/facilities-modal.co
 import { FacilitiesModalController } from './facilities-modal/facilities-modalController';
 import { TaskModalController } from './task-modal/task.modalController';
 import { ShowFilesModalController } from './show.files-modal/showfilesModal.controller';
+import { RecoveringModalController } from '../login/recovering/recovering.modal,controller';
 
 
 
@@ -58,7 +60,9 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
     EventsModalComponent,
     CalendarModalComponent,
     FacilitiesModalComponent,
-    TaskModalComponent
+    TaskModalComponent,
+    ResetComponent,
+    ForgotComponent
   ],
 
   imports: [
@@ -84,7 +88,10 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
     EventsModalComponent,
     CalendarModalComponent,
     FacilitiesModalComponent,
-    TaskModalComponent
+    TaskModalComponent,
+    ResetComponent,
+    ForgotComponent
+  
   ],
 
   providers: [
@@ -100,7 +107,8 @@ import { ShowFilesModalController } from './show.files-modal/showfilesModal.cont
     CalendarModalController,
     FacilitiesModalController,
     TaskModalController,
-    ShowFilesModalController
+    ShowFilesModalController,
+    RecoveringModalController
   ],
 
   bootstrap: []

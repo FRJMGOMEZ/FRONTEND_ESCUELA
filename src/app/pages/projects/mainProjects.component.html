@@ -7,7 +7,7 @@
             <div class=' col-12 d-flex justify-content-center mt-3'>
                 <h4>MIS PROYECTOS</h4>
             </div>
-            <div class='col-12 d-flex justify-content-center m-2 p-2 '>
+            <div *ngIf="_userServices.checkRole()" class='col-12 d-flex justify-content-center m-2 p-2 '>
                 <button (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
             </div>
             <div *ngIf="_projectServices.projects.length > 0 " class="col-12" style='height:500px;background:#DCD4D2;width:900px '>

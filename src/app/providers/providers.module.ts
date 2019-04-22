@@ -18,9 +18,10 @@ import { FacilitiesService } from './facilities.service';
 import { SwalService } from './swal.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { DashboardService } from './dashboard.service';
+import { PasswordService } from './password.service';
+
 
 @NgModule({
-    declarations: [],
     imports: [HttpModule, HttpClientModule],
 
     providers: [
@@ -36,7 +37,8 @@ import { DashboardService } from './dashboard.service';
        FacilitiesService,
        SwalService,
        ErrorHandlerService,
-       DashboardService
+       DashboardService,
+       PasswordService
     ],
 
     exports: [],

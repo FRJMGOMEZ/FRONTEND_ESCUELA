@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UserServices } from 'src/app/providers/user.service';
 import { User } from 'src/app/models/user.model';
 import { DemoService } from '../../providers/demo.service';
+import { RecoveringModalController } from '../recovering/recovering.modal,controller';
 
 @Component({
   selector: "app-login",
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     private _userServices: UserServices,
     private router: Router,
     public _demoService:DemoService,
+    public _recoveringController:RecoveringModalController
   ) {}
 
   ngOnInit() {
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit {
     this._userServices.login(user, this.rememberMe).subscribe(() => {
       setTimeout(()=>{
         this.router.navigate(["/dashboard"]);
-      },1000)
+      },2000)
     });
   }
 }

@@ -35,11 +35,11 @@
                       <option value="ADMIN_ROLE">ADMIN_ROLE</option>
                     </select>
                 </td>
-                <td *ngIf="!_userServices.checkRole()">
+                <td *ngIf="_userServices.checkRole()">
                     <button *ngIf="!user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">activar</button>
                     <button *ngIf="user.status" class='btn btn-warning' (click)="_userServices.changeUserStatus(user._id).subscribe()" name="grantAccess" value="grantAccess">desactivar</button>
                 </td>
-                <td *ngIf="!_userServices.checkRole()">
+                <td *ngIf="_userServices.checkRole()">
                     <div class="col-12 d-flex flex-row">
                         <button (click)='deleteUser(user._id)' class='btn btn-danger'>
                          <i class="far fa-trash-alt"></i>

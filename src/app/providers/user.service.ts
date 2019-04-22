@@ -6,6 +6,7 @@ import { map, catchError } from "rxjs/operators";
 import { User} from '../models/user.model'
 import { ErrorHandlerService } from './error-handler.service';
 import { Socket } from 'ngx-socket-io';
+import Swal from 'sweetalert2';
 
 @Injectable({
     providedIn: 'root'
@@ -13,13 +14,9 @@ import { Socket } from 'ngx-socket-io';
 export class UserServices {
 
     headers : HttpHeaders
-
     userOnline:User;
-
     token:string
-
     users:User[]=[]
-
     socketOn:boolean=false
 
     count:number
@@ -49,8 +46,14 @@ export class UserServices {
 
     postUser(user: User) {
         let url = `${URL_SERVICES}user`;
-        return this.http.post(url, user).pipe(
-         catchError(this._errorHandler.handleError)
+        return this.http.post(url, user).pipe(map((res:any)=>{
+            Swal.fire({
+             text:res.message,
+             type:'info',
+             showCloseButton:true
+            })
+        })
+         ,catchError(this._errorHandler.handleError)
         )
     }
 
@@ -172,13 +175,6 @@ export class UserServices {
         }))
     }
 
-    changePassword(password1: string,password2:string) {
-        let url = `${URL_SERVICES}changePassword/${password1}/${password2}`
-        return this.http.put(url,{},{ headers: this.headers }).pipe(
-            catchError(this._errorHandler.handleError)
-        )
-    }
-    
 
     changeRole(userId:string,role:string){
         let url = `${URL_SERVICES}changeRole/${userId}/${role}`
@@ -186,6 +182,7 @@ export class UserServices {
             this.userSocketEmit('changeRole',userId)
         }))
     }
+    
 
     logout() {
       this.token = "";

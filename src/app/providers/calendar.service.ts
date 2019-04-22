@@ -229,7 +229,7 @@ export class CalendarService {
 
   userOut(){
    return new Promise((resolve,reject)=>{
-      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
+      let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
       this.socket.emit('userOut', payload)
       resolve()
     })
