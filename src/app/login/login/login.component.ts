@@ -25,9 +25,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    
     this._demoService.loginPopup()
-
     this.email = localStorage.getItem("email") || "";
     if (this.email.length > 0) {
       this.rememberMe = true;
@@ -41,7 +39,7 @@ export class LoginComponent implements OnInit {
     this._userServices.login(user, this.rememberMe).subscribe(() => {
       setTimeout(()=>{
         this.router.navigate(["/dashboard"]);
-      },2000)
+      },3000)
     });
   }
 }
