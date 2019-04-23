@@ -45,8 +45,18 @@ export class ResetComponent implements OnInit {
   }
 
   checkResetCode(){
-    this._passwordServices.checkResetCode(this._modalService.userEmail,this.resetCode).subscribe(()=>{
+    this._passwordServices.checkResetCode(this._modalService.userEmail,this.resetCode).subscribe((message:any)=>{
+        if(message){
+          Swal.fire({
+            type:'info',
+            text:message,
+             showCloseButton:true
+          }).then(()=>{
+            this.hideModal()
+          })
+        }else{
           this.resetCodeOk=true;
+        }
     })
   }
 

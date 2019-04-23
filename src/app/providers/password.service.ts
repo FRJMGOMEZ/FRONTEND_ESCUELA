@@ -37,8 +37,12 @@ forgotPassword(email: string){
 
 checkResetCode(userMail: string, resetCode: string) {
   let url = `${URL_SERVICES}checkResetCode/${userMail}/${resetCode}`
-  return this.http.put(url, {}).pipe(
-    catchError(this._errorHandler.handleError))
+  return this.http.put(url, {}).pipe(map((res:any)=>{
+      if(res.message){
+        return res.message
+      }
+  })
+    ,catchError(this._errorHandler.handleError))
 }
 
 setNewPassword(resetCode: string, password: string, email: string){
