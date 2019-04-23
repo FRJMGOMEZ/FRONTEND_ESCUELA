@@ -39,8 +39,8 @@ async ngOnInit() {
       if (this._dashboardServices.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
         this._dashboardServices.getTasks().subscribe()
         this._dashboardServices.getLastMessages().subscribe()
+        this._dashboardServices.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
       }
-      this._dashboardServices.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
     })
 
     this._dashboardServices.dashboardIn()
