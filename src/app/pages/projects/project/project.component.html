@@ -27,7 +27,7 @@
                     <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
                         <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item'>AÑADIR ADMINISTRADOR</a>
                     </div>
-                    <div>
+                    <div *ngIf="_projectServices.participants.length > 1">
                         <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item'>SALIR DE PROYECTO</a>
                     </div>
                     <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">

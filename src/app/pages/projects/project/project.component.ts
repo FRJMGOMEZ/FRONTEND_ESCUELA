@@ -147,11 +147,13 @@ export class ProjectComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this._projectServices.addOrRemoveParticipant(this._userServices.userOnline._id).subscribe(() => {
-          this._projectServices.addOrRemoveAdmin(this._userServices.userOnline._id).subscribe(async() => {
-            this._projectServices.projects = this._projectServices.projects.filter((project)=>{return project._id != this._projectServices.projectSelectedId})
+          this._projectServices.addOrRemoveAdmin(this._userServices.userOnline._id).subscribe(() => {
             this.userOnline.projects = this.userOnline.projects.filter((project: string) => { return project != this._projectServices.projectSelectedId})
-           await this._userServices.saveInStorage(this.userOnline._id, this.userOnline, this._userServices.token)
-            this.router.navigate(['projects'])
+            this._userServices.saveInStorage(this.userOnline._id, this.userOnline, this._userServices.token)
+            this._projectServices.projects = this._projectServices.projects.filter((project) => { return project._id != this._projectServices.projectSelectedId })
+            setTimeout(()=>{
+              this.router.navigate(['projects'])
+            })
           })
         })
       }
