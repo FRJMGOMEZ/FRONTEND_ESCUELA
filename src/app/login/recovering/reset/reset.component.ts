@@ -46,30 +46,30 @@ export class ResetComponent implements OnInit {
 
   checkResetCode(){
     this._passwordServices.checkResetCode(this._modalService.userEmail,this.resetCode).subscribe((message:any)=>{
-        if(message){
-          Swal.fire({
-            type:'info',
-            text:message,
-             showCloseButton:true
-          }).then(()=>{
-            this.hideModal()
-          })
-        }else{
           this.resetCodeOk=true;
-        }
     })
   }
 
   changePassword() {
     if (this.form.value.password === this.form.value.password2) {
-      this._passwordServices.setNewPassword(this.resetCode,this.form.value.password,this._modalService.userEmail).subscribe(()=>{
-        Swal.fire({
-          type:'success',
-          showCloseButton: true,
-          text:'La contraseña se ha actualizado correctamente'
-        }).then(()=>{
-          this.hideModal() 
-        }) 
+      this._passwordServices.setNewPassword(this.resetCode,this.form.value.password,this._modalService.userEmail).subscribe((message:any)=>{
+        if (message) {
+          Swal.fire({
+            type: 'info',
+            text: message,
+            showCloseButton: true
+          }).then(() => {
+            this.hideModal()
+          })
+        }else{
+          Swal.fire({
+            type: 'success',
+            showCloseButton: true,
+            text: 'La contraseña se ha actualizado correctamente'
+          }).then(() => {
+            this.hideModal()
+          }) 
+        }
       })
     } else {
       Swal.fire({
