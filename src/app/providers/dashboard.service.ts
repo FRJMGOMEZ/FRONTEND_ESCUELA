@@ -6,6 +6,7 @@ import { URL_SERVICES } from '../config/config';
 import { HttpClient } from '@angular/common/http';
 import { EventModel } from '../models/event.model';
 
+
 @Injectable({
   providedIn: "root"
 })
@@ -20,6 +21,8 @@ export class DashboardService {
   eventsComming: EventModel[] = []
   eventsToday: EventModel[] = []
   eventsOnCourse: EventModel[] = []
+
+  userProjects:string[]
 
   constructor(
     private socket: Socket,
@@ -156,17 +159,17 @@ export class DashboardService {
     );
   }
 
-  dashboardSocket(userProjects: string[]) {
+  dashboardSocket() {
     return this.socket.fromEvent("dashboard").pipe(
       map((payload: any) => {
         if (payload.item === "event") {
           this.getEvents().subscribe()
         } else if (payload.item === "task") {
-          if (userProjects.indexOf(payload.room) >= 0) {
+          if (this.userProjects.indexOf(payload.room) >= 0) {
             this.getTasks().subscribe()
           }
         } else if (payload.item === "message") {
-          if (userProjects.indexOf(payload.room) >= 0) {
+          if (this.userProjects.indexOf(payload.room) >= 0) {
             this.getLastMessages().subscribe()
           }
         }

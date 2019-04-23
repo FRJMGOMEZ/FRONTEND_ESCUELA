@@ -17,8 +17,6 @@ import { DemoService } from '../../providers/demo.service';
 })
 export class DashboardComponent implements OnInit {
 
-  userProjects:string[]
-
   dashboardSubscription:Subscription=null;
   projectsUsersSocket:Subscription = null;
 
@@ -35,20 +33,19 @@ async ngOnInit() {
 
   this._demoServices.dashboardPopup()
 
-    this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
+    this._dashboardServices.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
   
     this.projectsUsersSocket = this._projectServices.usersSocket().subscribe(() => {
-      if (this.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
+      if (this._dashboardServices.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
         this._dashboardServices.getTasks().subscribe()
         this._dashboardServices.getLastMessages().subscribe()
       }
-      this.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
-      this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
+      this._dashboardServices.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
     })
 
     this._dashboardServices.dashboardIn()
 
-    this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
+    this.dashboardSubscription = this._dashboardServices.dashboardSocket().subscribe()
 
     this._dashboardServices.getTasks().subscribe()
 
@@ -114,5 +111,6 @@ async ngOnInit() {
     this._dashboardServices.eventsComming=[];
     this._dashboardServices.eventsToday=[];
     this._dashboardServices.eventsOnCourse=[];
+    this._dashboardServices.userProjects = []
   }
 }
