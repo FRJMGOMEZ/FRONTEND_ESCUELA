@@ -120,7 +120,6 @@
                             <p>Termina a las: {{event.position | timeConversor2: event.duration }}</p>
                             <p>instalacion : {{facilitie.name}}</p>
                             <p>duracion : {{event.duration | timeConversor1}}</p>
-                            <hr>
                             <div class="row ml-1">
                                 <p *ngIf="event.permanent">Se repite cada {{event.startDate | date : 'EEEE'}}</p>
                                 <p *ngIf="!noLimit && event.endDate"> {{dateFixer(event.endDate)}}</p>

@@ -180,6 +180,23 @@ export class CalendarService {
 
   /////////// DAY //////////
 
+  userIn() {
+    return new Promise((resolve, reject) => {
+      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
+      this.socket.emit('userIn', payload, () => {
+        resolve()
+      })
+    })
+  }
+
+  userOut() {
+    return new Promise((resolve, reject) => {
+      let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
+      this.socket.emit('userOut', payload)
+      resolve()
+    })
+  }
+
   getDayByDate(date:number) {
     let url = `${URL_SERVICES}dayByDate/${date}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(
@@ -216,23 +233,6 @@ export class CalendarService {
         }
       })
     );
-  }
-
-  userIn(){
-    return new Promise((resolve,reject)=>{
-      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
-      this.socket.emit('userIn', payload, () => {
-        resolve()
-      })
-    })
-  }
-
-  userOut(){
-   return new Promise((resolve,reject)=>{
-      let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
-      this.socket.emit('userOut', payload)
-      resolve()
-    })
   }
 
     //////////// EVENTS ///////////
@@ -280,11 +280,15 @@ export class CalendarService {
         if (payload.eventOrder.order === 'post') {
           this.permanentEvents.push(payload.eventOrder.event)
         } else if (payload.eventOrder.order === 'put') {
-          this.permanentEvents.forEach((event, index) => {
-            if (event._id === payload.eventOrder.event._id) {
-              this.permanentEvents[index] = payload.eventOrder.event
-            }
-          })
+          if(this.permanentEvents.indexOf(payload.eventOrder.event)>=0){
+            this.permanentEvents.forEach((event, index) => {
+              if (event._id === payload.eventOrder.event._id) {
+                this.permanentEvents[index] = payload.eventOrder.event
+              }
+            })
+          }else{
+            this.permanentEvents.push(payload.eventOrder.event)
+          }
         } else if (payload.eventOrder.order === 'delete') {
           this.permanentEvents = this.permanentEvents.filter((event) => { return event._id != payload.eventOrder.event._id })
         }
@@ -315,11 +319,15 @@ export class CalendarService {
         let eventOrder = new EventOrder(res.event,'put')
         this.eventsSource.next(eventOrder)
         if(res.event.permanent){
-          this.permanentEvents.forEach((event,index)=>{
-            if(event._id === res.event._id){
-              this.permanentEvents[index]=res.event
-            }
-          })
+          if(this.permanentEvents.indexOf(res.event)>=0){
+            this.permanentEvents.forEach((event, index) => {
+              if (event._id === res.event._id) {
+                this.permanentEvents[index] = res.event
+              }
+            })
+          }else{
+            this.permanentEvents.push(res.event)
+          }
           this.emitEvent(eventOrder)
         }else{
           this.emitEvent()
