@@ -10,7 +10,7 @@ import { UserServices } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UploadFilesServices {
+export class FilesServices {
 
   public fileSource = new Subject<FileOrder>();
   public files$ = this.fileSource.asObservable();
@@ -61,8 +61,8 @@ export class UploadFilesServices {
      })
   }
 
-  deleteFile(fileId:string,type:string){
-    let url = `${URL_SERVICES}deleteFile/${fileId}/${type}`;
+  deleteFile(fileId:string){
+    let url = `${URL_SERVICES}deleteFile/${fileId}`;
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
         let fileOrder = new FileOrder(res.file,'delete')
         this.fileSource.next(fileOrder)

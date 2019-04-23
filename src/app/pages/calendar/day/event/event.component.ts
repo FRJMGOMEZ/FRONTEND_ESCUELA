@@ -223,7 +223,6 @@ export class EventComponent implements OnInit,AfterViewInit{
       this.renderer.listen(child2, "click", () => {
           this._swalServices.confirmDelete().then((res) => {
             this._modalEventController.hideModal()
-            setTimeout(()=>{
               if (res) {
                 if (this.ourEvents[String(position)].permanent) {
                   this._calendarServices.pullEvent(this._calendarServices.currentDay._id, this.ourEvents[String(position)]._id).subscribe()
@@ -231,7 +230,6 @@ export class EventComponent implements OnInit,AfterViewInit{
                   this._calendarServices.deleteEvent(this.ourEvents[String(position)]._id).subscribe();
                 }
               }
-            })
           })   
       });
       this.renderer.appendChild(div3, child2)

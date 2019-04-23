@@ -4,8 +4,8 @@
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
     </div>
-    <div class='scrollable' *ngIf="_projectServices.groupTasks.length>0" style='height:230px'>
-        <h5>Tareas del grupo de trabajo</h5>
+    <h5>Tareas del grupo de trabajo</h5>
+    <div class='scrollable' *ngIf="_projectServices.groupTasks.length>0" style='height:210px;border-bottom:1px solid black'>
         <table class='table'>
             <thead>
                 <tr>
@@ -37,10 +37,9 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
-    <div class='scrollable' *ngIf="_projectServices.myTasks.length>0" style='height:230px'>
-        <h5>Mis tareas</h5>
+    <h5>Mis tareas</h5>
+    <div class='scrollable' *ngIf="_projectServices.myTasks.length>0" style='height:210px'>
         <table class='table'>
             <thead>
                 <tr>

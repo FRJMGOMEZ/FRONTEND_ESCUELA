@@ -20,7 +20,9 @@
 
                         </div>
                     </form>
-                    <button *ngIf="_modalController.id" (click)='putProject()' class="btn btn-primary text-center">GUARDAR CAMBIOS</button>
+                    <div class='text-center'>
+                        <button *ngIf="_modalController.id" (click)='putProject()' class="btn btn-warning">GUARDAR CAMBIOS</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                 </div>

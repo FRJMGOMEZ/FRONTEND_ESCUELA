@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
 import { PasswordModalController } from '../../modals/password-modal/passwordModalController.service';
 import { Subscription } from 'rxjs';
-import { UploadFilesServices } from '../../providers/upload-files.service';
+import { FilesServices } from '../../providers/files.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +19,7 @@ export class ProfileComponent {
   constructor(public _userServices:UserServices,
               private _uploadFilesModal:UploadFilesModalController,
               private _passwordModalController:PasswordModalController,
-              private _filesUploadService:UploadFilesServices) {}
+              private _filesService:FilesServices) {}
 
   saveChanges(form:NgForm){
     if(form.valid){
@@ -30,7 +30,7 @@ export class ProfileComponent {
    
   changeImg(){
     this._uploadFilesModal.showModal(this._userServices.userOnline._id,'User')
-    this.fileSubscription = this._filesUploadService.files$.subscribe((fileOrder) => {
+    this.fileSubscription = this._filesService.files$.subscribe((fileOrder) => {
       if (fileOrder.order === 'post') {
         if (fileOrder.file.type === 'User') {
           let user:any = this._userServices.userOnline;

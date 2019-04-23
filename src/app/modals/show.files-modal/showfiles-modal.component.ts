@@ -3,7 +3,7 @@ import { FileModel} from '../../models/file.model';
 import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { UploadFilesServices } from 'src/app/providers/upload-files.service';
+import { FilesServices } from 'src/app/providers/files.service';
 
 @Component({
   selector: "app-files-modal",
@@ -22,13 +22,13 @@ export class ShowFilesModalComponent implements OnInit {
   constructor(
     public _modalController: ShowFilesModalController,
     private http:HttpClient,
-    private _uploadFilesService:UploadFilesServices
+    private _filesService:FilesServices
   ) {}
   
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
       if(this._modalController.id){
-        this._uploadFilesService.getFileById(this._modalController.id).subscribe((file)=>{
+        this._filesService.getFileById(this._modalController.id).subscribe((file)=>{
           this.file=file;
         })
       }

@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { UploadFilesServices } from '../../../../providers/upload-files.service';
+import { FilesServices } from '../../../../providers/files.service';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { ProjectServices } from '../../../../providers/project.service';
 
@@ -13,7 +13,7 @@ export class FilesComponent  {
   constructor(
     private _showFilesModalController: ShowFilesModalController,
     public _projectServices:ProjectServices,
-    private _uploadFilesServices:UploadFilesServices
+    private _filesServices:FilesServices
   ) {}
 
 
@@ -23,6 +23,6 @@ export class FilesComponent  {
   }
 
  deleteFile(fileId:string) {
-   this._uploadFilesServices.deleteFile(fileId,'projectFiles').subscribe()
+   this._filesServices.deleteFile(fileId).subscribe()
   }
 }

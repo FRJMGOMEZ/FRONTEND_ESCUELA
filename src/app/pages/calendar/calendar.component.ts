@@ -28,19 +28,15 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
             this._calendarServices.postWeek(today).subscribe(() => {
                 this._calendarServices.checkWeekDay().then((dayId:string) => {
                   this._calendarServices.getDayById(dayId).subscribe(()=>{
-                    setTimeout(()=>{
                       this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]);
                       return
-                    })
                   })
               })
             })
           }else{
               let dayOfTheWeek = new Date(this._calendarServices.currentDay.date).getDay();
               this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, dayOfTheWeek).subscribe(() => {
-                setTimeout(()=>{
                   this.router.navigate(['./calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id])
-                })
                 return
               })
           }

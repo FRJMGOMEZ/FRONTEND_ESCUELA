@@ -9,7 +9,7 @@ import { UserModalController } from '../../../modals/users-modal/userModalContro
 import Swal from "sweetalert2";
 import { MainProjectsComponent } from '../mainProjects.component';
 import { Subscription } from 'rxjs';
-import { UploadFilesServices } from 'src/app/providers/upload-files.service';
+import { FilesServices } from 'src/app/providers/files.service';
 import { FileOrder } from 'src/app/models/file.model';
 import { DemoService } from 'src/app/providers/demo.service';
 
@@ -39,7 +39,7 @@ export class ProjectComponent implements OnInit {
     private _usersModalController: UserModalController,
     private ar:ActivatedRoute,
     public _uploadFilesModalController:UploadFilesModalController,
-    private _filesUploadServices:UploadFilesServices,
+    private _filesService:FilesServices,
     public _demoServices:DemoService
   ) {
     this.userOnline = this._userServices.userOnline;
@@ -58,25 +58,25 @@ export class ProjectComponent implements OnInit {
       })
     });
 
-    this.filesSocket = this._filesUploadServices.filesSocket().subscribe()
-    this.filesSubscription=this._filesUploadServices.files$.subscribe((fileOrder: FileOrder) => {
+    this.filesSocket = this._filesService.filesSocket().subscribe()
+    this.filesSubscription=this._filesService.files$.subscribe((fileOrder: FileOrder) => {
 
       if (fileOrder.order === 'delete') {
-        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+        if (this._filesService.textFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.textFiles = this._projectServices.textFiles.filter((file) => { return file._id != fileOrder.file._id })
-        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+        } else if (this._filesService.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.imageFiles = this._projectServices.imageFiles.filter((file) => { return file._id != fileOrder.file._id })
         }
       }else if(fileOrder.order === 'post'){
-        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+        if (this._filesService.textFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.textFiles.push(fileOrder.file)
-        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+        } else if (this._filesService.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.imageFiles.push(fileOrder.file)
         }
       }else if(fileOrder.order === 'push'){
-        if (this._filesUploadServices.textFormats.indexOf(fileOrder.file['format']) >= 0) {
+        if (this._filesService.textFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.textFiles.push(fileOrder.file)
-        } else if (this._filesUploadServices.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
+        } else if (this._filesService.imgFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.imageFiles.push(fileOrder.file)
         }
       }

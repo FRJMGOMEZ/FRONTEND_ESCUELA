@@ -33,12 +33,9 @@ export class MainProjectsComponent implements OnInit {
         })
   }
 
-  toProject(id:string){
-    this._projectServices.projectSelectedId = id;
-    setTimeout(()=>{
-      this.router.navigate(['/projects', this._projectServices.projectSelectedId]).then(() => {
-      })
-    })
+  async toProject(id:string){
+    this._projectServices.projectSelectedId = await id;
+      this.router.navigate(['/projects', this._projectServices.projectSelectedId])
   }
 
   newProject(){

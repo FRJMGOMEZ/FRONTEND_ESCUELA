@@ -32,5 +32,9 @@
                 </td>
             </tr>
         </table>
+        <div class='d-flex justify-content-around mb-2 '>
+            <button *ngIf="from && from > 0" (click)='changeFrom(-5) ' class='btn btn-secondary '>Previous</button>
+            <button *ngIf="_facilitieServices.count > from+5" (click)='changeFrom(5) ' class='btn btn-secondary '>Following</button>
+        </div>
     </div>
 </div>

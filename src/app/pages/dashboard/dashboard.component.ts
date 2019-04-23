@@ -36,13 +36,14 @@ async ngOnInit() {
   this._demoServices.dashboardPopup()
 
     this.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
-
+  
     this.projectsUsersSocket = this._projectServices.usersSocket().subscribe(() => {
       if (this.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
         this._dashboardServices.getTasks().subscribe()
         this._dashboardServices.getLastMessages().subscribe()
       }
       this.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
+      this.dashboardSubscription = this._dashboardServices.dashboardSocket(this.userProjects).subscribe()
     })
 
     this._dashboardServices.dashboardIn()
@@ -95,12 +96,10 @@ async ngOnInit() {
     }
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0);
     this._calendarServices.getDayByDate(date.getTime()).subscribe((res) => {
-      setTimeout(()=>{
         this._calendarServices.getWeekByDay(this._calendarServices.currentDay._id, new Date(this._calendarServices.currentDay.date).getDay()).subscribe(() => {
           this.router.navigate(['/calendar', this._calendarServices.currentWeek._id, this._calendarServices.currentDay._id]).then(() => {
           })
         })
-      })
     })
   }
 

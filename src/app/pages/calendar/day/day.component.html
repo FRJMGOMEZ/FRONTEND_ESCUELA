@@ -4,9 +4,9 @@
             <span class="sr-only">Loading...</span>
         </div>
     </ng-container>
-    <div *ngIf="!inProgress" class="row m-1 animated fadeIn m-2">
+    <div class="row m-1 animated fadeIn m-2">
         <div class="col-4 mt-0 pl-0">
-            <div class="row ">
+            <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row ">
                 <div class="col-12">
                     <button class='btn btn-warning' (click)="_demoServices.calendarPopup(true)" style='cursor:pointer'>
                          <i style="color:blue" class="fas fa-info"></i>
@@ -58,7 +58,7 @@
         <div #printable class="col-8 p-2">
             <div class="row">
                 <div class="col-11 mb-1">
-                    <div class="row card-group mt-1" style='height:50px'>
+                    <div *ngIf="_calendarServices.currentWeek && _calendarServices.currentDay" class="row card-group mt-1" style='height:50px'>
                         <div *ngIf="_calendarServices.currentWeek.monday['_id'] !=_calendarServices.currentDay._id " class="card">
                             <div (click)="toOtherDay(_calendarServices.currentWeek.monday['_id'])" style='background-color:#F5F1E3' class="card-body ">
                                 <p class='text-center day'>
@@ -200,7 +200,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf='cardWidth' class="col-11 d-flex justify-content-around " style='height:720px'>
+                        <div *ngIf='cardWidth && !inProgress' class="col-11 d-flex justify-content-around " style='height:720px'>
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
                                 <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': cardWidth} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>

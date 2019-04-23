@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Message  } from 'src/app/models/message.model';
 import { ChatServices } from '../../../../providers/chat.service';
-import { UploadFilesServices } from '../../../../providers/upload-files.service';
+import { FilesServices } from '../../../../providers/files.service';
 import { MessageOrder } from '../../../../models/message.model';
 import { Subscription } from 'rxjs';
 import { FileOrder } from '../../../../models/file.model';
@@ -39,7 +39,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
   loading:boolean = false
 
   constructor(
-    private _uploadFilesServices: UploadFilesServices,
+    private _filesServices: FilesServices,
     public _chatServices: ChatServices,
     public projectComponent: ProjectComponent,
     public mainProjectsComponent:MainProjectsComponent,
@@ -71,7 +71,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
 
     this.getMessages()
       
-    this.filesSubscription=this._uploadFilesServices.files$.subscribe((fileOrder: FileOrder) => {
+    this.filesSubscription=this._filesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "post") {
         let message;
           message = new Message(
@@ -168,7 +168,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
 
   sendMessage() {
     if (this.imgUpload) {
-      this._uploadFilesServices.uploadFile(
+      this._filesServices.uploadFile(
         this.imgUpload,
         "Project",
         this._projectServices.projectSelectedId,
@@ -177,7 +177,7 @@ export class MessagesComponent implements OnInit, OnDestroy{
       this.imgUpload = null;
       this.temporaryImg = null;
     } else if (this.fileUpload) {
-      this._uploadFilesServices.uploadFile(
+      this._filesServices.uploadFile(
         this.fileUpload,
         "Project",
         this._projectServices.projectSelectedId,

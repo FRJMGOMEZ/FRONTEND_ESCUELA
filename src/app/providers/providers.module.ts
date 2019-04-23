@@ -6,7 +6,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 /// Services
 import { UserServices } from "./user.service";
-import { UploadFilesServices } from './upload-files.service';
+import { FilesServices } from './files.service';
 import { SubjectServices } from "./subject.service";
 import { ProjectServices } from "./project.service";
 import { indexcardServices } from './indexcard.service';
@@ -26,7 +26,7 @@ import { PasswordService } from './password.service';
 
     providers: [
        UserServices,
-       UploadFilesServices,
+       FilesServices,
        SubjectServices,
        ProjectServices,
        indexcardServices,

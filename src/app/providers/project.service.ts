@@ -9,7 +9,7 @@ import { User, UserOrder} from '../models/user.model';
 import { Task, TaskOrder} from '../models/task.model';
 import { Socket } from "ngx-socket-io";
 import { FileModel } from '../models/file.model';
-import { UploadFilesServices } from './upload-files.service';
+import { FilesServices } from './files.service';
 import * as _ from 'underscore';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorHandlerService } from './error-handler.service';
@@ -46,7 +46,7 @@ export class ProjectServices {
   constructor(private http:HttpClient,
               private _userServices: UserServices,
               private socket:Socket,
-              private _uploadFilesServices:UploadFilesServices,
+              private _filesServices:FilesServices,
               private router:Router,
               private _errorHandler:ErrorHandlerService,
               private _ar:ActivatedRoute,
@@ -150,9 +150,9 @@ export class ProjectServices {
       this._chatServices.messagesCount = res.project.messages.length;
       res.project.messages.forEach((message:any) => {
         if (message.file) {
-          if (this._uploadFilesServices.textFormats.indexOf(message.file.format) >= 0) {
+          if (this._filesServices.textFormats.indexOf(message.file.format) >= 0) {
             this.textFiles.push(message.file)
-          } else if (this._uploadFilesServices.imgFormats.indexOf(message.file.format) >= 0) {
+          } else if (this._filesServices.imgFormats.indexOf(message.file.format) >= 0) {
             this.imageFiles.push(message.file)
           }
         }
@@ -215,7 +215,7 @@ export class ProjectServices {
     let url = `${URL_SERVICES}project/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       res.files.forEach((file)=>{
-        this._uploadFilesServices.deleteFile(file,'projectFiles').subscribe()
+        this._filesServices.deleteFile(file).subscribe()
       })
       let projectOrder = new ProjectOrder(res.project,'delete')
       this.emitProject(projectOrder)

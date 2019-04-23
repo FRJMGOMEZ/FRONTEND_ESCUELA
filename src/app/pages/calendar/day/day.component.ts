@@ -9,7 +9,6 @@ import Swal from "sweetalert2";
 import { Subscription } from 'rxjs'
 import * as html2canvas from "html2canvas"
 import { DemoService } from '../../../providers/demo.service';
-import { resolve } from 'url';
 
 @Component({
   selector: "app-day",
@@ -82,6 +81,12 @@ export class DayComponent implements OnInit, OnDestroy {
                 })
               }
             }
+          }else{
+            this._calendarServices.getWeekById(weekId).subscribe(()=>{
+              this._calendarServices.getDayById(dayId).subscribe(()=>{
+                this.init()
+              })
+            })
           } 
         })
       }
@@ -119,13 +124,11 @@ export class DayComponent implements OnInit, OnDestroy {
     this._calendarServices.userIn().then(()=>{
     this.resetEventRenderValues();
     this.getWeeksAroundDates();
-     setTimeout(()=>{
-       this.getWidth(); 
-     })})
+    this.getWidth(); 
+     })
   }
 
  async resetEventRenderValues(){
-      /// Reinit the space of each facilitie////
     await  this._facilitieServices.facilities.forEach((facilitie: any) => {
         if (facilitie.status === false) {
           this._facilitieServices.facilities = this._facilitieServices.facilities.filter((eachFacilitie) => { return eachFacilitie._id != facilitie._id })
@@ -134,12 +137,9 @@ export class DayComponent implements OnInit, OnDestroy {
           facilitie.space = space;
         }
       });
-      /// Reinit the initial position of the events renderization  //
       this.position = await 0;
       this.inProgress = await false
       return
-    /// Start the renderization ///
-    /// Get the width of each column ///  
   }
 
   getWeeksAroundDates() {
@@ -173,15 +173,17 @@ export class DayComponent implements OnInit, OnDestroy {
 
  async toOtherDay(dayId) {
     this.inProgress=true;
+    this._calendarServices.currentDay=undefined;
     await this._calendarServices.getDayById(dayId).subscribe()
     this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);    
   }
 
   toOtherWeek(date: Date) {
     this.inProgress=true;
+    this._calendarServices.currentWeek=undefined;
       date = new Date(date);
-      this._calendarServices.getWeekByDate(date.getTime()).subscribe((res: any) => {
-        if (res === 'no-week') {
+      this._calendarServices.getWeekByDate(date.getTime()).subscribe((week: any) => {
+        if (week === 'no-week') {
           this._calendarServices.postWeek(date).subscribe(() => {
               this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId:string) => {
                   this._calendarServices.getDayById(dayId).subscribe(()=>{
@@ -190,7 +192,7 @@ export class DayComponent implements OnInit, OnDestroy {
               });
           })
         }else{
-          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId:string)=>{
+          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay(),week).then((dayId:string)=>{
             this._calendarServices.getDayById(dayId).subscribe(()=>{
               this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
             })

@@ -3,7 +3,7 @@ import { UserServices } from '../../providers/user.service';
 import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
 import { Subscription } from 'rxjs';
 import { SwalService } from '../../providers/swal.service';
-import { UploadFilesServices } from '../../providers/upload-files.service';
+import { FilesServices } from '../../providers/files.service';
 
 @Component({
   selector: 'app-users',
@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit,OnDestroy {
 
   constructor(public _userServices:UserServices,
               private _uploadFilesModalController:UploadFilesModalController,
-              private _fileUploadServices:UploadFilesServices,
+              private _fileServices:FilesServices,
               private _swalServices:SwalService) {}
 
   ngOnInit() {
@@ -45,7 +45,7 @@ export class UsersComponent implements OnInit,OnDestroy {
 
   changeImg(id:string) {
     this._uploadFilesModalController.showModal(id, 'users')
-    this.fileSubscription = this._fileUploadServices.files$.subscribe((fileOrder) => {
+    this.fileSubscription = this._fileServices.files$.subscribe((fileOrder) => {
       if (fileOrder.order === 'post') {
         if (fileOrder.file.type === 'users') {
           this._userServices.users.forEach((user,index)=>{

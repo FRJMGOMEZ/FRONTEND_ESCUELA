@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user.model';
 import { UploadFilesModalController } from './uploadFilesModalController';
-import { UploadFilesServices } from '../../providers/upload-files.service';
+import { FilesServices } from '../../providers/files.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,13 +17,13 @@ export class UploadFilesModalComponent {
   temporaryImg:any
 
   constructor(public _modalService: UploadFilesModalController,
-              private _uploadFilesServices:UploadFilesServices) {
+              private _filesServices:FilesServices) {
   }
 
   uploadImg() {
     let id = this._modalService.id;
     let type = this._modalService.type;
-    this._uploadFilesServices.uploadFile(this.imgUpload, type, id)
+    this._filesServices.uploadFile(this.imgUpload, type, id)
     this.hideModal()
   }
 
@@ -33,7 +33,7 @@ export class UploadFilesModalComponent {
       file = null;
       this.imgUpload=null;
       Swal.fire({
-        text:`Los formatos admitidos son ${this._uploadFilesServices.imgFormats}, el archivo seleccionado no se cargará`,
+        text:`Los formatos admitidos son ${this._filesServices.imgFormats}, el archivo seleccionado no se cargará`,
         showCloseButton:true
       })
     }else{

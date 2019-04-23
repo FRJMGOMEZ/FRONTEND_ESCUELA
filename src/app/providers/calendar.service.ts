@@ -42,6 +42,7 @@ export class CalendarService {
           return 'no-week' 
         }else{
           this.currentWeek = res.week;
+          return res.week
         }
       })
     );
@@ -100,41 +101,44 @@ export class CalendarService {
       );
   }
 
-  checkWeekDay(day?: number) {
+  checkWeekDay(day?: number, week?: Week) {
     return new Promise((resolve) => {
       let dayId;
+      if(!week){
+        week = this.currentWeek
+      }
       if (day >= 0) {
         switch (day) {
           case 1:
-            dayId = this.currentWeek.monday._id;
+            dayId = week.monday._id;
             resolve(dayId);
             break;
           case 2:
-            dayId = this.currentWeek.tuesday._id;
+            dayId = week.tuesday._id;
             resolve(dayId);
             break;
           case 3:
-            dayId = this.currentWeek.wednesday._id;
+            dayId = week.wednesday._id;
             resolve(dayId);
             break;
           case 4:
-            dayId = this.currentWeek.thursday._id;
+            dayId = week.thursday._id;
             resolve(dayId);
             break;
           case 5:
-            dayId = this.currentWeek.friday._id;
+            dayId = week.friday._id;
             resolve(dayId);
             break;
           case 6:
-            dayId = this.currentWeek.saturday._id;
+            dayId = week.saturday._id;
             resolve(dayId);
             break;
           case 0:
-            dayId = this.currentWeek.sunday._id;
+            dayId = week.sunday._id;
             resolve(dayId);
             break;
           default:
-            dayId = this.currentWeek.monday._id;
+            dayId = week.monday._id;
             resolve(dayId);
             break;
         }
@@ -142,35 +146,35 @@ export class CalendarService {
         let today = new Date();
         switch (today.getDay()) {
           case 1:
-            dayId = this.currentWeek.monday._id;
+            dayId = week.monday._id;
             resolve(dayId);
             break;
           case 2:
-            dayId = this.currentWeek.tuesday._id;
+            dayId = week.tuesday._id;
             resolve(dayId);
             break;
           case 3:
-            dayId = this.currentWeek.wednesday._id;
+            dayId = week.wednesday._id;
             resolve(dayId);
             break;
           case 4:
-            dayId = this.currentWeek.thursday._id;
+            dayId = week.thursday._id;
             resolve(dayId);
             break;
           case 5:
-            dayId = this.currentWeek.friday._id;
+            dayId = week.friday._id;
             resolve(dayId);
             break;
           case 6:
-            dayId = this.currentWeek.saturday._id;
+            dayId = week.saturday._id;
             resolve(dayId);
             break;
           case 0:
-            dayId = this.currentWeek.sunday._id;
+            dayId = week.sunday._id;
             resolve(dayId);
             break;
           default:
-            dayId = this.currentWeek.monday._id;
+            dayId = week.monday._id;
             resolve(dayId);
             break;
         }
