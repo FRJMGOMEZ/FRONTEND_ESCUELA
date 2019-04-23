@@ -3,7 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { UserServices } from './user.service';
 import { map } from 'rxjs/operators';
 import { URL_SERVICES } from '../config/config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventModel } from '../models/event.model';
 
 
@@ -37,7 +37,8 @@ export class DashboardService {
 
   getLastMessages() {
     let url = `${URL_SERVICES}lastMessages`;
-    return this.http.get(url, { headers: this._userServices.headers }).pipe(
+    let headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+    return this.http.get(url, { headers }).pipe(
       map(async(res: any) => {
         await this.projects.forEach((project)=>{
           project.messages = []
@@ -75,7 +76,8 @@ export class DashboardService {
 
   getTasks() {
     let url = `${URL_SERVICES}tasks`;
-    return this.http.get(url, { headers: this._userServices.headers }).pipe(
+    let headers = new HttpHeaders().set('token', localStorage.getItem('token'))
+    return this.http.get(url, { headers }).pipe(
       map(async(res: any) => {
         await this.projects.forEach((project) => {
           project.uncheckedTasks = []
@@ -139,7 +141,8 @@ export class DashboardService {
 
   getEvents() {
     let url = `${URL_SERVICES}events`;
-    return this.http.get(url, { headers: this._userServices.headers }).pipe(
+    let headers = new HttpHeaders().set('token', localStorage.getItem('token'))
+    return this.http.get(url, { headers }).pipe(
       map((res: any) => {
         this.eventsToday = []
         this.eventsOnCourse=[];
