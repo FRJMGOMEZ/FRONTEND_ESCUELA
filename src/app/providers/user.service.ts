@@ -8,6 +8,7 @@ import { ErrorHandlerService } from './error-handler.service';
 import { Socket } from 'ngx-socket-io';
 import Swal from 'sweetalert2';
 
+
 @Injectable({
     providedIn: 'root'
 })
@@ -193,6 +194,8 @@ export class UserServices {
     
 
     logout() {
+      let payload = {user:this.userOnline._id}
+      this.socket.emit('logOut',payload)
       this.token = "";
       localStorage.removeItem("token");
       localStorage.removeItem("user");
