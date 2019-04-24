@@ -7,6 +7,8 @@ import { User} from '../models/user.model'
 import { ErrorHandlerService } from './error-handler.service';
 import { Socket } from 'ngx-socket-io';
 import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment';
+
 
 
 @Injectable({
@@ -32,7 +34,13 @@ export class UserServices {
     }
 
     isLogged() {
-        return this.token.length > 5 ? true : false;
+       return this.http.put(`${URL_SERVICES}checkToken`,{},{headers:this.headers}).pipe(map((res:any)=>{
+           if(res.ok){
+               return true
+           }else{
+               return false
+           }
+       }))
     }
 
     updateToken(){

@@ -12,14 +12,15 @@ export class LoginGuard implements CanActivate {
 
   }
   canActivate(
-  ): boolean {
-    if (this._userServices.isLogged()) {
-        return true;
-    }
-    else {
-      console.log('LOCKED BY GUARD')
-      this.router.navigate(['/login']);
-      return false
-    }
+  ): any {
+    this._userServices.isLogged().subscribe((res:boolean)=>{
+       if(res){
+         return true
+       }else {
+         console.log('LOCKED BY GUARD')
+         this.router.navigate(['/login']);
+         return false
+       }
+    }) 
   }
 }
