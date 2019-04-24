@@ -173,7 +173,8 @@ export class UserServices {
                         this.userSocketEmit('changeStatus',id)
                     }
                 })
-        }))
+        }),
+        catchError(this._errorHandler.handleError))
     }
 
     deleteUser(id:string){
@@ -181,7 +182,8 @@ export class UserServices {
         return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
             this.count--
             this.userSocketEmit('delete',id)
-        }))
+        }),
+        catchError(this._errorHandler.handleError))
     }
 
 
@@ -189,7 +191,8 @@ export class UserServices {
         let url = `${URL_SERVICES}changeRole/${userId}/${role}`
         return this.http.put(url,{},{headers:this.headers}).pipe(map(()=>{
             this.userSocketEmit('changeRole',userId)
-        }))
+        }),
+        catchError(this._errorHandler.handleError))
     }
     
 
