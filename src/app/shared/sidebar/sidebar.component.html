@@ -15,11 +15,11 @@
                     <a class='dropdown-item' [routerLink]="['/alumnis']" routerLinkActive="router-link-active" href=""><i class="fas fa-user-graduate mr-1"style='color:black'></i>ALUMNOS</a>
                     <a class='dropdown-item' [routerLink]="['/professors']" routerLinkActive="router-link-active"><i class="fas fa-chalkboard-teacher mr-1"style='color:black'></i>PROFESORES</a>
                     <a [routerLink]="['/subjects']" routerLinkActive="router-link-active" href=" "><i class="fas fa-guitar mr-1" style='color:black'></i><span>MATERIAS</span></a>
-                    <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:black'></i><span>USUARIOS</span></a>
                     <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" "><i class="fas fa-door-open mr-1" style='color:black'></i><span>INSTALACIONES</span></a>
                 </div>
             </div>
         </div>
+        <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:black'></i><span>USUARIOS</span></a>
         <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
     </nav>
 </div>
