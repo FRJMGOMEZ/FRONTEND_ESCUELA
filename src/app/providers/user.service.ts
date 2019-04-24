@@ -33,7 +33,8 @@ export class UserServices {
     }
 
     checkToken(): Observable<boolean> {
-        let headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+        let token = localStorage.getItem('token') || undefined;
+        let headers = new HttpHeaders().set('token',token)
         return this.http.put(`${URL_SERVICES}checkToken`,{},{headers}).pipe(map((res:boolean)=>{
                  if(res){
                      return res
