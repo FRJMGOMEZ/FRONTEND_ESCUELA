@@ -203,7 +203,6 @@ export class UserServices {
           this.router.navigate(["/login"]).then(() => {
               this.userOnline = null;
           })
-      
     }
 }
 
