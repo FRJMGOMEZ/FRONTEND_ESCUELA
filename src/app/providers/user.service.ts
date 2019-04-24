@@ -7,8 +7,7 @@ import { User} from '../models/user.model'
 import { ErrorHandlerService } from './error-handler.service';
 import { Socket } from 'ngx-socket-io';
 import Swal from 'sweetalert2';
-import { environment } from '../../environments/environment';
-
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -29,19 +28,23 @@ export class UserServices {
                 private _errorHandler:ErrorHandlerService,
                 private socket:Socket) { 
         this.token = localStorage.getItem('token');
-        this.headers = new HttpHeaders().set('token',this.token)
+        this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
         this.uploadFromStorage();
     }
 
-    isLogged() {
-       return this.http.put(`${URL_SERVICES}checkToken`,{},{headers:this.headers}).pipe(map((res:any)=>{
-           if(res.ok){
-               return true
-           }else{
-               return false
-           }
-       }))
+    checkToken(): Observable<boolean> {
+        let headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+        return this.http.put(`${URL_SERVICES}checkToken`,{},{headers}).pipe(map((res:boolean)=>{
+                 if(res){
+                     return res
+                 }else{
+                     console.log('LOCKED BY GUARD')
+                     this.router.navigate(['/login']);
+                     return res
+                 }        
+        }))
     }
+
 
     updateToken(){
         let url = `${URL_SERVICES}updateToken`
