@@ -65,7 +65,15 @@ export class UserServices {
            }
         let url = `${URL_SERVICES}login`;
         return this.http.post(url, user).pipe(map((res: any) => {
+            if(res.message){
+                Swal.fire({
+                    text:res.message,
+                    type:'info',
+                    showCloseButton:true
+                })
+            }else{
                 this.saveInStorage(res.user._id, res.user, res.token)
+            }
         })
         ,catchError(this._errorHandler.handleError))
     }
