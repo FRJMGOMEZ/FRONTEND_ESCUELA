@@ -102,7 +102,7 @@
                             <table class='table'>
                                 <tr *ngFor="let user of _projectServices.participants">
                                     <td>
-                                        <img class='img-fluid' style='height:50px;width:50px' [src]="user.img | imgPipe" alt="">
+                                        <img style='height:50px;width:50px' [src]="user.img | imgPipe" alt="">
                                     </td>
                                     <td>
                                         <p>{{user.name}}</p>
