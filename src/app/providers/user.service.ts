@@ -28,12 +28,12 @@ export class UserServices {
                 private _errorHandler:ErrorHandlerService,
                 private socket:Socket) { 
         this.token = localStorage.getItem('token');
-        this.headers = new HttpHeaders().set('token',localStorage.getItem('token'))
+        this.headers = new HttpHeaders().set('token',this.token)
         this.uploadFromStorage();
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token') || 'noToken';
+        let token = localStorage.getItem('token') || 'noToken'
         let headers = new HttpHeaders().set('token',token)
         return this.http.put(`${URL_SERVICES}checkToken`,{},{headers}).pipe(map((res:boolean)=>{
                  if(res){
