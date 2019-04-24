@@ -22,7 +22,7 @@ export class UsersModalComponent implements OnInit {
     this._modalController.notification.subscribe(() => {
       this.participants = this._projectServices.participants;
       this.admins = this._projectServices.administrators;
-      this._userServices.getUsers().subscribe(()=>{
+      this._userServices.getUsers(0,1000).subscribe(()=>{
         if (this._modalController.type === 'participant') {
           let participantsIds = this.participants.map((participant: User) => { return participant._id })
           this._userServices.users = this._userServices.users.filter((user) => { return user._id != this._userServices.userOnline._id })
