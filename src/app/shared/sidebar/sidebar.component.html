@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <a [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:white'></i><span>USUARIOS</span></a>
+        <a *ngIf="_userServices.checkRole()" [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:white'></i><span>USUARIOS</span></a>
         <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
     </nav>
 </div>
