@@ -195,13 +195,14 @@ export class UserServices {
 
     logout() {
       let payload = {user:this.userOnline._id}
-      this.socket.emit('logOut',payload)
-      this.token = "";
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("id");
-      this.router.navigate(["/login"]).then(()=>{
-          this.userOnline = null;
+      this.socket.emit('logOut',payload,()=>{
+          this.token = "";
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("id");
+          this.router.navigate(["/login"]).then(() => {
+              this.userOnline = null;
+          })
       })
     }
 }
