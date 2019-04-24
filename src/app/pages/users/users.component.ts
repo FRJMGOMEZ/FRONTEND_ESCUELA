@@ -32,7 +32,7 @@ export class UsersComponent implements OnInit,OnDestroy {
   }
 
   changeFrom(number: number) {
-    if (this.from + number > 0) {
+    if (this.from + number >= 0) {
       this.from += number
     }
     if(this.getMode){

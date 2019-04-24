@@ -79,7 +79,7 @@ export class indexcardModalComponent implements OnInit {
     });
   }
 
-  putindexcard() {
+  putIndexcard() {
     if (this.form.valid) {
       let value = this.form.value;
       let indexcard = new Indexcard(
@@ -97,7 +97,7 @@ export class indexcardModalComponent implements OnInit {
     }
   }
 
-  postindexcard() {
+  postIndexcard() {
     if (this.form.valid) {
       let value = this.form.value;
       let indexcard = new Indexcard(
