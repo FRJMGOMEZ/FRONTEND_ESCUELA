@@ -21,7 +21,7 @@ export class DemoService {
     if(!this.login || onclick)
    {Swal.fire({
         title: "USUARIOS ADMINISTRADORES",
-        text: 'Los usuarios habilitados como administradores son: freddieQueen@gmail.com con password 123 y lennonJohn1940@gmail.com con password 123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
+        text: 'Los usuarios habilitados como administradores son: freddieQueen@gmail.com ,lennonJohn1940@gmail.com , pavarotiii@gmail.com y janisJap@gmail.com, el password de los tres es 123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
         , type: "warning",
         confirmButtonText: "OK",
       }).then(() => {
