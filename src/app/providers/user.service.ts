@@ -9,7 +9,6 @@ import { Socket } from 'ngx-socket-io';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
     providedIn: 'root'
 })
@@ -27,6 +26,7 @@ export class UserServices {
                 private router:Router,
                 private _errorHandler:ErrorHandlerService,
                 private socket:Socket) { 
+
         this.token = localStorage.getItem('token');
         this.headers = new HttpHeaders().set('token',this.token)
         this.uploadFromStorage();
@@ -77,7 +77,7 @@ export class UserServices {
                localStorage.removeItem("email");
            }
         let url = `${URL_SERVICES}login`;
-        return this.http.post(url, user).pipe(map((res: any) => {
+        return this.http.post(url, user).pipe(map(async(res: any) => {
             if(res.message){
                 Swal.fire({
                     text:res.message,
@@ -85,7 +85,8 @@ export class UserServices {
                     showCloseButton:true
                 })
             }else{
-                this.saveInStorage(res.user._id, res.user, res.token)
+              await this.saveInStorage(res.user._id, res.user, res.token)
+              return
             }
         })
         ,catchError(this._errorHandler.handleError))
@@ -128,6 +129,7 @@ export class UserServices {
         localStorage.setItem("token", token);
         this.userOnline = user;
         this.token = token;
+        this.headers = new HttpHeaders().set('token', this.token)
     }
 
     uploadFromStorage() {
