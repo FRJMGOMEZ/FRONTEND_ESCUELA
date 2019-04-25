@@ -3,9 +3,11 @@
         <div class="col-11 p-0 m-0">
             <img class='img-fluid' (click)='showFile(image._id)' style='height: 110px;width:110px' [src]="image | imgPipe">
         </div>
-        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class='col-1 p-0 m-0'>
+        <!--
+             <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class='col-1 p-0 m-0'>
             <a routerLinkActive="active" (click)='deleteFile(image._id)'>x</a>
         </div>
+        -->
     </div>
     <div *ngIf="_projectServices.imageFiles.length === 0">
         <h5>No hay imágenes disponibles</h5>
