@@ -4,13 +4,9 @@
             <img (click)='showFile(file._id)' style='height: 110px;width:110px' class='img-fluid' [src]="file | imgPipe">
             <small>{{file.title}}</small>
         </div>
-        <!--
         <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
-            <a routerLinkActive="active">x</a>
+            <a (click)='deleteFile(file._id)' routerLinkActive="active">x</a>
         </div>
-    
-(click)='deleteFile(file._id)'
-        -->
     </div>
     <div *ngIf="_projectServices.textFiles.length === 0">
         <h5>No hay archivos disponibles</h5>
