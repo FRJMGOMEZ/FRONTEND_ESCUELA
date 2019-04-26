@@ -46,7 +46,7 @@ export class PagesComponent implements OnInit {
     })
     this.socket.on('disconnect',()=>{
       this._userServices.socketOn = false;
-        alert('la conexión con el servidor se ha interrumpido')
+        alert('La conexión con el servidor se ha interrumpido')
         if(!this._alumniModalController.hidden){this._alumniModalController.hideModal()}
         if (!this._calendarModalController.hidden) { this._calendarModalController.hideModal() }
         if (!this._eventsModalController.hidden) { this._eventsModalController.hideModal() }
