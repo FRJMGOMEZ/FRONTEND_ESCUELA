@@ -1,10 +1,20 @@
 <div class="row d-flex justify-content-center" style='background: #F5F1E3'>
-    <div class='col-12 d-flex justify-content-center'>
+    <div class='col-12 d-flex justify-content-center m-1'>
         <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
     </div>
-    <h5 *ngIf="_projectServices.groupTasks.length>0">Tareas del grupo de trabajo</h5>
+    <br>
+    <div class='col-12 d-flex justify-content-around mb-1'>
+        <h5 *ngIf="_projectServices.groupTasks.length>0">Tareas del grupo de trabajo</h5>
+        <div class="row justify-content-center">
+            <input #input type="text">
+            <div class='btn-group'>
+                <button (click)='_projectServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
+                <button (click)='_projectServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
+            </div>
+        </div>
+    </div>
     <div class='scrollable' *ngIf="_projectServices.groupTasks.length>0" style='height:210px;border-bottom:1px solid black'>
         <table class='table'>
             <thead>
@@ -25,7 +35,7 @@
                     <td>{{task.date | date}}</td>
                     <td>{{task.dateLimit | date}}</td>
                     <td>
-                        <button [ngStyle]="{'background-color': task.ok == true? 'green':'#f44141'}">
+                        <button [ngStyle]="{'background-color': taskColor(task)}">
                             <i *ngIf="task.ok" class="fas fa-check-double"></i>
                             <i  *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
                             <i *ngIf="!task.checked" class="far fa-clock"></i>
@@ -59,10 +69,10 @@
                     <td>{{task.date | date}}</td>
                     <td>{{task.dateLimit | date}}</td>
                     <td>
-                        <button [ngStyle]="{'background-color': task.ok == true? 'green':'red'}">
-                            <i *ngIf="task.ok" class="fas fa-check-double"></i>
+                        <button [ngStyle]="{'background-color': taskColor(task)}">
+                            <i  (click)='taskDone(task._id)' *ngIf="task.ok" class="fas fa-check-double"></i>
                             <i (click)='taskDone(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
-                            <i *ngIf="!task.checked" class="far fa-clock"></i>
+                            <i  *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>
                     <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='deleteTask(task._id)' class="far fa-trash-alt"></i></td>

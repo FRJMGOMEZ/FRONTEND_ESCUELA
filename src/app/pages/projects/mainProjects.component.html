@@ -1,4 +1,4 @@
-<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:700px;width:1150px;border:1px solid black'>
+<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:750px;width:1150px;border:1px solid black'>
     <div class="col-12" *ngIf="!_projectServices.projectSelectedId">
         <div class="row d-flex justify-content-center">
             <div class="col-12 m-0 p-0 d-flex justify-content-end">
@@ -14,19 +14,18 @@
                 <div class='scrollable ' style="height:500px;border:1px solid black;background:#F5F1E3">
                     <div *ngFor="let project of _projectServices.projects">
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-5">
-                                    <p>{{project.name}}</p>
+                            <div class="row text-center">
+                                <div class="col-12 d-flex justify-content-center">
                                     <p>
                                         <a (click)='toProject(project._id) '>
                                             <p style='color:blue '>Navegar a {{project.name}}</p>
                                         </a>
                                     </p>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-12 justify-content-center">
                                     <p>{{project.description}}</p>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-12 justify-content-center">
                                     <button *ngIf="!project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Activar</button>
                                     <button *ngIf="project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Desactivar</button>
                                 </div>

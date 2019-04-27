@@ -4,6 +4,7 @@ import { TaskModalController } from '../../../../modals/task-modal/task.modalCon
 import { UserServices } from '../../../../providers/user.service';
 import { SwalService } from '../../../../providers/swal.service';
 import * as _ from 'underscore';
+import { Task } from 'src/app/models/task.model';
 
 
 @Component({
@@ -52,15 +53,16 @@ export class TasksComponent implements OnInit {
   }
 
   taskDone(taskId: string) {
-    this._projectServices.taskDone(taskId).subscribe(() => {
-      this._projectServices.myTasks.forEach((task, index) => {
-        if (task._id === taskId) {
-          this._projectServices.myTasks[index].ok = true;
-        }
-      })
-    })
+    this._projectServices.taskDone(taskId).subscribe()
   }
 
+  taskColor(task:Task){
+    if(task.ok){
+      return 'green'
+    }else{
+      return 'red'
+    }
+  }
 
   checkTime(date:Date){
     let today = new Date();

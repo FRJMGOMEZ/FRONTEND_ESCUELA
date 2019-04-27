@@ -12,8 +12,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let event of events">
-                    <td>{{event.name}}</td>
-                    <td>{{event.description}}</td>
+                    <td><a style='color:blue' routerLinkActive="active" (click)='toEvent(event.startDate)'>{{event.name}}</a></td>
+                    <td>
+                        {{event.description}}
+                    </td>
                     <td>{{event.startDate | date}}</td>
                     <td>{{event.endDate | date}}</td>
                     <td>{{event.position | timeConversor2: null }} - {{event.position | timeConversor2: event.duration }} </td>

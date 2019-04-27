@@ -178,12 +178,12 @@ export class EventComponent implements OnInit,AfterViewInit{
       );
       if(this.ourEvents[String(position)].permanent === true){
         if(this.ourEvents[String(position)].endDate === null){
-          this.renderer.setStyle(cardBody, "background-color", "red");
+          this.renderer.setStyle(cardBody, "background-color", "#f45042");
         }else{
-          this.renderer.setStyle(cardBody, "background-color", "green");
+          this.renderer.setStyle(cardBody, "background-color", "#38a548");
         }
       }else{
-        this.renderer.setStyle(cardBody, "background-color", "blue");
+        this.renderer.setStyle(cardBody, "background-color", "#42b0f4");
       }
       const div = document.createElement('div')
       this.renderer.addClass(div, 'd-flex')

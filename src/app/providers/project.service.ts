@@ -442,6 +442,24 @@ export class ProjectServices {
     }))
   }
 
+  getTasksByProject(){
+    let url = `${URL_SERVICES}tasksByProject/${this.projectSelectedId}`
+    return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+      this.groupTasks = _.sortBy(res.tasks,(task)=>{
+        return task.dateLimit
+      })
+    }))
+  }
+
+  getTasksByUser(input:string){
+    let url = `${URL_SERVICES}tasksByUser/${this.projectSelectedId}/${input}`
+    return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+      this.groupTasks = _.sortBy(res.tasks, (task) => {
+        return task.dateLimit})
+      }))
+    }
+  
+
   postTask(task: Task) {
     let url = `${URL_SERVICES}task`
     return this.http.post(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
@@ -496,11 +514,14 @@ export class ProjectServices {
 
   taskDone(taskId:string){
     let url = `${URL_SERVICES}taskDone/${taskId}`
-    return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map(()=>{
-      setTimeout(()=>{
-        let taskOrder = new TaskOrder(this.myTasks.filter((task) => { return task._id === taskId })[0], 'put')
+    return this.http.put(url,{},{ headers: this._userServices.headers }).pipe(map((res:any)=>{
+        let taskOrder = new TaskOrder(res.task, 'put')
+       this.myTasks.forEach((task,index)=>{
+          if(task._id === taskId){
+             this.myTasks[index]=res.task
+          }
+        })
         this.emitTask(taskOrder)
-      })
     }))
   }
 
