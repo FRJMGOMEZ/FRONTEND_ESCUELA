@@ -97,6 +97,7 @@ export class EventComponent implements OnInit,AfterViewInit{
           "height",
           `${60}px`
         );
+        this.renderer.setStyle(this.eventCard.nativeElement,'width',this.dayComponent.cardWidth)
         this.renderer.setStyle(
           this.eventCard.nativeElement,
           "background-color",
@@ -110,6 +111,7 @@ export class EventComponent implements OnInit,AfterViewInit{
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0"); return    
           } else {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceWithoutEvents - this.facilitie.space)}px`);
+            this.renderer.setStyle(this.eventCard.nativeElement,'width',this.dayComponent.cardWidth)
             this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceWithoutEvents) / 60));
             this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space) 
             if(this._userServices.checkRole()){
@@ -171,6 +173,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       let cardBody = this.renderer.createElement('div');
       this.renderer.addClass(cardBody,'card-body');
       this.renderer.appendChild(card,cardBody);
+      this.renderer.setStyle(cardBody,'width',this.dayComponent.cardWidth)
       this.renderer.setStyle(
         cardBody,
         "height",
@@ -303,6 +306,7 @@ fixHeight(height: number) {
       this.renderer.addClass(cardBody, 'card-body');
       this.renderer.appendChild(division, cardBody)
       this.renderer.setStyle(cardBody, 'height', `${height}px`)
+      this.renderer.setStyle(cardBody,'width',this.dayComponent.cardWidth)
       this.renderer.setStyle(cardBody, "background-color", "#F5F1E3");
       this.renderer.addClass(cardBody,'d-flex')
       this.renderer.addClass(cardBody, 'flex-column')
