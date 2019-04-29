@@ -173,7 +173,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       let cardBody = this.renderer.createElement('div');
       this.renderer.addClass(cardBody,'card-body');
       this.renderer.appendChild(card,cardBody);
-      this.renderer.setStyle(cardBody,'width',this.dayComponent.cardWidth)
+      this.renderer.setStyle(card,'width',this.dayComponent.cardWidth)
       this.renderer.setStyle(
         cardBody,
         "height",
