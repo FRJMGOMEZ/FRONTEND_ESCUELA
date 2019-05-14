@@ -1,9 +1,10 @@
 import { Component} from '@angular/core';
 import { UserServices } from '../../providers/user.service';
 import { ProjectServices } from '../../providers/project.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarService } from '../../providers/calendar.service';
 import { DemoService } from '../../providers/demo.service';
+import { ManagerService } from '../../providers/manager.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,7 +17,36 @@ export class SidebarComponent{
               private _projectServices:ProjectServices,
               private router:Router,
               private _calendarServices:CalendarService,
-              public _demoServices:DemoService) {}
+              public _demoServices:DemoService,
+              public _router:Router,
+              public _ar:ActivatedRoute,
+              private _managerServices:ManagerService) {}
+
+  toManager(){
+
+    let item;
+    let input = this._managerServices.input || '#';
+    let from=this._managerServices.from;
+   
+    let albumId;
+    let trackId;
+    let artistId;
+    let paymentId;
+
+    if (this._managerServices.album) { albumId = this._managerServices.album._id } else { albumId = '#' }
+    if (this._managerServices.track) { trackId = this._managerServices.track._id } else { trackId = '#' }
+    if (this._managerServices.artist) { artistId = this._managerServices.artist._id } else { artistId = '#' }
+    if (this._managerServices.payment) { paymentId = this._managerServices.payment._id } else { paymentId = '#' }
+
+    if (this._managerServices.albums.length !=0) { item = 'albums'}
+    else if (this._managerServices.tracks.length != 0) { item = 'tracks'}
+    else if (this._managerServices.artists.length != 0) { item = 'artists'}
+    else if (this._managerServices.payments.length != 0) { item = 'payments'}
+    else { item = '#'}
+
+    let url = `/manager/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}/${paymentId}`
+    this._router.navigate([url])
+  }           
 
   logOut(){
     setTimeout(()=>{

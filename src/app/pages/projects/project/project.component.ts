@@ -53,8 +53,10 @@ export class ProjectComponent implements OnInit {
     
     this.ar.params.subscribe(params => {
       this._projectServices.getProjectById(params['id']).subscribe(() => {
-        this.page = 'chat';
-        this._projectServices.userIn()
+         this._projectServices.userIn()
+         setTimeout(()=>{
+           this.page = 'chat';
+         })
       })
     });
 

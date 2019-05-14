@@ -8,6 +8,18 @@
         <a (click)='toProjects()' routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1"></i><span>MIS PROYECTOS</span></a>
         <div class="nav-item dropdown">
             <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-compact-disc m-1"></i><span>MANAGER</span>
+            </a>
+            <div class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
+                <div class='d-flex justify-content-end flex-column'>
+                    <a class='dropdown-item' (click)="toManager()" routerLinkActive="router-link-active"><i class="fas fa-compact-disc" style='color:black'></i>OVERVIEW</a>
+                    <a class='dropdown-item' [routerLink]="['/incomes']" routerLinkActive="router-link-active" href=""><i class="fas fa-hand-holding-usd" style='color:black'></i>INGRESOS Y LIQUIDACIONES</a>
+                    <a class='dropdown-item' [routerLink]="['/company']" routerLinkActive="router-link-active"><i class="fas fa-building" style='color:black'></i>COMPAÑIA</a>
+                </div>
+            </div>
+        </div>
+        <div class="nav-item dropdown">
+            <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-address-book m-1"></i> <span>DATA</span>
             </a>
             <div (click)='_demoServices.dataPopup()' class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
@@ -20,6 +32,6 @@
             </div>
         </div>
         <a *ngIf="_userServices.checkRole()" [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:white'></i><span>USUARIOS</span></a>
-        <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'>SALIR</span></a>
+        <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'></span></a>
     </nav>
 </div>

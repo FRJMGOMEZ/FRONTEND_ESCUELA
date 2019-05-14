@@ -9,7 +9,7 @@ import { UserServices } from "./user.service";
 import { FilesServices } from './files.service';
 import { SubjectServices } from "./subject.service";
 import { ProjectServices } from "./project.service";
-import { indexcardServices } from './indexcard.service';
+import { IndexcardServices } from './indexcard.service';
 import { ProfessorsServices } from './professor.service';
 import { ChatServices } from './chat.service';
 import { AlumniServices } from './alumni.service';
@@ -19,6 +19,7 @@ import { SwalService } from './swal.service';
 import { ErrorHandlerService } from './error-handler.service';
 import { DashboardService } from './dashboard.service';
 import { PasswordService } from './password.service';
+import { ManagerService } from './manager.service';
 
 
 @NgModule({
@@ -29,7 +30,7 @@ import { PasswordService } from './password.service';
        FilesServices,
        SubjectServices,
        ProjectServices,
-       indexcardServices,
+       IndexcardServices,
        ProfessorsServices,
        ChatServices,
        AlumniServices,
@@ -38,7 +39,8 @@ import { PasswordService } from './password.service';
        SwalService,
        ErrorHandlerService,
        DashboardService,
-       PasswordService
+       PasswordService,
+       ManagerService
     ],
 
     exports: [],

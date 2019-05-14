@@ -94,7 +94,7 @@ export class DashboardService {
               task.project.uncheckedTasks.push(task.description);
               this.uncheckedTasks = true;
               this.projects.push(task.project)
-            } else {
+            } else if (!task.ok) {
               task.project.pendingTasks = [];
               task.project.pendingTasks.push(task.description);
               this.pendingTasks = true;

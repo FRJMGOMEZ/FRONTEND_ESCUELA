@@ -18,7 +18,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { MainProjectsComponent } from './projects/mainProjects.component';
 import { ProjectComponent } from "./projects/project/project.component";
 
-
 //Routes//
 import { PAGESROUTES } from './pages.routes';
 import { ImagesComponent } from './projects/project/images/images.component';
@@ -30,6 +29,12 @@ import { EventComponent } from './calendar/day/event/event.component';
 import { TasksComponent } from './projects/project/tasks/tasks.component';
 import { ProjectEventsComponent } from './projects/project/project-events/project-events.component';
 import { CalendarManagerComponent } from './calendar/calendar.component';
+import { ManagerComponent } from './manager/manager.component';
+import { AlbumsComponent } from './manager/albums/albums.component';
+import { IncomesComponent } from './manager/incomes/incomes.component';
+import { TracksComponent } from './manager/tracks/tracks.component';
+import { PaymentsComponent } from './manager/payments/payments.component';
+import { ArtistComponent } from './manager/artist/artist.component';
 
 
 @NgModule({
@@ -50,8 +55,14 @@ import { CalendarManagerComponent } from './calendar/calendar.component';
     EventComponent,
     TasksComponent,
     ProjectEventsComponent,
-    CalendarManagerComponent
-    
+    CalendarManagerComponent,
+    ManagerComponent,
+    AlbumsComponent,
+    TracksComponent,
+    PaymentsComponent,
+    IncomesComponent,
+    PaymentsComponent,
+    ArtistComponent
   ],
   imports: [
     PAGESROUTES,

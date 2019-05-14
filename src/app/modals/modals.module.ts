@@ -11,7 +11,7 @@ import { SharedModule } from "../shared/shared.module";
 
 
 //// Components ////
-import { indexcardModalComponent } from './index-card-modal/index-card-modal.component';
+import { IndexcardModalComponent } from './index-card-modal/index-card-modal.component';
 import { AlumniModalComponent } from './alumni-modal/alumni-modal.component';
 import { ProfessorModalComponent } from './professor-modal/professor-modal.component';
 import { SubjectModalComponent } from './subject-modal/subject-modal.component';
@@ -30,7 +30,7 @@ import { ForgotComponent } from '../login/recovering/forgot/forgot.component';
 import { CalendarModalComponent } from "./calendar-modal/calendar-modal.component";
 import { AlumnniModalController } from './alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from "./professor-modal/professorModalController";
-import { indexcardModalController } from "./index-card-modal/indexcardModalController";
+import { IndexcardModalController } from "./index-card-modal/indexcardModalController";
 import { ProjectModalController } from './project-modal/projectModalController';
 import { SubjectModalController } from './subject-modal/subjectModalController';
 import { UploadFilesModalController } from "./upload-files-modal/uploadFilesModalController";
@@ -43,12 +43,15 @@ import { FacilitiesModalController } from './facilities-modal/facilities-modalCo
 import { TaskModalController } from './task-modal/task.modalController';
 import { ShowFilesModalController } from './show.files-modal/showfilesModal.controller';
 import { RecoveringModalController } from '../login/recovering/recovering.modal,controller';
-
+import { AlbumModalComponent } from './album-modal/album-modal.component';
+import { AlbumModalController } from './album-modal/albumModalController';
+import { TrackModalComponent } from './track-modal/track-modal.component';
+import { TrackModalController } from './track-modal/trackModalController';
 
 
 @NgModule({
   declarations: [
-    indexcardModalComponent,
+    IndexcardModalComponent,
     ProjectModalComponent,
     AlumniModalComponent,
     ProfessorModalComponent,
@@ -62,7 +65,9 @@ import { RecoveringModalController } from '../login/recovering/recovering.modal,
     FacilitiesModalComponent,
     TaskModalComponent,
     ResetComponent,
-    ForgotComponent
+    ForgotComponent,
+    AlbumModalComponent,
+    TrackModalComponent
   ],
 
   imports: [
@@ -76,7 +81,7 @@ import { RecoveringModalController } from '../login/recovering/recovering.modal,
   ],
 
   exports: [
-    indexcardModalComponent,
+    IndexcardModalComponent,
     ProjectModalComponent,
     AlumniModalComponent,
     ProfessorModalComponent,
@@ -90,13 +95,14 @@ import { RecoveringModalController } from '../login/recovering/recovering.modal,
     FacilitiesModalComponent,
     TaskModalComponent,
     ResetComponent,
-    ForgotComponent
-  
+    ForgotComponent,
+    AlbumModalComponent,
+    TrackModalComponent
   ],
 
   providers: [
     AlumnniModalController,
-    indexcardModalController,
+    IndexcardModalController,
     ProfessorModalController,
     ProjectModalController,
     SubjectModalController,
@@ -108,7 +114,9 @@ import { RecoveringModalController } from '../login/recovering/recovering.modal,
     FacilitiesModalController,
     TaskModalController,
     ShowFilesModalController,
-    RecoveringModalController
+    RecoveringModalController,
+    AlbumModalController,
+    TrackModalController
   ],
 
   bootstrap: []

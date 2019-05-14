@@ -138,6 +138,8 @@ export class ProjectServices {
   getProjectById(id: string) {
     let url = `${URL_SERVICES}searchById/project/${id}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this._chatServices.messagesCount = res.project.messages.length;
+      console.log(this._chatServices.messagesCount)
       this.projectSelectedId = res.project._id
       this.administrators = res.project.administrators;
       this.participants = res.project.participants;
@@ -147,7 +149,6 @@ export class ProjectServices {
       this.status = res.project.status;
       this.textFiles = [];
       this.imageFiles = []; 
-      this._chatServices.messagesCount = res.project.messages.length;
       res.project.messages.forEach((message:any) => {
         if (message.file) {
           if (this._filesServices.textFormats.indexOf(message.file.format) >= 0) {

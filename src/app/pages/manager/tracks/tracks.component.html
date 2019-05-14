@@ -1,0 +1,55 @@
+<div class="row" *ngIf="!albumId">
+    <div class='col-12'>
+        <table class='table'>
+            <thead>
+                <th>Título</th>
+                <th>Album</th>
+                <th></th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let track of _managerServices.tracks let i=index">
+                    <td>{{track.title}}</td>
+                    <td>
+                        <a (click)="_managerServices.idNavigation(track.album['_id'],'album')" routerLinkActive="router-link-active" style="color:blue">{{track.album['title']}}</a>
+                    </td>
+                    <td><button class="btn btn-primary text-center">
+            <i class="fa fa-info"></i>
+          </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class='d-flex justify-content-around mb-2 col-12'>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) ' class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
+    </div>
+</div>
+<div class="row" *ngIf="albumId">
+    <div class='col-12 d-flex justify-content-end'>
+        <button (click)='pushTrack()' class='btn btn-warning'>+TRACK</button>
+    </div>
+    <table class='table'>
+        <thead>
+            <th>Título</th>
+            <th>Participantes</th>
+            <th></th>
+        </thead>
+        <tbody *ngIf="albumId">
+            <tr *ngFor="let track of _managerServices.album.tracks let i=index">
+                <td><a (click)="_managerServices.idNavigation(track._id,'track')" style='color:blue'>{{track.title}}</a></td>
+                <td>
+                    <div *ngFor="let assignation of _managerServices.album.tracks[i].assignations">
+                        <a (click)="_managerServices.idNavigation(assignation.artist._id,'artist')" style='color:blue'>{{assignation.artist.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <button (click)='putTrack(track._id)' class="btn btn-primary text-center">
+                        <i class="fa fa-info"></i>
+                    </button>
+                    <button (click)='pullTrack(track._id)' class='btn btn-warning'>X</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

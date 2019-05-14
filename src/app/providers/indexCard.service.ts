@@ -8,11 +8,12 @@ import { Subject } from 'rxjs';
 import { AlumniServices } from './alumni.service';
 import { ProfessorsServices } from './professor.service';
 import { ErrorHandlerService } from './error-handler.service';
+import { ManagerService } from './manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class indexcardServices {
+export class IndexcardServices {
 
   indexcardsSource = new Subject<IndexcardOrder>();
   indexcards$ = this.indexcardsSource.asObservable()
@@ -21,7 +22,8 @@ export class indexcardServices {
              private _userServices:UserServices,
              private _alumniServices:AlumniServices,
              private _professorServices:ProfessorsServices,
-             private _errorHandler:ErrorHandlerService) {}
+             private _errorHandler:ErrorHandlerService,
+             private _managerServices:ManagerService) {}
 
   postIndexcard(indexcard:Indexcard){
     let url = `${URL_SERVICES}indexcard`
@@ -40,11 +42,14 @@ export class indexcardServices {
       } else if (res.PROFESSOR) {
         this._professorServices.putProfessor(res.PROFESSOR)
       }
+      else if (res.ARTIST) {
+        this._managerServices.putArtist(res.ARTIST)
+      }
     })
     ,catchError(this._errorHandler.handleError))
   }
 
-  searchIndexcardById(id:string){  
+  searchindexcardById(id:string){  
     let url = `${URL_SERVICES}searchindexcardById/${id}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       let indexcardOrder = new IndexcardOrder(res.indexcard, 'getById')

@@ -1,0 +1,24 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+    <div *ngIf="album" class="modal" style='display: block' tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center"></h5>
+                    <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+                   </button>
+                </div>
+                <div class="modal-body">
+                    <div class='row d-flex justify-content-center'>
+                        <input [(ngModel)]="album.title" type="text" placeholder="Título nuevo albúm">
+                    </div>
+                    <div class='row d-flex justify-content-center mt-2'>
+                        <button (click)='postAlbum()' class='btn btn-warning' *ngIf="!_modalController.id">CREAR ALBUM</button>
+                        <button (click)='putAlbum()' class='btn btn-warning' *ngIf="_modalController.id">GUARDAR CAMBIOS</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

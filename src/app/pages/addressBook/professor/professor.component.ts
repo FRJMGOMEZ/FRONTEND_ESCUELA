@@ -1,6 +1,6 @@
 import { Component,ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from 'src/app/modals/subject-modal/subjectModalController';
-import { indexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
+import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
 import { ProfessorsServices } from '../../../providers/professor.service';
 import { UserServices } from '../../../providers/user.service';
 import { SubjectServices } from '../../../providers/subject.service';
@@ -27,7 +27,7 @@ export class ProfessorComponent implements OnInit, OnDestroy {
     public _professorServices: ProfessorsServices,
     public _subjectServices: SubjectServices,
     private _subjectModalController: SubjectModalController,
-    private _indexcardModalController: indexcardModalController,
+    private _indexcardModalController: IndexcardModalController,
     private _swalService: SwalService
   ) {}
 

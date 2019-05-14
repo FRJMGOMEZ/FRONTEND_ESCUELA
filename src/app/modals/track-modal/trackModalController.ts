@@ -4,7 +4,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 @Injectable({
     providedIn: "root"
 })
-export class IndexcardModalController {
+export class TrackModalController {
 
     public hidden: string = 'hidden'
     public id:string

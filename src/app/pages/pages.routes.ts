@@ -12,6 +12,8 @@ import { ProjectComponent } from './projects/project/project.component';
 import { AdminGuard } from '../guards/admin.guard';
 import { CalendarManagerComponent } from './calendar/calendar.component'
 import { VerifyTokenGuard } from '../guards/verify-token.guard';
+import { ManagerComponent } from './manager/manager.component';
+import { IncomesComponent } from './manager/incomes/incomes.component';
 
 const pagesRoutes: Routes = [
 
@@ -28,19 +30,16 @@ const pagesRoutes: Routes = [
         component: MainProjectsComponent,
         children: [{ path: ":id", component: ProjectComponent }]
       },
-
       {
         path: "subjects",
         canActivate: [AdminGuard],
         component: SubjectComponent
       },
-
       {
         path: "professors",
         canActivate: [AdminGuard],
         component: ProfessorComponent
       },
-
       {
         path: "alumnis",
         canActivate: [AdminGuard],
@@ -59,8 +58,12 @@ const pagesRoutes: Routes = [
         path: "calendar",
         component: CalendarManagerComponent,
         children: [{ path: ":weekId/:dayId", component: DayComponent }]
-      },
-      { path: "", redirectTo: "/dashboard", pathMatch: "full" }
+      },      
+        { path:'manager/:item/:input/:from/:albumId/:trackId/:artistId/:paymentId',component:ManagerComponent},
+        
+     { path: 'incomes', 
+       component: IncomesComponent },
+            { path: "", redirectTo: "/dashboard", pathMatch: "full" }
     
 ];
 

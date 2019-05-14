@@ -8,6 +8,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { PipesModule } from '../pipes/pipes.module';
 
 
+
 @NgModule({
     declarations: [
         SidebarComponent,

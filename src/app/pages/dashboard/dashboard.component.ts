@@ -9,12 +9,12 @@ import { Subscription } from 'rxjs';
 import { ProjectServices } from '../../providers/project.service';
 import { DemoService } from '../../providers/demo.service';
 
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.css']
 })
+
 export class DashboardComponent implements OnInit {
 
   dashboardSubscription:Subscription=null;
@@ -26,8 +26,7 @@ export class DashboardComponent implements OnInit {
     private router:Router,
     public _dashboardServices:DashboardService,
     private _projectServices:ProjectServices,
-    public _demoServices:DemoService) {
-     }
+    public _demoServices:DemoService) {}
 
 async ngOnInit() {
 

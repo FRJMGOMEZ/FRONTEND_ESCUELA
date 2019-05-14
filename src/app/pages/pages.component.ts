@@ -6,7 +6,7 @@ import { AlumnniModalController } from '../modals/alumni-modal/alumniModal.contr
 import { CalendarModalController } from '../modals/calendar-modal/calendar-modal.controller';
 import { EventModalController } from '../modals/events-modal/eventsModal.controller';
 import { FacilitiesModalController } from '../modals/facilities-modal/facilities-modalController';
-import { indexcardModalController } from '../modals/index-card-modal/indexCardModalController';
+import { IndexcardModalController } from '../modals/index-card-modal/indexcardModalController';
 import { PasswordModalController } from '../modals/password-modal/passwordModalController.service';
 import { ProfessorModalController } from '../modals/professor-modal/professorModalController';
 import { ProjectModalController } from '../modals/project-modal/projectModalController';
@@ -29,7 +29,7 @@ export class PagesComponent implements OnInit {
               private _calendarModalController:CalendarModalController,
               private _eventsModalController:EventModalController,
               private _facilitiesModalController:FacilitiesModalController,
-              private _indexcardsModalController:indexcardModalController,
+              private _indexcardModalController:IndexcardModalController,
               private _passwordModalController:PasswordModalController,
               private _professorModalController:ProfessorModalController,
               private _projectModalController:ProjectModalController,
@@ -51,7 +51,7 @@ export class PagesComponent implements OnInit {
         if (!this._calendarModalController.hidden) { this._calendarModalController.hideModal() }
         if (!this._eventsModalController.hidden) { this._eventsModalController.hideModal() }
         if (!this._facilitiesModalController.hidden) { this._facilitiesModalController.hideModal() }
-        if (!this._indexcardsModalController.hidden) { this._indexcardsModalController.hideModal() }
+        if (!this._indexcardModalController.hidden) { this._indexcardModalController.hideModal() }
         if (!this._passwordModalController.hidden) { this._passwordModalController.hideModal() }
         if (!this._professorModalController.hidden) { this._professorModalController.hideModal() }
         if (!this._projectModalController.hidden) { this._projectModalController.hideModal() }

@@ -7,3 +7,5 @@ export class Alumni {
                 public _id?:string) {
     }
 }
+
+
