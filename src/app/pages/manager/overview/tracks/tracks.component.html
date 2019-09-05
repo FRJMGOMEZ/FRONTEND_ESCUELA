@@ -1,0 +1,62 @@
+<div class="row m-1" *ngIf="!trackId">
+    <div class='col-12'>
+        <table class='table'>
+            <thead>
+                <th>Título</th>
+                <th>Album</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let track of _managerServices.tracks let i=index">
+                    <td><a (click)="overviewComponent.idNavigation(track._id,'track')" routerLinkActive="router-link-active" style="color:blue">{{track.title}}</a></td>
+                    <td *ngIf="track.album">
+                        <a (click)="overviewComponent.idNavigation(track.album['_id'],'album')" routerLinkActive="router-link-active" style="color:blue">{{track.album['title']}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class='d-flex justify-content-around mb-2 col-12'>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) ' class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
+    </div>
+</div>
+<div class="row scrollableTable m-2" *ngIf="trackId" style='border-top: 1px black'>
+    <div class=' col-12 d-flex justify-content-around m-2'>
+       <div>
+        <button (click)='pushAssignation(trackId)' class='btn btn-primary'><i class="fas fa-edit"></i></button>
+        <button (click)="deleteTrack()" class="btn btn-danger" >X</button>
+       </div>
+        <div>TITULO: {{_managerServices.track.title}}</div>
+        <div *ngIf="_managerServices.track.album">
+            ALBUM:<a (click)="overviewComponent.idNavigation(_managerServices.track.album['_id'],'album')" style='cursor:pointer;color:blue'> {{_managerServices.track.album['title']}}</a>
+          </div>
+          <div *ngIf="!_managerServices.track.album">
+             <strong>EL ALBUM DEL TRACK FUE ELIMINADO</strong>
+          </div>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
+        <p>ARTISTAS PARTICIPANTES</p>
+    </div>
+    <table class='table'>
+        <thead>
+            <th>Nombre</th>
+            <th>CARGO {{_managerServices.track.percent}}%</th>
+        </thead>
+        <tbody *ngIf="trackId">
+            <tr *ngFor="let assignation of _managerServices.track.assignations let i=index">
+                <td>
+                    <a (click)="overviewComponent.idNavigation(assignation.artist['_id'],'artist')" style="color:blue" routerLinkActive="router-link-active">{{assignation.artist['indexcard'].name}}</a>
+                </td>
+                <td>
+                    <p>
+                        {{assignation.percent}}%
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class='d-flex justify-content-center mb-2 '>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) ' class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
+    </div>
+</div>

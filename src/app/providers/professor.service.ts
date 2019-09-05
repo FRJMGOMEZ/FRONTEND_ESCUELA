@@ -40,8 +40,8 @@ export class ProfessorsServices {
     }))
   }
 
-  searchProfessors(input: string,from:number=0) {
-    let url = `${URL_SERVICES}search/professors/${input}?from=${from}`
+  searchProfessors(input: string,from:number=0,limit:number=5) {
+    let url = `${URL_SERVICES}search/professors/${input}?from=${from}&limit=${limit}`
     return this.http.get(url, { headers:this._userServices.headers }).pipe(map((res: any) => {
       this.count = res.count;
       this.professors = res.professors;

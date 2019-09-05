@@ -1,13 +1,16 @@
-import { Track } from './track.model';
 import { Payment } from './payment.model';
+import { Debitor } from './debitor.modal';
 
 export class Income {
     constructor(
-        public amount: number,
-        public from: string,
-        public track: string | Track,
+        public notLiquidatedAmount: number,
+        public debitor: Debitor,
         public date: Date,
-        public payments: string[] | Payment[],
+        public liquidatedAmount?: number,
+        public description?:string,
+        public payments?: string[] |Payment[],
         public _id?: string) {
     }
 }
+
+

@@ -16,7 +16,7 @@ export class SubjectComponent implements OnInit, OnDestroy  {
   subjects:SubjectModel[] = [];
 
   uploading:boolean=true;
- 
+
   constructor(
     public _subjectServices:SubjectServices,
     private _subjectModalController: SubjectModalController,

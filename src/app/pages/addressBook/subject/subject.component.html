@@ -1,6 +1,6 @@
-<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:800px;border:1px solid black'>
+<div class="row m-1 animated fadeIn pagesContainerFixed">
     <div class="col-12">
-        <div class='list-group' style='width:1100px'>
+        <div class='list-group' >
             <h5 class='list-group-item-heading text-center mt-3'>MATERIAS</h5>
             <button (click)='postSubject()' class='btn btn-warning m-2'>CREAR MATERIA</button>
             <div class="row card-group">
@@ -19,8 +19,8 @@
                                     <h5 class='text-center'>{{_subjectServices.subjectSelected.name.toUpperCase()}}</h5>
                                 </div>
                                 <div class="col-1 d-flex justify-content-end">
-                                    <button (click)='deleteSubject(_subjectServices.subjectSelected._id)' class='text-left m-2'><i class="far fa-trash-alt"></i></button>
-                                    <button (click)='putSubject(_subjectServices.subjectSelected._id)' class='m-2'><i class="fas fa-edit"></i></button>
+                                    <button (click)='deleteSubject(_subjectServices.subjectSelected._id)' class='text-left m-2 btn btn-danger'><i class="far fa-trash-alt"></i></button>
+                                    <button (click)='putSubject(_subjectServices.subjectSelected._id)' class='m-2 btn btn-primary'><i class="fas fa-edit"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                                                 <td class="row">
                                                     <div *cdkVirtualFor="let professor of _subjectServices.subjectSelected.professors" class='col-12 p-2 '>
                                                         <div class="row d-flex flex-row justify-content-around">
-                                                            <div class='pr-2'><a>{{professor['name']}}</a></div>
+                                                            <div class='pr-2'><a>{{professor.indexcard['name']}}</a></div>
                                                             <div class='pl-5'><button (click)="_subjectServices.addOrDeleteProfessor(_subjectServices.subjectSelected._id,professor['_id']).subscribe()" class='btn btn-danger'>x</button></div>
                                                         </div>
                                                     </div>
@@ -61,7 +61,7 @@
                                                 <td class="row">
                                                     <div *cdkVirtualFor="let alumni of _subjectServices.subjectSelected.alumnis" class="col-12 pt-2">
                                                         <div class="row d-flex flex-row justify-content-around">
-                                                            <div><a>{{alumni['name']}}</a></div>
+                                                            <div><a>{{alumni.indexcard['name']}}</a></div>
                                                             <div><button (click)="_subjectServices.addOrDeleteAlumni(_subjectServices.subjectSelected._id,alumni['_id']).subscribe()" class='btn btn-danger'>x</button></div>
                                                         </div>
                                                     </div>
@@ -83,5 +83,4 @@
             </div>
         </div>
     </div>
-    <div class='w-100'></div>
 </div>

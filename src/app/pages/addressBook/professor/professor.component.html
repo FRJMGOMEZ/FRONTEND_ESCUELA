@@ -1,54 +1,66 @@
-<div class="row m-1 animated fadeIn" style='background:#DCD4D2;border:1px solid black'>
-    <div class='col-12 list-group' style='width:1100px'>
-        <h5 class='list-group-item-heading text-center mt-3'>PROFESORES</h5>
-        <input #input placeholder="Buscar profesor" class='pb-2 mt-2' type="text" name="" id="">
-        <div class='d-flex justify-content-center'>
-            <button class='btn btn-warning mb-2' (click)='_professorServices.searchProfessors(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_professorServices.professors=[]'>BUSCAR
-                PROFESORES</button>
-            <button (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe();_professorServices.professors=[]' class='btn btn-warning mb-2'>TODOS</button>
+<div class="row animated fadeIn pagesContainerFixed">
+    <div class='col-12 '>
+      <div class="row">
+        <div class="col-12 list-group m-2">
+          <h5 class='list-group-item-heading text-center'>PROFESORES</h5>
+          <input #input placeholder="Buscar profesor" type="text" name="" id="">
         </div>
-        <button (click)='postProfessor()' class='btn btn-warning m-2'>CREAR PROFESOR</button>
-    </div>
-    <div class="col-12 animated fadeIn" style='background:#DCD4D2'>
-        <table class='table mb-2' style='background:#F5F1E3;border:1px solid #F0B841'>
+        <div class='col-12 d-flex justify-content-center m-1 mb-3'>
+            <button class='btn btn-warning '
+              (click)='_professorServices.searchProfessors(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_professorServices.professors=[]'>BUSCAR
+              PROFESORES</button>
+            <button
+              (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe();_professorServices.professors=[]'
+              class='btn btn-warning '>TODOS</button>
+        </div>
+        <div class="col-12 list-group p-0">
+                <button (click)='postProfessor()' class='btn btn-warning'>CREAR PROFESOR</button>
+        </div>
+        </div>
+        <div class="col-12 mt-2" style='background:#DCD4D2'>
+          <table class='table' style='background:#F5F1E3'>
             <tr>
-                <th>Nombre</th>
-                <th style='width:50%'>Materias</th>
-                <th></th>
-                <th></th>
+              <th>Nombre</th>
+              <th style='width:50%'>Materias</th>
+              <th></th>
+              <th></th>
             </tr>
             <tr *ngFor="let professor of _professorServices.professors  let i=index">
-                <td>
-                    <div><strong> {{professor.name}}</strong></div>
-                </td>
-                <td style='width: 40%'>
-                    <div class='scrollable' style="height:80px;border:1px solid black;background:#F5F1E3">
-                        <div class="d-flex justify-content-around" *ngFor="let subject of _professorServices.professors[i].subjects">
-                            <a class="list-group-item list-group-item-action">{{subject.name}}</a>
-                            <button (click)="_subjectServices.addOrDeleteProfessor(subject._id,professor._id).subscribe()" class='btn btn-warning m-2'>X</button>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <button (click)='addSubject(professor._id)' class='btn btn-warning m-2 '>Añadir materia</button>
-                    </div>
-                </td>
-                <td>
-                    <div class='btn-group d-flex justify-content-end'>
-                        <button (click)='putProfessor(professor.indexcard)' class="btn btn-primary text-center">
-                            <i class="fa fa-info"></i>
-                        </button>
-                        <button (click)='deleteProfessor(professor._id)' class="btn btn-danger text-center">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </td>
+              <td>
+                <div><strong> {{professor.indexcard['name']}}</strong></div>
+              </td>
+              <td style='width: 40%'>
+                <div class='scrollable' style="height:80px;background:#F5F1E3">
+                  <div class="d-flex justify-content-around" *ngFor="let subject of _professorServices.professors[i].subjects">
+                    <a class="list-group-item list-group-item-action">{{subject.name}}</a>
+                    <button (click)="_subjectServices.addOrDeleteProfessor(subject._id,professor._id).subscribe()"
+                      class='btn btn-warning '>X</button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <button (click)='addSubject(professor._id)' class='btn btn-warning '>Añadir materia</button>
+                </div>
+              </td>
+              <td>
+                <div class='btn-group d-flex justify-content-end'>
+                  <button (click)="putProfessor(professor.indexcard['_id'])" class="btn btn-primary text-center">
+                    <i class="fa fa-info"></i>
+                  </button>
+                  <button (click)='deleteProfessor(professor._id)' class="btn btn-danger text-center">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
-        </table>
-        <div class='d-flex justify-content-around mb-2'>
+          </table>
+          <div class='d-flex justify-content-around '>
             <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-            <button *ngIf="_professorServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+            <button *ngIf="_professorServices.count > from+5" (click)='changeFrom(5)'
+              class='btn btn-secondary'>Following</button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+

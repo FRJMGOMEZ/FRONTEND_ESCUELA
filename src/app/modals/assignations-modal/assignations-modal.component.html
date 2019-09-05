@@ -1,0 +1,30 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
+  <div class="modal" style='display: block' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" *ngIf="assignations.length > 0">
+        <div class="modal-header">
+          <h5 class="modal-title text-center">Asignaciones {{_managerServices.artist.indexcard['name']}}</h5>
+          <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class='row' >
+              <table class='table scrollableTable'>
+              <thead>
+            <th>Track</th>
+            <th>Porcentaje asignado</th>
+              </thead>
+               <tbody>
+            <tr *ngFor="let assignation of assignations">
+              <td>{{assignation['track'].title}}</td>
+              <td>{{assignation.percent}}</td>
+            </tr>
+             </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -25,7 +25,7 @@ export class MainProjectsComponent implements OnInit {
               public _userServices:UserServices) {
    }
 
-  ngOnInit() { 
+  ngOnInit() {
     this._demoServices.projectsPopup()
         this._projectServices.getProjects().subscribe(() => {
             this.projectsSocket = this._projectServices.projectsSocket().subscribe()
@@ -34,8 +34,7 @@ export class MainProjectsComponent implements OnInit {
   }
 
   async toProject(id:string){
-    this._projectServices.projectSelectedId = await id;
-      this.router.navigate(['/projects', this._projectServices.projectSelectedId])
+      this.router.navigate(['/projects', id]);
   }
 
   newProject(){

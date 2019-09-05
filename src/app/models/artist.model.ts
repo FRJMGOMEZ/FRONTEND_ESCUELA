@@ -1,14 +1,9 @@
-import { Indexcard } from './indexcard.model';
-import { User } from './user.model';
-import { Track } from './track.model';
 import { Payment } from './payment.model';
+import { Indexcard } from './indexcard.model';
 export class Artist {
     constructor(
-        public name:string,
         public indexcard: string | Indexcard,
-        public payments: string[] | Payment[],
-        public tracks:string[] | Track[],
-        public user: string| User,
+        public payments?: Payment[],
         public _id?: string) {
     }
 }

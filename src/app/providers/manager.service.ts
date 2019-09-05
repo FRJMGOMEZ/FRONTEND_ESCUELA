@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Album } from '../models/album.models';
 import { Track, Assignation } from '../models/track.model';
 import { Artist } from '../models/artist.model';
-import { Payment } from '../models/payment.model';
 import { UserServices } from './user.service';
 import { URL_SERVICES } from '../config/config';
 import { HttpClient } from '@angular/common/http';
@@ -19,18 +18,15 @@ export class ManagerService {
   album:Album
   track:Track
   artist:Artist
-  payment:Payment
 
   albumsCount:number
   tracksCount:number
   artistsCount:number
-  paymentsCount:number
 
   albums:Album[]=[]
   tracks:Track[]=[]
   artists:Artist[]=[]
-  payments:Payment[]=[]
-  
+
   input: string=''
   from:number=0;
   item: string
@@ -50,18 +46,16 @@ export class ManagerService {
     this.item = item || this.item;
 
     if(this.input != input){this.from = 0}
-    
+
     this.input = input;
-    
+
     let albumId;
     let trackId;
     let artistId;
-    let paymentId;
 
     if (this.album) { albumId = this.album._id } else { albumId = '#'}
     if (this.track) { trackId = this.track._id } else { trackId = '#' }
     if (this.artist) { artistId = this.artist._id } else { artistId = '#' }
-    if (this.payment) { paymentId = this.payment._id } else { paymentId = '#' }
 
     let currentUrl = this._router.url;
     let currentUrlArray = currentUrl.split('/');
@@ -69,14 +63,13 @@ export class ManagerService {
       if (character === '%23') { currentUrlArray[index] ='#'}
     })
     currentUrl = currentUrlArray.join('/');
- 
-    let url = `/manager/${this.item}/${input}/${this.from}/${albumId}/${trackId}/${artistId}/${paymentId}`;
-   
+
+    let url = `/overview/${this.item}/${input}/${this.from}/${albumId}/${trackId}/${artistId}`;
+
     if(currentUrl != url){
       this.albums = [];
       this.artists = [];
       this.tracks = [];
-      this.payments = [];
       this._router.navigate([url])
     }
   }
@@ -86,41 +79,38 @@ export class ManagerService {
     let albumId;
     let trackId;
     let artistId;
-    let paymentId;
 
     switch (collection) {
       case 'artist': artistId = id
         if (this.album) { albumId = this.album._id } else { albumId = '#' }
         if (this.track) { trackId = this.track._id } else { trackId = '#' }
-        if (this.payment) { paymentId = this.payment._id } else { paymentId = '#' };
         break;
       case 'album': albumId = id
         if (this.track) { trackId = this.track._id } else { trackId = '#' }
-        if (this.payment) { paymentId = this.payment._id } else { paymentId = '#' };
         if (this.artist) { artistId = this.artist._id } else { artistId = '#' }
         break;
       case 'track': trackId = id
         if (this.album) { albumId = this.album._id } else { albumId = '#' }
-        if (this.payment) { paymentId = this.payment._id } else { paymentId = '#' };
         if (this.artist) { artistId = this.artist._id } else { artistId = '#' };
         break;
-      case 'payment': paymentId = id
-        if (this.album) { albumId = this.album._id } else { albumId = '#' }
-        if (this.track) { trackId = this.track._id } else { trackId = '#' }
-        if (this.artist) { artistId = this.artist._id } else { artistId = '#' };
-      break;
       default:
         if (this.album) { albumId = this.album._id } else { albumId = '#' }
         if (this.track) { trackId = this.track._id } else { trackId = '#' }
         if (this.artist) { artistId = this.artist._id } else { artistId = '#' };
-        if (this.payment) { albumId = this.payment._id } else { paymentId = '#' };
       break;
     }
     let item = this.item || '#';
     let from = this.from;
     let input = this.input || '#';
-    let url = `/manager/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}/${paymentId}`;
-    this._router.navigate([url])
+    let url = `/overview/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}`;
+
+    return new Promise((resolve,reject)=>{
+      this._router.navigate([url]).then(()=>{
+        setTimeout(()=>{
+          resolve()
+        },150)
+      })
+    })
   }
 
   getItems(from: number = 0, limit: number = 6,item?:string){
@@ -131,9 +121,9 @@ export class ManagerService {
         case 'tracks': this.tracks = res.tracks; this.count = res.count;
           break;
         case 'albums':
-        this.albums = res.albums; this.count = res.count;;
+        this.albums = res.albums; this.count = res.count;
           break;
-        case 'artists': 
+        case 'artists':
         if(this._trackModalController.hidden){
           this.artists = res.artists;
           this.count = res.count;
@@ -141,7 +131,6 @@ export class ManagerService {
           return res.artists
         };
           break;
-        case 'payments': this.payments = res.payments; this.count = res.count;
       }
     }),
       catchError(this._errorHandler.handleError))
@@ -157,18 +146,12 @@ export class ManagerService {
           break;
         case 'track': this.track = res.track;
           break;
-        case 'payment': this.payment = res.payment;
       }
     }),
       catchError(this._errorHandler.handleError))
   }
 
   searchItems(input: string, collection: string, from: number = 0, limit: number = 6) {
-
-    if(collection === 'payments' ){
-      let myDate = input.split('/').map((date) => { return Number(date) })
-      input = String(new Date(myDate[2], myDate[1], myDate[0]).getTime());
-    }
     
     let url = `${URL_SERVICES}search/${collection}/${input}?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
@@ -182,10 +165,9 @@ export class ManagerService {
             this.artists = res.artists;
             this.count = res.count;
           } else {
-            return res.artists
+            return res.artists;
           };
           break;
-        case 'payments': this.payments = res.payments; this.count = res.count;
       }
     }),
       catchError(this._errorHandler.handleError))
@@ -194,19 +176,139 @@ export class ManagerService {
   postAlbum(album: Album) {
     let url = `${URL_SERVICES}album`;
     return this.http.post(url, album , { headers: this._userServices.headers }).pipe(map((res: any) => {
-      if (this.albums.length < 6) {
-        this.albums.push(res.album)
+      if(this.albums.length >0){
+        if(this.albums.length < 6) {
+      this.albums.push(res.album)
+    }
+    this.albumsCount++
       }
-      this.albumsCount++
+      return res.album
     }),
     catchError(this._errorHandler.handleError))
+  }
+
+  putAlbum(album: Album, id: string) {
+    let url = `${URL_SERVICES}album/${id}`;
+    return this.http.put(url, album, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this.albums.forEach((album: Album, index) => {
+        if (album._id === res.album._id) {
+          this.albums[index] = res.album;
+        }
+      })
+      if(this.album){
+        this.album = res.album
+      }
+    }),
+      catchError(this._errorHandler.handleError))
+  }
+
+  deleteAlbum(id: string) {
+    let url = `${URL_SERVICES}album/${id}`
+    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this.albums = this.albums.filter((album: Album) => { return album._id != res.album._id })
+      this.albumsCount--
+      if(this.album){
+        if(this.album._id === res.album._id){
+          this.album = undefined;
+        }
+      }
+      if(this.tracks.length >0){
+          this.tracks.forEach((track:any,index)=>{
+               if(track.album._id === res.album._id){
+                 if(track.assignations.length === 0){
+                   this.tracks = this.tracks.filter((eachTrack) => {
+                     return eachTrack._id != track._id
+                   })
+                 }
+               }
+          })
+      }
+      if(this.track){
+        res.album.tracks.forEach((track)=>{
+           if(track._id === this.track._id){
+                 this.track = undefined;
+                 this.idNavigation()
+           }
+        })
+      }
+    }),
+      catchError(this._errorHandler.handleError))
   }
 
   postTrack(track: Track) {
     let url = `${URL_SERVICES}track`;
     return this.http.post(url, track, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.album = res.album;
+      this.album.tracks.push(res.track)
+      if(this.albums.length >0){
+        this.albums.forEach((album,index)=>{
+          if(album._id === res.track.album._id){
+             this.albums[index].tracks.push(res.track)
+          }
+        })
+      }
+      if(this.tracks.length > 0){
+        if(this.tracks.length< 6){
+          this.tracks.push(res.track)
+        }
+      }
       return res.track
+    }),
+      catchError(this._errorHandler.handleError))
+  }
+
+ putTrack(track: Track, id: string) {
+    let url = `${URL_SERVICES}track/${id}`;
+    return this.http.put(url, track, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      if(this.tracks.length >0){
+        this.tracks.forEach((track: Track, index) => {
+          if (track._id === res.track._id) {
+            this.tracks[index] = res.track;
+          }
+        });
+      }
+      if(this.album){
+        this.album.tracks.forEach((track: Track, index) => {
+          if (track._id === id) {
+            this.album.tracks[index] = res.track
+          }
+        });
+      }
+      if(this.track){
+        if (this.track._id === id) {
+          this.track = res.track
+        }
+      }
+    }),
+      catchError(this._errorHandler.handleError))
+  }
+
+  deleteTrack(id: string) {
+    let url = `${URL_SERVICES}track/${id}`
+    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this.tracks = this.tracks.filter((track: Track) => { return track._id != res.track })
+      if (this.album) {
+        this.album.tracks = this.album.tracks.filter((track: any) => { return track._id != id });
+      }
+      if(this.track){
+        if (this.track._id === id) {
+          this.track = undefined;
+          this.idNavigation()
+        }
+      }
+      if(this.tracks.length > 0){
+        this.tracks = this.tracks.filter((track:Track)=>{
+          return track._id != id
+        })
+      }
+      if(this.albums.length > 0){
+        this.albums.forEach((album,index)=>{
+            if(album._id === res.track.album._id){
+                this.albums[index].tracks = this.albums[index].tracks.filter((track:Track)=>{
+                  return track._id != res.track._id
+                })
+            }
+        })
+      }
     }),
       catchError(this._errorHandler.handleError))
   }
@@ -214,76 +316,41 @@ export class ManagerService {
   postArtist(artist: Artist) {
     let url = `${URL_SERVICES}artist`;
     return this.http.post(url, artist, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      (res.artist)
-      if (this.artists.length < 6) {
-        (this.artists.length)
-        this.artists.push(res.artist)
+      if(this.artists.length >0){
+        if (this.artists.length < 6) {
+          this.artists.push(res.artist);
+        }
       }
+      return res.artist
     }),
       catchError(this._errorHandler.handleError))
-  }
-
-  putAlbum(album: Album, id: string) {
-    let url = `${URL_SERVICES}album/${id}`;
-    return this.http.put(url, album, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.albums.forEach((album:Album, index) => {
-        if (album._id === res.album._id) {
-          this.albums[index] = res.album;
-        }
-      })
-    }),
-    catchError(this._errorHandler.handleError))
-  }
-
-  putTrack(track: Track, id: string) {
-    let url = `${URL_SERVICES}track/${id}`;
-    return this.http.put(url, track, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.tracks.forEach((track: Track, index) => {
-        if (track._id === res.track._id) {
-          this.tracks[index] = res.track;
-        }
-      });
-      this.album.tracks.forEach((track:Track,index)=>{
-          if(track._id === id){
-            this.album.tracks[index]=res.track
-          }
-      })
-    }),
-      catchError(this._errorHandler.handleError))
-  }
-
-  putArtist(artistUpdated: Artist) {
-    this.artists.forEach((artist: Artist, index) => {
-      if (artist._id === artistUpdated._id) {
-        this.artists[index] = artistUpdated;
-      }
-    })
-  }
-
-  deleteAlbum(id: string) {
-    let url = `${URL_SERVICES}album/${id}`
-    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.albums = this.albums.filter((album:Album) => { return album._id != res.album })
-      this.albumsCount--
-    }),
-    catchError(this._errorHandler.handleError))
-  }
-
-  deleteTrack(id: string) {
-    let url = `${URL_SERVICES}track/${id}`
-    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.tracks = this.tracks.filter((track: Track) => { return track._id != res.track })
-      if(this.album){
-        this.album.tracks = this.album.tracks.filter((track:any)=>{return track._id != id});
-      }
-    }),
-    catchError(this._errorHandler.handleError))
   }
 
   deleteArtist(id:string){
     let url = `${URL_SERVICES}artist/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
         this.artists = this.artists.filter((artist:Artist)=>{return artist._id != res.artist})
+        this.artist=undefined;
+        this.idNavigation();
+        if(this.album){
+            if(this.album.tracks.length > 0){
+              this.album.tracks.forEach((track,indexTracks)=>{
+                    track.assignations.forEach((assignation:Assignation)=>{
+                           if(assignation.artist['indexcard']._id === res.artist.indexcard._id){
+                            this.album.tracks[indexTracks].assignations.filter((eachAssignation:Assignation)=>
+                            {return eachAssignation.artist['indexcard']._id != assignation.artist['indexcard']._id })
+                           }
+                    })
+              })
+            }
+        }
+        if(this.track){
+          this.track.assignations.forEach((assignation:Assignation,index)=>{
+            if(assignation.artist['indexcard']._id === res.artist['indexcard']._id ){
+                 this.track.assignations = this.track.assignations.filter((eachAssignation)=>{return eachAssignation._id != assignation._id })
+            }
+          })
+        }
     }),
     catchError(this._errorHandler.handleError))
   }
@@ -295,12 +362,17 @@ export class ManagerService {
     }))
   }
 
+  searchAssignationsByArtist(artistId:string){
+    let url = `${URL_SERVICES}assignations/${artistId}`
+    return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res:any)=>{
+      return res.assignations;
+    }))
+  }
+
   removeAssignation(id:string){
     let url = `${URL_SERVICES}assignation/${id}`
      return this.http.delete(url).pipe(map((res:any)=>{
           return res.assignation
       }))
   }
-
-
 }

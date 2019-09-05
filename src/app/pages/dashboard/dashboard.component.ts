@@ -59,7 +59,7 @@ async ngOnInit() {
   }
 
   hi(){
-    let today = new Date()
+    let today = new Date();
     if(today.getHours() >= 21 && today.getHours() < 5){
       return `BUENAS NOCHES`
     } else if (today.getHours() > 5 && today.getHours() < 15){
@@ -86,9 +86,16 @@ async ngOnInit() {
   }
 
   toEvent(date?:Date){
-    date =new Date(date)
+    date =new Date(date);
     if(date.getTime()< new Date().getTime()){
-      date = new Date()
+      let numberOfWeeks = 10000;
+      for (let i = 0; i <= numberOfWeeks;i++){
+        if(date.getTime()< new Date().getTime()){
+          date = new Date(date.getTime() + 604800000);
+        }else{
+          i= numberOfWeeks;
+        }
+      }
     }
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0);
     this._calendarServices.getDayByDate(date.getTime()).subscribe((res) => {

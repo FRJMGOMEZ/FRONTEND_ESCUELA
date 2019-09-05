@@ -1,53 +1,53 @@
-<div style='background:#DCD4D2;border:1px solid black;height: 100%;width:100%;'>
-    <ng-container *ngIf="inProgress">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </ng-container>
-    <div class="row m-1 animated fadeIn m-2">
+    <div class="row mr-1 ml-1 mt-0 animated fadeIn">
         <div class="col-4 mt-0 pl-0">
-            <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row ">
+            <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row">
                 <div class="col-12">
                     <button class='btn btn-warning' (click)="_demoServices.calendarPopup(true)" style='cursor:pointer'>
                          <i style="color:blue" class="fas fa-info"></i>
                     </button>
                 </div>
-                <div class="col-12 d-flex flex-column text-center mt-2 ">
+                <div class="col-12 d-flex flex-column text-center mt-1">
                     <h5 *ngIf="_calendarServices.currentDay">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
                 </div>
-                <div class="col-6 mt-2">
-                    <button class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
+                <div class="col-12">
+                  <div class="row mt-2 d-flex justify-content-between">
+                    <div class="ml-3" style='display: flex'>
+                      <button class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
                         {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
-                    </button>
-                </div>
-                <div class="col-6 mt-2 ">
-                    <button class='btn-warning' (click)='toOtherWeek(nextWeek[0])'>
+                      </button>
+                    </div>
+                    <div class="mr-3" style='display:flex'>
+                      <button class='btn-warning' (click)='toOtherWeek(nextWeek[0])'>
                         {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
-                    </button>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="col-12 d-flex justify-content-center mt-2">
+                <div class="col-12 d-flex justify-content-center mt-1">
                     <button class='btn btn-warning' (click)=' _calendarModalController.showModal()'><i class="fas fa-search "></i></button>
                 </div>
             </div>
-            <div class='col-12 mt-4 p-0'>
+            <div class='col-12 mt-2 p-0'>
                 <h5 class='text-center'>Eventos con permanencia</h5>
-                <cdk-virtual-scroll-viewport itemSize='25px' style="height:350px;border:1px solid black;background:#F5F1E3">
-                    <table class='table'>
-                        <tr *cdkVirtualFor="let event of _calendarServices.permanentEvents">
-                            <td>Nombre: {{event.name}}</td>
-                            <td>Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
-                            <td>
-                                <p *ngIf="event.endDate != null">Termina el día : {{event.endDate | date }} a las {{event.position | timeConversor2 : event.duration}}</p>
-                                <p *ngIf="event.endDate === null">Se prorroga indefinidamente</p>
-                            </td>
-                            <td>
-                                <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='deletePermanentEvent(event._id)'><i class="far fa-trash-alt"></i></button>
-                                <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='showEventPermanentInfo(event._id)'><i class="far fa-edit"></i></button>
-                            </td>
-                        </tr>
+                    <table class='table scrollableTable m-0' style="height:350px;background:#F5F1E3">
+                        <tbody>
+                            <tr *ngFor="let event of _calendarServices.permanentEvents">
+                                <td>Nombre: {{event.name}}</td>
+                                <td>Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
+                                <td>
+                                    <p *ngIf="event.endDate != null">Termina el día : {{event.endDate | date }} a las
+                                        {{event.position | timeConversor2 : event.duration}}</p>
+                                    <p *ngIf="event.endDate === null">Se prorroga indefinidamente</p>
+                                </td>
+                                <td>
+                                    <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='deletePermanentEvent(event._id)'><i
+                                            class="far fa-trash-alt"></i></button>
+                                    <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='showEventPermanentInfo(event._id)'><i
+                                            class="far fa-edit"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
-                </cdk-virtual-scroll-viewport>
             </div>
             <div class='col-12 mt-2'>
                 <p style='color:red'>*Aquellos eventos con permanencia indefinida se definirán con el color rojo*</p>
@@ -55,79 +55,43 @@
                 <p style='color:blue'>*Aquellos eventos cuya duración sea solo de un día se definirán con el color azul*</p>
             </div>
         </div>
-        <div #printable class="col-8 p-2">
+        <div #printable class="col-8" style='border-left:1px solid black;border-right:1px solid black'>
             <div class="row">
-                <div class="col-11 mb-1">
-                    <div *ngIf="_calendarServices.currentWeek && _calendarServices.currentDay" class="row card-group mt-1" style='height:50px'>
-                        <div *ngIf="_calendarServices.currentWeek.monday['_id'] !=_calendarServices.currentDay._id " class="card">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.monday['_id'])" style='background-color:#F5F1E3' class="card-body ">
-                                <p class='text-center day'>
+              <div class="col-1" style='background: #F0B841'>
+                <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>
+              </div>
+                <div class="col-11" style='background: #F0B841'>
+                    <div *ngIf="_calendarServices.currentWeek && _calendarServices.currentDay" class="row m-0 p-0 d-flex justify-content-around" style='height:30px'>
+                                <button *ngIf="_calendarServices.currentWeek.monday['_id'] !=_calendarServices.currentDay._id " (click)="toOtherDay(_calendarServices.currentWeek.monday['_id'])"  class='text-center day btn btn-warning'>
                                     Lunes {{_calendarServices.currentWeek.monday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.tuesday['_id']  !=_calendarServices.currentDay._id" style='background-color:#F5F1E3' class="card">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.tuesday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button *ngIf="_calendarServices.currentWeek.tuesday['_id']  !=_calendarServices.currentDay._id" (click)="toOtherDay(_calendarServices.currentWeek.tuesday['_id'])" class='text-center day btn btn-warning'>
                                     Martes {{_calendarServices.currentWeek.tuesday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.wednesday['_id']  !=_calendarServices.currentDay._id " style='background-color:#F5F1E3' class="card ">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.wednesday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button  *ngIf="_calendarServices.currentWeek.wednesday['_id']  !=_calendarServices.currentDay._id "  (click)="toOtherDay(_calendarServices.currentWeek.wednesday['_id'])" class='text-center day btn btn-warning'>
                                     Miércoles {{_calendarServices.currentWeek.wednesday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.thursday['_id']  !=_calendarServices.currentDay._id" style='background-color:#F5F1E3' class="card ">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.thursday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button *ngIf="_calendarServices.currentWeek.thursday['_id']  !=_calendarServices.currentDay._id" (click)="toOtherDay(_calendarServices.currentWeek.thursday['_id'])" class='text-center day btn btn-warning'>
                                     Jueves {{_calendarServices.currentWeek.thursday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.friday['_id']  !=_calendarServices.currentDay._id " style='background-color:#F5F1E3' class="card ">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.friday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button *ngIf="_calendarServices.currentWeek.friday['_id']  !=_calendarServices.currentDay._id " (click)="toOtherDay(_calendarServices.currentWeek.friday['_id'])"  class='text-center day btn btn-warning'>
                                     Viernes {{_calendarServices.currentWeek.friday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.saturday['_id']  !=_calendarServices.currentDay._id " style='background-color:#F5F1E3' class="card ">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.saturday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button *ngIf="_calendarServices.currentWeek.saturday['_id']  !=_calendarServices.currentDay._id " (click)="toOtherDay(_calendarServices.currentWeek.saturday['_id'])" class='text-center day btn btn-warning'>
                                     Sábado {{_calendarServices.currentWeek.saturday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-                        <div *ngIf="_calendarServices.currentWeek.sunday['_id'] !=_calendarServices.currentDay._id " style='background-color:#F5F1E3' class="card ">
-                            <div (click)="toOtherDay(_calendarServices.currentWeek.sunday['_id'])" class="card-body ">
-                                <p class='text-center day'>
+                                </button>
+                                <button *ngIf="_calendarServices.currentWeek.sunday['_id'] !=_calendarServices.currentDay._id "   (click)="toOtherDay(_calendarServices.currentWeek.sunday['_id'])" class='text-center day btn btn-warning'>
                                     Domingo {{_calendarServices.currentWeek.sunday['date']|date:'d'}}
-                                </p>
-                            </div>
-                        </div>
-
+                                </button>
                     </div>
                 </div>
-                <div class='col-1 p-1'>
-                    <div>
-                        <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>
-                    </div>
+                <div class="col-1" style='background: #F0B841'>
+                        <button *ngIf="facilitieFrom && facilitieFrom > 0" (click)='switchFacilities(-5)' class='btn btn-warning'><i class="fas fa-arrow-left"></i></button>
+                        <button *ngIf="_facilitieServices.count > facilitieFrom+5" (click)='switchFacilities(5)' class='btn btn-warning'><i class="fas fa-arrow-right"></i></button>
                 </div>
-                <div class="col-1 ">
-                    <div>
-                        <button *ngIf="facilitieFrom && facilitieFrom > 0" (click)='switchFacilities(-5)' class='fluid'><i class="fas fa-arrow-left"></i></button>
-                    </div>
-                    <div>
-                        <button *ngIf="_facilitieServices.count > facilitieFrom+5" (click)='switchFacilities(5)' class='fluid'><i
-                                    class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-                <div class="col-11 m-0 p-0" style='border:1px solid black'>
-                    <div class="row d-flex justify-content-around card-group " style='height:50px;'>
-                        <div *ngFor="let facilitie of _facilitieServices.facilities" class="card ">
+                <div class="col-11 m-0 p-0" >
+                    <div class="row d-flex justify-content-around card-group " style='height:47px;'>
+                        <div *ngFor="let facilitie of _facilitieServices.facilities" class="card">
                             <div class="card-body text-center ">
                                 {{facilitie.name}}
                             </div>
@@ -135,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div #dayPlace class="row">
+                    <div  #dayPlace class="row">
                         <div class="col-1 m-0 p-0">
                             <div class="row d-flex flex-column card-group p-0 m-0 " style='height:720px;'>
                                 <div class="card ">
@@ -200,9 +164,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf='cardWidth && !inProgress' class="col-11 d-flex justify-content-around " style='height:720px'>
+                        <div (window:resize)="onResize()"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " style='height:720px'>
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
-                                <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': cardWidth} "></app-event>
+                                <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': getWidth()} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>
                                 <app-event *ngIf="position >=2" [facilitie]='facilitie' [position]='2' [hour]="_calendarServices.currentDay.hour2 "></app-event>
                                 <app-event *ngIf="position >=3" [facilitie]='facilitie' [position]='3' [hour]="_calendarServices.currentDay.hour3 "></app-event>
@@ -221,5 +185,3 @@
             </div>
         </div>
     </div>
-
-</div>

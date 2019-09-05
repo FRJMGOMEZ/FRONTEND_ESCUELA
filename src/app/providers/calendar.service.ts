@@ -15,10 +15,11 @@ import { EventModalController } from '../modals/events-modal/eventsModal.control
 @Injectable({
   providedIn: "root"
 })
+
 export class CalendarService {
 
-  currentDay:Day
-  currentWeek:Week
+  public currentDay:Day
+  public currentWeek:Week
 
   permanentEvents:EventModel[] = []
 
@@ -26,11 +27,11 @@ export class CalendarService {
   public events$ = this.eventsSource.asObservable();
 
   constructor(private http: HttpClient,
-            private _userServices:UserServices,
-            private socket:Socket,
-            private _calendarModalController:CalendarModalController,
-            private _eventModalController:EventModalController
-          ) {}
+              private _userServices:UserServices,
+              private socket:Socket,
+              private _calendarModalController:CalendarModalController,
+              private _eventModalController:EventModalController
+          ) {console.log('calendar init')}
 
   //////// WEEK ///////
 
@@ -39,7 +40,7 @@ export class CalendarService {
     return this.http.get(url, { headers:this._userServices.headers }).pipe(
       map((res: any) => {
         if(res.week === null){
-          return 'no-week' 
+          return 'no-week'
         }else{
           this.currentWeek = res.week;
           return res.week
@@ -232,6 +233,7 @@ export class CalendarService {
             return
           })
         }else{
+          console.log(res.day);
           this.currentDay = res.day;
           return
         }
@@ -251,7 +253,9 @@ export class CalendarService {
   getPermanentEvents() {
     let url = `${URL_SERVICES}permanentEvents`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      this.permanentEvents = res.events;
+      this.permanentEvents = _.sortBy(res.events,(event)=>{
+        return event.startDate;
+      });
     }))
   }
 
@@ -282,7 +286,10 @@ export class CalendarService {
       }
       if (payload.eventOrder) {
         if (payload.eventOrder.order === 'post') {
-          this.permanentEvents.push(payload.eventOrder.event)
+          this.permanentEvents.push(payload.eventOrder.event);
+          this.permanentEvents = _.sortBy(this.permanentEvents,(eventToSort:EventModel)=>{
+                return eventToSort.startDate
+          })
         } else if (payload.eventOrder.order === 'put') {
           if(this.permanentEvents.indexOf(payload.eventOrder.event)>=0){
             this.permanentEvents.forEach((event, index) => {
@@ -291,10 +298,15 @@ export class CalendarService {
               }
             })
           }else{
-            this.permanentEvents.push(payload.eventOrder.event)
+            this.permanentEvents.push(payload.eventOrder.event);
+            this.permanentEvents = _.sortBy(this.permanentEvents,(event:EventModel)=>{
+              return event.startDate
+            })
           }
         } else if (payload.eventOrder.order === 'delete') {
-          this.permanentEvents = this.permanentEvents.filter((event) => { return event._id != payload.eventOrder.event._id })
+          this.permanentEvents = _.sortBy(this.permanentEvents.filter((event: EventModel) => { return event._id != payload.eventOrder.event._id }),(eventToSort)=>{
+             return eventToSort.startDate
+          }) 
         }
       }
     }))}
@@ -307,7 +319,10 @@ export class CalendarService {
         let eventOrder = new EventOrder(res.event,'post')
         this.eventsSource.next(eventOrder)
         if(res.event.permanent){
-          this.permanentEvents.push(res.event)
+          this.permanentEvents.push(res.event);
+          this.permanentEvents = _.sortBy(this.permanentEvents,(eventToSort)=>{
+            return eventToSort.startDate
+          })
           this.emitEvent(eventOrder)
         }else{
           this.emitEvent()
@@ -330,12 +345,15 @@ export class CalendarService {
               }
             })
           }else{
-            this.permanentEvents.push(res.event)
+            this.permanentEvents.push(res.event);
+            this.permanentEvents = _.sortBy(this.permanentEvents,(event:EventModel)=>{
+              return event.startDate
+            })
           }
           this.emitEvent(eventOrder)
         }else{
           this.emitEvent()
-        }     
+        }
       })
     );
   }
@@ -357,7 +375,7 @@ export class CalendarService {
       }else{
         this.emitEvent()
       }
-   
+
     }))
   }
 
@@ -366,12 +384,14 @@ export class CalendarService {
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       this.eventsSource.next()
       if(res.event.permanent){
-        this.permanentEvents = this.permanentEvents.filter((event)=>{return event._id != res.event._id})
+        this.permanentEvents = _.sortBy(this.permanentEvents.filter((event) => { return event._id != res.event._id }),(eventToSort:EventModel)=>{
+          return eventToSort.startDate
+        }) 
         let eventOrder = new EventOrder(res.event, 'delete')
         this.emitEvent(eventOrder)
       }else{
         this.emitEvent()
-      }  
+      }
     }))
   }
 

@@ -30,8 +30,8 @@
             <tbody>
                 <tr [ngStyle]="{'background-color': checkTime(task.dateLimit)}" *ngFor="let task of _projectServices.groupTasks">
                     <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
-                    <td>{{task.assignedBy['name']}}</td>
-                    <td>{{task.user['name']}}</td>
+                    <td>{{task.assignedBy.name}}</td>
+                    <td>{{task.user.name}}</td>
                     <td>{{task.date | date}}</td>
                     <td>{{task.dateLimit | date}}</td>
                     <td>
@@ -64,8 +64,8 @@
             <tbody>
                 <tr [ngStyle]="{'background-color': checkTime(task.dateLimit)}" *ngFor="let task of _projectServices.myTasks">
                     <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
-                    <td>{{task.assignedBy['name']}}</td>
-                    <td>{{task.user['name']}}</td>
+                    <td>{{task.assignedBy.name}}</td>
+                    <td>{{task.user.name}}</td>
                     <td>{{task.date | date}}</td>
                     <td>{{task.dateLimit | date}}</td>
                     <td>

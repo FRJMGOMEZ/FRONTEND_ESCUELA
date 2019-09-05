@@ -1,0 +1,37 @@
+<div class="row animated fadeIn pagesContainerFixed">
+    <div class="col-12">
+        <div class="row m-2">
+            <div class="col-8">
+                <div class="row">
+                    <div class="col-6 d-flex justify-content-center">
+                        <div class="form-check">
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <input #input0 type="text" placeholder=" De dd/mm/yyyy">
+                                </div>
+                                <div>
+                                    <input #input1 type="text" placeholder="A dd/mm/yyyy">
+                                </div>
+                            </div>
+                        </div>
+                        <button (click)="generateChart()" class="btn btn-warning text-center">Generar gráfico</button>
+                    </div>
+                    <div class="col-6">
+                        <div class="row btn btn-group">
+                            <button class="btn btn-warning">Liquidaciones</button>
+                            <button class="btn btn-warning">Ingresos</button>
+                        </div>
+                        <div class="row btn btn-group">
+                            <button class="btn btn-warning">Eventos</button>
+                            <button class="btn btn-warning">Proyectos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <app-payments-chart (click)="generateChart('payments')"></app-payments-chart>
+            </div>
+        </div>
+    </div>
+</div>
+   

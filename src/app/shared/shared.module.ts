@@ -6,24 +6,24 @@ import { ProvidersModule } from "../providers/providers.module";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { CalendarComponent } from './calendar/calendar.component';
 import { PipesModule } from '../pipes/pipes.module';
-
-
+import { LineChartComponent } from './line-chart/line-chart.component';
 
 @NgModule({
     declarations: [
         SidebarComponent,
-        CalendarComponent
+        CalendarComponent,
+        LineChartComponent
     ],
 
     imports: [
         CommonModule,
         RouterModule,
-        ProvidersModule,
         PipesModule],
 
     exports: [
         SidebarComponent,
-        CalendarComponent
+        CalendarComponent,
+        LineChartComponent
     ],
 
     providers: [],

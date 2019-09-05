@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { HttpModule } from "@angular/http";
 import { HttpClientModule } from "@angular/common/http";
 
+
 /// Services
 import { UserServices } from "./user.service";
 import { FilesServices } from './files.service';
@@ -20,6 +21,9 @@ import { ErrorHandlerService } from './error-handler.service';
 import { DashboardService } from './dashboard.service';
 import { PasswordService } from './password.service';
 import { ManagerService } from './manager.service';
+import { IncomesService } from './incomes.service';
+import { PaymentsService } from './payments.service';
+import { LetterService } from './letter.service';
 
 
 @NgModule({
@@ -40,7 +44,10 @@ import { ManagerService } from './manager.service';
        ErrorHandlerService,
        DashboardService,
        PasswordService,
-       ManagerService
+       ManagerService,
+       IncomesService,
+       PaymentsService,
+       LetterService
     ],
 
     exports: [],

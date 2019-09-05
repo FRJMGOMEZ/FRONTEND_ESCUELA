@@ -1,0 +1,60 @@
+<div class='backgroundBlack animated fadeIn' [ngClass]="_modalService.hidden">
+  <div class="modal" style='display: block' tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div  class="modal-body">
+          <form *ngIf="income" ngNativeValidate #form='ngForm' role="form">
+            <div class="row">
+              <div class="col-12">
+                <div class="row d-flex justify-content-center">
+                  <div class="form-group text-center">
+                    <input [(ngModel)]="income.notLiquidatedAmount" name="incomeNotLiquidatedAmount" type="number"
+                      placeholder="Introduce una cantidad en euros">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div>
+                      <div class="form-group">
+                        <label for="debitorSelector">Selecciona la empresa de origen del ingreso</label>
+                        <select [(ngModel)]="debitor._id" name="user" id="debitorSelector">
+                          <option *ngFor="let eachDebitor of _incomeServices.debitors" [value]="eachDebitor._id">{{eachDebitor.name}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="newDebitor">*Si la empresa de origen no existe en el registro, puedes incorporarla rellenando sus
+                        datos*</label>
+                      <div id='newDebitor' class='d-flex flex-column'>
+                        <div>
+                          <input [(ngModel)]="debitor.name" name="debitorName" id="debitorName" type="text"
+                            placeholder="Introduce el nombre del pagador">
+                        </div>
+                        <div>
+                          <input [(ngModel)]="debitor.nie" name="debitorNie" id='debitorNie' type="number"
+                            placeholder="Introduce el nie o nif del pagador ">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                  <button *ngIf="!_modalService.id" (click)="postIncome()" class="btn btn-warning">CREAR INGRESO</button>
+                  <button *ngIf="_modalService.id" class="btn btn-warning">GUARDAR INGRESO</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

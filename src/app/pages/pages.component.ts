@@ -14,6 +14,8 @@ import { ShowFilesModalController } from '../modals/show.files-modal/showfilesMo
 import { SubjectModalController } from '../modals/subject-modal/subjectModalController';
 import { TaskModalController } from '../modals/task-modal/task.modalController';
 import { UploadFilesModalController } from '../modals/upload-files-modal/uploadFilesModalController';
+import { IncomeModalController } from '../modals/income-modal/incomesModalController.service';
+import { PaymentModalController } from '../modals/payment-modal/paymentModalController.service';
 
 @Component({
   selector: 'app-pages',
@@ -36,7 +38,9 @@ export class PagesComponent implements OnInit {
               private _showFilesModalController:ShowFilesModalController,
               private _subjectModalController:SubjectModalController,
               private _taskModalController:TaskModalController,
-              private _uploadFilesModalController:UploadFilesModalController
+              private _uploadFilesModalController:UploadFilesModalController,
+              private _incomesModalController:IncomeModalController,
+              private _paymentModalController:PaymentModalController
               ) { }
 
   ngOnInit() {
@@ -59,6 +63,8 @@ export class PagesComponent implements OnInit {
         if (!this._subjectModalController.hidden) { this._subjectModalController.hideModal() }
         if (!this._taskModalController.hidden) { this._taskModalController.hideModal() }
         if (!this._uploadFilesModalController.hidden) { this._uploadFilesModalController.hideModal() }
+        if(!this._incomesModalController.hidden){this._incomesModalController.hideModal()}
+        if(!this._paymentModalController.hidden){this._paymentModalController.hideModal()}
     })
     this._userServices.userOnlineSocket().subscribe()
   }

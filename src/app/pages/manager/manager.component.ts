@@ -77,17 +77,6 @@ export class ManagerComponent implements OnInit,OnDestroy,AfterViewChecked {
             this._managerServices.getItemById(artistId, 'artist').subscribe()
           }
          }
-
-        if (paymentId != '#'){
-          
-          if(this._managerServices.payment){
-            if(this._managerServices.payment._id != paymentId){
-              this._managerServices.getItemById(paymentId, 'payment').subscribe()
-            }
-          }else{
-            this._managerServices.getItemById(paymentId, 'payment').subscribe()
-          }
-          }
     
     }) 
 }
@@ -145,12 +134,10 @@ ngOnDestroy(): void {
     this._managerServices.album = undefined;
     this._managerServices.track = undefined;
     this._managerServices.artist = undefined;
-    this._managerServices.payment = undefined;
 
     this._managerServices.albums = [];
     this._managerServices.tracks = [];
     this._managerServices.artists = [];
-    this._managerServices.payments = [];
 
     this._managerServices.input = undefined;
     this._managerServices.from = 0;

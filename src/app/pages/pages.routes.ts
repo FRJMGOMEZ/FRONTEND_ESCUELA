@@ -12,8 +12,10 @@ import { ProjectComponent } from './projects/project/project.component';
 import { AdminGuard } from '../guards/admin.guard';
 import { CalendarManagerComponent } from './calendar/calendar.component'
 import { VerifyTokenGuard } from '../guards/verify-token.guard';
-import { ManagerComponent } from './manager/manager.component';
 import { IncomesComponent } from './manager/incomes/incomes.component';
+import { PaymentsComponent } from './manager/payments/payments.component';
+import { CompanyComponent } from './manager/company/company.component';
+import { OverviewComponent } from './manager/overview/overview.component';
 
 const pagesRoutes: Routes = [
 
@@ -59,12 +61,26 @@ const pagesRoutes: Routes = [
         component: CalendarManagerComponent,
         children: [{ path: ":weekId/:dayId", component: DayComponent }]
       },      
-        { path:'manager/:item/:input/:from/:albumId/:trackId/:artistId/:paymentId',component:ManagerComponent},
         
-     { path: 'incomes', 
-       component: IncomesComponent },
-            { path: "", redirectTo: "/dashboard", pathMatch: "full" }
-    
+      { path:'overview/:item/:input/:from/:albumId/:trackId/:artistId',
+        canActivate: [AdminGuard],
+        component:OverviewComponent},
+        
+      { path: 'incomes',
+        canActivate: [AdminGuard], 
+        component: IncomesComponent },
+     
+      { path:'payments',
+        canActivate: [AdminGuard],
+        component: PaymentsComponent},
+      
+      {
+        path: 'company',
+        canActivate: [AdminGuard],
+        component: CompanyComponent
+      },
+
+        { path: "", redirectTo: "/dashboard", pathMatch: "full" }    
 ];
 
 export const PAGESROUTES = RouterModule.forChild(pagesRoutes);

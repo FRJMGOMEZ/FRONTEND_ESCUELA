@@ -19,7 +19,7 @@ button {
 
 * {
     font-family: 'EB Garamond', serif;
-    font-size: 18px
+    font-size: 14px
 }
 
 div.scrollable {
@@ -34,3 +34,38 @@ a {
     color: blue;
     cursor: pointer;
 }
+
+.scrollableTable thead,
+.scrollableTable tbody {
+    display: block;
+}
+
+.scrollableTable tbody {
+    height: 300px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+
+.scrollableTable table {
+    width: 100%;
+    /* Optional */
+}
+
+.scrollableTable tbody td,
+.scrollableTable thead th {
+    width: 10%;
+    /* Optional */
+}
+
+.pagesContainerFixed{
+margin: 1%;
+margin-top:0%;
+background:#DCD4D2;
+border:1px solid black;
+height: 98%;
+}
+
+

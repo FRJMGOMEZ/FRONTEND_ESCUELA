@@ -3,6 +3,7 @@ import { AlbumModalController } from './albumModalController';
 import { ManagerService } from '../../providers/manager.service';
 import { Album } from 'src/app/models/album.models';
 import { Router } from '@angular/router';
+import { SwalService } from 'src/app/providers/swal.service';
 
 @Component({
   selector: 'app-album-modal',
@@ -15,26 +16,30 @@ export class AlbumModalComponent implements OnInit {
 
   constructor(public _modalController:AlbumModalController,
               public _managerServices:ManagerService,
-              private _router:Router) { }
+              public _swalServices:SwalService) { }
 
   ngOnInit() {
-     this._modalController.notification.subscribe(()=>{       
-      if(this._modalController.id){
-        let album =  this._managerServices.albums.filter((album)=>{
-          if(album._id === this._modalController.id){
-            return album
-          }})[0]
-        this.album = new Album(album.title,album.tracks,album.date)   
-      }else{
-        this.album = new Album('',[],new Date())
-      }
+     this._modalController.notification.subscribe(()=>{
+       if(!this._modalController.hidden){
+         if (this._modalController.id) {
+           let album = this._managerServices.albums.filter((album) => {
+             if (album._id === this._modalController.id) {
+               return album
+             }
+           })[0]
+           this.album = new Album(album.title, album.tracks, album.date)
+         } else {
+           this.album = new Album('', [], new Date())
+         }
+       }
      })
   }
 
   postAlbum(){
-    this._managerServices.postAlbum(this.album).subscribe(()=>{
-    this._managerServices.getOrSearch('albums')
+    this._managerServices.postAlbum(this.album).subscribe((album:Album)=>{
     this.hideModal()
+    this._modalController.notification.emit(album._id);
+    this._swalServices.itsCreated("album",album.title);
     })
   }
 

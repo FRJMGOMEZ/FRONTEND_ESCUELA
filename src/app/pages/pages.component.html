@@ -1,16 +1,15 @@
-<div class="container-fluid">
-    <div class="row">
-        <main class='d-flex flex-row justify-content-around'>
-            <app-sidebar></app-sidebar>
-            <router-outlet></router-outlet>
-            <div>
-                <p class='fixed-bottom text-center m-0' style='background:black;color:white'>APP diseñada y desarrollada por FRJ Martínez Gómez. Contacta a través de frjmartinezgomez@gmail.com</p>
-            </div>
-        </main>
-    </div>
-</div>
-
-<div style='position: relative; z-index:0'>
+<main class="row d-flex flex-row m-0 p-0" style='overflow-x: hidden'>
+      <div class='m-0 p-0' style='width:12%'>
+        <app-sidebar  class='m-0 p-0'></app-sidebar>
+      </div>
+      <div class='m-0 p-0' style='width:88%;background:#F5F1E3'>
+            <router-outlet class='m-0 p-0'></router-outlet>
+     </div>
+      <div>
+      <p class='fixed-bottom text-center m-0 p-0' style='background:black;color:white'>APP diseñada y desarrollada por FRJ Martínez Gómez. Contacta a través de frjmartinezgomez@gmail.com</p>
+       </div>
+</main>
+<div class='m-0 p-0' style='position: relative; z-index:0'>
     <app-upload-files-modal></app-upload-files-modal>
     <app-password></app-password>
     <app-subject-modal></app-subject-modal>
@@ -26,4 +25,7 @@
     <app-task-modal></app-task-modal>
     <app-album-modal></app-album-modal>
     <app-track-modal></app-track-modal>
+    <app-assignations-modal></app-assignations-modal>
+    <app-payment-modal></app-payment-modal>
+    <app-income-modal></app-income-modal>
 </div>

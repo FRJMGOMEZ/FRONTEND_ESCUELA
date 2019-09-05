@@ -25,7 +25,7 @@ export class UserServices {
     constructor(private http:HttpClient,
                 private router:Router,
                 private _errorHandler:ErrorHandlerService,
-                private socket:Socket) { 
+                private socket:Socket) {
 
         this.token = localStorage.getItem('token');
         this.headers = new HttpHeaders().set('token',this.token)
@@ -42,7 +42,7 @@ export class UserServices {
                      console.log('LOCKED BY GUARD')
                      this.router.navigate(['/login']);
                      return res
-                 }        
+                 }
         }))
     }
 
@@ -70,24 +70,16 @@ export class UserServices {
         )
     }
 
-    login(user: User, rememberMe:boolean=false) {
+    login(credentials:any, rememberMe:boolean=false) {
            if (rememberMe) {
-               localStorage.setItem("email", user.email);
+               localStorage.setItem("email",credentials.email);
            } else {
                localStorage.removeItem("email");
            }
         let url = `${URL_SERVICES}login`;
-        return this.http.post(url, user).pipe(map(async(res: any) => {
-            if(res.message){
-                Swal.fire({
-                    text:res.message,
-                    type:'info',
-                    showCloseButton:true
-                })
-            }else{
+        return this.http.post(url,credentials).pipe(map(async(res: any) => {
               await this.saveInStorage(res.user._id, res.user, res.token)
               return
-            }
         })
         ,catchError(this._errorHandler.handleError))
     }
@@ -111,7 +103,7 @@ export class UserServices {
                     this.saveInStorage(this.userOnline._id, this.userOnline, this.token)
                     this.router.navigate(['/dashboard'])
                  }
-            } 
+            }
         }))
     }
 
@@ -124,19 +116,22 @@ export class UserServices {
     }
 
     saveInStorage(id: string, user: User, token: string) {
-        localStorage.setItem("id", id);
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", token);
-        this.userOnline = user;
-        this.token = token;
-        this.headers = new HttpHeaders().set('token', this.token)
+        return new Promise((resolve,reject)=>{
+            localStorage.setItem("id", id);
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("token", token);
+            this.userOnline = user;
+            this.token = token;
+            this.headers = new HttpHeaders().set('token', this.token)
+            resolve()
+        })
     }
 
     uploadFromStorage() {
         if (localStorage.getItem("token")) {
             this.token = localStorage.getItem("token");
             this.userOnline = JSON.parse(localStorage.getItem("user"));
-            
+
         } else {
             this.token = "";
             this.userOnline = null;
@@ -156,17 +151,17 @@ export class UserServices {
         return this.http.put(url,user,{headers:this.headers}).pipe((map((res:any)=>{
             if (res.user._id === this.userOnline._id) {
                 this.saveInStorage(res.user._id, res.user, localStorage.getItem('token'))
-                this.userOnline = res.user; 
+                this.userOnline = res.user;
             }else{
                this.users.forEach((user,index)=>{
                    if(user._id === res.user._id){
                        this.users[index]=res.user;
                    }
-               }) 
-            } 
+               })
+            }
         }))
             , catchError(this._errorHandler.handleError)
-        )    
+        )
     }
 
     searchUsers(input: string, from: number = 0, limit: number = 5){
@@ -180,7 +175,7 @@ export class UserServices {
 
     changeUserStatus(id:string){
         let url = `${URL_SERVICES}changeUserStatus/${id}`
-        return this.http.put(url,{},{headers:this.headers}).pipe(map((res:any)=>{ 
+        return this.http.put(url,{},{headers:this.headers}).pipe(map((res:any)=>{
                 this.users.forEach((user, index) => {
                     if (user._id === res.user._id) {
                         this.users[index].status = res.user.status;
@@ -208,7 +203,7 @@ export class UserServices {
         }),
         catchError(this._errorHandler.handleError))
     }
-    
+
 
     async logout() {
       let payload = await {user:this.userOnline._id}

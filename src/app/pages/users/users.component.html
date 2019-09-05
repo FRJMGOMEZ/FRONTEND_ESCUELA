@@ -1,19 +1,20 @@
-<div class="row m-1 animated fadeIn" style='background:#DCD4D2;border:1px solid black'>
-    <div class="col-12 mb-2">
+<div class="row animated fadeIn pagesContainerFixed" >
+<div class="col-12">
+  <div class="row">
+    <div class="col-12">
         <div class='list-group'>
-            <h3 class='list-group-item-heading text-center mt-3'>MANTENIMIENTO DE USUARIOS</h3>
+            <h3 class='list-group-item-heading text-center'>MANTENIMIENTO DE USUARIOS</h3>
             <div class='d-flex flex-row justify-content-center'>
-                <div class='d-flex d-block'>
+                <div class='d-flex'>
                     <input #input placeholder="Buscar usuario" class=' list-group-item' type="text">
                     <button class='btn btn-warning ' (click)='searchMode=true;getMode=false;from=0;_userServices.searchUsers(input.value).subscribe()'>BUSCAR USUARIOS</button>
                     <button class='btn btn-warning' (click)='searchMode=false;getMode=true;from=0;_userServices.getUsers().subscribe()'>TODOS</button>
                 </div>
-
             </div>
         </div>
     </div>
-    <div class="col-12 mb-2 " style='background:#F5F1E3'>
-        <table class='table table-hover'>
+    <div class="col-12" style='background:#F5F1E3'>
+        <table class='table'>
             <tr>
                 <th>Imagen</th>
                 <th>Email</th>
@@ -22,7 +23,6 @@
                 <th>Estado</th>
                 <th></th>
             </tr>
-
             <tr *ngFor="let user of _userServices.users">
                 <td>
                     <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' [src]="user.img | imgPipe:'users'" class='img100 img-circle'>
@@ -53,3 +53,6 @@
             <button *ngIf="_userServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
         </div>
     </div>
+  </div>
+</div>
+</div>

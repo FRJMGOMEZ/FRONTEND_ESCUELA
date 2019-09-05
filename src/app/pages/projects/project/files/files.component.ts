@@ -2,6 +2,7 @@ import { Component} from '@angular/core';
 import { FilesServices } from '../../../../providers/files.service';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { ProjectServices } from '../../../../providers/project.service';
+import { SwalService } from '../../../../providers/swal.service';
 
 @Component({
   selector: "app-files",
@@ -13,7 +14,8 @@ export class FilesComponent  {
   constructor(
     private _showFilesModalController: ShowFilesModalController,
     public _projectServices:ProjectServices,
-    private _filesServices:FilesServices
+    private _filesServices:FilesServices,
+    private _swalServices:SwalService
   ) {}
 
 
@@ -23,6 +25,10 @@ export class FilesComponent  {
   }
 
  deleteFile(fileId:string) {
-   this._filesServices.deleteFile(fileId).subscribe()
+   this._swalServices.confirmDelete().then((res:boolean)=>{
+     if(res){
+       this._filesServices.deleteFile(fileId,this._projectServices.projectSelectedId).subscribe()
+     }
+   })
   }
 }

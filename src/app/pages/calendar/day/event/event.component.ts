@@ -337,8 +337,8 @@ fixHeight(height: number) {
   }
             
   createEvent(position:number) {
-    this._modalEventController.notification.emit({position, facilitieId:this.facilitie._id })
     this._modalEventController.showModal()
+    this._modalEventController.notification.emit({position, facilitieId:this.facilitie._id })
   }
 
   showEventInfo(id:string){ 

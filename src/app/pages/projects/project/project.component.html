@@ -1,6 +1,6 @@
 <div *ngIf="page && _projectServices.projectSelectedId" class="container-fluid mt-3 animated fadeIn" style='background-color: #DCD4D2'>
     <div class="row">
-        <div class=' col-12 nav justify-content-around align-items-center ' style='background:#F0B841;color:black;height: 40px '>
+        <div class=' col-12 nav justify-content-around align-items-center ' style='background:#F0B841;color:black;height: 40px;width:100% '>
             <div>
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown">MIS PROYECTOS</a>
                 <div *ngIf="_projectServices.projects.length > 1" class="dropdown-menu" aria-labelledby="dp-proyectos">
@@ -89,6 +89,7 @@
                 </div>
             </div>
             <div class="col-3 pl-0">
+
                 <div class="row">
                     <div *ngIf="_projectServices.description" class="col-12">
                         <h5 class='text-center'>Descripción del proyecto:</h5>
@@ -121,7 +122,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        * Por el momento, solo se permite el intercambios de archivos con formato: 'png', 'jpg', 'gif', 'jpeg' y 'pdf'
+                        * Por el momento, solo se permite el intercambios de archivos con formato: 'png', 'jpg', 'gif', 'jpeg' y 'pdf'.
                     </div>
                 </div>
             </div>

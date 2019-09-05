@@ -14,7 +14,7 @@ import { ErrorHandlerService } from './error-handler.service';
 })
 export class SubjectServices {
 
-    subjects:SubjectModel[]
+    subjects:SubjectModel[]=[]
 
     subjectSelected: SubjectModel;
 

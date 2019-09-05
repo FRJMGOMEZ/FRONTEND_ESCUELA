@@ -1,0 +1,52 @@
+<div class="row m-1" *ngIf="!artistId">
+    <table class='table'>
+        <thead>
+            <th>Nombre</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let artist of _managerServices.artists let i=index">
+                <td> <a style="color:blue" routerLinkActive="router-link-active" (click)="overviewComponent.idNavigation(artist._id,'artist')">{{artist.indexcard['name']}}</a> </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class='d-flex justify-content-center mb-2 '>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) ' class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
+    </div>
+</div>
+<div class="row scrollableTable m-2" *ngIf="artistId">
+  <div class="col-12 d-flex justify-content-between">
+    <div class="d-flex justify-content-start">
+       <button (click)="deleteArtist()" class="btn btn-danger">X</button>
+       <button (click)="putArtist(_managerServices.artist.indexcard['_id'])" class='btn btn-primary'><i class="fas fa-edit"></i></button>
+    </div>
+    <div class='d-flex justify-content-end'>
+      <button (click)='showAssignations()' class="btn btn-warning" >VER PARTICIPACIONES</button>
+    </div>
+  </div>
+  <div class="col-12 d-flex justify-content-center">
+    LIQUIDACIONES
+  </div>
+    <table class='table'>
+        <thead>
+            <th>Track</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let payment of _managerServices.artist.payments">
+                <td> <a (click)="_managerServices.idNavigation(payment.track['_id'],'artist')">{{payment.track['title']}}</a> </td>
+                <td>
+                    <p>{{payment.amount}}</p>
+                </td>
+                <td>
+                    <p>{{payment.date | date}}</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class='d-flex justify-content-center mb-2 '>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) ' class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable, EventEmitter } from '@angular/core';
 
 
+
 @Injectable({
     providedIn: "root"
 })
@@ -21,4 +22,6 @@ export class IndexcardModalController {
         this.id = id
         this.hidden = ''
     }
+   
+    
 }

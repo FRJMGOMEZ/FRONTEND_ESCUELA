@@ -42,8 +42,8 @@ export class AlumniComponent implements OnInit,OnDestroy {
     }
   }
 
-  postAlumni(id?: string) {
-    this._indexcardModalController.showModal(id);
+  postAlumni() {
+    this._indexcardModalController.showModal();
       this._indexcardModalController.notification.emit('ALUMNI');
   }
 

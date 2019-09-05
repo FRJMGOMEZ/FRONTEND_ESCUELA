@@ -1,8 +1,7 @@
+import { Indexcard } from './indexcard.model';
 export class Alumni {
 
-    constructor(public name: string,
-                public indexcard: string,
-                public img?: string,
+    constructor(public indexcard: string | Indexcard,
                 public subjects?: string[],
                 public _id?:string) {
     }

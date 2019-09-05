@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UserServices } from 'src/app/providers/user.service';
-import { User } from 'src/app/models/user.model';
 import { DemoService } from '../../providers/demo.service';
 import { RecoveringModalController } from '../recovering/recovering.modal,controller';
+import { Credentials } from '../../models/credentials';
 
 @Component({
   selector: "app-login",
@@ -32,14 +32,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(form: NgForm) {
+ async login(form: NgForm) {
     if (form.invalid) {
       return;}
-    let user = new User(null, form.value.email, form.value.password);
-    this._userServices.login(user, this.rememberMe).subscribe(() => {
-      setTimeout(()=>{
+    let credentials = new Credentials(form.value.email,form.value.password);
+    await this._userServices.login(credentials, this.rememberMe).subscribe(() => {
         this.router.navigate(["/dashboard"]);
-      })
     });
   }
 }

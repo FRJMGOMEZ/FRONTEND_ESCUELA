@@ -9,13 +9,14 @@ export class VerifyTokenGuard implements CanActivate {
   
   constructor(private _userServices:UserServices,
             private router:Router){
-
   }
+
  canActivate(): Promise<boolean> | boolean {
     let token = this._userServices.token;
-    let payload = JSON.parse(atob(token.split('.')[1]))
-    let expired = this.expired(payload.exp)
+    let payload = JSON.parse(atob(token.split('.')[1]));
+    let expired = this.expired(payload.exp);
     if(expired){
+      console.log('expired');
       this.router.navigate(['/login'])
       return false
     }

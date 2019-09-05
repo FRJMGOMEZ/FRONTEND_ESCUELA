@@ -24,6 +24,7 @@ import { TaskModalComponent } from "./task-modal/task-modal.component";
 import { EventsModalComponent } from "./events-modal/events-modal.component";
 import { ResetComponent } from '../login/recovering/reset/reset.component';
 import { ForgotComponent } from '../login/recovering/forgot/forgot.component';
+import { AssignationsModalComponent } from './assignations-modal/assignations-modal.component';
 
 
 /////Controllers///
@@ -47,6 +48,11 @@ import { AlbumModalComponent } from './album-modal/album-modal.component';
 import { AlbumModalController } from './album-modal/albumModalController';
 import { TrackModalComponent } from './track-modal/track-modal.component';
 import { TrackModalController } from './track-modal/trackModalController';
+import {AssignationsModalController} from './assignations-modal/assignationsModal.controller';
+import { PaymentModalComponent } from './payment-modal/paymentModal.component';
+import { PaymentModalController } from './payment-modal/paymentModalController.service';
+import { IncomeModalComponent } from './income-modal/income-modal.component';
+import { IncomeModalController } from './income-modal/incomesModalController.service';
 
 
 @NgModule({
@@ -67,7 +73,11 @@ import { TrackModalController } from './track-modal/trackModalController';
     ResetComponent,
     ForgotComponent,
     AlbumModalComponent,
-    TrackModalComponent
+    TrackModalComponent,
+    AssignationsModalComponent,
+    PaymentModalComponent,
+    IncomeModalComponent,
+    
   ],
 
   imports: [
@@ -97,7 +107,10 @@ import { TrackModalController } from './track-modal/trackModalController';
     ResetComponent,
     ForgotComponent,
     AlbumModalComponent,
-    TrackModalComponent
+    TrackModalComponent,
+    AssignationsModalComponent,
+    PaymentModalComponent,
+    IncomeModalComponent,
   ],
 
   providers: [
@@ -116,7 +129,10 @@ import { TrackModalController } from './track-modal/trackModalController';
     ShowFilesModalController,
     RecoveringModalController,
     AlbumModalController,
-    TrackModalController
+    TrackModalController,
+    AssignationsModalController,
+    PaymentModalController,
+    IncomeModalController
   ],
 
   bootstrap: []

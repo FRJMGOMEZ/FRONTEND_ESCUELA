@@ -1,11 +1,13 @@
 <div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block'>
     <div class="card m-0 p-0 row d-flex flex-row" *ngFor="let file of _projectServices.textFiles" style='width:200px'>
-        <div class="col-11">
-            <img (click)='showFile(file._id)' style='height: 110px;width:110px' class='img-fluid' [src]="file | imgPipe">
-            <small>{{file.title}}</small>
+        <div class="col-11 m-0 p-0">
+            <div class="row">
+                <div class="col-12"><img (click)='showFile(file._id)' style='height: 100%;width:100%' class='img-fluid' [src]="file | imgPipe"></div>
+                <div class="col-12"><small>{{file.title}}</small></div>
+            </div>
         </div>
-        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
-            <a (click)='deleteFile(file._id)' routerLinkActive="active">x</a>
+        <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+            <a  (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
         </div>
     </div>
     <div *ngIf="_projectServices.textFiles.length === 0">

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
 import { FilesServices } from '../../../../providers/files.service';
 import { ProjectServices } from '../../../../providers/project.service';
+import { SwalService } from '../../../../providers/swal.service';
 
 @Component({
   selector: 'app-images',
@@ -11,11 +12,16 @@ import { ProjectServices } from '../../../../providers/project.service';
 export class ImagesComponent  {
   constructor(public _projectServices:ProjectServices,
               public _showFilesModalController:ShowFilesModalController,
-              public _filesServices:FilesServices
+              public _filesServices:FilesServices,
+              public _swalServices:SwalService
               ) { }
  
   deleteFile(id:string){
-    this._filesServices.deleteFile(id).subscribe()
+     this._swalServices.confirmDelete().then((res:any)=>{
+       if(res){
+         this._filesServices.deleteFile(id, this._projectServices.projectSelectedId).subscribe()
+       }
+     })
   }
 
   showFile(id:string){

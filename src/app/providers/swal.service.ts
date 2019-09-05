@@ -35,5 +35,12 @@ export class SwalService {
       showCloseButton: true
     })
   }
+
+  itsCreated(item:string,reference:string){
+    Swal.fire({
+      type:"success",
+      text:`${item} ${reference} creado`
+    })
+  }
 }
 

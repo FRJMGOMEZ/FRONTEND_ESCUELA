@@ -14,17 +14,13 @@
                             <div class='row d-flex justify-content-center'>
                                 <input [(ngModel)]="track.title" name='trackTitle' type="text" placeholder="Título nuevo track">
                             </div>
-                            <div class='row d-flex justify-content-center'>
-                                <p *ngIf="_managerServices.track">Album: {{_managerServices.track.album['title']}}</p>
-                                <p *ngIf="!_managerServices.track">Album: {{track.album['title']}}</p>
-                            </div>
                         </div>
                         <div class='row d-flex flex-column'>
                             <h5 class='text-center'>Asignaciones</h5>
                             <div *ngFor="let assignation of track.assignations" class='d-flex justify-content-between'>
-                                <p>{{assignation.artist['name']}}</p>
+                                <p *ngIf="assignation.artist['indexcard']">{{assignation.artist['indexcard'].name}}</p>
                                 <p>% asignado :{{assignation.percent}}</p>
-                                <button (click)='removeAssignation(assignation._id)' class='btn btn-danger'>x</button>
+                                <button (click)="removeAssignation(assignation.artist['_id'])" class='btn btn-danger'>x</button>
                             </div>
                         </div>
                         <div class='row justify-content-around'>
@@ -32,14 +28,14 @@
                                 <button (click)='newAssignation()' class='btn btn-warning'>Nueva asignación</button>
                             </div>
                             <div>
-                                <p>{{track.percent}}</p>
+                                <p>ASIGNACIÓN CARGO:{{track.percent}}%</p>
                             </div>
                         </div>
                         <div *ngIf="assignation">
                             <div class='row'>
                                 <div class="col-10 d-flex justify-content-between">
                                     <select [(ngModel)]='assignation.artist' name="artist" class='form-control'>
-                                        <option *ngFor="let artist of artists" [value]="artist._id">{{artist.name}}</option>
+                                        <option *ngFor="let artist of artists" [value]="artist._id">{{artist['indexcard'].name}}</option>
                                     </select>
                                     <input #input [(ngModel)]="assignation.percent" type="number" [max]='track.percent' name="assignationPercent" id="">
                                 </div>

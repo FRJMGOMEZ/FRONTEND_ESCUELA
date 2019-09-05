@@ -19,7 +19,7 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
 
     this._demoServices.calendarPopup()
     
-    this.activatedRoute.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(async(params) => {
       if (!params['weekId'] && !params['dayId'] && !this._calendarServices.currentDay && !this._calendarServices.currentWeek) {
         let today = new Date();
         today = new Date(today.getFullYear(),today.getMonth(),today.getDate(),6,0,0,0)

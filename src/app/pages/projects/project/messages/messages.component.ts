@@ -68,8 +68,6 @@ export class MessagesComponent implements OnInit, OnDestroy{
         }
       }
     );
-
-    this.getMessages()
       
     this.filesSubscription=this._filesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "post") {
@@ -91,6 +89,9 @@ export class MessagesComponent implements OnInit, OnDestroy{
           })
       }
     });
+  }
+  ngAfterViewInit(): void {
+    this.getMessages()
   }
 
   getMessages() {

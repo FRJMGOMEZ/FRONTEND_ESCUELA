@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { UserServices } from '../../providers/user.service';
 import { User } from '../../models/user.model';
+import { IndexcardServices } from 'src/app/providers/indexcard.service';
+import { Indexcard } from 'src/app/models/indexcard.model';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +16,11 @@ export class RegisterComponent implements OnInit {
   form:FormGroup
 
   constructor(private _userServices: UserServices,
-              private router: Router) { }
+              private router: Router,
+              private _indexcardServices:IndexcardServices) { }
 
   ngOnInit() {
-    
+
     this.form = new FormGroup({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -49,11 +52,10 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) {
       return
     }
-    let values = this.form.value;
-    let user = new User(values.name, values.email, values.password)
-    this._userServices.postUser(user).subscribe(()=>{
-      this.router.navigate(['/login']).then(()=>{})
-    })
+      let user = new User(this.form.value.name,this.form.value.email,this.form.value.password2);
+      this._userServices.postUser(user).subscribe(() => {
+        this.router.navigate(['/login']).then(() => { })
+      })
   }
 }
 

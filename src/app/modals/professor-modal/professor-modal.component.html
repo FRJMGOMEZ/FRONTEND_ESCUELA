@@ -24,7 +24,7 @@
                         <div class='col-12 d-flex flex-column'>
                             <div class='text-center' *ngFor="let professor of _professorServices.professors">
                                 <div>
-                                    <a (click)='addProfessor(professor._id)'><strong>{{professor.name}}</strong></a>
+                                    <a (click)='addProfessor(professor._id)'><strong>{{professor.indexcard['name']}}</strong></a>
                                 </div>
                             </div>
                         </div>

@@ -47,7 +47,7 @@ export class EventsModalComponent implements OnInit {
       if (this._projectServices.projects.length === 0) {
         this._projectServices.getProjects().subscribe()
       }
-      if (res) {    
+      if (res) {
       this.event = new EventModel("","",0,res.position,this.userOnline._id,res.facilitieId,Number(parseInt(String(res.position))),new Date(this._calendarServices.currentDay.date).getDay(),false,new Date(this._calendarServices.currentDay.date),null,null);
       this.facilitie = this._facilitieServices.facilities.filter((facilite) => { return facilite._id === this.event.facilitie })[0];
       this.page = '1'; 
@@ -297,9 +297,9 @@ export class EventsModalComponent implements OnInit {
   dateFixer(date: Date) {
     date = new Date(date);
     if (new Date(date).getTime() === 8640000000000000) {
-      return 'de forma indefinida'
+      return ' DE FORMA INDEFINIDA'
     } else {
-      return `hasta el día ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+      return ` HASTA EL DÍA ${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
     }
   }
   ////////////// POST AND PUT /////////////

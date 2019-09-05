@@ -17,7 +17,7 @@ export class AlumniServices {
 
   constructor(private http:HttpClient,
              private _userServices:UserServices,
-             private errorHandler:ErrorHandlerService) { 
+             private errorHandler:ErrorHandlerService) {
   }
 
   getAlumnis(from: number = 0, limit: number = 5) {
@@ -45,7 +45,7 @@ export class AlumniServices {
      let url = `${URL_SERVICES}search/alumnis/${input}?from=${from}&limit=${limit}`
      return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
        this.count = res.count;
-       this.alumnis = res.alumnis; 
+       this.alumnis = res.alumnis;
      })
      ,catchError(this.errorHandler.handleError))
   }

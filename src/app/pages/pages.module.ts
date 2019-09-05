@@ -29,12 +29,21 @@ import { EventComponent } from './calendar/day/event/event.component';
 import { TasksComponent } from './projects/project/tasks/tasks.component';
 import { ProjectEventsComponent } from './projects/project/project-events/project-events.component';
 import { CalendarManagerComponent } from './calendar/calendar.component';
-import { ManagerComponent } from './manager/manager.component';
-import { AlbumsComponent } from './manager/albums/albums.component';
+import { AlbumsComponent } from './manager/overview/albums/albums.component';
 import { IncomesComponent } from './manager/incomes/incomes.component';
-import { TracksComponent } from './manager/tracks/tracks.component';
+import { TracksComponent } from './manager/overview/tracks/tracks.component';
 import { PaymentsComponent } from './manager/payments/payments.component';
-import { ArtistComponent } from './manager/artist/artist.component';
+import { ArtistComponent } from './manager/overview/artist/artist.component';
+import { NotLiquidatedComponent } from './manager/incomes/not-liquidated/not-liquidated.component';
+import { LiquidatedComponent } from './manager/incomes/liquidated/liquidated.component';
+import { CompanyComponent } from './manager/company/company.component';
+import { OverviewComponent } from './manager/overview/overview.component';
+import { SharedModule } from '../shared/shared.module';
+import { IncomesChartComponent } from './manager/company/incomes-chart/incomes-chart.component';
+import { PaymentsChartComponent } from './manager/company/payments-chart/payments-chart.component';
+import { EventsChartComponent } from './manager/company/events-chart/events-chart.component';
+import { ProjectsChartComponent } from './manager/company/projects-chart/projects-chart.component';
+import { ChartsComponent } from './dashboard/charts/charts.component';
 
 
 @NgModule({
@@ -56,13 +65,21 @@ import { ArtistComponent } from './manager/artist/artist.component';
     TasksComponent,
     ProjectEventsComponent,
     CalendarManagerComponent,
-    ManagerComponent,
     AlbumsComponent,
     TracksComponent,
     PaymentsComponent,
     IncomesComponent,
     PaymentsComponent,
-    ArtistComponent
+    ArtistComponent,
+    NotLiquidatedComponent,
+    LiquidatedComponent,
+    CompanyComponent,
+    OverviewComponent,
+    IncomesChartComponent,
+    PaymentsChartComponent,
+    EventsChartComponent,
+    ProjectsChartComponent,
+    ChartsComponent
   ],
   imports: [
     PAGESROUTES,
@@ -70,7 +87,8 @@ import { ArtistComponent } from './manager/artist/artist.component';
     ScrollingModule,
     PipesModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   exports: [],
   bootstrap: [],

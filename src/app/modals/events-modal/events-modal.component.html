@@ -114,15 +114,15 @@
                     <!--  PAGE 7  -->
                     <div *ngIf="page ==='7' " #div4 class="row d-flex justify-content-center ">
                         <div class="col-12 d-flex flex-column ">
-                            <p>name: {{event.name}}</p>
-                            <p>descripcion: {{event.description}}</p>
-                            <p>Empieza a las: {{event.position | timeConversor2: null }}</p>
-                            <p>Termina a las: {{event.position | timeConversor2: event.duration }}</p>
-                            <p>instalacion : {{facilitie.name}}</p>
-                            <p>duracion : {{event.duration | timeConversor1}}</p>
-                            <div class="row ml-1">
-                                <p *ngIf="event.permanent">Se repite cada {{event.startDate | date : 'EEEE'}}</p>
-                                <p *ngIf="!noLimit && event.endDate"> {{dateFixer(event.endDate)}}</p>
+                            <p> NOMBRE: {{event.name}}</p>
+                            <p>DESCRIPCION: {{event.description}}</p>
+                            <p>EMPIEZA A LAS : {{event.position | timeConversor2: null }}</p>
+                            <p>TERMINA A LAS : {{event.position | timeConversor2: event.duration }}</p>
+                            <p>INSTALACIÓN : {{facilitie.name}}</p>
+                            <p>DURACIÓN : {{event.duration | timeConversor1}}</p>
+                            <div class="row ml-1 d-flex flex-column">
+                                <p *ngIf="event.permanent">SE REPITE CADA {{event.startDate | date : 'EEEE'}}</p>
+                                <p *ngIf="!noLimit && event.endDate"> {{ dateFixer(event.endDate)}}</p>
                             </div>
                             <div *ngIf="_userServices.checkRole()">
                                 <button class='btn btn-warning' *ngIf="createMode" (click)='postEvent()'>CREAR EVENTO</button>

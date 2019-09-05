@@ -11,7 +11,7 @@
                 <div class="modal-body">
                     <form ngNativeValidate #form='ngForm' role="form">
                         <div class="form-group">
-                            <input *ngIf="facilitie" [ngModel]='facilitie.name' class=form-control name='facilitieName' placeholder='nombre de la instalación' type="text" required>
+                            <input *ngIf="creation || edition"  [ngModel]='facilitie.name' class=form-control name='facilitieName' placeholder='nombre de la instalación' type="text" required>
                             <button *ngIf="creation" (click)='postFacilitie(form)' class='btn btn-lg btn-warning btn-block mt-2'><strong>Crear</strong></button>
                             <button *ngIf="edition" (click)='putFacilitie(form)' class='btn btn-lg btn-warning btn-block mt-2' type='submit'><strong>Guardar
                   cambios</strong></button>

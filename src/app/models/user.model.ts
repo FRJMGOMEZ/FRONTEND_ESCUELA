@@ -1,4 +1,5 @@
 import { FileModel } from './file.model';
+import { Indexcard } from './indexcard.model';
 export class User {
     constructor(
         public name:string,
@@ -6,7 +7,6 @@ export class User {
         public password?:string,
         public status?:boolean,
         public img?:FileModel,
-        public google?:boolean,
         public _id?: string,
         public projects?:any[],
         public role?: string,
@@ -14,7 +14,6 @@ export class User {
     ){
     }
 }
-
 
 export class UserOrder{
     constructor(public user: User,

@@ -1,4 +1,4 @@
-<div class="row m-1 animated fadeIn" style='background:#DCD4D2;height:750px;width:1150px;border:1px solid black'>
+<div class="row animated fadeIn pagesContainerFixed">
     <div class="col-12" *ngIf="!_projectServices.projectSelectedId">
         <div class="row d-flex justify-content-center">
             <div class="col-12 m-0 p-0 d-flex justify-content-end">
@@ -10,8 +10,7 @@
             <div *ngIf="_userServices.checkRole()" class='col-12 d-flex justify-content-center m-2 p-2 '>
                 <button (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
             </div>
-            <div *ngIf="_projectServices.projects.length > 0 " class="col-12" style='height:500px;background:#DCD4D2;width:900px '>
-                <div class='scrollable ' style="height:500px;border:1px solid black;background:#F5F1E3">
+                <div *ngIf="_projectServices.projects.length > 0 " class='scrollable' style="height:350px;border:1px solid black;background:#F5F1E3">
                     <div *ngFor="let project of _projectServices.projects">
                         <div class="card-body">
                             <div class="row text-center">
@@ -31,9 +30,9 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
     <div class="col-12">

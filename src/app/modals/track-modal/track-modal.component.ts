@@ -1,9 +1,11 @@
+
 import { Component, OnInit } from '@angular/core';
 import { TrackModalController } from './trackModalController';
 import { Track } from 'src/app/models/track.model';
 import { ManagerService } from '../../providers/manager.service';
 import { Artist } from 'src/app/models/artist.model';
 import { Assignation } from '../../models/track.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-track-modal',
@@ -20,24 +22,44 @@ export class TrackModalComponent implements OnInit {
              public _managerServices:ManagerService) { }
 
   ngOnInit() {
-    this._modalController.notification.subscribe(async()=>{
+    this._modalController.notification.subscribe(()=>{
 
-      this.track = new Track('',[],undefined,100)
       if(this._modalController.id){
-        if(this._managerServices.tracks.length > 0){
-          let tracks = this._managerServices.tracks;   
-          this.track = tracks.filter((track: Track) => {
+
+        let track:Track;
+        if(this._managerServices.track){
+          if(this._managerServices.track._id === this._modalController.id){
+            track = this._managerServices.track;
+          }else{
+            let tracks = [];
+            this._managerServices.album.tracks.forEach((track: Track) => {
+              tracks.push(track)
+            })
+            track = tracks.filter((track: Track) => {
+              return track._id === this._modalController.id
+            })[0]
+          }
+        }else{
+          let tracks = [];
+          this._managerServices.album.tracks.forEach((track: Track) => {
+            tracks.push(track)
+          })
+          track = tracks.filter((track:Track) => {
             return track._id === this._modalController.id
-          })[0]  
-        }
-          let tracks:any[] = await this._managerServices.album.tracks;
-          this.track = tracks.filter((track) => {
-           return track._id === this._modalController.id
           })[0]
+        }
+
+        let assignations =[]
+        track.assignations.forEach(assignation => {
+            assignations.push(assignation)
+        });
+
+        this.track = new Track(track.title,assignations, track.album, track.percent, track._id)
+
       }else{
-        this.track.album = this._managerServices.album
+        this.track = new Track('',[],this._managerServices.album,100)
       }
-      
+
       this._managerServices.getItems(0, 100, 'artists').subscribe((artists: Artist[]) => {
         let artistInTrack = this.track.assignations.map((assignation: Assignation) => {
           return assignation.artist['_id']
@@ -52,46 +74,74 @@ export class TrackModalComponent implements OnInit {
   }
 
   postTrack(){
-    this._managerServices.postTrack(this.track).subscribe((track:Track)=>{
-      this.track = track;
-      this.hideModal()
-    })
+    if(this.track.title){
+      this.track.assignations.forEach((assignation, index) => {
+        this.track.assignations[index].artist = this.track.assignations[index].artist['_id']
+      })
+      this._managerServices.postTrack(this.track).subscribe((track: Track) => {
+        this.track = track;
+        this.hideModal()
+      })
+    }else{
+     Swal.fire({
+       text:'Debes de asignar un nombre a la pista',
+       showCloseButton:true
+     })
+    }
   }
 
-  putTrack(){
-    this.track.assignations=[];
+ async putTrack(){
+    if(this.track.title){
     this._managerServices.putTrack(this.track,this._modalController.id).subscribe(()=>{
-      this.hideModal() 
-    })
+       this.hideModal()
+    })}else{
+      Swal.fire({
+        text: 'Debes de asignar un nombre a la pista',
+        showCloseButton: true
+      })
+    }
   }
 
   assignation:Assignation
+
   newAssignation (){
-      this.assignation = {artist:'',percent:0}
+      this.assignation = {artist:undefined,percent:0,album:this.track.album['_id']||this.track.album}
   }
 
   postAssignation(){
-    this._managerServices.postAssignation(this.assignation).subscribe((assignation:Assignation)=>{
-              this.track.assignations.push(assignation)
-              this.track.percent-=assignation.percent;
-    })
+    if(this.assignation.percent > this.track.percent || this.assignation.percent === 0){
+      Swal.fire({
+        text:`La asignación debe ser mayor a 0 e igual o menor a ${this.track.percent}`,
+        showCloseButton:true
+      })
+    }else if(!this.assignation.artist){
+      Swal.fire({
+        text:'Escoge un artista',
+        showCloseButton:true
+      })
+    }else{
+      this.assignation.artist = this.artists.filter((artist)=>{return artist._id === this.assignation.artist})[0];
+      let newAssignation = new Assignation(this.assignation.artist,this.assignation.percent,this.assignation.album);
+      this.track.assignations.push(newAssignation);
+      this.track.percent -= newAssignation.percent;
+      this.artists = this.artists.filter((artist: Artist) => {
+        return artist._id != this.assignation.artist['_id'];
+      })
+    }
   }
 
-  removeAssignation(assignationId:string){
-    this._managerServices.removeAssignation(assignationId).subscribe((assignationRemoved:Assignation)=>{
-              this.track.assignations = this.track.assignations.filter((assignation:Assignation)=>{return assignation._id != assignationId})
-              this.track.percent+=assignationRemoved.percent;
-    })
-  }
+  removeAssignation(artistId:string){
+    let assignation = this.track.assignations.filter((assignation:Assignation)=>{return assignation.artist['_id']=== artistId})[0];
+    this.track.assignations = this.track.assignations.filter((assignation:Assignation)=>{return assignation.artist['_id'] != artistId})
+    this.track.percent+=assignation.percent;
+    let artist = new Artist(assignation.artist['indexcard'],assignation.artist['payments'],assignation.artist['user'])
+    this.artists.push(artist)
+    }
+
 
   hideModal(){
-    this._modalController.hideModal()
     this.artists = []
-    if(!this.track._id){
-     this.track.assignations.forEach((assignation:Assignation)=>{
-       this._managerServices.removeAssignation(assignation._id).subscribe()
-     })
-    }
+    this._modalController.hideModal()
     this.track = undefined;
   }
 }

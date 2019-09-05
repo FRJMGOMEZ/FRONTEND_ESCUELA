@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { FileOrder } from '../models/file.model';
 import { Socket } from "ngx-socket-io";
 import { UserServices } from './user.service';
+import { ProjectServices } from './project.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +26,13 @@ export class FilesServices {
                }
 
   filesSocket(){
-    return this.socket.fromEvent('file').pipe(map((fileOrder:FileOrder)=>{
+    return this.socket.fromEvent('files').pipe(map((fileOrder:FileOrder)=>{
       this.fileSource.next(fileOrder)
     }))
   }
   
-  emitFile(fileOrder){
-    this.socket.emit('file',fileOrder)
+  emitFile(payload:any){
+    this.socket.emit('files',payload)
   }
 
   uploadFile(file: File, type: string, id: string, download:boolean=false) {
@@ -47,8 +48,9 @@ export class FilesServices {
              let file = JSON.parse(xhr.response).file;
              let fileOrder = new FileOrder(file, 'post')
              this.fileSource.next(fileOrder)
-             fileOrder.order = 'push'
-             this.emitFile(fileOrder)
+             fileOrder.order = 'push';
+             let payload = { fileOrder, room: id }
+             this.emitFile(payload);
            }
            else {
              console.log('UPDATING PROCCESS HAS FAILED');
@@ -61,12 +63,13 @@ export class FilesServices {
      })
   }
 
-  deleteFile(fileId:string){
+  deleteFile(fileId:string,projectId:string){
     let url = `${URL_SERVICES}deleteFile/${fileId}`;
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
         let fileOrder = new FileOrder(res.file,'delete')
-        this.fileSource.next(fileOrder)
-        this.emitFile(fileOrder)
+        this.fileSource.next(fileOrder);
+        let payload = {fileOrder,room:projectId}
+        this.emitFile(payload)
     }))
   }
 

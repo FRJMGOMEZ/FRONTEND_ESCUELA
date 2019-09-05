@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProjectServices } from '../../../providers/project.service';
 import { UserServices } from 'src/app/providers/user.service';
@@ -23,7 +23,7 @@ export class ProjectComponent implements OnInit {
 
   userOnline:User
 
-  public page: string = 'chat';
+  public page:string;
 
   public filesSocket:Subscription = null;
   public filesSubscription:Subscription=null;
@@ -50,19 +50,17 @@ export class ProjectComponent implements OnInit {
     this._demoServices.oneProjectPopup()
 
     this.usersSocket = this._projectServices.usersConnected().subscribe()
-    
-    this.ar.params.subscribe(params => {
+
+    this.ar.params.subscribe((params) => {
       this._projectServices.getProjectById(params['id']).subscribe(() => {
          this._projectServices.userIn()
-         setTimeout(()=>{
-           this.page = 'chat';
-         })
+         this.page = 'chat';
+         this._projectServices.projectSelectedId = params['id'];
       })
     });
 
     this.filesSocket = this._filesService.filesSocket().subscribe()
     this.filesSubscription=this._filesService.files$.subscribe((fileOrder: FileOrder) => {
-
       if (fileOrder.order === 'delete') {
         if (this._filesService.textFormats.indexOf(fileOrder.file['format']) >= 0) {
           this._projectServices.textFiles = this._projectServices.textFiles.filter((file) => { return file._id != fileOrder.file._id })
@@ -84,8 +82,13 @@ export class ProjectComponent implements OnInit {
       }
     })
 
-    this.tasksSocket = this._projectServices.taskSocket().subscribe()   
+    this.tasksSocket = this._projectServices.taskSocket().subscribe()
   }
+  
+  ngAfterViewChecked(){
+    this._projectServices.userIn();
+  }
+  
 
   putProject(id:string){
     this._projectModalController.showModal(id)
@@ -201,10 +204,8 @@ export class ProjectComponent implements OnInit {
     })
   }
 
-  ngOnDestroy(): void { 
-    if(this._userServices.socketOn){
-      this._projectServices.userOut()
-    }
+  ngOnDestroy(): void {
+    this._projectServices.userOut()
     this._projectServices.administrators = [];
     this._projectServices.participants = [];
     this._projectServices.name = undefined;

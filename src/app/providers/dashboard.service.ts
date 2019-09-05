@@ -38,7 +38,7 @@ export class DashboardService {
   getLastMessages() {
     let url = `${URL_SERVICES}lastMessages`;
     let headers = new HttpHeaders().set('token',localStorage.getItem('token'))
-    return this.http.get(url, { headers }).pipe(
+    return this.http.get(url,{headers}).pipe(
       map(async(res: any) => {
         await this.projects.forEach((project)=>{
           project.messages = []

@@ -5,11 +5,12 @@ import { TimeConversorPipe } from './time.conversor';
 import { TimeConversor1Pipe } from './time.conversor1';
 import { TimeConversorPipe2 } from './time.conversor2.pipe';
 import { FrontImgPipe } from './front-img.pipe';
+import { DaysOfWeekPipe } from './days-of-week.pipe';
 
 
 @NgModule({
   imports: [],
-  declarations: [ImgPipe, FilesPipe, TimeConversorPipe, TimeConversor1Pipe, TimeConversorPipe2, FrontImgPipe ],
+  declarations: [ImgPipe, FilesPipe, TimeConversorPipe, TimeConversor1Pipe, TimeConversorPipe2, FrontImgPipe, DaysOfWeekPipe ],
   exports: [ImgPipe, FilesPipe , TimeConversorPipe,TimeConversor1Pipe,TimeConversorPipe2,FrontImgPipe ]
 })
 export class PipesModule {}

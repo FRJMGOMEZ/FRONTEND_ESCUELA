@@ -61,6 +61,8 @@ export class ProjectServices {
     }))
   }
 
+  
+
   emitProject(projectOrder: ProjectOrder) {
     this.socket.emit('project', projectOrder)
   }
@@ -74,7 +76,10 @@ export class ProjectServices {
         this.projects = this.projects.filter((project)=>{return project._id != projectOrder.project._id})
       }else if(projectOrder.order === 'put'){
         if(this.projects.map((project)=>{return project._id}).indexOf(projectOrder.project._id)>=0){
-          if (this.projects[this.projects.map((project) => { return project._id }).indexOf(projectOrder.project._id)].name != projectOrder.project.name){
+
+          if (this.projects[this.projects.map((project) => { return project._id }).indexOf(projectOrder.project._id)].name != projectOrder.project.name 
+          || this.projects[this.projects.map((project) => { return project._id }).indexOf(projectOrder.project._id)].description != projectOrder.project.description){
+           
             if(projectOrder.project._id === this.projectSelectedId ){
               this.name = projectOrder.project.name;
               this.description = projectOrder.project.description;
@@ -139,7 +144,6 @@ export class ProjectServices {
     let url = `${URL_SERVICES}searchById/project/${id}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this._chatServices.messagesCount = res.project.messages.length;
-      console.log(this._chatServices.messagesCount)
       this.projectSelectedId = res.project._id
       this.administrators = res.project.administrators;
       this.participants = res.project.participants;
@@ -216,7 +220,7 @@ export class ProjectServices {
     let url = `${URL_SERVICES}project/${id}`
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       res.files.forEach((file)=>{
-        this._filesServices.deleteFile(file).subscribe()
+        this._filesServices.deleteFile(file,this.projectSelectedId).subscribe()
       })
       let projectOrder = new ProjectOrder(res.project,'delete')
       this.emitProject(projectOrder)
