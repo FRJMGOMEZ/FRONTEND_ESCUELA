@@ -41,6 +41,11 @@ export class SidebarComponent{
     else if (this._managerServices.artists.length != 0) { item = 'artists'}
     else { item = '#'}
 
+    if (item === '#' ){
+      item = 'albums';
+      console.log(item);
+    }
+
     let url = `/overview/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}`
     this._router.navigate([url])
   }           

@@ -33,10 +33,10 @@
                   </div>
                   <div *ngIf="_paymentServices.paymentSearchCriteria === 'date'" class="d-flex flex-column justify-content-center">
                     <div>
-                      <input #input0 type="text" placeholder=" De dd/mm/yyyy">
+                      <input #input0 type="text" placeholder=" De dd-mm-yyyy">
                     </div>
                     <div>
-                      <input #input1 type="text" placeholder="A dd/mm/yyyy">
+                      <input #input1 type="text" placeholder="A dd-mm-yyyy">
                     </div>
                   </div>
                   <div *ngIf="_paymentServices.paymentSearchCriteria === 'amount'" class="d-flex flex-column justify-content-center">
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="col-12">
-        <table class='table scrollableTable mb-0' style='height:250px;background: #F5F1E3'>
+        <table class='table scrollableTable mb-0' style='height:200px;background: #F5F1E3'>
           <thead class='mr-4 d-flex justify-content-around'>
             <th style="width:20%">Cantidad</th>
             <th style="width:20%">Artista</th>
@@ -75,14 +75,15 @@
             <th style="width:20%">Track</th>
             <th style="width:20%"></th>
           </thead>
-          <tbody #tbody style='height:250px;width:100%'>
+          <tbody #tbody style='height:200px;width:100%'>
             <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
               <td style="width:20%">{{payment.amount}}</td>
               <td style="width:20%">{{payment.artist.indexcard.name}}</td>
               <td style="width:20%">{{payment.date || date}}</td>
               <td style="width:20%">{{payment.track.title}}</td>
-              <td style="width:20%" *ngIf="!payment.sent"> <button class="btn btn-warning">Enviar pago</button></td>
-              <td style="width:20%" *ngIf="payment.sent">¡Pago enviado!</td>
+              <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar pago</button></td>
+              <td style="width:20%" *ngIf="payment.sent && !payment.sentDate">¡Email enviado!</td>
+              <td style="width:20%" *ngIf="payment.sent && payment.sentDate">¡Email enviado el día {{payment.sentDate | date}}!</td>
             </tr>
           </tbody>
           <hr>
@@ -96,38 +97,67 @@
           </div>
         </table>
       </div>
+      <div class="col-12 m-0 p-0 d-flex justify-content-center">
+        <span style="color:red">*Selecciona un modelo de email para enviar a los artistas*</span> 
+      </div>
       <div class="col-12">
-        <div class="row m-3"  style="background: #F5F1E3;border:solid black 1px">
-          <div class="col-12 d-flex justify-content-center" style="background:#ffc107">
-            <h5>MODELO EMAIL</h5>
-          </div>
-          <div class="col-8 d-flex flex-column">
-            <div class="row m-1">
-              <label for="letterModels">Modelos disponibles</label>
-              <select name="letterModels" id="">
-                <option value=""></option>
-              </select>
-            </div>
-            <p class="text-center mb-0">TEXTO PRINCIPAL</p>
+        <div class="row m-3" style="background: #F5F1E3;border:solid black 1px">
+          <div class="col-12 " style="background:#ffc107">
             <div class="row">
-              <div class="col-12 d-flex justify-content-center mb-2">
-                    <textarea [(ngModel)]="_letterServices.letterContent" name="" id="" cols="100" rows="7"></textarea>
+              <div class="col-7 d-flex justify-content-center">
+                <div>
+                  <label for="letterModels">Modelos disponibles</label>
+                  <select [(ngModel)]="_letterServices.letterSelectedId" (ngModelChange)="_letterServices.selectLetter()">
+                    <option  *ngFor="let letter of _letterServices.letters" [value]="letter._id">{{letter.name}}</option>
+                      <option value="undefined"></option>
+                  </select>
+                </div>
+              </div>
+              <div *ngIf="_letterServices.form" class="col-5 d-flex justify-content-around">
+                <button *ngIf="_letterServices.letterSelectedId" (click)="_letterServices.setNewLetter()"
+                  class="btn btn-primary">CREAR NUEVO MODELO EMAIL</button>
+                <button *ngIf="!_letterServices.form.pristine && _letterServices.form.value.content && _letterServices.form.value.user && _letterServices.form.value.name" class="btn btn-primary"
+                  (click)="_letterServices.saveLetter().subscribe()">GUARDAR</button>
               </div>
             </div>
           </div>
+          <div class="col-8 d-flex flex-column">
+            <form ngNativeValidate action="" [formGroup]='_letterServices.form' *ngIf="_letterServices.form" id="letterModelForm">
+            <div class="row m-1 d-flex justify-content-around">
+              <label *ngIf="_letterServices.letterSelectedId" for="name">Puedes modificar el nombre del modelo</label>
+              <label *ngIf="!_letterServices.letterSelectedId" for="name">Introduce el nombre del nuevo modelo(campo obligatorio)</label>
+              <input formControlName='name' class="form-control" name="name" type="text" id="name" placeholder="nombre del modelo"
+                [value]="_letterServices.form.value.name">
+            </div>
+              <p class="text-center mb-0">TEXTO PRINCIPAL(campo obligatorio)</p>
+           <div class="row d-flex justify-content-around">
+            <span>[[nombre de artista]]</span>
+            <span> [[apellido de artista]] </span>
+            <span> [[email de artista]]</span>
+           </div>
+            <div class="row">
+              <div class="col-12 d-flex justify-content-center mb-2">
+                <textarea formControlName='content' class="form-control" name="content"  cols="100" rows="7"></textarea>
+              </div>
+            </div>
+        </form>
+          </div>
           <div class="col-4">
+            <form ngNativeValidate action="" [formGroup]='_letterServices.form' *ngIf="_letterServices.form" id="letterModelForm">
             <div class="row d-flex justify-content-center m-1">
-              <label for="usersEmails">Email emisor</label>
-                <select name="usersEmails" id="" >
-                  <option *ngFor="let user of _letterServices.users" [value]="user._id">{{user.email}}</option>
-                </select>
+              <label for="usersEmails">Email emisor(campo obligatorio)</label>
+              <select formControlName='user' class="form-control" name="user" >
+                <option *ngFor="let user of _letterServices.users" [value]="user._id">{{user.email}}</option>
+              </select>
             </div>
-              <p class="text-center mb-0">DATOS</p>
+            <p class="text-center mb-0">DATOS</p>
             <div class="row d-flex justify-content-center mb-2">
-                <textarea [(ngModel)]="_letterServices.letterBottom" name="" id="" cols="25" rows="6"></textarea>
+              <textarea formControlName='bottom' class="form-control" name="bottom" cols="25" rows="6"></textarea>
             </div>
+            </form>
           </div>
         </div>
       </div>
   </div>
 </div>
+

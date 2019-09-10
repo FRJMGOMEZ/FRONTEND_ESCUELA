@@ -6,6 +6,7 @@ export class Payment {
         public track: Track,
         public date: Date,
         public sent:boolean = false,
+        public sentDate?:Date,
         public _id?: string) {
     }
 }

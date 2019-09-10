@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
 .hidden {
     display: none
 }
@@ -68,4 +67,7 @@ border:1px solid black;
 height: 98%;
 }
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

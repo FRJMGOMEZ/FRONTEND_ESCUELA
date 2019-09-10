@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit,ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { PaymentsService } from '../../../providers/payments.service';
 import Swal from 'sweetalert2';
 import { LetterService } from '../../../providers/letter.service';
@@ -9,19 +9,25 @@ import { UserServices } from '../../../providers/user.service';
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss']
 })
-export class PaymentsComponent implements OnInit {
+export class PaymentsComponent implements OnInit, OnDestroy {
 
   @ViewChild('input0') input0 : ElementRef
   @ViewChild('input1') input1: ElementRef
+
 
   constructor(public _paymentServices:PaymentsService,
               public _letterServices:LetterService,
               public _userService:UserServices) { }
 
   ngOnInit() {
-    this._paymentServices.searchMode=false;
-    this._paymentServices.getPayments().subscribe();
+    //// Payments section ///
     this._letterServices.getUsers();
+    this._letterServices.getLetters().subscribe()
+
+    ///// Letter section /////
+    this._paymentServices.searchMode = false;
+    this._paymentServices.getPayments().subscribe();
+
   }
 
   searchPayment(){
@@ -38,13 +44,13 @@ export class PaymentsComponent implements OnInit {
         break;
       case 'date':
         this.checkDateFormat().then(async () => {
-          let values = this.input0.nativeElement.value.split('/');
+          let values = this.input0.nativeElement.value.split('-');
           await values.forEach((value, index) => {
             values[index] = Number(value);
           });
           this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
 
-          let values2 = this.input1.nativeElement.value.split('/');
+          let values2 = this.input1.nativeElement.value.split('-');
           await values2.forEach((value, index) => {
             values2[index] = Number(value);
           })
@@ -56,14 +62,23 @@ export class PaymentsComponent implements OnInit {
     }          
   }
 
+  getAll() {
+    this._paymentServices.getPayments().subscribe()
+    this._paymentServices.searchMode = false;
+    this.input0.nativeElement.value = '';
+    if (this.input1) {
+      this.input1.nativeElement.value = '';
+    }
+  }
+
   checkDateFormat() {
     return new Promise((resolve, reject) => {
-      let regExp = new RegExp('^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$');
+      let regExp = /(^(((0[1-9]|1[0-9]|2[0-8])[-](0[1-9]|1[012]))|((29|30|31)[-](0[13578]|1[02]))|((29|30)[-](0[4,6,9]|11)))[-](19|[2-9][0-9])\d\d$)|(^29[-]02[-](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
       if (regExp.test(this.input0.nativeElement.value) && regExp.test(this.input1.nativeElement.value)) {
         resolve(true);
       } else {
         Swal.fire({
-          text: 'Utiliza el formato indicado dd/mm/yyyy , gracias',
+          text: 'Utiliza el formato indicado dd-mm-yyyy , gracias',
           type: 'info',
           showCloseButton: true
         })
@@ -89,6 +104,7 @@ export class PaymentsComponent implements OnInit {
   }
 
   stateChange(state:string){
+    this._paymentServices.from = 0;
     this._paymentServices.state = state;
     if(this._paymentServices.searchMode){
       this.searchPayment();
@@ -106,13 +122,18 @@ export class PaymentsComponent implements OnInit {
     }
   }
 
-  getAll(){
-    this._paymentServices.getPayments().subscribe()
-    this._paymentServices.searchMode=false;
-    this.input0.nativeElement.value = '';
-    if(this.input1){
-      this.input1.nativeElement.value = '';
-    }
+  ngOnDestroy(){
+  this._paymentServices.payments = []
+  this._paymentServices.paymentSearchCriteria = 'amount';
+  this._paymentServices.state= 'all';
+  this._paymentServices.searchMode = false;
+  this._paymentServices.inputs = []
+  this._paymentServices.from= 0;
+  this._paymentServices.count= 0;
+  this._paymentServices.companyPayments= false;
+  this._letterServices.letterSelectedId=undefined;
+  this._letterServices.users= []
+  this._letterServices.letters=[];
+  this._letterServices.form = undefined;
   }
-
 }

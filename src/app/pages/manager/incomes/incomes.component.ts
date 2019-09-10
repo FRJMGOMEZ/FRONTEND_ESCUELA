@@ -35,13 +35,13 @@ export class IncomesComponent implements OnDestroy {
         break;
       case 'date':
         this.checkDateFormat().then(async()=>{
-          let values = this.input0.nativeElement.value.split('/');
+          let values = this.input0.nativeElement.value.split('-');
           await values.forEach((value, index) => {
             values[index] = Number(value);
           });
           this._incomeServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
 
-          let values2 = this.input1.nativeElement.value.split('/');
+          let values2 = this.input1.nativeElement.value.split('-');
           await values2.forEach((value, index) => {
             values2[index] = Number(value);
           })
@@ -53,15 +53,14 @@ export class IncomesComponent implements OnDestroy {
         break;
     }
   }
-
-  checkDateFormat(){
-    return new Promise((resolve,reject)=>{
-      let regExp = new RegExp('^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$');
-      if(regExp.test(this.input0.nativeElement.value) && regExp.test(this.input1.nativeElement.value)){
+  checkDateFormat() {
+    return new Promise((resolve, reject) => {
+      let regExp = /(^(((0[1-9]|1[0-9]|2[0-8])[-](0[1-9]|1[012]))|((29|30|31)[-](0[13578]|1[02]))|((29|30)[-](0[4,6,9]|11)))[-](19|[2-9][0-9])\d\d$)|(^29[-]02[-](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)/;
+      if (regExp.test(this.input0.nativeElement.value) && regExp.test(this.input1.nativeElement.value)) {
         resolve(true);
-      }else{
+      } else {
         Swal.fire({
-          text: 'Utiliza el formato indicado dd/mm/yyyy , gracias',
+          text: 'Utiliza el formato indicado dd-mm-yyyy , gracias',
           type: 'info',
           showCloseButton: true
         })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { UserServices } from '../providers/user.service';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { TaskModalController } from '../modals/task-modal/task.modalController';
 import { UploadFilesModalController } from '../modals/upload-files-modal/uploadFilesModalController';
 import { IncomeModalController } from '../modals/income-modal/incomesModalController.service';
 import { PaymentModalController } from '../modals/payment-modal/paymentModalController.service';
+import { SpinnerService } from '../providers/spinner.service';
 
 @Component({
   selector: 'app-pages',
@@ -23,6 +24,8 @@ import { PaymentModalController } from '../modals/payment-modal/paymentModalCont
   styleUrls: ["./pages.component.css"]
 })
 export class PagesComponent implements OnInit {
+
+  public displaySpinner :boolean=true;
 
   constructor(private socket:Socket,
               private _userServices:UserServices,
@@ -40,7 +43,8 @@ export class PagesComponent implements OnInit {
               private _taskModalController:TaskModalController,
               private _uploadFilesModalController:UploadFilesModalController,
               private _incomesModalController:IncomeModalController,
-              private _paymentModalController:PaymentModalController
+              private _paymentModalController:PaymentModalController,
+              public _spinnerServices:SpinnerService
               ) { }
 
   ngOnInit() {

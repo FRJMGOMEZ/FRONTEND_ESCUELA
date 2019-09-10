@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, OnDestroy, ViewChild, Renderer2, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ElementRef,ViewChild, Renderer2} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
@@ -112,8 +112,9 @@ export class OverviewComponent implements OnInit {
   async idNavigation(id?: string, collection?: string) {
     await this._managerServices.idNavigation(id, collection)
     setTimeout(() => {
+      console.log('what to do');
       this.collapseAcordions(collection)
-    }, 200)
+    },500)
   }
 
   columnsSize() {

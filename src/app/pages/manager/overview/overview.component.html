@@ -1,8 +1,8 @@
 <div class="row pagesContainerFixed" style='background:#DCD4D2'>
   <div class="col-12">
     <div class="row">
-      <div class="col-12 m-2 mt-5" style="height:160px">
-        <div class="row" style="height:150px">
+      <div class="col-12 mt-5" style="height:10%">
+        <div class="row">
           <div class="col-10 d-flex justify-content-around mb-2">
             <div class="form-check">
               <input class="form-check-input" type="radio" name="albums" id="albums" value="albums"
@@ -55,11 +55,11 @@
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <div class="row" style="background-color:white">
+      <div class="col-12" style="height:90%">
+        <div class="row" style="background-color:white;height:100%">
           <div #searchGetColumn
             *ngIf="_managerServices.albums.length != 0 || _managerServices.tracks.length != 0 || _managerServices.artists.length != 0"
-            style='border:1px solid black' class="col-12 p-0 d-flex flex-column">
+            style='border:1px solid black; height:100%' class="col-12 p-0 d-flex flex-column">
             <div class='d-flex justify-content-end'>
               <button
                 (click)="_managerServices.albums =[];_managerServices.tracks=[];_managerServices.artists=[];_managerServices.getOrSearch('#')"
@@ -140,7 +140,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>

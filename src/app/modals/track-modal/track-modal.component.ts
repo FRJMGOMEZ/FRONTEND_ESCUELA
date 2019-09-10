@@ -140,6 +140,7 @@ export class TrackModalComponent implements OnInit {
 
 
   hideModal(){
+    this.assignation = undefined;
     this.artists = []
     this._modalController.hideModal()
     this.track = undefined;

@@ -1,5 +1,5 @@
-<div class="row m-1" *ngIf="!artistId">
-    <table class='table'>
+<div class="row m-1" *ngIf="!artistId" style="height:580px">
+    <table class='table scrollableTable'>
         <thead>
             <th>Nombre</th>
         </thead>
@@ -27,11 +27,11 @@
   <div class="col-12 d-flex justify-content-center">
     LIQUIDACIONES
   </div>
-    <table class='table'>
-        <thead>
-            <th>Track</th>
-            <th>Amount</th>
-            <th>Date</th>
+    <table class='table scrollableTable'>
+        <thead class="d-flex justify-content-around">
+            <th style="width:33%">Track</th>
+            <th style="width:33%">Amount</th>
+            <th style="width:33%">Date</th>
         </thead>
         <tbody>
             <tr *ngFor="let payment of _managerServices.artist.payments">

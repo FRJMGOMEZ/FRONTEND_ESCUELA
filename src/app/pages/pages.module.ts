@@ -43,8 +43,6 @@ import { IncomesChartComponent } from './manager/company/incomes-chart/incomes-c
 import { PaymentsChartComponent } from './manager/company/payments-chart/payments-chart.component';
 import { EventsChartComponent } from './manager/company/events-chart/events-chart.component';
 import { ProjectsChartComponent } from './manager/company/projects-chart/projects-chart.component';
-import { ChartsComponent } from './dashboard/charts/charts.component';
-
 
 @NgModule({
   declarations: [
@@ -78,8 +76,7 @@ import { ChartsComponent } from './dashboard/charts/charts.component';
     IncomesChartComponent,
     PaymentsChartComponent,
     EventsChartComponent,
-    ProjectsChartComponent,
-    ChartsComponent
+    ProjectsChartComponent
   ],
   imports: [
     PAGESROUTES,

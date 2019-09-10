@@ -7,10 +7,10 @@
                         <div class="form-check">
                             <div class="d-flex flex-column">
                                 <div>
-                                    <input #input0 type="text" placeholder=" De dd/mm/yyyy">
+                                    <input #input0 type="text" placeholder=" De dd-mm-yyyy">
                                 </div>
                                 <div>
-                                    <input #input1 type="text" placeholder="A dd/mm/yyyy">
+                                    <input #input1 type="text" placeholder="A dd-mm-yyyy">
                                 </div>
                             </div>
                         </div>
@@ -18,18 +18,21 @@
                     </div>
                     <div class="col-6">
                         <div class="row btn btn-group">
-                            <button class="btn btn-warning">Liquidaciones</button>
-                            <button class="btn btn-warning">Ingresos</button>
+                            <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning">Liquidaciones</button>
+                            <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning">Ingresos</button>
                         </div>
                         <div class="row btn btn-group">
-                            <button class="btn btn-warning">Eventos</button>
-                            <button class="btn btn-warning">Proyectos</button>
+                            <button (click)="changeSelection('events')" [ngStyle]="{'opacity': buttonsStyle('events')}" class="btn btn-warning">Eventos</button>
+                            <button (click)="changeSelection('projects')" [ngStyle]="{'opacity': buttonsStyle('projects')}" class="btn btn-warning">Proyectos</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <app-payments-chart (click)="generateChart('payments')"></app-payments-chart>
+                 <app-projects-chart *ngIf="chartSelected === 'projects'"></app-projects-chart>
+                <app-incomes-chart *ngIf="chartSelected === 'incomes'"></app-incomes-chart>
+                <app-events-chart *ngIf="chartSelected === 'events'"></app-events-chart>
+                <app-payments-chart *ngIf="chartSelected === 'payments'"></app-payments-chart>
             </div>
         </div>
     </div>

@@ -7,11 +7,11 @@ import Swal from "sweetalert2";
 export class SwalService {
   constructor() { }
 
-  confirmDelete(){
+  confirmDelete(text:string=''){
     return new Promise((resolve,reject)=>{
       Swal.fire({
         title: '¿Estás seguro/a?',
-        text: "Este cambio no se podrá revertir",
+        text,
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

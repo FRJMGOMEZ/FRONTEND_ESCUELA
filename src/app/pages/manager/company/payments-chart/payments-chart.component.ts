@@ -21,15 +21,11 @@ export class PaymentsChartComponent implements OnInit {
     public companyComponent: CompanyComponent) { }
 
   async ngOnInit() {
-    this.chart.setStyle('0.3')
+    this.companyComponent.generateChart();
     this.companyComponent.notification.subscribe((selection: string) => {
-      if (selection === 'payments') {
-        this.chart.chart = null;
+      if(selection === 'payments'){
         this.setPaymentsData();
         this.chart.setStyle('1');
-      } else {
-        this.chart.setStyle('0.3', 'pointer');
-        this.chart.resetChart();
       }
     })
   }
@@ -50,9 +46,6 @@ export class PaymentsChartComponent implements OnInit {
         this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
       })
       this.chart.setInfo(this.labels, this.data,'payments');
-      this.companyComponent.labels = [];
-      this.labels = [];
-      this.data = [];
     })
   }
 

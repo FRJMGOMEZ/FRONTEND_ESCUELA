@@ -1,5 +1,5 @@
-<div class="row m-1" *ngIf="!albumId">
-    <table class='table m-1'>
+<div class="row m-1 mt-0 " *ngIf="!albumId" style="height:580px">
+    <table class='table scrollableTable'>
         <thead>
             <th>Título</th>
             <th>Tracks</th>
@@ -24,7 +24,7 @@
         <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
     </div>
 </div>
-<div class="row m-2 scrollableTable " *ngIf="albumId">
+<div class="row m-1"*ngIf="albumId">
   <div class="col-12">
     <div class="row">
       <div class="col-6">
@@ -34,41 +34,47 @@
       <div class="col-6 d-flex justify-content-end">
         FECHA DE CREACIÓN: {{_managerServices.album.date | date}}
       </div>
+    <div class="col-12 d-flex justify-content-center">
+        TRACKS
+    </div>
     </div>
   </div>
-    <div class="col-12 d-flex justify-content-center">
-      TRACKS
-    </div>
-    <table class='table'>
-        <thead>
-            <th>Título</th>
-            <th>Participantes</th>
-            <th>
-                <div class="d-flex justify-content-around">
-                    <button (click)='pushTrack()' class='btn btn-warning'>+PISTA</button>
-                </div>
-            </th>
-        </thead>
-        <tbody *ngIf="albumId">
-            <tr *ngFor="let track of _managerServices.album.tracks let i=index">
-                <td><a (click)="overviewComponent.idNavigation(track._id,'track')" style='color:blue'>{{track.title}}</a></td>
-                <td>
-                    <div *ngIf="_managerServices.album.tracks[i].assignations.length > 0" class='scrollable' style='height:80px'>
-                        <div class='d-flex justify-content-between' *ngFor="let assignation of _managerServices.album.tracks[i].assignations">
-                            <a (click)="overviewComponent.idNavigation(assignation.artist._id,'artist')" style='color:blue'>{{assignation.artist['indexcard'].name}}  </a>
-                            <p> {{assignation.percent}}%</p>
+    <div class="col-12">
+        <table class='table scrollableTable'>
+            <thead>
+                <th>Título</th>
+                <th>Participantes</th>
+                <th>
+                    <div class="d-flex justify-content-around">
+                        <button (click)='pushTrack()' class='btn btn-warning'>+PISTA</button>
+                    </div>
+                </th>
+            </thead>
+            <tbody *ngIf="albumId">
+                <tr *ngFor="let track of _managerServices.album.tracks let i=index">
+                    <td><a (click)="overviewComponent.idNavigation(track._id,'track')" style='color:blue'>{{track.title}}</a>
+                    </td>
+                    <td>
+                        <div *ngIf="_managerServices.album.tracks[i].assignations.length > 0" class='scrollable'
+                            style='height:80px'>
+                            <div class='d-flex justify-content-between'
+                                *ngFor="let assignation of _managerServices.album.tracks[i].assignations">
+                                <a (click)="overviewComponent.idNavigation(assignation.artist._id,'artist')"
+                                    style='color:blue'>{{assignation.artist['indexcard'].name}} </a>
+                                <p> {{assignation.percent}}%</p>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <div class='d-flex justify-content-end'>
-                        <button (click)='putTrack(track._id)' class="btn btn-primary text-center">
-                            <i class="fa fa-info"></i>
-                        </button>
-                        <button (click)='pullTrack(track._id)' class='btn btn-danger'>X</button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                    <td>
+                        <div class='d-flex justify-content-end'>
+                            <button (click)='putTrack(track._id)' class="btn btn-primary text-center">
+                                <i class="fa fa-info"></i>
+                            </button>
+                            <button (click)='pullTrack(track._id)' class='btn btn-danger'>X</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

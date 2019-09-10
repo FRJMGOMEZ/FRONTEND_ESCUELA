@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { UserServices } from '../../providers/user.service';
 import { Project } from '../../models/project.model';
 import { CalendarService } from '../../providers/calendar.service';
@@ -8,6 +8,7 @@ import { DashboardService } from '../../providers/dashboard.service';
 import { Subscription } from 'rxjs';
 import { ProjectServices } from '../../providers/project.service';
 import { DemoService } from '../../providers/demo.service';
+import { SpinnerService } from 'src/app/providers/spinner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +27,8 @@ export class DashboardComponent implements OnInit {
     private router:Router,
     public _dashboardServices:DashboardService,
     private _projectServices:ProjectServices,
-    public _demoServices:DemoService) {}
+    public _demoServices:DemoService,
+    public _spinnerServices:SpinnerService) {}
 
 async ngOnInit() {
 
@@ -51,6 +53,8 @@ async ngOnInit() {
     this._dashboardServices.getLastMessages().subscribe()
 
     this._dashboardServices.getEvents().subscribe()
+
+    this._spinnerServices.closeSpinner();
   
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CalendarService } from 'src/app/providers/calendar.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DemoService } from '../../providers/demo.service';
+import { SpinnerService } from '../../providers/spinner.service';
 
 @Component({
   selector: 'app-calendar',
@@ -13,9 +14,11 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
   constructor(public _calendarServices:CalendarService,
              private router:Router,
              private activatedRoute:ActivatedRoute,
-             private _demoServices:DemoService) { }
+             private _demoServices:DemoService,
+             public _spinnerServices:SpinnerService) { }
 
   ngOnInit() {
+    this._spinnerServices.openSpinner();
 
     this._demoServices.calendarPopup()
     
@@ -50,5 +53,6 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
       this._calendarServices.currentDay = undefined;
       this._calendarServices.currentWeek = undefined;
       this._calendarServices.permanentEvents = [];
+      this._spinnerServices.closeSpinner();
   }
 }

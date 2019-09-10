@@ -19,7 +19,9 @@ import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.module';
 import { ModalsModule } from './modals/modals.module';
 import { ProvidersModule } from './providers/providers.module';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 registerLocaleData(localeEs);
 
@@ -47,6 +49,9 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     RouterTestingModule,
     SocketIoModule.forRoot(config),
     ProvidersModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
               { provide: LocationStrategy, useClass: HashLocationStrategy },

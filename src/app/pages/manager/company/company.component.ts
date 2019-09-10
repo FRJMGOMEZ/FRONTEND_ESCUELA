@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { PaymentsService } from '../../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../../providers/incomes.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-company',
@@ -28,20 +29,23 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this._paymentServices.companyPayments = true;
-    let date1 = await this.filterPipe.transform(new Date());
-    date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
-    this._paymentServices.inputs[0] = await date1.getTime();
-    this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 7);
-    this.checkNumberOfDays().then(async (labelsNumber: number) => {
-      await this.setLabels(labelsNumber)
-      this.notification.emit('payments');
-    })
+  }
+
+  changeSelection(type:string){
+    this.chartSelected=type;
   }
 
   async generateChart(selection?: string) {
     if(selection){this.chartSelected=selection};
     this.labels = [];
-    await this.setDates();
+    if (!this.input0.nativeElement.value && !this.input1.nativeElement.value) {
+      let date1 = await this.filterPipe.transform(new Date());
+      date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
+      this._paymentServices.inputs[0] = await date1.getTime();
+      this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 7);
+    } else {
+      await this.setDates();
+    }
     this.checkNumberOfDays().then(async (labelsNumber: number) => {
        await this.setLabels(labelsNumber);
        this.notification.emit(this.chartSelected);
@@ -95,6 +99,26 @@ export class CompanyComponent implements OnInit, OnDestroy {
         resolve()
       }
     })
+  }
+
+  buttonsStyle(type: string) {
+    if (type === 'payments') {
+       if(this.chartSelected != 'payments' ){
+         return '0.5'
+       }
+    } else if (type === 'incomes') {
+      if (this.chartSelected != 'incomes') {
+        return '0.5'
+      }
+    } else if (type === 'projects') {
+      if (this.chartSelected != 'projects') {
+        return '0.5'
+      }
+    }else if (type === 'events'){
+      if(this.chartSelected != 'events'){
+        return '0.5'
+      }
+    }
   }
 
   ngOnDestroy() {

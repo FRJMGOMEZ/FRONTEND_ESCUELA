@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { Subscription, timer } from 'rxjs'
 import * as html2canvas from "html2canvas"
 import { DemoService } from '../../../providers/demo.service';
+import { SpinnerService } from '../../../providers/spinner.service';
 
 @Component({
   selector: "app-day",
@@ -45,7 +46,7 @@ export class DayComponent implements OnInit, OnDestroy {
     public _calendarModalController: CalendarModalController,
     public _facilitieServices: FacilitiesService,
     public _demoServices:DemoService,
-    private renderer:Renderer2
+    private _spinnerServices:SpinnerService
   ) {}
 
   ngOnInit() {
@@ -107,12 +108,14 @@ export class DayComponent implements OnInit, OnDestroy {
     ///////////////////////////////////////////////////////
     this._calendarModalController.notification.subscribe(()=>{
       this.inProgress = true;
+      this._spinnerServices.openSpinner();
     })
     ///////////////////////////////////////////////////////
     this.eventsSocket = this._calendarServices.eventSocket().subscribe();
     ///////////////////////////////////////////////////////
     this.eventSubscription = this._calendarServices.events$.subscribe(() => {
         this.inProgress=true;
+        this._spinnerServices.openSpinner();
         this._calendarServices.getDayById(this._calendarServices.currentDay._id).subscribe(()=>{
           this.init()
         })
@@ -121,6 +124,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   async toOtherDay(dayId) {
     this.inProgress = true;
+    this._spinnerServices.openSpinner();
     this._calendarServices.currentDay = undefined;
     await this._calendarServices.getDayById(dayId).subscribe()
     this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
@@ -128,6 +132,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   toOtherWeek(date: Date) {
     this.inProgress = true;
+    this._spinnerServices.openSpinner();
     this._calendarServices.currentWeek = undefined;
     date = new Date(date);
     this._calendarServices.getWeekByDate(date.getTime()).subscribe((week: any) => {
@@ -154,11 +159,12 @@ export class DayComponent implements OnInit, OnDestroy {
   init() {
     this._calendarServices.userIn().then(()=>{
     this.resetEventRenderValues();
-    this.getWeeksAroundDates()})
+    this.getWeeksAroundDates()});
   }
 
   onResize(){
     this.inProgress = true;
+    this._spinnerServices.openSpinner();
     this.init()
   }
 
@@ -172,7 +178,10 @@ export class DayComponent implements OnInit, OnDestroy {
         }
       });
       this.position = await 0;
-      this.inProgress = await false
+      this._spinnerServices.closeSpinner();
+      timer().subscribe(()=>{
+        this.inProgress = false;
+      })
       return
   }
 
@@ -193,6 +202,7 @@ export class DayComponent implements OnInit, OnDestroy {
   switchFacilities(number: number = 0) {
     if (this.facilitieFrom + number >= 0) {
       this.inProgress = true;
+      this._spinnerServices.openSpinner();
       this._facilitieServices.facilities=[]
       this.facilitieFrom += number;
       this._facilitieServices.getFacilities(this.facilitieFrom).subscribe(() => {
