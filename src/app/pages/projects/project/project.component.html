@@ -1,5 +1,4 @@
-<div *ngIf="page && _projectServices.projectSelectedId" class="container-fluid mt-3 animated fadeIn" style='background-color: #DCD4D2'>
-    <div class="row">
+    <div *ngIf="page && _projectServices.projectSelectedId" class="row animated fadeIn" style='background-color: #DCD4D2'>
         <div class=' col-12 nav justify-content-around align-items-center ' style='background:#F0B841;color:black;height: 40px;width:100% '>
             <div>
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown">MIS PROYECTOS</a>
@@ -80,7 +79,7 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-12 mt-3" style='background:#DCD4D2;border:1px solid #F0B841;height:500px'>
+                <div class="col-12 mt-3" style='background:#DCD4D2;border:1px solid #F0B841;height:100%'>
                     <app-messages *ngIf="page === 'chat'"></app-messages>
                     <app-images *ngIf="page === 'images'"></app-images>
                     <app-files *ngIf="page === 'files'"></app-files>
@@ -129,4 +128,4 @@
             <hr>
         </div>
     </div>
-</div>
+

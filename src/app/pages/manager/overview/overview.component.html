@@ -1,7 +1,7 @@
 <div class="row pagesContainerFixed" style='background:#DCD4D2'>
-  <div class="col-12">
-    <div class="row">
-      <div class="col-12 mt-5" style="height:10%">
+  <div class="col-12" style="height: 100%">
+    <div class="row"  style="height: 100%">
+      <div class="col-12 mt-2" style="height:15%">
         <div class="row">
           <div class="col-10 d-flex justify-content-around mb-2">
             <div class="form-check">
@@ -55,7 +55,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12" style="height:90%">
+      <div class="col-12" style="height:85%">
         <div class="row" style="background-color:white;height:100%">
           <div #searchGetColumn
             *ngIf="_managerServices.albums.length != 0 || _managerServices.tracks.length != 0 || _managerServices.artists.length != 0"
@@ -70,7 +70,7 @@
             <app-artist *ngIf="_managerServices.artists.length != 0"></app-artist>
           </div>
           <div #navigateColumn *ngIf="_managerServices.album || _managerServices.track || _managerServices.artist "
-            class='m-0 p-0 col-12' id="accordion2" style='border:1px solid black'>
+            class='m-0 p-0 col-12' id="accordion2" style='border:1px solid black;height:100%'>
             <div *ngIf="_managerServices.album" class="card m-0 p-0">
               <div class="card-header" id="headingTwo" style="background:#506fa1">
                 <div class="row">

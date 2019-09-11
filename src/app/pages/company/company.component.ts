@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { PaymentsService } from '../../../providers/payments.service';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
+import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
-import { IncomesService } from '../../../providers/incomes.service';
-import { timer } from 'rxjs';
+import { IncomesService } from '../../providers/incomes.service';
 
 @Component({
   selector: 'app-company',
@@ -10,6 +9,8 @@ import { timer } from 'rxjs';
   styleUrls: ['./company.component.scss']
 })
 export class CompanyComponent implements OnInit, OnDestroy {
+
+  @Input()picker:any
 
   public filterPipe = new DaysOfWeekPipe();
 
@@ -62,10 +63,9 @@ export class CompanyComponent implements OnInit, OnDestroy {
       values2[index] = Number(value);
     })
     if(this.chartSelected === 'incomes'){
-      this._incomeServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
-      this._paymentServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime();
+     
     }else if(this.chartSelected === 'payments'){
-      this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
+      this._incomeServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
       this._incomeServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime();
     }
   }

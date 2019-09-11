@@ -1,14 +1,14 @@
-<div class="row">
-  <div class="col-8 m-0 p-0">
+<div class="row p-0 m-0">
+  <div class="col-8">
       <div class="row">
         <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
-          <a class="text-right"><i class="fas fa-arrow-left"></i></a>
+          <a (click)="moveBack()" class="text-right"><i class="fas fa-arrow-left"></i></a>
         </div>
         <div class="col-10">
           <app-line-chart  #chart></app-line-chart>
         </div>
         <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
-          <a class="text-left"><i class="fas fa-arrow-right"></i></a>
+          <a (click)="moveForward()" class="text-left"><i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="col-12 d-flex justify-content-center">
           <div class="form-check">
@@ -27,13 +27,13 @@
       </div>
   </div>
   <div class="col-4">
-    <table class='table scrollableTable mb-0' style='height:250px;background: #F5F1E3'>
+    <table class='table scrollableTable mb-0' style='background: #F5F1E3'>
       <thead class='mr-4 d-flex justify-content-around'>
         <th style="width:33%">Cantidad</th>
         <th style="width:33%">Fecha</th>
         <th style="width:33%">Track</th>
       </thead>
-      <tbody #tbody style='height:250px;width:100%'>
+      <tbody #tbody style='width:100%'>
         <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
           <td style="width:33%">{{payment.amount}}</td>
           <td style="width:33%">{{payment.date || date}}</td>
@@ -48,7 +48,6 @@
           <button (click)="switchPage(5)" *ngIf="_paymentServices.from + 5 <=  _paymentServices.count"
             class="btn btn-warning">NEXT</button>
         </div>
-        <div class="col-2"></div>
       </div>
     </table>
   </div>

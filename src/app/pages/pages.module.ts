@@ -36,13 +36,13 @@ import { PaymentsComponent } from './manager/payments/payments.component';
 import { ArtistComponent } from './manager/overview/artist/artist.component';
 import { NotLiquidatedComponent } from './manager/incomes/not-liquidated/not-liquidated.component';
 import { LiquidatedComponent } from './manager/incomes/liquidated/liquidated.component';
-import { CompanyComponent } from './manager/company/company.component';
 import { OverviewComponent } from './manager/overview/overview.component';
 import { SharedModule } from '../shared/shared.module';
-import { IncomesChartComponent } from './manager/company/incomes-chart/incomes-chart.component';
-import { PaymentsChartComponent } from './manager/company/payments-chart/payments-chart.component';
-import { EventsChartComponent } from './manager/company/events-chart/events-chart.component';
-import { ProjectsChartComponent } from './manager/company/projects-chart/projects-chart.component';
+import { CompanyComponent } from './company/company.component';
+import { IncomesChartComponent } from './company/incomes-chart/incomes-chart.component';
+import { PaymentsChartComponent } from './company/payments-chart/payments-chart.component';
+import { EventsChartComponent } from './company/events-chart/events-chart.component';
+import { ProjectsChartComponent } from './company/projects-chart/projects-chart.component';
 
 @NgModule({
   declarations: [

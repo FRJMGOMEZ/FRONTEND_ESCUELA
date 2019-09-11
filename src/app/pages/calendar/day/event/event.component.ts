@@ -50,7 +50,7 @@ export class EventComponent implements OnInit,AfterViewInit{
   
   async render() {
     if(this.hour){
-    let spaceWithoutEvents = 720 - (this.position) * 60; 
+    let spaceWithoutEvents = 520 - (this.position) * 40; 
     for (let event of this.hour) {
        let facilitieId = event.facilitie._id || event.facilitie || null;
       if (facilitieId && facilitieId === this.facilitie._id) {
@@ -81,7 +81,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       const plus = document.createTextNode("add");
       child.appendChild(plus);
       child.setAttribute("id", "#child");
-      this.renderer.setStyle(child, 'font-size', '15px');
+      this.renderer.setStyle(child, 'font-size', '10px');
       this.renderer.setStyle(child, "color", "#f47742");
       this.renderer.setStyle(child, "cursor", "pointer");
 
@@ -95,7 +95,7 @@ export class EventComponent implements OnInit,AfterViewInit{
         this.renderer.setStyle(
           this.eventCard.nativeElement,
           "height",
-          `${60}px`
+          `${40}px`
         );
         this.renderer.setStyle(this.eventCard.nativeElement,'width',this.dayComponent.cardWidth)
         this.renderer.setStyle(
@@ -103,17 +103,17 @@ export class EventComponent implements OnInit,AfterViewInit{
           "background-color",
           "#F5F1E3"
         );
-        this.facilitie.space -= 60;
+        this.facilitie.space -= 40;
         return
       } else if ((Number(this.facilitie.space) != spaceWithoutEvents)) {
-          if (spaceWithoutEvents - this.facilitie.space >= 60) {
+          if (spaceWithoutEvents - this.facilitie.space >= 40) {
             this.renderer.setStyle(this.eventCard.nativeElement, "height", "0");
             this.renderer.setStyle(this.eventCard.nativeElement, "width", "0"); return    
           } else {
-            this.renderer.setStyle(this.eventCard.nativeElement, "height", `${60 - (spaceWithoutEvents - this.facilitie.space)}px`);
+            this.renderer.setStyle(this.eventCard.nativeElement, "height", `${40 - (spaceWithoutEvents - this.facilitie.space)}px`);
             this.renderer.setStyle(this.eventCard.nativeElement,'width',this.dayComponent.cardWidth)
-            this.position = this.position + (1 - ((this.facilitie.space + 60 - spaceWithoutEvents) / 60));
-            this.facilitie.space -= 60 - (spaceWithoutEvents-this.facilitie.space) 
+            this.position = this.position + (1 - ((this.facilitie.space + 40 - spaceWithoutEvents) / 40));
+            this.facilitie.space -= 40 - (spaceWithoutEvents-this.facilitie.space) 
             if(this._userServices.checkRole()){
               this.renderer.appendChild(this.eventCard.nativeElement, child);
               this.renderer.listen(this.eventCard.nativeElement, "click", () => {
@@ -141,7 +141,7 @@ export class EventComponent implements OnInit,AfterViewInit{
  async setEvent(eventPosition:number){
     if (this.ourEvents[eventPosition] != undefined) {
       await this.placeEvent(eventPosition);
-      await this.fixHeight(60 * this.ourEvents[eventPosition].duration)
+      await this.fixHeight(40 * this.ourEvents[eventPosition].duration)
   }else{
       let res = await this.checkSpace(eventPosition);
       if (res) {
@@ -177,7 +177,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       this.renderer.setStyle(
         cardBody,
         "height",
-        `${60 * this.ourEvents[String(position)].duration}px`
+        `${40 * this.ourEvents[String(position)].duration}px`
       );
       if(this.ourEvents[String(position)].permanent === true){
         if(this.ourEvents[String(position)].endDate === null){
@@ -191,7 +191,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       const div = document.createElement('div')
       this.renderer.addClass(div, 'd-flex')
       this.renderer.addClass(div, 'justify-content-around')
-      this.renderer.setStyle(div, 'height', `${60 * this.ourEvents[String(position)].duration}px`)
+      this.renderer.setStyle(div, 'height', `${40 * this.ourEvents[String(position)].duration}px`)
       this.renderer.appendChild(cardBody,div)
 
 
@@ -202,7 +202,7 @@ export class EventComponent implements OnInit,AfterViewInit{
       const child1 = document.createElement(`strong`);
       this.renderer.setStyle(child1, "cursor", "pointer");
       this.renderer.setStyle(child1, 'font-size', '15px');
-      this.renderer.setStyle(child1, 'height', `${60 * this.ourEvents[String(position)].duration}px`)
+      this.renderer.setStyle(child1, 'height', `${40 * this.ourEvents[String(position)].duration}px`)
       const name1 = document.createTextNode(`${this.ourEvents[String(position)].name}`);
       child1.append(name1);
       this.renderer.listen(child1, "click", () => {
@@ -273,18 +273,18 @@ fixHeight(height: number) {
          if (reference + 0.75 < 1 && this.ourEvents[String(reference + 0.75)] === undefined) {
            resolve()
          } else { 
-           if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
-             resolve({ height: 45, position:reference })
+           if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+             resolve({ height: 30, position:reference })
            }else{resolve()}
         }
        } else {
-         if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
-           resolve({ height: 30, position: reference })
+         if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+           resolve({ height: 20, position: reference })
          }else{resolve()}
          }
      } else {
-       if ((60 * (reference + 1) === (60 * (12 - this.position + 1) - this.facilitie.space))){
-         resolve({ height: 15, position: reference })
+       if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+         resolve({ height: 10, position: reference })
        }else{resolve()} }     
   }) }
 
@@ -316,7 +316,7 @@ fixHeight(height: number) {
         const child = document.createElement(`strong`);
         const name = document.createTextNode(`add`);
         child.append(name);
-        this.renderer.setStyle(child,'font-size','15px');
+        this.renderer.setStyle(child,'font-size','10px');
         this.renderer.setStyle(child, "color", "#f47742");
         this.renderer.setStyle(child, "cursor", "pointer");
         this.renderer.appendChild(cardBody, child);

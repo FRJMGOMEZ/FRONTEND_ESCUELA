@@ -24,3 +24,7 @@
 .date {
     cursor: pointer;
 }
+
+.pagesContainerFixed{
+border-right: 0px;
+}

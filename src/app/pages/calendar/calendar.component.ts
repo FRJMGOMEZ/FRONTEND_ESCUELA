@@ -3,6 +3,7 @@ import { CalendarService } from 'src/app/providers/calendar.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DemoService } from '../../providers/demo.service';
 import { SpinnerService } from '../../providers/spinner.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -18,10 +19,13 @@ export class CalendarManagerComponent implements OnInit, OnDestroy {
              public _spinnerServices:SpinnerService) { }
 
   ngOnInit() {
-    this._spinnerServices.openSpinner();
+
+    timer().subscribe(()=>{
+      this._spinnerServices.openSpinner();
+    })
 
     this._demoServices.calendarPopup()
-    
+
     this.activatedRoute.params.subscribe(async(params) => {
       if (!params['weekId'] && !params['dayId'] && !this._calendarServices.currentDay && !this._calendarServices.currentWeek) {
         let today = new Date();

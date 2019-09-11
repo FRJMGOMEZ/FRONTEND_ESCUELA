@@ -1,4 +1,4 @@
-    <div class="row mr-1 ml-1 mt-0 animated fadeIn">
+<div class="row mr-1 ml-1 mt-0 p-0 animated fadeIn pagesContainerFixed">
         <div class="col-4 mt-0 pl-0">
             <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row">
                 <div class="col-12">
@@ -10,7 +10,7 @@
                     <h5 *ngIf="_calendarServices.currentDay">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
                 </div>
                 <div class="col-12">
-                  <div class="row mt-2 d-flex justify-content-between">
+                  <div class="row mt-0 d-flex justify-content-between">
                     <div class="ml-3" style='display: flex'>
                       <button class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
                         {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
@@ -26,10 +26,9 @@
                 <div class="col-12 d-flex justify-content-center mt-1">
                     <button class='btn btn-warning' (click)=' _calendarModalController.showModal()'><i class="fas fa-search "></i></button>
                 </div>
-            </div>
-            <div class='col-12 mt-2 p-0'>
-                <h5 class='text-center'>Eventos con permanencia</h5>
-                    <table class='table scrollableTable m-0' style="height:350px;background:#F5F1E3">
+                <div class='col-12 mt-2 '>
+                    <h5 class='text-center'>Eventos con permanencia</h5>
+                    <table class='table scrollableTable m-0' style="height:150px;background:#F5F1E3">
                         <tbody>
                             <tr *ngFor="let event of _calendarServices.permanentEvents">
                                 <td>Nombre: {{event.name}}</td>
@@ -40,22 +39,23 @@
                                     <p *ngIf="event.endDate === null">Se prorroga indefinidamente</p>
                                 </td>
                                 <td>
-                                    <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='deletePermanentEvent(event._id)'><i
-                                            class="far fa-trash-alt"></i></button>
-                                    <button *ngIf="_userServices.checkRole()" class='bg-warning' (click)='showEventPermanentInfo(event._id)'><i
-                                            class="far fa-edit"></i></button>
+                                    <button *ngIf="_userServices.checkRole()" class='bg-warning'
+                                        (click)='deletePermanentEvent(event._id)'><i class="far fa-trash-alt"></i></button>
+                                    <button *ngIf="_userServices.checkRole()" class='bg-warning'
+                                        (click)='showEventPermanentInfo(event._id)'><i class="far fa-edit"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-            </div>
-            <div class='col-12 mt-2'>
-                <p style='color:red'>*Aquellos eventos con permanencia indefinida se definirán con el color rojo*</p>
-                <p style='color:green'>*Aquellos eventos con permanencia definida en el tiempo se definirán con el color verde*</p>
-                <p style='color:blue'>*Aquellos eventos cuya duración sea solo de un día se definirán con el color azul*</p>
-            </div>
+                </div>
+                <div class='col-12 m-3 p-3'>
+                    <p style='color:red'>*Aquellos eventos con permanencia indefinida se definirán con el color rojo*</p>
+                    <p style='color:green'>*Aquellos eventos con permanencia definida en el tiempo se definirán con el color verde*</p>
+                    <p style='color:blue'>*Aquellos eventos cuya duración sea solo de un día se definirán con el color azul*</p>
+                </div>
+            </div>            
         </div>
-        <div #printable class="col-8" style='border-left:1px solid black;border-right:1px solid black'>
+        <div #printable class="col-8">
             <div class="row">
               <div class="col-1" style='background: #F0B841'>
                 <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>
@@ -101,7 +101,7 @@
                 <div #dayPlace  class="col-12">
                     <div class="row">
                         <div class="col-1 m-0 p-0">
-                            <div class="row d-flex flex-column card-group p-0 m-0 " style='height:720px;'>
+                            <div class="row d-flex flex-column card-group p-0 m-0 " style='height:520px;'>
                                 <div class="card ">
                                     <div class="card-body text-center">
                                         8-9
@@ -162,9 +162,14 @@
                                         19-20
                                     </div>
                                 </div>
+                                <div class="card ">
+                                    <div class="card-body text-center ">
+                                      20-21
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div (window:resize)="onResize()"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " style='height:720px'>
+                        <div (window:resize)="onResize()"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " style='height:520px'>
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
                                 <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': getWidth()} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>
@@ -178,6 +183,7 @@
                                 <app-event *ngIf="position >=9" [facilitie]='facilitie' [position]='9' [hour]="_calendarServices.currentDay.hour9 "></app-event>
                                 <app-event *ngIf="position >=10" [facilitie]='facilitie' [position]='10' [hour]="_calendarServices.currentDay.hour10 "></app-event>
                                 <app-event *ngIf="position >=11" [facilitie]='facilitie' [position]='11' [hour]="_calendarServices.currentDay.hour11 "></app-event>
+                                <app-event *ngIf="position >=12" [facilitie]='facilitie' [position]='12' [hour]="_calendarServices.currentDay.hour12 "></app-event>
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,8 @@ import { ProvidersModule } from './providers/providers.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule, MatInputModule, MatNativeDateModule } from '@angular/material';
+
 
 registerLocaleData(localeEs);
 
@@ -51,11 +53,14 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     ProvidersModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
               { provide: LocationStrategy, useClass: HashLocationStrategy },
-                DemoService],
+    DemoService],
   bootstrap: [AppComponent],
 })
 

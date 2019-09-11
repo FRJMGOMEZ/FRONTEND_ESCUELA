@@ -3,16 +3,16 @@
         <img [routerLink]="['/dashboard']" routerLinkActive="router-link-active" class='img-fluid' [src]="'cargo.jpg' | frontImg" alt="">
     </div>
     <nav class='menu d-flex d-sm-block justify-content-center text-center flex-column flex-md-row '>
-        <a [routerLink]="['/company']" routerLinkActive="router-link-active"><i class="fas fa-building m-1"></i> <span>COMPAÑIA</span> </a>
-        <a (click)="toCalendar()" routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1"></i><span>MI CALENDARIO</span></a>
-        <a (click)='toProjects()' routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1"></i><span>MIS PROYECTOS</span></a>
+        <a [routerLink]="['/company']" routerLinkActive="router-link-active " ><i class="fas fa-building m-1 "></i> <span>COMPAÑIA</span> </a>
+        <a (click)="toCalendar()" routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1 "></i><span>MI CALENDARIO</span></a>
+        <a (click)='toProjects()' routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1 "></i><span>MIS PROYECTOS</span></a>
         <div class="nav-item dropdown">
             <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-compact-disc m-1"></i><span>MANAGER</span>
+                <i class="fas fa-compact-disc m-1 "></i><span>MANAGER</span>
             </a>
             <div class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
                 <div class='d-flex justify-content-end flex-column'>
-                    <a class='dropdown-item' (click)="toManagerOverview()" routerLinkActive="router-link-active"><i class="fas fa-compact-disc" style='color:black'></i>OVERVIEW</a>
+                    <a class='dropdown-item' (click)="toManagerOverview()" routerLinkActive="router-link-active"><i class="fas fa-compact-disc " style='color:black'></i>OVERVIEW</a>
                     <a class='dropdown-item' [routerLink]="['/incomes']" routerLinkActive="router-link-active" href=""><i class="fas fa-money-check-alt" style='color:black'></i>INGRESOS</a>
                     <a class='dropdown-item' [routerLink]="['/payments']" routerLinkActive="router-link-active"><i class="fas fa-hand-holding-usd" style='color:black'></i>LIQUIDACIONES</a>
                 </div>

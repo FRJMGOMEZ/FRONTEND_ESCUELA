@@ -14,7 +14,7 @@ import { CalendarManagerComponent } from './calendar/calendar.component'
 import { VerifyTokenGuard } from '../guards/verify-token.guard';
 import { IncomesComponent } from './manager/incomes/incomes.component';
 import { PaymentsComponent } from './manager/payments/payments.component';
-import { CompanyComponent } from './manager/company/company.component';
+import { CompanyComponent } from './company/company.component';
 import { OverviewComponent } from './manager/overview/overview.component';
 
 const pagesRoutes: Routes = [

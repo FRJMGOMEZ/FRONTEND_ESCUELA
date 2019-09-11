@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PaymentsService } from 'src/app/providers/payments.service';
 import { Payment } from 'src/app/models/payment.model';
 import { CompanyComponent } from '../company.component';
-import { LineChartComponent } from '../../../../shared/line-chart/line-chart.component';
+import { LineChartComponent } from '../../../shared/line-chart/line-chart.component';
 
 @Component({
   selector: 'app-payments-chart',
@@ -47,6 +47,24 @@ export class PaymentsChartComponent implements OnInit {
       })
       this.chart.setInfo(this.labels, this.data,'payments');
     })
+  }
+
+ async setDates(plus:number,less:number){
+    let values = this.companyComponent.input0.nativeElement.value.split('/');
+    await values.forEach((value, index) => {
+      values[index] = Number(value);
+    });
+    let values2 = this.companyComponent.input1.nativeElement.value.split('/');
+    await values2.forEach((value, index) => {
+      values2[index] = Number(value);
+    })
+    if(this.companyComponent.chartBy === 'days'){
+      this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime() + 86400000;
+      this._paymentServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime() + 86400000;
+    }else{
+      this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime() + 604800000;
+      this._paymentServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime() + 604800000;
+    }
   }
 
   ngOnDestroy() {

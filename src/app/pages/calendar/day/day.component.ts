@@ -35,7 +35,7 @@ export class DayComponent implements OnInit, OnDestroy {
   facilitieFrom: number = 0;
   cardWidth: string;
   position: number = 0;
-  heightOfEventsFrame: number = 720;
+  heightOfEventsFrame: number = 520;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -196,7 +196,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   getWidth() {
-    return `${Math.round(((this.dayPlace.nativeElement.offsetWidth / 12) * 11) / 5)}px`;
+    return `${Math.round(((this.dayPlace.nativeElement.offsetWidth / 13) * 12) / 5)}px`;
   }
                                     //////// After init ////////
   switchFacilities(number: number = 0) {

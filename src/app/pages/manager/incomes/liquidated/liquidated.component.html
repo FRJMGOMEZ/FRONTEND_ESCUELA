@@ -1,16 +1,17 @@
-<div class="col-12">
-  <div class="row">
+<div class="row m-2 " style="width:100%;height: 100%">
+  <div class="col-12 p-0">
+    <div class="row">
     <div class="col-12 d-flex justify-content-center">
       <h3>Ingresos liquidados</h3>
     </div>
     <div class="col-12">
-      <table  class='table scrollableTable mb-0' style='height:600px;background: #F5F1E3'>
+      <table  class='table scrollableTable mb-0' style='background: #F5F1E3'>
         <thead  class='mr-4 d-flex justify-content-around'>
           <th style="width:20%">Origen</th>
           <th style="width:20%" >Cantidad</th>
           <th style="width:60%">Liquidaciones</th>
         </thead>
-        <tbody  #tbody style='height:500px;width:100%'>
+        <tbody  #tbody style='width:100%'>
           <tr class="d-flex justify-content-around" *ngFor="let income of _incomeServices.incomesLiquidated let i=index">
             <td style="width:20%">{{income.debitor.name}}</td>
             <td style="width:20%">{{income.liquidatedAmount}}</td>
@@ -22,7 +23,7 @@
                   <th class="p-1" style="width:20%">Artista</th>
                   <th class='p-1' style="width:40%">ID</th>
                 </thead>
-                <tbody style='height:100px'>
+                <tbody style='height:70px'>
                   <tr *ngFor='let payment of _incomeServices.incomesLiquidated[i].payments' class="d-flex justify-content-around" style="width:100%">
                     <td style="width:20%">{{payment.date | date}}</td>
                     <td style="width:20%">{{payment.amount}}</td>
@@ -45,5 +46,6 @@
         </div>
       </table>
     </div>
+    </div>
   </div>
-</div>
+</div>  

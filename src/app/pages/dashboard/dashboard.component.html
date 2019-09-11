@@ -1,5 +1,7 @@
 <div [ngClass]="_spinnerServices.pageHidden" class="row pagesContainerFixed animated fadeIn">
-    <div class="col-12" style='background:#F0B841;border:1px solid black'>
+    <div class="col-12">
+        <div class="row">
+             <div class="col-12" style='background:#F0B841;border:1px solid black'>
         <div class="row p-2">
             <div class='col-11 d-flex justify-content-center'>
                 <h3 class='text-center animated bounceInDown'>¡{{hi()}} {{_userServices.userOnline.name}}...!</h3>
@@ -9,9 +11,9 @@
             </div>
         </div>
     </div>
-    <div class='col-7' style='height:600px'>
+    <div class='col-7' style='height:100%'>
         <div class="row m-1">
-            <div *ngIf="!_dashboardServices.unreadMessages && !_dashboardServices.pendingTasks && !_dashboardServices.uncheckedTasks" class="col-12" style='height:600px'>
+            <div *ngIf="!_dashboardServices.unreadMessages && !_dashboardServices.pendingTasks && !_dashboardServices.uncheckedTasks" class="col-12">
                 <h5 class='text-center'>No hay nuevas notificaciones
                 </h5>
             </div>
@@ -34,7 +36,7 @@
                 <div class="row">
                     <div class='col-12' *ngIf="_dashboardServices.pendingTasks">
                         <h5>Tienes tareas pendientes de completar ...</h5>
-                        <div class="scrollable" style="height:120px">
+                        <div class="scrollable" style="height:50%">
                             <table class='table'>
                                 <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
@@ -49,7 +51,7 @@
                     </div>
                     <div class='col-12' *ngIf="_dashboardServices.uncheckedTasks">
                         <h5>Se te han asignado nuevas tareas ...</h5>
-                        <div class="scrollable" style="height:120px">
+                        <div class="scrollable" style="height:50%">
                             <table class='table'>
                                 <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
@@ -64,90 +66,107 @@
             </div>
         </div>
     </div>
-    <div class="col-5 mt-1" style='background:#F5F1E3;height:600px'>
+    <div class="col-5" style='background:#F5F1E3'>
         <div class="row">
-            <div *ngIf="_dashboardServices.eventsToday.length > 0" class="col-12 scrollable mt-2" style="height:200px">
-                <h5 class='text-center'>Echa un vistazo a los eventos programados para hoy....</h5>
-                <div>
-                    <div class=' row d-flex justify-content-around flex-row'>
-                        <div class=" col-12 ">
-                            <table class='table'>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Instalación</th>
-                                    <th>Inicio</th>
-                                    <th>Finalización</th>
-                                </tr>
-                                <tr *ngFor="let todayEvent of _dashboardServices.eventsToday">
-                                    <td> <a (click)='toEvent(todayEvent.startDate)' style='color: blue'>{{todayEvent.name}}</a></td>
-                                    <td>{{todayEvent.facilitie['name']}}</td>
-                                    <td> {{todayEvent.position | timeConversor2: null}}</td>
-                                    <td>{{todayEvent.endDate | date: 'EEEE d MMMM' }} {{todayEvent.position | timeConversor2 : todayEvent.duration}}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+            <div class="col-12 mt-1" style="height:30%">
+                <div *ngIf="_dashboardServices.eventsToday.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
+                    <h5 class='text-center'>Echa un vistazo a los eventos programados para hoy....</h5>
+                </div>
+                <div *ngIf="_dashboardServices.eventsToday.length > 0" class=' row d-flex justify-content-around flex-row'>
+                    <table class='table scrollableTable'>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Instalación</th>
+                                <th>Inicio</th>
+                                <th>Finalización</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let todayEvent of _dashboardServices.eventsToday">
+                                <td> <a (click)='toEvent(todayEvent.startDate)' style='color: blue'>{{todayEvent.name}}</a></td>
+                                <td>{{todayEvent.facilitie['name']}}</td>
+                                <td> {{todayEvent.position | timeConversor2: null}}</td>
+                                <td>{{todayEvent.endDate | date: 'EEEE d MMMM' }}
+                                    {{todayEvent.position | timeConversor2 : todayEvent.duration}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class="col-12 scrollable" style="height:200px">
-                <h5 class='text-center'>Revisa los eventos en curso...</h5>
-                <div>
-                    <div class=' row d-flex justify-content-around flex-row'>
-                        <div class=" col-12 ">
-                            <table class='table'>
+            <div class="col-12 mt-1" style="height:30%">
+                <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
+                    <h5 class='text-center'>Revisa los eventos en curso...</h5>
+                </div>
+                <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class=' row d-flex justify-content-around flex-row'>
+                    <div class=" col-12 ">
+                        <table class='table scrollableTable'>
+                            <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Instalación</th>
                                     <th>Inicio</th>
                                     <th>Finalización</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr *ngFor="let eventOnCourse of _dashboardServices.eventsOnCourse">
-                                    <td> <a (click)='toEvent(eventOnCourse.startDate)' style='color: blue'>{{eventOnCourse.name}}</a></td>
+                                    <td> <a (click)='toEvent(eventOnCourse.startDate)'
+                                            style='color: blue'>{{eventOnCourse.name}}</a>
+                                    </td>
                                     <td>{{eventOnCourse.facilitie['name']}}</td>
-                                    <td> {{eventOnCourse.startDate | date : 'EEEE d MMMM' }} {{eventOnCourse.position | timeConversor2: null}}</td>
-                                    <td>{{eventOnCourse.endDate | date: 'EEEE d MMMM' }} {{eventOnCourse.position | timeConversor2 : eventOnCourse.duration}}
+                                    <td> {{eventOnCourse.startDate | date : 'EEEE d MMMM' }}
+                                        {{eventOnCourse.position | timeConversor2: null}}</td>
+                                    <td>{{eventOnCourse.endDate | date: 'EEEE d MMMM' }}
+                                        {{eventOnCourse.position | timeConversor2 : eventOnCourse.duration}}
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div *ngIf="_dashboardServices.eventsComming.length> 0" class="col-12 scrollable" style="height:200px">
-                <h5 class='text-center'>Aquí tienes los eventos más próximos...</h5>
-                <div class='d-flex flex-column'>
-                    <div class=' row d-flex justify-content-around flex-row'>
-                        <div class="col-12">
-                            <table class='table'>
+            <div class="col-12 mt-1" style="height: 30%">
+                <div *ngIf="_dashboardServices.eventsComming.length> 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
+                    <h5 class='text-center'>Aquí tienes los eventos más próximos...</h5>
+                </div>
+                <div *ngIf="_dashboardServices.eventsComming.length> 0" class=' row d-flex justify-content-around flex-row'>
+                    <div class="col-12">
+                        <table class='table scrollableTable'>
+                            <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Instalación</th>
                                     <th>Inicio</th>
                                     <th>Finalización</th>
                                 </tr>
+                            </thead>
+                            <tbody>
                                 <tr *ngFor="let eventComming of _dashboardServices.eventsComming">
                                     <td> <a (click)='toEvent(eventComming.startDate)' style='color: blue'>{{eventComming.name}}</a>
                                     </td>
                                     <td>{{eventComming.facilitie['name']}}</td>
-                                    <td>{{eventComming.startDate | date: 'EEEE d MMMM' }} {{eventComming.position | timeConversor2: null}}
+                                    <td>{{eventComming.startDate | date: 'EEEE d MMMM' }}
+                                        {{eventComming.position | timeConversor2: null}}
                                     </td>
-                                    <td>{{eventComming.endDate | date: 'EEEE d MMMM' }} {{eventComming.position | timeConversor2 : eventComming.duration}}
+                                    <td>{{eventComming.endDate | date: 'EEEE d MMMM' }}
+                                        {{eventComming.position | timeConversor2 : eventComming.duration}}
                                     </td>
                                 </tr>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div *ngIf="_dashboardServices.eventsComming.length === 0 && _dashboardServices.eventsOnCourse.length === 0 && _dashboardServices.eventsComming.length === 0" class="col-12" style="height:600px">
-                <h5 class='text-center'>No hay eventes recientes</h5>
-            </div>
-        </div>
-    </div>
-    <div class='col-12 m-4 d-flex justify-content-center'>
-        <div>
-            <img style='height:100px;width:600px' class='img-fluid' [src]="'cargo3.png' | frontImg" alt="">
+
+        </div>         
+        <div *ngIf="_dashboardServices.eventsComming.length === 0 && _dashboardServices.eventsOnCourse.length === 0 && _dashboardServices.eventsComming.length === 0"
+            class="row" style="height:100%">
+            <h5 class='text-center'>No hay eventes recientes</h5>
         </div>
     </div>
 </div>
+
+
+

@@ -1,4 +1,4 @@
-<div class="row m-1 mt-0 " *ngIf="!albumId" style="height:580px">
+<div class="row m-1 mt-0 " *ngIf="!albumId" style="height:100%">
     <table class='table scrollableTable'>
         <thead>
             <th>Título</th>
@@ -24,7 +24,7 @@
         <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
     </div>
 </div>
-<div class="row m-1"*ngIf="albumId">
+<div class="row m-1"*ngIf="albumId"style="height:100%">
   <div class="col-12">
     <div class="row">
       <div class="col-6">
