@@ -41,8 +41,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CompanyComponent } from './company/company.component';
 import { IncomesChartComponent } from './company/incomes-chart/incomes-chart.component';
 import { PaymentsChartComponent } from './company/payments-chart/payments-chart.component';
-import { EventsChartComponent } from './company/events-chart/events-chart.component';
-import { ProjectsChartComponent } from './company/projects-chart/projects-chart.component';
+import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -74,9 +73,7 @@ import { ProjectsChartComponent } from './company/projects-chart/projects-chart.
     CompanyComponent,
     OverviewComponent,
     IncomesChartComponent,
-    PaymentsChartComponent,
-    EventsChartComponent,
-    ProjectsChartComponent
+    PaymentsChartComponent
   ],
   imports: [
     PAGESROUTES,
@@ -85,7 +82,11 @@ import { ProjectsChartComponent } from './company/projects-chart/projects-chart.
     PipesModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    MatDatepickerModule, 
+    MatInputModule,
+    MatNativeDateModule,
+    MatFormFieldModule
   ],
   exports: [],
   bootstrap: [],

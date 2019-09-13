@@ -2,43 +2,63 @@
             <div class="col-12" style="height:20%">
                 <div class="row">
                     <div class="col-6 d-flex justify-content-center">
-                        <div class="form-check">
-                            <div class="d-flex flex-column">
-                                <div>
-                                    <!--
-                                         <mat-form-field>
-                                        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                        <mat-datepicker #picker></mat-datepicker>
-                                    </mat-form-field>
-
-                                    -->
-                                   
-                                    <input #input0 type="text" placeholder=" De dd-mm-yyyy">
+                        <div class="row d-flex justify-content-around">
+                            <div class=" col-6 form-check">
+                                <div class="d-flex flex-column">
+                                    <div>
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker0" placeholder="Elige una fecha">
+                                            <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker0></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <mat-form-field>
+                                            <input matInput [matDatepicker]="picker1" placeholder="Elige una fecha">
+                                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker1></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="col-2 ml-2 d-flex flex-column justify-content-center">
                                 <div>
-                                    <input #input1 type="text" placeholder="A dd-mm-yyyy">
+                                  <button (click)="generateChart()" style="height:25px text-center" class="btn btn-warning">Generar gráfico</button>
                                 </div>
                             </div>
                         </div>
-                        <button (click)="generateChart()" class="btn btn-warning text-center">Generar gráfico</button>
                     </div>
                     <div class="col-6">
                         <div class="row btn btn-group">
-                            <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning">Liquidaciones</button>
-                            <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning">Ingresos</button>
+                            <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning">LIQUIDACIONES</button>
+                            <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning">INGRESOS</button>
                         </div>
-                        <div class="row btn btn-group">
-                            <button (click)="changeSelection('events')" [ngStyle]="{'opacity': buttonsStyle('events')}" class="btn btn-warning">Eventos</button>
-                            <button (click)="changeSelection('projects')" [ngStyle]="{'opacity': buttonsStyle('projects')}" class="btn btn-warning">Proyectos</button>
+                        <div class="row mt-2 d-flex justify-content-center">
+                            <div class="col-12  flex-column d-flex justify-content-center">
+                                <div class="form-check">
+                                    <input (change)="chartByChange()" [(ngModel)]="chartBy" class="form-check-input" type="radio" name="chartBy" id="days"
+                                        value="days">
+                                    <label class="form-check-label" for="days">
+                                        MOSTRAR GRÁFICO POR DÍAS
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input (change)="chartByChange()" [(ngModel)]="chartBy" class="form-check-input" type="radio" name="chartBy" id="weeks"
+                                        value="weeks">
+                                    <label class="form-check-label" for="weeks">
+                                        MOSTRAR GRÁFICO POR SEMANAS
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-12 p-0 m-0"style="height:81%">
-                 <app-projects-chart *ngIf="chartSelected === 'projects'"></app-projects-chart>
+            <div class="col-12 mb-4"style="height:5%">
+                <hr>
+            </div>
+            <div class="col-12 p-0 m-0"style="height:75%">
                 <app-incomes-chart *ngIf="chartSelected === 'incomes'"></app-incomes-chart>
-                <app-events-chart *ngIf="chartSelected === 'events'"></app-events-chart>
                 <app-payments-chart *ngIf="chartSelected === 'payments'"></app-payments-chart>
             </div>
 </div>

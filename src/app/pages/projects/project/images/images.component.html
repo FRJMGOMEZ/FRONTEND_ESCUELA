@@ -1,4 +1,4 @@
-<div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block'>
+<div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block;height:100%'>
     <div class="card m-0 p-0 row d-flex flex-row mt-2" *ngFor="let image of _projectServices.imageFiles" style='height:130px;width:150px'>
         <div class="col-11 p-0 m-0">
             <img class='img-fluid' (click)='showFile(image._id)' style='height: 130px;width:130px' [src]="image | imgPipe">

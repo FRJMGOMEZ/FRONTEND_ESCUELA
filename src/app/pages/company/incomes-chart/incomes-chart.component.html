@@ -1,4 +1,83 @@
-<div class="row d-flex flex-column">
-  <h5 class="text-center">Ingresos</h5>
-  <app-line-chart #chart></app-line-chart>
+<div class="row">
+  <div class="col-8">
+    <div class="row">
+      <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
+        <a (click)="moveLeft()" class="text-right"><i class="fas fa-arrow-left m-4"></i></a>
+        <a (click)="moveLeft('forward')" class="text-right"><i class="fas fa-arrow-right m-4"></i></a>
+      </div>
+      <div class="col-10">
+        <app-line-chart #chart></app-line-chart>
+      </div>
+      <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
+        <a (click)="moveRight('forward')" class="text-left m-4"><i class="fas fa-arrow-right"></i></a>
+        <a (click)="moveRight()" class="text-left m-4"><i class="fas fa-arrow-left"></i></a>
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+        <div class="form-check">
+          <input [(ngModel)]="_incomeServices.incomeType" (change)="companyComponent.generateChart()" class="form-check-input"
+            type="radio" name="exampleRadios" id="exampleRadios1" value='liquidated'>
+          <label class="form-check-label active" for="exampleRadios1">
+            INGRESOS LIQUIDADOS
+          </label>
+        </div>
+        <div class="form-check">
+          <input [(ngModel)]="_incomeServices.incomeType" (change)="companyComponent.generateChart()" class="form-check-input"
+            type="radio" name="exampleRadios" id="exampleRadios2" value="notLiquidated">
+          <label class="form-check-label active" for="exampleRadios2">
+            INGRESOS NO LIQUIDADOS
+          </label>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="col-4">
+      <table *ngIf="_incomeServices.incomeType === 'notLiquidated'" class="table scrollableTable mb-0"
+        style="background: #F5F1E3">
+        <thead class="d-flex justify-content-around">
+          <th style="width:33%">Origen</th>
+          <th style="width:33%">Cantidad liquidada</th>
+          <th style="width:33%">Cantidad por liquidar</th>
+        </thead>
+        <tbody class="mb-0">
+          <tr *ngFor="let income of _incomeServices.incomesNotLiquidated let i = index"
+            class="d-flex justify-content-around" style="width: 100%">
+            <td style="width:33%">{{income.debitor.name}}</td>
+            <td style="width:33%">{{income.liquidatedAmount}}</td>
+            <td style="width:33%">{{income.notLiquidatedAmount}}</td>
+          </tr>
+        </tbody>
+        <hr>
+        <div class="row m-3" style='background:#F5F1E3;'>
+          <div class="col-2"></div>
+          <div class="col-8 d-flex justify-content-around">
+            <button (click)="switch(-5)" *ngIf="_incomeServices.fromINL > 0" class="btn btn-warning">PREV</button>
+            <button (click)="switch(5)" *ngIf="_incomeServices.fromINL + 5 <=  _incomeServices.iNLCount  "
+              class="btn btn-warning">NEXT</button>
+          </div>
+          <div class="col-2"></div>
+        </div>
+      </table>
+      <table *ngIf="_incomeServices.incomeType === 'liquidated'" class='table scrollableTable mb-0' style='background: #F5F1E3'>
+          <thead class='mr-4 d-flex justify-content-around'>
+            <th style="width:50%">Origen</th>
+            <th style="width:50%">Cantidad</th>
+          </thead>
+          <tbody #tbody style='width:100%'>
+            <tr class="d-flex justify-content-around" *ngFor="let income of _incomeServices.incomesLiquidated let i=index">
+              <td style="width:50%">{{income.debitor.name}}</td>
+              <td style="width:50%">{{income.liquidatedAmount}}</td>
+            </tr>
+          </tbody>
+          <hr>
+          <div class="row m-3" style='background:#F5F1E3;'>
+            <div class="col-2"></div>
+            <div class="col-8 d-flex justify-content-around">
+              <button (click)="switch(-5)" *ngIf="_incomeServices.fromIL > 0" class="btn btn-warning">PREV</button>
+              <button (click)="switch(5)" *ngIf="_incomeServices.fromIL + 5 <=  _incomeServices.iLCount  "
+                class="btn btn-warning">NEXT</button>
+            </div>
+            <div class="col-2"></div>
+          </div>
+        </table>
+    </div>
 </div>

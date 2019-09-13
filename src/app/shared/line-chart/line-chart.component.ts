@@ -6,66 +6,23 @@ import { Chart } from 'chart.js';
   templateUrl: './line-chart.component.html',
   styleUrls: ['./line-chart.component.scss'],
 })
-export class LineChartComponent implements  OnInit {
+export class LineChartComponent {
 
   public chart: Chart = null;
 
-  public data:number[];
-  public labels:string[];
+  public data:number[]=[]
+  public labels:string[]=[]
 
-  public chartId:string;
+  public dataLabel:string;
+
+  public chartId:string='initial';
 
   @ViewChild('canvasRef') canvasRef : ElementRef;
 
   constructor( private renderer:Renderer2){}
-
-  ngOnInit(){
-    this.resetChart()
-  }
-
-  resetChart(){
-    this.chart = new Chart('initial',{
-      type: 'line',
-      data: {
-        labels:[],
-        datasets: [
-          {
-            label: 'Data',
-            fill: false,
-            data:[],
-            backgroundColor: '#168ede',
-            borderColor: '#168ede'
-          }
-        ]
-      },
-      options: {
-        tooltips: {
-          enabled: false
-        },
-        legend: {
-          display: true,
-          position: 'bottom',
-          labels: {
-            fontColor: 'white'
-          }
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              fontColor: "blue"
-            }
-          }],
-          xAxes: [{
-            ticks: {
-              fontColor: "red",
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-  }
-  setInfo(labels:string[],data:number[],id:string){
+  
+  setInfo(labels:string[],data:number[],id:string,dataLabel:string){
+    this.dataLabel=dataLabel;
     this.labels=labels;
     this.data = data;
     this.chartId = id;
@@ -79,8 +36,8 @@ export class LineChartComponent implements  OnInit {
       data: {
         labels: this.labels,
         datasets: [
-          {
-            label: 'CARGO',
+          { 
+            label:this.dataLabel,
             fill: false,
             data: this.data,
             backgroundColor: '#168ede',
@@ -89,6 +46,8 @@ export class LineChartComponent implements  OnInit {
         ]
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         tooltips: {
           enabled: false
         },
@@ -114,7 +73,6 @@ export class LineChartComponent implements  OnInit {
         }
       }
     });
-
   }
 
   onResize(){

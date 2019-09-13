@@ -130,7 +130,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   this._paymentServices.inputs = []
   this._paymentServices.from= 0;
   this._paymentServices.count= 0;
-  this._paymentServices.companyPayments= false;
   this._letterServices.letterSelectedId=undefined;
   this._letterServices.users= []
   this._letterServices.letters=[];

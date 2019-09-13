@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="col-12">
-        <table class='table scrollableTable mb-0' style='height:200px;background: #F5F1E3'>
+        <table class='table scrollableTable mb-0' style='height:120px;background: #F5F1E3'>
           <thead class='mr-4 d-flex justify-content-around'>
             <th style="width:20%">Cantidad</th>
             <th style="width:20%">Artista</th>
@@ -75,13 +75,13 @@
             <th style="width:20%">Track</th>
             <th style="width:20%"></th>
           </thead>
-          <tbody #tbody style='height:200px;width:100%'>
+          <tbody #tbody style='height:120px;width:100%'>
             <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
               <td style="width:20%">{{payment.amount}}</td>
               <td style="width:20%">{{payment.artist.indexcard.name}}</td>
               <td style="width:20%">{{payment.date || date}}</td>
               <td style="width:20%">{{payment.track.title}}</td>
-              <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar pago</button></td>
+              <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>
               <td style="width:20%" *ngIf="payment.sent && !payment.sentDate">¡Email enviado!</td>
               <td style="width:20%" *ngIf="payment.sent && payment.sentDate">¡Email enviado el día {{payment.sentDate | date}}!</td>
             </tr>
@@ -100,7 +100,7 @@
       <div class="col-12 m-0 p-0 d-flex justify-content-center">
         <span style="color:red">*Selecciona un modelo de email para enviar a los artistas*</span> 
       </div>
-      <div class="col-12">
+      <div class="col-12 mt-0">
         <div class="row m-3" style="background: #F5F1E3;border:solid black 1px">
           <div class="col-12 " style="background:#ffc107">
             <div class="row">
@@ -137,7 +137,7 @@
            </div>
             <div class="row">
               <div class="col-12 d-flex justify-content-center mb-2">
-                <textarea formControlName='content' class="form-control" name="content"  cols="100" rows="7"></textarea>
+                <textarea formControlName='content' class="form-control" name="content"  cols="100" rows="5"></textarea>
               </div>
             </div>
         </form>
@@ -152,7 +152,7 @@
             </div>
             <p class="text-center mb-0">DATOS</p>
             <div class="row d-flex justify-content-center mb-2">
-              <textarea formControlName='bottom' class="form-control" name="bottom" cols="25" rows="6"></textarea>
+              <textarea formControlName='bottom' class="form-control" name="bottom" cols="25" rows="3"></textarea>
             </div>
             </form>
           </div>

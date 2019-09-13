@@ -31,7 +31,9 @@ export class IncomesService {
   public lastSearchCriteria: string = '';
 
   constructor(private http:HttpClient,
-              private _userServices:UserServices) { }
+              private _userServices:UserServices) {
+                console.log('instanced');
+               }
 
   postIncome(income:Income,debitor?:Debitor){
     let url = `${URL_SERVICES}income`;
@@ -95,11 +97,13 @@ export class IncomesService {
          this.fromINL = 0;
        }
      }
+
     this.lastSearchCriteria = this.searchCriteria; 
     this.searchMode=true;
     let from =this.fromINL ? this.incomeType === 'notLiquidated' : this.fromIL;
-    let url = `${URL_SERVICES}searchIncomes/${this.inputs}?from=${from}&limit=5`;
+    let url = `${URL_SERVICES}searchIncomes/${this.inputs}/${this.incomeType}?from=${from}&limit=5`;
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+      console.log(res.incomes);
       if(this.incomeType === 'liquidated'){
         this.iLCount=res.count;
         this.incomesLiquidated = res.incomes;
@@ -107,8 +111,15 @@ export class IncomesService {
         this.incomesNotLiquidated = res.incomes;
         this.iNLCount= res.count;
       }
-      this.inputs = [];
     }))
+  }
+
+  getIncomesData(){
+    let url = `${URL_SERVICES}getIncomesData/${this.inputs}/${this.incomeType}`;
+    return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      return res.data
+    }))
+
   }
   
 }

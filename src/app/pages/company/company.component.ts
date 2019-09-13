@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef,EventEmitter, Output } from '@angular/core';
 import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../providers/incomes.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-company',
@@ -10,16 +11,15 @@ import { IncomesService } from '../../providers/incomes.service';
 })
 export class CompanyComponent implements OnInit, OnDestroy {
 
-  @Input()picker:any
-
   public filterPipe = new DaysOfWeekPipe();
 
-  public chartBy: string = "days";
+  public chartBy: string = 'days';
 
   public chartSelected: string = 'payments';
 
-  @ViewChild("input0") input0: ElementRef;
-  @ViewChild("input1") input1: ElementRef;
+
+  @ViewChild("picker0") picker0: ElementRef;
+  @ViewChild("picker1") picker1: ElementRef;
 
   public notification = new EventEmitter<string>();
 
@@ -29,64 +29,102 @@ export class CompanyComponent implements OnInit, OnDestroy {
               public _incomeServices:IncomesService) { }
 
   async ngOnInit() {
-    this._paymentServices.companyPayments = true;
+    this._paymentServices.state = 'CARGO';
   }
 
   changeSelection(type:string){
-    this.chartSelected=type;
+    this.chartSelected = undefined;
+    timer(300).subscribe(()=>{
+      this.chartSelected = type;
+    })
+  }
+
+  chartByChange(){
+    this.generateChart();
   }
 
   async generateChart(selection?: string) {
     if(selection){this.chartSelected=selection};
     this.labels = [];
-    if (!this.input0.nativeElement.value && !this.input1.nativeElement.value) {
-      let date1 = await this.filterPipe.transform(new Date());
-      date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
-      this._paymentServices.inputs[0] = await date1.getTime();
-      this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 7);
-    } else {
-      await this.setDates();
-    }
-    this.checkNumberOfDays().then(async (labelsNumber: number) => {
-       await this.setLabels(labelsNumber);
-       this.notification.emit(this.chartSelected);
+    timer().subscribe(async()=>{
+      await this.checkDates();
+      this.checkNumberOfDays().then(async (labelsNumber: number) => {
+        await this.setLabels(labelsNumber);
+        console.log('emit');
+        this.notification.emit(this.chartSelected);
+      })
     })
   }
 
+  async checkDates(){
+    if (!this.picker1['_selected'] && !this.picker0['_selected']) {
+      let date1 = await this.filterPipe.transform(new Date());
+      date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
+      switch(this.chartSelected){
+        case 'payments':
+          this._paymentServices.inputs[0] = await date1.getTime();
+          this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 7);
+          this.picker0['_selected'] = await new Date(date1);
+          this.picker1['_selected'] = await new Date(this._paymentServices.inputs[0] + (86400000 * 7));
+          break;
+       case 'incomes':
+          this._incomeServices.inputs[0] = await date1.getTime();
+          this._incomeServices.inputs[1] = await this._incomeServices.inputs[0] + (86400000 * 7);
+          this.picker0['_selected'] = await new Date(date1);
+          this.picker1['_selected'] = await new Date(this._incomeServices.inputs[0] + (86400000 * 7));
+          break;
+      }
+      return
+    } else {
+      await this.setDates();
+      return
+    }
+  }
+
   async setDates() {
-    let values = this.input0.nativeElement.value.split('/');
-    await values.forEach((value, index) => {
-      values[index] = Number(value);
-    });
-    let values2 = this.input1.nativeElement.value.split('/');
-    await values2.forEach((value, index) => {
-      values2[index] = Number(value);
-    })
     if(this.chartSelected === 'incomes'){
-     
+      this._incomeServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
+      this._incomeServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
+      return
     }else if(this.chartSelected === 'payments'){
-      this._incomeServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime();
-      this._incomeServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime();
+      this._paymentServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
+      this._paymentServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
+      return
     }
   }
 
   checkNumberOfDays() {
     return new Promise((resolve, reject) => {
-      if ((this._paymentServices.inputs[1] - this._paymentServices.inputs[0]) / 86400000 > 14) {
-        this.chartBy = 'weeks';
-        let numbersOfWeeks = Math.ceil((this._paymentServices.inputs[1] - this._paymentServices.inputs[0]) / (86400000 * 7));
-        resolve(numbersOfWeeks);
-      } else {
-        this.chartBy = 'days';
-        let numberOfDays = Math.ceil((this._paymentServices.inputs[1] - this._paymentServices.inputs[0]) / 86400000);
-        resolve(numberOfDays);
+      switch(this.chartSelected){
+        case 'payments':
+          if (this.chartBy === 'weeks') {
+            let numbersOfWeeks = Math.ceil((this._paymentServices.inputs[1] - this._paymentServices.inputs[0]) / (86400000 * 7));
+            resolve(numbersOfWeeks);
+          } else {
+            let numberOfDays = Math.ceil((this._paymentServices.inputs[1] - this._paymentServices.inputs[0]) / 86400000);
+            resolve(numberOfDays);
+          }
+        break;
+        case 'incomes':
+          if (this.chartBy === 'weeks') {
+            let numbersOfWeeks = Math.ceil((this._incomeServices.inputs[1] - this._incomeServices.inputs[0]) / (86400000 * 7));
+            resolve(numbersOfWeeks);
+          } else {
+            let numberOfDays = Math.ceil((this._incomeServices.inputs[1] - this._incomeServices.inputs[0]) / 86400000);
+            resolve(numberOfDays);
+          }
       }
     })
   }
 
   setLabels(labelsNumber: number) {
     return new Promise((resolve, reject) => {
-      this.labels.push(new Date(this._paymentServices.inputs[0]))
+      if(this.chartSelected === 'payments'){
+        this.labels.push(new Date(this._paymentServices.inputs[0]))
+      }else if (this.chartSelected === 'incomes'){
+        this.labels.push(new Date(this._incomeServices.inputs[0]))
+      }
+
       if (this.chartBy === 'days') {
         for (let i = 1; i <= labelsNumber; i++) {
           this.labels.push(new Date(this.labels[i - 1].getTime() + 86400000));
@@ -110,19 +148,12 @@ export class CompanyComponent implements OnInit, OnDestroy {
       if (this.chartSelected != 'incomes') {
         return '0.5'
       }
-    } else if (type === 'projects') {
-      if (this.chartSelected != 'projects') {
-        return '0.5'
-      }
-    }else if (type === 'events'){
-      if(this.chartSelected != 'events'){
-        return '0.5'
-      }
-    }
+    } 
   }
+  
 
   ngOnDestroy() {
+    this._incomeServices.inputs=[];
     this._paymentServices.inputs = [];
-    this._paymentServices.companyPayments = false;
   }
 }

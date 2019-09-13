@@ -4,7 +4,6 @@ import { map, catchError } from 'rxjs/operators';
 import { URL_SERVICES } from '../config/config';
 import { Project, ProjectOrder } from '../models/project.model';
 import { UserServices } from './user.service';
-import { Subject } from 'rxjs';
 import { User, UserOrder} from '../models/user.model';
 import { Task, TaskOrder} from '../models/task.model';
 import { Socket } from "ngx-socket-io";
@@ -37,12 +36,6 @@ export class ProjectServices {
   public textFiles: any[] = [];
   public imageFiles: any[] = [];
 
-  projectsSource = new Subject<ProjectOrder>();
-  projects$ = this.projectsSource.asObservable()
-
-  taskSource = new Subject<TaskOrder>();
-  tasks$ = this.taskSource.asObservable();
-
   constructor(private http:HttpClient,
               private _userServices: UserServices,
               private socket:Socket,
@@ -60,8 +53,6 @@ export class ProjectServices {
         this.projects = res.projects
     }))
   }
-
-  
 
   emitProject(projectOrder: ProjectOrder) {
     this.socket.emit('project', projectOrder)

@@ -3,6 +3,7 @@ import { PaymentsService } from 'src/app/providers/payments.service';
 import { Payment } from 'src/app/models/payment.model';
 import { CompanyComponent } from '../company.component';
 import { LineChartComponent } from '../../../shared/line-chart/line-chart.component';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'app-payments-chart',
@@ -15,60 +16,117 @@ export class PaymentsChartComponent implements OnInit {
 
   public data: number[] = [];
 
+  public companySubscription : Subscription;
+
   @ViewChild('chart') chart: LineChartComponent;
 
   constructor(public _paymentServices: PaymentsService,
-    public companyComponent: CompanyComponent) { }
+              public companyComponent: CompanyComponent) { }
 
   async ngOnInit() {
+    this._paymentServices.state='CARGO';
     this.companyComponent.generateChart();
-    this.companyComponent.notification.subscribe((selection: string) => {
+    this.companySubscription=this.companyComponent.notification.subscribe((selection:string) => {
       if(selection === 'payments'){
-        this.setPaymentsData();
-        this.chart.setStyle('1');
+        timer().subscribe(() => {
+          this.setPaymentsData();
+        })
       }
     })
   }
 
-  async setPaymentsData() {
-    this._paymentServices.searchPayments().subscribe(async () => {
-      await this.companyComponent.labels.forEach((label: Date, index: number) => {
-        this.data[index] = 0;
-      })
-      await this.companyComponent.labels.forEach((label: Date, index: number) => {
-        this._paymentServices.payments.forEach((payment: Payment) => {
-          if (new Date(payment.date).getTime() >= label.getTime() && new Date(payment.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
-            this.data[index] += payment.amount;
-          }
+ async setPaymentsData() {
+        this._paymentServices.searchPayments().subscribe()
+        await this.companyComponent.labels.forEach((label: Date, index: number) => {
+          this.data[index] = 0;
         })
-      })
-      await this.companyComponent.labels.forEach((date: Date, index: number) => {
-        this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-      })
-      this.chart.setInfo(this.labels, this.data,'payments');
+        this._paymentServices.getPaymentsData().subscribe(async(payments)=>{
+          await this.companyComponent.labels.forEach((label: Date, index: number) => {
+            payments.forEach((payment: Payment) => {
+              if (new Date(payment.date).getTime() >= label.getTime() && new Date(payment.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
+                this.data[index] += payment.amount;
+              }
+            })
+          })
+          this.labels = await[];
+          await this.companyComponent.labels.forEach((date: Date, index: number) => {
+            this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+          })
+          let dataLabel = await this.dataLabel();
+          this.chart.setInfo(this.labels, this.data, 'payments', dataLabel);
+        })
+  }
+
+  dataLabel(){
+    return new Promise<string>((resolve,reject)=>{
+      if (this._paymentServices.state === 'CARGO'){
+        resolve('CARGO')
+      }else{
+        resolve('ARTISTAS')
+      }
     })
   }
 
- async setDates(plus:number,less:number){
-    let values = this.companyComponent.input0.nativeElement.value.split('/');
-    await values.forEach((value, index) => {
-      values[index] = Number(value);
-    });
-    let values2 = this.companyComponent.input1.nativeElement.value.split('/');
-    await values2.forEach((value, index) => {
-      values2[index] = Number(value);
-    })
-    if(this.companyComponent.chartBy === 'days'){
-      this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime() + 86400000;
-      this._paymentServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime() + 86400000;
-    }else{
-      this._paymentServices.inputs[0] = await new Date(values[2], values[1] - 1, values[0]).getTime() + 604800000;
-      this._paymentServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime() + 604800000;
+  moveRight(direction: string){
+    if (this.companyComponent.chartBy === 'weeks') {
+      if (direction === 'forward') {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] + 604800000);
+        this.companyComponent.generateChart();
+      } else {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] );
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] - 604800000);
+        this.companyComponent.generateChart();
+      }
+    } else {
+      if (direction === 'forward') {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] + 86400000);
+        this.companyComponent.generateChart();
+      } else {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] );
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] - 86400000);
+        this.companyComponent.generateChart();
+      }
     }
+  }
+
+  moveLeft(direction: string) {
+    if (this.companyComponent.chartBy === 'weeks') {
+      if (direction === 'forward') {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] + 604800000);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1]);
+        this.companyComponent.generateChart();
+      } else {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] - 604800000);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] );
+        this.companyComponent.generateChart();
+      }
+    } else {
+      if (direction === 'forward') {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] + 86400000);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] );
+        this.companyComponent.generateChart();
+      } else {
+        this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] - 86400000);
+        this.companyComponent.picker1['_selected'] = new Date(this._paymentServices.inputs[1] );
+        this.companyComponent.generateChart();
+      }
+    }
+  }
+
+  switchPage(amount: number) {
+    this._paymentServices.from += amount;
+    this._paymentServices.searchPayments().subscribe(); 
   }
 
   ngOnDestroy() {
     this._paymentServices.payments = [];
+    this.companySubscription.unsubscribe();
+    this._paymentServices.payments = [];
+    this._paymentServices.from = 0;
+    this._paymentServices.count = 0;
+    this._paymentServices.state = 'all';
   }
 
 }
