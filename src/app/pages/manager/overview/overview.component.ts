@@ -63,12 +63,10 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.album) {
           if (this._managerServices.album._id != albumId) {
            await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-             this.collapseAcordions('album');
            })
           }
         } else {
          await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-           this.collapseAcordions('album');
          })
         }
       }
@@ -77,12 +75,10 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.track) {
           if (this._managerServices.track._id != trackId) {
            await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-             this.collapseAcordions('track');
            })
           }
         } else {
           await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-            this.collapseAcordions('track');
           })
         }
       }
@@ -90,28 +86,16 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       if (artistId != '#') {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
-            await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-              timer(500).subscribe(()=>{
-                this.collapseAcordions('artist');
-              })
-            })
+            await this._managerServices.getItemById(artistId, 'artist').subscribe()
           }
         } else {
-         await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-           console.log(this._managerServices.artist);
-           timer(500).subscribe(()=>{
-             this.collapseAcordions('artist');
-           })
-         })
+         await this._managerServices.getItemById(artistId, 'artist').subscribe()
         }
       }
-      if(item === 'artists'){
-        timer(1000).subscribe(()=>{
-          this.columnsSize();
-        })
-      }else{
-        this.columnsSize();
-      }
+  
+      timer(1000).subscribe(()=>{
+        this.columnsSize()
+      })
     })
 
     this._albumsModalController.notification.subscribe((id) => {
@@ -142,6 +126,9 @@ export class OverviewComponent implements OnInit,AfterViewInit {
 
   async idNavigation(id?: string, collection?: string) {
     await this._managerServices.idNavigation(id, collection);
+    timer(500).subscribe(()=>{
+      this.collapseAcordions(collection);
+    })
   }
 
   columnsSize() {
