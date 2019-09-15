@@ -2,24 +2,22 @@
         <table class='table scrollableTable'>
             <thead>
                 <th>Nombre</th>
+                <th></th>
             </thead>
             <tbody>
                 <tr *ngFor="let artist of _managerServices.artists let i=index">
                     <td> <a style="color:blue" routerLinkActive="router-link-active"
                             (click)="overviewComponent.idNavigation(artist._id,'artist')">{{artist.indexcard['name']}}</a> </td>
+                            <td></td>
                 </tr>
             </tbody>
         </table>
-       <!--
-           <div class='d-flex justify-content-around m-2'>
+       <div class='d-flex justify-content-around m-2'>
             <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) '
                 class='btn btn-secondary '>Previous</button>
             <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) '
                 class='btn btn-secondary '>Following</button>
-        </div>
-    
-
-       --> 
+        </div> 
 </div>
 <div class="row m-1" *ngIf="artistId" style="height:100%">
   <div class="col-12 d-flex justify-content-between">

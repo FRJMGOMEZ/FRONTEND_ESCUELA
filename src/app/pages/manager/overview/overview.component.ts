@@ -60,30 +60,30 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       if (albumId != '#') {
         if (this._managerServices.album) {
           if (this._managerServices.album._id != albumId) {
-            this._managerServices.getItemById(albumId, 'album').subscribe()
+           await this._managerServices.getItemById(albumId, 'album').subscribe()
           }
         } else {
-          this._managerServices.getItemById(albumId, 'album').subscribe()
+         await this._managerServices.getItemById(albumId, 'album').subscribe()
         }
       }
 
       if (trackId != '#') {
         if (this._managerServices.track) {
           if (this._managerServices.track._id != trackId) {
-            this._managerServices.getItemById(trackId, 'track').subscribe()
+           await this._managerServices.getItemById(trackId, 'track').subscribe()
           }
         } else {
-          this._managerServices.getItemById(trackId, 'track').subscribe()
+          await this._managerServices.getItemById(trackId, 'track').subscribe()
         }
       }
 
       if (artistId != '#') {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
-            this._managerServices.getItemById(artistId, 'artist').subscribe()
+            await this._managerServices.getItemById(artistId, 'artist').subscribe()
           }
         } else {
-          this._managerServices.getItemById(artistId, 'artist').subscribe()
+         await this._managerServices.getItemById(artistId, 'artist').subscribe()
         }
       }
     })
