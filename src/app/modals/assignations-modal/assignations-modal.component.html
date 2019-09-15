@@ -1,5 +1,5 @@
 <div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
-  <div class="modal" style='display: block' tabindex="-1" role="dialog">
+  <div *ngIf="assignations.length > 0" class="modal" style='display: block' tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -9,7 +9,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class='row' *ngIf="assignations.length > 0" >
+          <div class='row'  >
               <table class='table scrollableTable'>
               <thead>
             <th>Track</th>
@@ -27,23 +27,22 @@
     </div>   
   </div>
 </div>
-</div>
-<div class='backgroundBlack animated fadeIn' [ngClass]="_modalController.hidden">
-  <div class="modal" style='display: block' tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-center">Asignaciones {{_managerServices.artist.indexcard['name']}}</h5>
-          <button (click)="hideModal()" type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row" *ngIf="assignations.length === 0">
-            <p>No hay asignaciones por el momento</p>
-          </div>
+<div *ngIf="assignations.length === 0" class="modal" style='display: block' tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center">Asignaciones {{_managerServices.artist.indexcard['name']}}</h5>
+        <button (click)="hideModal()" type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row" >
+          <p>No hay asignaciones por el momento</p>
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+
