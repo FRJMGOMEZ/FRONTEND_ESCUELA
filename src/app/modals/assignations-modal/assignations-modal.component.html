@@ -9,7 +9,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class='row' >
+          <div class='row' *ngIf="assignations.length > 0" >
               <table class='table scrollableTable'>
               <thead>
             <th>Track</th>
@@ -23,11 +23,11 @@
              </tbody>
               </table>
         </div>
+        <div class="row" *ngIf="assignations.length === 0">
+          <p>{{_managerServices.artist.indexcard['name']}} no tiene asignaciones por el momento</p>
+        </div>
       </div>
-    </div>
-    <div class="modal-content" *ngIf="assignations.length === 0">
-      <p>{{_managerServices.artist.indexcard['name']}} no tiene asignaciones por el momento</p>
-    </div>
+    </div>   
   </div>
 </div>
 </div>
