@@ -28,7 +28,7 @@ export class OverviewComponent implements OnInit,AfterViewInit {
 
   ngOnInit() {
 
-    this._ar.params.subscribe((params) => {
+    this._ar.params.subscribe(async(params) => {
 
       let input = params['input']
       if (input === '#') {
@@ -46,10 +46,10 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       this._managerServices.from = from;
 
       if (input) {
-        this._managerServices.searchItems(input, item, from).subscribe()
+        await this._managerServices.searchItems(input, item, from).subscribe()
       } else {
         if (item) {
-          this._managerServices.getItems(from).subscribe()
+          await this._managerServices.getItems(from).subscribe()
         }
       }
 
