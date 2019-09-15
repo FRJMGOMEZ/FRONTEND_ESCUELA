@@ -61,30 +61,42 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       if (albumId != '#') {
         if (this._managerServices.album) {
           if (this._managerServices.album._id != albumId) {
-           await this._managerServices.getItemById(albumId, 'album').subscribe()
+           await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
+             this.collapseAcordions('album')
+           })
           }
         } else {
-         await this._managerServices.getItemById(albumId, 'album').subscribe()
+         await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
+           this.collapseAcordions('album')
+         })
         }
       }
 
       if (trackId != '#') {
         if (this._managerServices.track) {
           if (this._managerServices.track._id != trackId) {
-           await this._managerServices.getItemById(trackId, 'track').subscribe()
+           await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
+             this.collapseAcordions('track')
+           })
           }
         } else {
-          await this._managerServices.getItemById(trackId, 'track').subscribe()
+          await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
+            this.collapseAcordions('track')
+          })
         }
       }
 
       if (artistId != '#') {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
-            await this._managerServices.getItemById(artistId, 'artist').subscribe()
+            await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
+              this.collapseAcordions('artist')
+            })
           }
         } else {
-         await this._managerServices.getItemById(artistId, 'artist').subscribe()
+         await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
+           this.collapseAcordions('artist')
+         })
         }
       }
     })
@@ -117,10 +129,7 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   async idNavigation(id?: string, collection?: string) {
-    await this._managerServices.idNavigation(id, collection)
-    setTimeout(() => {
-      this.collapseAcordions(collection)
-    },500)
+    await this._managerServices.idNavigation(id, collection);
   }
 
   columnsSize() {

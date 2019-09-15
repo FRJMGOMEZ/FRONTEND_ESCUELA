@@ -34,6 +34,8 @@ export class ManagerService {
 
   dataStored:boolean=false
 
+
+
   constructor(public _userServices:UserServices,
              private http:HttpClient,
              private _errorHandler:ErrorHandlerService,
@@ -103,14 +105,7 @@ export class ManagerService {
     let from = this.from;
     let input = this.input || '#';
     let url = `/overview/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}`;
-
-    return new Promise((resolve,reject)=>{
-      this._router.navigate([url]).then(()=>{
-        setTimeout(()=>{
-          resolve()
-        },150)
-      })
-    })
+      this._router.navigate([url])
   }
 
   getItems(from: number = 0, limit: number = 6,item?:string){
