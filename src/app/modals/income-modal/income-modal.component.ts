@@ -22,7 +22,6 @@ export class IncomeModalComponent implements OnInit {
 
   ngOnInit() {
     this._modalService.notification.subscribe(()=>{ 
-      console.log("incomes modal running")
       if(this._modalService.id){
         let income = this._incomeServices.incomesLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0]
          || this._incomeServices.incomesNotLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0] 
@@ -38,18 +37,18 @@ export class IncomeModalComponent implements OnInit {
   }
 
   postIncome(){
-    if(!this.debitor._id || !this.income.notLiquidatedAmount ){
+    if(!this.income.notLiquidatedAmount ){
       Swal.fire({
         text:'Por favor completa los dos campos requeridos de cantidad y de origen del ingreso',
         showCloseButton:true,        
       })
     }else{
       let debitor;
-      if(this.debitor._id){
-         debitor = this._incomeServices.debitors.filter((eachDebitor)=>{return eachDebitor._id === this.debitor._id})[0];
-      }else{
+      if (this.debitor._id) {
+        debitor = this._incomeServices.debitors.filter((eachDebitor) => { return eachDebitor._id === this.debitor._id })[0];
+      } else {
         debitor = this.debitor;
-      }
+      }     
       this._incomeServices.postIncome(this.income,debitor).subscribe(()=>{
         this.hideModal()
       })
