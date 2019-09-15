@@ -91,12 +91,17 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
             await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-              this.collapseAcordions('artist');
+              timer(500).subscribe(()=>{
+                this.collapseAcordions('artist');
+              })
             })
           }
         } else {
          await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-           this.collapseAcordions('artist');
+           console.log(this._managerServices.artist);
+           timer(500).subscribe(()=>{
+             this.collapseAcordions('artist');
+           })
          })
         }
       }
@@ -140,7 +145,7 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   columnsSize() {
-    console.log(this.searchGetColumn.nativeElement);
+    console.log(this.searchGetColumn,this.navigateColumn);
       if (this.searchGetColumn && !this.navigateColumn) {
         this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
       } else if (this.navigateColumn && !this.searchGetColumn) {
