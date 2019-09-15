@@ -37,6 +37,14 @@ export class LetterService {
        if(this.letters.length > 0){
          this.letterSelectedId = this.letters[this.letters.length - 1]._id;
          this.selectLetter();
+       }else{
+         this.form = new FormGroup({
+           name: new FormControl('', Validators.required),
+           user: new FormControl('', [Validators.required, Validators.email]),
+           content: new FormControl('', Validators.required),
+           bottom: new FormControl('', Validators.required)
+         })
+         this.setNewLetter();
        }
     }))
   }            
