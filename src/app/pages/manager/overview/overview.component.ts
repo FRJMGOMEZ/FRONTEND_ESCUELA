@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef,ViewChild, Renderer2} from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
@@ -10,7 +10,7 @@ import { DemoService } from '../../../providers/demo.service';
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit,AfterViewInit {
 
   @ViewChild('searchGetColumn') searchGetColumn: ElementRef
   @ViewChild('navigateColumn') navigateColumn: ElementRef
@@ -27,8 +27,6 @@ export class OverviewComponent implements OnInit {
     public _demoServices:DemoService) { }
 
   ngOnInit() {
-
-    this._demoServices.managerOverviewPopup();
 
     this._ar.params.subscribe((params) => {
 
@@ -106,6 +104,10 @@ export class OverviewComponent implements OnInit {
         }
       }
     })
+  }
+
+  ngAfterViewInit(){
+    this._demoServices.managerOverviewPopup();
   }
 
   ngAfterViewChecked(): void {

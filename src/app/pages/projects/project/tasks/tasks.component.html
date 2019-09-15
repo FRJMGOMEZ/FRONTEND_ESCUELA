@@ -1,90 +1,101 @@
 <div class="row d-flex justify-content-center" style='background: #F5F1E3;height:100%'>
-    <div class='col-12 d-flex justify-content-center m-1'>
-        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
-            <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
-        </div>
-    </div>
-    <br>
-    <div class='col-12 d-flex justify-content-around mb-1'>
-        <h5 *ngIf="_projectServices.groupTasks.length>0">Tareas del grupo de trabajo</h5>
-        <div class="row justify-content-center">
-            <input #input type="text">
-            <div class='btn-group'>
-                <button (click)='_projectServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
-                <button (click)='_projectServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
+    <div class="col-12">
+        <div class="row d-flex flex-column justify-content-start">
+            <div class='col-12 d-flex justify-content-center'>
+                <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                    <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
+                </div>
             </div>
+            <br>
+            <div class='col-12 d-flex justify-content-around'>
+                <h5 *ngIf="_projectServices.groupTasks.length>0">Tareas del grupo de trabajo</h5>
+                <div class="row justify-content-center">
+                    <input #input type="text">
+                    <div class='btn-group'>
+                        <button (click)='_projectServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar
+                            por usuario</button>
+                        <button (click)='_projectServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="_projectServices.groupTasks.length>0">
+                <table class='table scrollableTable'>
+                    <thead class="d-flex justify-content-around">
+                        <th style="height:14%">Descripción</th>
+                        <th style="height:14%">Asignado por:</th>
+                        <th style="height:14%">Asignado a:</th>
+                        <th style="height:14%">Fecha de creación:</th>
+                        <th style="height:14%">Fecha límite:</th>
+                        <th style="height:14%">¿OK?</th>
+                        <th style="height:14%"></th>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-around" [ngStyle]="{'background-color': checkTime(task.dateLimit)}"
+                            *ngFor="let task of _projectServices.groupTasks">
+                            <td style="max-width:'100%';word-break: break-all;height:14%">{{task.description}}</td>
+                            <td style="height:14%">{{task.assignedBy.name}}</td>
+                            <td style="height:14%">{{task.user.name}}</td>
+                            <td style="height:14%">{{task.date | date}}</td>
+                            <td style="height:14%">{{task.dateLimit | date}}</td>
+                            <td style="height:14%">
+                                <button [ngStyle]="{'background-color': taskColor(task)}">
+                                    <i *ngIf="task.ok" class="fas fa-check-double"></i>
+                                    <i *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                                    <i *ngIf="!task.checked" class="far fa-clock"></i>
+                                </button>
+                            </td>
+                            <td style="height:14%"><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)"
+                                    class="far fa-trash-alt" (click)='deleteTask(task._id)'></i>
+                                <i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-edit"
+                                    (click)='putTask(task._id)'></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class='col-12 d-flex justify-content-around'>
+                <h5 *ngIf="_projectServices.myTasks.length>0">Mis tareas</h5>
+            </div>
+            <div class="col-12" *ngIf="_projectServices.myTasks.length>0">
+                <table class='table scrollableTable'>
+                    <thead class="d-flex justify-content-around">
+                        <th style="width:14%">Descripción</th>
+                        <th style="width:14%">Asignado por:</th>
+                        <th style="width:14%">Asignado a:</th>
+                        <th style="width:14%">Fecha de creación:</th>
+                        <th style="width:14%">Fecha límite:</th>
+                        <th style="width:14%">¿OK?</th>
+                        <th style="width:14%"></th>
+                    </thead>
+                    <tbody>
+                        <tr class="d-flex justify-content-around" [ngStyle]="{'background-color': checkTime(task.dateLimit)}"
+                            *ngFor="let task of _projectServices.myTasks">
+                            <td style="max-width:'100%';word-break: break-all;height: 14%">{{task.description}}</td>
+                            <td style="width:14%">{{task.assignedBy.name}}</td>
+                            <td style="width:14%">{{task.user.name}}</td>
+                            <td style="width:14%">{{task.date | date}}</td>
+                            <td style="width:14%">{{task.dateLimit | date}}</td>
+                            <td style="width:14%">
+                                <button [ngStyle]="{'background-color': taskColor(task)}">
+                                    <i (click)='taskDone(task._id)' *ngIf="task.ok" class="fas fa-check-double"></i>
+                                    <i (click)='taskDone(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
+                                    <i *ngIf="!task.checked" class="far fa-clock"></i>
+                                </button>
+                            </td>
+                            <td style="width:14%"><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)"
+                                    (click)='putTask(task._id)' class="far fa-edit"></i><i
+                                    *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)"
+                                    (click)='deleteTask(task._id)' class="far fa-trash-alt"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+            </div>
+            <div *ngIf="_projectServices.myTasks.length === 0 && _projectServices.groupTasks.length === 0">
+                <h5>No hay tareas asignadas</h5>
+            </div>
+
         </div>
     </div>
-    <div class='scrollable' *ngIf="_projectServices.groupTasks.length>0" style='height:50%'>
-        <table class='table'>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Asignado por:</th>
-                    <th>Asignado a:</th>
-                    <th>Fecha de creación:</th>
-                    <th>Fecha límite:</th>
-                    <th>¿OK?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr [ngStyle]="{'background-color': checkTime(task.dateLimit)}" *ngFor="let task of _projectServices.groupTasks">
-                    <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
-                    <td>{{task.assignedBy.name}}</td>
-                    <td>{{task.user.name}}</td>
-                    <td>{{task.date | date}}</td>
-                    <td>{{task.dateLimit | date}}</td>
-                    <td>
-                        <button [ngStyle]="{'background-color': taskColor(task)}">
-                            <i *ngIf="task.ok" class="fas fa-check-double"></i>
-                            <i  *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
-                            <i *ngIf="!task.checked" class="far fa-clock"></i>
-                        </button>
-                    </td>
-                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-trash-alt" (click)='deleteTask(task._id)'></i></td>
-                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-edit" (click)='putTask(task._id)'></i></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <h5 *ngIf="_projectServices.myTasks.length>0">Mis tareas</h5>
-    <div class='scrollable' *ngIf="_projectServices.myTasks.length>0" style='height:50%'>
-        <table class='table'>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Asignado por:</th>
-                    <th>Asignado a:</th>
-                    <th>Fecha de creación:</th>
-                    <th>Fecha límite:</th>
-                    <th>¿OK?</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr [ngStyle]="{'background-color': checkTime(task.dateLimit)}" *ngFor="let task of _projectServices.myTasks">
-                    <td style="max-width:'30px';word-break: break-all">{{task.description}}</td>
-                    <td>{{task.assignedBy.name}}</td>
-                    <td>{{task.user.name}}</td>
-                    <td>{{task.date | date}}</td>
-                    <td>{{task.dateLimit | date}}</td>
-                    <td>
-                        <button [ngStyle]="{'background-color': taskColor(task)}">
-                            <i  (click)='taskDone(task._id)' *ngIf="task.ok" class="fas fa-check-double"></i>
-                            <i (click)='taskDone(task._id)' *ngIf="!task.ok && task.checked" class="fas fa-check"></i>
-                            <i  *ngIf="!task.checked" class="far fa-clock"></i>
-                        </button>
-                    </td>
-                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='deleteTask(task._id)' class="far fa-trash-alt"></i></td>
-                    <td><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='putTask(task._id)' class="far fa-edit"></i></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-
-    </div>
-
-    <div *ngIf="_projectServices.myTasks.length === 0 && _projectServices.groupTasks.length === 0">
-        <h5>No hay tareas asignadas</h5>
-    </div>
+   
 </div>
