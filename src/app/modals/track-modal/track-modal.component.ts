@@ -22,7 +22,7 @@ export class TrackModalComponent implements OnInit {
              public _managerServices:ManagerService) { }
 
   ngOnInit() {
-    this._modalController.notification.subscribe(()=>{
+    this._modalController.notification.subscribe(async()=>{
 
       if(this._modalController.id){
 
@@ -32,7 +32,7 @@ export class TrackModalComponent implements OnInit {
             track = this._managerServices.track;
           }else{
             let tracks = [];
-            this._managerServices.album.tracks.forEach((track: Track) => {
+            await this._managerServices.album.tracks.forEach((track: Track) => {
               tracks.push(track)
             })
             track = tracks.filter((track: Track) => {
