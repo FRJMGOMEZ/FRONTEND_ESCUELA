@@ -62,12 +62,12 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.album) {
           if (this._managerServices.album._id != albumId) {
            await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-             this.collapseAcordions('album')
+             this.collapseAcordions('album');
            })
           }
         } else {
          await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-           this.collapseAcordions('album')
+           this.collapseAcordions('album');
          })
         }
       }
@@ -76,12 +76,12 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.track) {
           if (this._managerServices.track._id != trackId) {
            await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-             this.collapseAcordions('track')
+             this.collapseAcordions('track');
            })
           }
         } else {
           await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-            this.collapseAcordions('track')
+            this.collapseAcordions('track');
           })
         }
       }
@@ -90,15 +90,18 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
             await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-              this.collapseAcordions('artist')
+              this.collapseAcordions('artist');
             })
           }
         } else {
          await this._managerServices.getItemById(artistId, 'artist').subscribe(()=>{
-           this.collapseAcordions('artist')
+           this.collapseAcordions('artist');
          })
         }
       }
+      timer(300).subscribe(()=>{
+        this.columnsSize();
+      })
     })
 
     this._albumsModalController.notification.subscribe((id) => {
@@ -124,7 +127,7 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   ngAfterViewChecked(): void {
-    this.columnsSize()
+    //this.columnsSize()
   }
 
   async idNavigation(id?: string, collection?: string) {
@@ -132,7 +135,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   columnsSize() {
-    timer(500).subscribe(()=>{
       if (this.searchGetColumn && !this.navigateColumn) {
         this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
       } else if (this.navigateColumn && !this.searchGetColumn) {
@@ -145,7 +147,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
           this.renderer.addClass(this.navigateColumn.nativeElement, 'col-9')
         }
       }
-    })
   }
   
   placeHolderContent() {
@@ -163,7 +164,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   collapseAcordions(type: string) {
-    timer(500).subscribe(()=>{
       switch (type) {
         case 'artist':
           this.renderer.addClass(this.artistCollapseControl.nativeElement, 'show')
@@ -181,7 +181,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
           if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
           break;
       }
-    })
   }
 
   postAlbum() {
