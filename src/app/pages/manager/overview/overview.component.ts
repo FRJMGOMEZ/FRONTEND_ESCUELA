@@ -4,6 +4,7 @@ import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
 import { IndexcardModalController } from '../../../modals/index-card-modal/indexcardModalController';
 import { DemoService } from '../../../providers/demo.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-overview',
@@ -152,23 +153,25 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   collapseAcordions(type: string) {
-    switch (type) {
-      case 'artist':
-        this.renderer.addClass(this.artistCollapseControl.nativeElement, 'show')
-        if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
-        if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
-        break;
-      case 'album':
-        this.renderer.addClass(this.albumCollapseControl.nativeElement, 'show')
-        if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
-        if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
-        break;
-      case 'track':
-        this.renderer.addClass(this.trackCollapseControl.nativeElement, 'show')
-        if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
-        if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
-        break;
-    }
+    timer(500).subscribe(()=>{
+      switch (type) {
+        case 'artist':
+          this.renderer.addClass(this.artistCollapseControl.nativeElement, 'show')
+          if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
+          if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
+          break;
+        case 'album':
+          this.renderer.addClass(this.albumCollapseControl.nativeElement, 'show')
+          if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
+          if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
+          break;
+        case 'track':
+          this.renderer.addClass(this.trackCollapseControl.nativeElement, 'show')
+          if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
+          if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
+          break;
+      }
+    })
   }
 
   postAlbum() {
