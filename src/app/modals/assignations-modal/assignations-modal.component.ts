@@ -11,6 +11,7 @@ import { ManagerService } from '../../providers/manager.service';
 export class AssignationsModalComponent implements OnInit {
 
   assignations:Assignation[]=[];
+  noAssignations:boolean = false;
 
   constructor(public _modalController:AssignationsModalController,
               public _managerServices:ManagerService) { }
@@ -18,7 +19,11 @@ export class AssignationsModalComponent implements OnInit {
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
       this._managerServices.searchAssignationsByArtist(this._modalController.id).subscribe((assignations: Assignation[]) => {
-        this.assignations = assignations;
+        if(assignations.length === 0){
+          this.noAssignations = true;
+        }else{
+          this.assignations = assignations;
+        }
       })
     })
   }
@@ -26,6 +31,7 @@ export class AssignationsModalComponent implements OnInit {
   hideModal(){
     this.assignations=[];
     this._modalController.hideModal()
+    this.noAssignations = false;
   }
 
 }
