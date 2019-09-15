@@ -1,6 +1,6 @@
 <div class="row mr-1 ml-1 mt-0 p-0 animated fadeIn pagesContainerFixed">
-        <div class="col-4 mt-0 pl-0">
-            <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row">
+        <div class="col-4 mt-0 ">
+            <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row m-1 ">
                 <div class="col-12">
                     <button class='btn btn-warning' (click)="_demoServices.calendarPopup(true)" style='cursor:pointer'>
                          <i style="color:blue" class="fas fa-info"></i>
@@ -11,19 +11,19 @@
                 </div>
                 <div class="col-12">
                   <div class="row mt-0 d-flex justify-content-between">
-                    <div class="ml-3" style='display: flex'>
+                    <div  style='display: flex'>
                       <button class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
                         {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
                       </button>
                     </div>
-                    <div class="mr-3" style='display:flex'>
+                    <div  style='display:flex'>
                       <button class='btn-warning' (click)='toOtherWeek(nextWeek[0])'>
                         {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
                       </button>
                     </div>
                   </div>
                 </div>
-                <div class="col-12 d-flex justify-content-center mt-1">
+                <div class="col-12 d-flex justify-content-center mt-1 ">
                     <button class='btn btn-warning' (click)=' _calendarModalController.showModal()'><i class="fas fa-search "></i></button>
                 </div>
                 <div class='col-12 mt-2 '>
@@ -48,15 +48,15 @@
                         </tbody>
                     </table>
                 </div>
-                <div class='col-12 m-3 p-3'>
+                <div class='col-12 mt-3 '>
                     <p style='color:red'>*Aquellos eventos con permanencia indefinida se definirán con el color rojo*</p>
                     <p style='color:green'>*Aquellos eventos con permanencia definida en el tiempo se definirán con el color verde*</p>
                     <p style='color:blue'>*Aquellos eventos cuya duración sea solo de un día se definirán con el color azul*</p>
                 </div>
             </div>            
         </div>
-        <div #printable class="col-8">
-            <div class="row">
+        <div #printable class="col-8 mr-0 pr-0"  >
+            <div class="row mr-0 pr-0 " style="width:99%;border:1px solid black">
               <div class="col-1" style='background: #F0B841'>
                 <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>
               </div>

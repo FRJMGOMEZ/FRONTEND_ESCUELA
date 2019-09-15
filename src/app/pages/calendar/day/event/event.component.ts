@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component,Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
@@ -10,7 +10,7 @@ import { UserServices } from '../../../../providers/user.service';
   templateUrl: "./event.component.html",
   styleUrls: ["./event.component.scss"],
 })
-export class EventComponent implements OnInit,AfterViewInit{
+export class EventComponent implements AfterViewInit{
 
   @Input() facilitie:any;
   @Input() position: number = 0
@@ -38,9 +38,6 @@ export class EventComponent implements OnInit,AfterViewInit{
     private _userServices:UserServices
   ) {
   }
-  ngOnInit() {
-
-  }
 
   ngAfterViewInit(): void {
     this.render().then(() => {
@@ -50,8 +47,9 @@ export class EventComponent implements OnInit,AfterViewInit{
   
   async render() {
     if(this.hour){
-    let spaceWithoutEvents = 520 - (this.position) * 40; 
+    let spaceWithoutEvents = 520 - ((this.position) * 40); 
     for (let event of this.hour) {
+      console.log(event);
        let facilitieId = event.facilitie._id || event.facilitie || null;
       if (facilitieId && facilitieId === this.facilitie._id) {
         if (event.position === this.position) {
@@ -75,8 +73,6 @@ export class EventComponent implements OnInit,AfterViewInit{
       this.ourEvents["0.5"] === undefined&&
       this.ourEvents["0.75"] === undefined 
     ) {
-
-
       let child = this.renderer.createElement("strong");
       const plus = document.createTextNode("add");
       child.appendChild(plus);
@@ -269,21 +265,27 @@ fixHeight(height: number) {
  checkSpace(reference?:number){
   return new Promise((resolve,reject)=>{
      if (reference + 0.25 < 1 && this.ourEvents[String(reference + 0.25)] === undefined) {
+       console.log('ok1')
        if (reference + 0.5 < 1 && this.ourEvents[String(reference + 0.5)] === undefined) {
+         console.log('ok2')
          if (reference + 0.75 < 1 && this.ourEvents[String(reference + 0.75)] === undefined) {
+           console.log('not Referenced')
            resolve()
          } else { 
-           if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+           if ((40 * (reference + 1) === (40 * (13 - this.position + 1) - this.facilitie.space))){
              resolve({ height: 30, position:reference })
            }else{resolve()}
         }
        } else {
-         if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+         console.log('breakPoint')
+         if ((40 * (reference + 1) === (40 * (13 - this.position + 1) - this.facilitie.space))){
            resolve({ height: 20, position: reference })
-         }else{resolve()}
+         }else{
+          console.log('breakPoint2') 
+          resolve()}
          }
      } else {
-       if ((40 * (reference + 1) === (40 * (12 - this.position + 1) - this.facilitie.space))){
+       if ((40 * (reference + 1) === (40 * (13 - this.position + 1) - this.facilitie.space))){
          resolve({ height: 10, position: reference })
        }else{resolve()} }     
   }) }

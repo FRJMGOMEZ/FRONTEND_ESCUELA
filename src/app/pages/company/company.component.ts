@@ -3,6 +3,7 @@ import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../providers/incomes.service';
 import { timer } from 'rxjs';
+import { DemoService } from 'src/app/providers/demo.service';
 
 @Component({
   selector: 'app-company',
@@ -26,9 +27,11 @@ export class CompanyComponent implements OnInit, OnDestroy {
   public labels: Date[]=[]
 
   constructor(public _paymentServices: PaymentsService,
-              public _incomeServices:IncomesService) { }
+              public _incomeServices:IncomesService,
+              public _demoServices:DemoService) { }
 
   async ngOnInit() {
+    this._demoServices.companyPopup()
     this._paymentServices.state = 'CARGO';
   }
 

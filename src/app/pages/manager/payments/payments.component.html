@@ -1,7 +1,7 @@
 <div class='row animated fadeIn pagesContainerFixed'>
   <div class="col-12 mt-3">
     <div class="row d-flex justify-content-center">
-      <div class="col-10 d-flex justify-content-around">
+      <div class="col-12 d-flex justify-content-around">
         <div class="row d-flex justify-content-around">
           <div class="col-3 d-flex justify-content-around m-0 p-0">
             <div class="form-check">
@@ -55,7 +55,7 @@
                   </div>
               </div>
           </div>
-          <div class="col-3">
+          <div class="col-2">
             <div class="row d-flex justify-content-start">
               <div class="col-8 d-flex justify-content-center">
                 <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="stateChange('all')" class="btn btn-warning">Todos</button>
@@ -63,6 +63,9 @@
                 <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="stateChange('notSent')"  class="btn btn-warning">Pagos no enviados</button>
               </div>
             </div>
+          </div>
+          <div class="col-1 d-flex justify-content-end">
+              <i (click)="_demoServices.paymentsPopup(true)" class="fas fa-info m-2" style='cursor:pointer;color:blue'></i>
           </div>
         </div>
       </div>
@@ -107,7 +110,7 @@
               <div class="col-7 d-flex justify-content-center">
                 <div>
                   <label for="letterModels">Modelos disponibles</label>
-                  <select [(ngModel)]="_letterServices.letterSelectedId" (ngModelChange)="_letterServices.selectLetter()">
+                  <select [(ngModel)]="_letterServices.letterSelectedId" (change)="_letterServices.selectLetter()">
                     <option  *ngFor="let letter of _letterServices.letters" [value]="letter._id">{{letter.name}}</option>
                       <option value="undefined"></option>
                   </select>
