@@ -112,20 +112,17 @@ export class ManagerService {
     item = item || this.item;
     let url = `${URL_SERVICES}${item}?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      switch (item) {
-        case 'tracks': this.tracks = res.tracks; this.count = res.count;
-          break;
-        case 'albums':
-        this.albums = res.albums; this.count = res.count;
-          break;
-        case 'artists':
-        if(this._trackModalController.hidden){
+      if(item === 'tracks'){
+        this.tracks = res.tracks; this.count = res.count;
+      }else if(item === 'albums'){
+        this.tracks = res.tracks; this.count = res.count;
+      }else if(item === 'artists'){
+        if (this._trackModalController.hidden === 'hidden') {
           this.artists = res.artists;
           this.count = res.count;
-        }else{
+        } else {
           return res.artists
         };
-          break;
       }
     }),
       catchError(this._errorHandler.handleError))
