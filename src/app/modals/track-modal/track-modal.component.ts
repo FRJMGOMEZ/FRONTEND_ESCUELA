@@ -73,12 +73,15 @@ export class TrackModalComponent implements OnInit {
     })
   }
 
-  postTrack(){
+  async postTrack(){
     if(this.track.title){
-      this.track.assignations.forEach((assignation, index) => {
-        this.track.assignations[index].artist = this.track.assignations[index].artist['_id']
-      })
+      if(this.track.assignations){
+        await this.track.assignations.forEach((assignation, index) => {
+          this.track.assignations[index].artist = this.track.assignations[index].artist['_id']
+        })
+      }
       this._managerServices.postTrack(this.track).subscribe((track: Track) => {
+        console.log(track);
         this.track = track;
         this.hideModal()
       })
