@@ -25,6 +25,9 @@
         </div>
       </div>
     </div>
+    <div class="modal-content" *ngIf="assignations.length === 0">
+      <p>{{_managerServices.artist.indexcard['name']}} no tiene asignaciones por el momento</p>
+    </div>
   </div>
 </div>
 </div>
