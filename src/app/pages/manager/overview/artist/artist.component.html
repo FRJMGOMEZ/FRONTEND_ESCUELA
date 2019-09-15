@@ -1,5 +1,4 @@
-<div class="row m-1 mt-0" *ngIf="!artistId" style="height:100%">
-    <div class="col-12">
+<div class="row m-1" *ngIf="!artistId" style="height:100%">
         <table class='table scrollableTable'>
             <thead>
                 <th>Nombre</th>
@@ -11,12 +10,41 @@
                 </tr>
             </tbody>
         </table>
-        <div class='d-flex justify-content-around m-2'>
+       <!--
+           <div class='d-flex justify-content-around m-2'>
             <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) '
                 class='btn btn-secondary '>Previous</button>
             <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) '
                 class='btn btn-secondary '>Following</button>
         </div>
+    
+
+       --> 
+</div>
+<div class="row m-1" *ngIf="!trackId" style="height:100%">
+    <div class='col-12'>
+        <table class='table scrollableTable'>
+            <thead>
+                <th>Título</th>
+                <th>Album</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let track of _managerServices.tracks let i=index">
+                    <td><a (click)="overviewComponent.idNavigation(track._id,'track')"
+                            routerLinkActive="router-link-active" style="color:blue">{{track.title}}</a></td>
+                    <td *ngIf="track.album">
+                        <a (click)="overviewComponent.idNavigation(track.album['_id'],'album')"
+                            routerLinkActive="router-link-active" style="color:blue">{{track.album['title']}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class='d-flex justify-content-around mb-2 col-12'>
+        <button *ngIf="_managerServices.from && _managerServices.from > 0" (click)='changeFrom(-6) '
+            class='btn btn-secondary '>Previous</button>
+        <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) '
+            class='btn btn-secondary '>Following</button>
     </div>
 </div>
 <div class="row m-1" *ngIf="artistId" style="height:100%">

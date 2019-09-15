@@ -11,7 +11,7 @@ import { OverviewComponent } from '../overview.component';
   templateUrl: './artist.component.html',
   styleUrls: ['./artist.component.scss']
 })
-export class ArtistComponent implements OnInit {
+export class ArtistComponent {
 
   @ViewChild('input') input: ElementRef
 
@@ -22,14 +22,6 @@ export class ArtistComponent implements OnInit {
     private _trackModalController: TrackModalController,
     public overviewComponent: OverviewComponent,
     public _assignationsModalController: AssignationsModalController) { }
-
-  ngOnInit(): void {
-    if(this.artistId){
-    this._managerServices.artist.payments =  _.sortBy(this._managerServices.artist.payments,(payment)=>{
-       return payment.track
-    })
-    }
-  }
 
   changeFrom(number: number) {
     if (this._managerServices.from + number >= 0) {
