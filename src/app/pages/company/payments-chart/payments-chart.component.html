@@ -42,7 +42,7 @@
         <th style="width:25%">Cantidad</th>
         <th style="width:25%">Fecha</th>
         <th style="width:25%">Track</th>
-        <th style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' " >Artista</p> <p *ngIf="typeOfSearch === 'CARGOMUSIC' " >CARGO MUSIC</p> </th>
+        <th style="width:25%" > <p *ngIf="_paymentServices.state != 'CARGO' " >Artista</p> <p *ngIf="_paymentServices.state === 'CARGO' " >CARGO MUSIC</p> </th>
       </thead>
       <tbody *ngIf="_paymentServices.payments.length > 0" #tbody style='width:100%'>
         <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">

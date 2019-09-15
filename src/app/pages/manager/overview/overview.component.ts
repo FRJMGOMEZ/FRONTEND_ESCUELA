@@ -24,7 +24,7 @@ export class OverviewComponent implements OnInit {
     public _albumsModalController: AlbumModalController,
     private _indexcardModalController: IndexcardModalController,
     private renderer: Renderer2,
-    private _demoServices:DemoService) { }
+    public _demoServices:DemoService) { }
 
   ngOnInit() {
 
