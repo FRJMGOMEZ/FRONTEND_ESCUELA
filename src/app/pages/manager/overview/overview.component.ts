@@ -54,7 +54,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
           })
         }
       }
-
       let albumId = params['albumId'];
       let trackId = params['trackId'];
       let artistId = params['artistId'];
