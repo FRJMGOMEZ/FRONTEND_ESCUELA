@@ -50,7 +50,8 @@ export class OverviewComponent implements OnInit,AfterViewInit {
         await this._managerServices.searchItems(input, item, from).subscribe()
       } else {
         if (item) {
-          await this._managerServices.getItems(from).subscribe()
+          await this._managerServices.getItems(from).subscribe(()=>{
+          })
         }
       }
 
@@ -99,9 +100,13 @@ export class OverviewComponent implements OnInit,AfterViewInit {
          })
         }
       }
-      timer(300).subscribe(()=>{
+      if(item === 'artists'){
+        timer(1000).subscribe(()=>{
+          this.columnsSize();
+        })
+      }else{
         this.columnsSize();
-      })
+      }
     })
 
     this._albumsModalController.notification.subscribe((id) => {
@@ -135,6 +140,7 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   columnsSize() {
+    console.log(this.searchGetColumn.nativeElement);
       if (this.searchGetColumn && !this.navigateColumn) {
         this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
       } else if (this.navigateColumn && !this.searchGetColumn) {
