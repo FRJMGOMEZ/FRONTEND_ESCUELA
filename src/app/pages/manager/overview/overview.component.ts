@@ -125,7 +125,6 @@ export class OverviewComponent implements OnInit,AfterViewInit {
 
   ngAfterViewChecked(): void {
     this.columnsSize()
-
   }
 
   async idNavigation(id?: string, collection?: string) {
@@ -133,20 +132,22 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   columnsSize() {
-    if (this.searchGetColumn && !this.navigateColumn) {
-      this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
-    } else if (this.navigateColumn && !this.searchGetColumn) {
-      this.renderer.addClass(this.navigateColumn.nativeElement, 'col-12')
-    } else {
-      if (this.searchGetColumn && this.navigateColumn) {
-        this.renderer.removeClass(this.searchGetColumn.nativeElement, 'col-12')
-        this.renderer.removeClass(this.navigateColumn.nativeElement, 'col-12')
-        this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-3')
-        this.renderer.addClass(this.navigateColumn.nativeElement, 'col-9')
+    timer(500).subscribe(()=>{
+      if (this.searchGetColumn && !this.navigateColumn) {
+        this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
+      } else if (this.navigateColumn && !this.searchGetColumn) {
+        this.renderer.addClass(this.navigateColumn.nativeElement, 'col-12')
+      } else {
+        if (this.searchGetColumn && this.navigateColumn) {
+          this.renderer.removeClass(this.searchGetColumn.nativeElement, 'col-12')
+          this.renderer.removeClass(this.navigateColumn.nativeElement, 'col-12')
+          this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-3')
+          this.renderer.addClass(this.navigateColumn.nativeElement, 'col-9')
+        }
       }
-    }
+    })
   }
-
+  
   placeHolderContent() {
     let message;
     switch (this._managerServices.item) {
