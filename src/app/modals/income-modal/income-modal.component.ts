@@ -38,7 +38,7 @@ export class IncomeModalComponent implements OnInit {
   }
 
   postIncome(){
-    if(!this.debitor._id || !this.income.notLiquidatedAmount ){
+    if(!this.income.notLiquidatedAmount ){
       Swal.fire({
         text:'Por favor completa los dos campos requeridos de cantidad y de origen del ingreso',
         showCloseButton:true,        
