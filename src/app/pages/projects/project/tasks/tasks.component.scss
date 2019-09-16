@@ -1,9 +1,54 @@
 
-.scrollableTable tbody {
-     height: 94px;
+
+.scrollableTableGroupTasks thead,
+.scrollableTableGroupTasks tbody {
+    display: block;
+}
+
+.scrollableTableGroupTasks tbody {
+     height: 140px;
     /* Just for the demo          */
     overflow-y: auto;
     /* Trigger vertical scroll    */
     overflow-x: hidden;
     /* Hide the horizontal scroll */
+}
+
+.scrollableTableGroupTasks table {
+    width: 100%;
+    /* Optional */
+}
+
+.scrollableTableGroupTasks tbody td,
+.scrollableTableGroupTasks thead th {
+    width: 10%;
+    /* Optional */
+}
+
+
+
+
+.scrollableTableMyTasks thead,
+.scrollableTableMyTasks tbody {
+    display: block;
+}
+
+.scrollableTableMyTasks tbody {
+     height: 50px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+
+.scrollableTableMyTasks table {
+    width: 100%;
+    /* Optional */
+}
+
+.scrollableTableMyTasks tbody td,
+.scrollableTableMyTasks thead th {
+    width: 10%;
+    /* Optional */
 }

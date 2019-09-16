@@ -4,7 +4,7 @@
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
     </div>
-    <div class='col-12 d-flex flex-column justify-content-center mb-1'>
+    <div class='col-12 d-flex flex-column justify-content-center mb-1' style="height:50%" >
         <div class="row d-flex justify-content-center">
                 <h5 *ngIf="_projectServices.groupTasks.length>0 text-center">Tareas del grupo de trabajo</h5>
         </div>
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row" *ngIf="_projectServices.groupTasks.length>0" style='border-bottom:1px solid black'>
-            <table class='table scrollableTable'>
+            <table class='table scrollableTableGroupTasks'>
                 <thead>
                     <tr>
                         <th style="height:14%">Description</th>
@@ -57,7 +57,7 @@
                 <h5>Mis tareas</h5>
         </div>    
       <div  *ngIf="_projectServices.myTasks.length>0">
-        <table class='table scrollableTable'>
+        <table class='table scrollableTableMyTasks'>
             <thead>
                 <tr>
                     <th style="height:14%">Description</th>
@@ -71,7 +71,7 @@
             </thead>
             <tbody>
                 <tr [ngStyle]="{'background-color': checkTime(task.dateLimit)}" *ngFor="let task of _projectServices.myTasks">
-                    <td  style="max-width:'30px';word-break: break-all;height:14%">{{task.description}}</td>
+                    <td  style="max-width:'100%';word-break: break-all;height:14%">{{task.description}}</td>
                     <td style="height:14%">{{task.assignedBy.name}}</td>
                     <td style="height:14%">{{task.user.name}}</td>
                     <td style="height:14%">{{task.date | date}}</td>
