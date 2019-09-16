@@ -14,7 +14,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   @ViewChild('input0') input0 : ElementRef
   @ViewChild('input1') input1: ElementRef
 
-
   constructor(public _paymentServices:PaymentsService,
               public _letterServices:LetterService,
               public _userService:UserServices) { }
