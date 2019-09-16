@@ -15,24 +15,24 @@ import { TrackModalController } from '../modals/track-modal/trackModalController
 })
 export class ManagerService {
 
-  album:Album
-  track:Track
-  artist:Artist
+  public album:Album
+  public track:Track
+  public artist:Artist
 
-  albumsCount:number
-  tracksCount:number
-  artistsCount:number
+  public albumsCount:number
+  public tracksCount:number
+  public artistsCount:number
 
-  albums:Album[]=[]
-  tracks:Track[]=[]
-  artists:Artist[]=[]
+  public albums:Album[]=[]
+  public tracks:Track[]=[]
+  public artists:Artist[]=[]
 
-  input: string=''
-  from:number=0;
-  item: string
-  count:number=0
+  public input: string=''
+  public from:number=0;
+  public item: string
+  public count:number=0
 
-  dataStored:boolean=false
+  public dataStored:boolean=false
 
 
 
