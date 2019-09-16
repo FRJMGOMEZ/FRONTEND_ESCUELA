@@ -74,7 +74,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let assignation of assignations" >
-                        <td>{{assignation.artist.indexcard['name']}}</td>
+                        <td>{{assignation.artist['indexcard']['name']}}</td>
                         <td>{{assignation.percent}}%</td>
                         <td>{{(assignation.percent/100)*amountAssigned}} euros</td>
                       </tr>

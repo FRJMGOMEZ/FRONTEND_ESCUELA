@@ -81,7 +81,7 @@
           <tbody #tbody style='height:120px;width:100%'>
             <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
               <td style="width:20%">{{payment.amount}}</td>
-              <td style="width:20%">{{payment.artist.indexcard['name']}}</td>
+              <td style="width:20%">{{payment.artist['indexcard']['name']}}</td>
               <td style="width:20%">{{payment.date || date}}</td>
               <td style="width:20%">{{payment.track.title}}</td>
               <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>

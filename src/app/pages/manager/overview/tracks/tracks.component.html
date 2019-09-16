@@ -45,7 +45,7 @@
         <tbody *ngIf="trackId">
             <tr *ngFor="let assignation of _managerServices.track.assignations let i=index">
                 <td>
-                    <a (click)="overviewComponent.idNavigation(assignation.artist['_id'],'artist')" style="color:blue" routerLinkActive="router-link-active">{{assignation.artist['indexcard'].name}}</a>
+                    <a (click)="overviewComponent.idNavigation(assignation.artist['_id'],'artist')" style="color:blue" routerLinkActive="router-link-active">{{assignation.artist['indexcard']['name']}}</a>
                 </td>
                 <td>
                     <p>

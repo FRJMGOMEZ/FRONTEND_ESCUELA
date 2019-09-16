@@ -15,7 +15,7 @@
                             </div>
                             <table style="width:100%">
                                 <tr *ngFor="let user of admins">
-                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user.indexcard['name']}}</th>
+                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user.name}}</th>
                                     <th *ngIf="user._id === _userServices.userOnline._id">tú</th>
                                 </tr>
                             </table>
@@ -28,7 +28,7 @@
                             </div>
                             <table style="width:100%">
                                 <tr *ngFor="let user of participants">
-                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user.indexcard['name']}}</th>
+                                    <th *ngIf="user._id != _userServices.userOnline._id">{{user.name}}</th>
                                     <th *ngIf="user._id === _userServices.userOnline._id">tú</th>
                                 </tr>
                             </table>
