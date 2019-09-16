@@ -20,6 +20,8 @@ export class PaymentsChartComponent implements OnInit {
 
   @ViewChild('chart') chart: LineChartComponent;
 
+  public showTable:boolean=false;
+
   constructor(public _paymentServices: PaymentsService,
               public companyComponent: CompanyComponent) { }
 
@@ -36,7 +38,11 @@ export class PaymentsChartComponent implements OnInit {
   }
 
  async setPaymentsData() {
-        this._paymentServices.searchPayments().subscribe()
+        this._paymentServices.searchPayments().subscribe(()=>{
+          timer(300).subscribe(()=>{
+            this.showTable = true;
+          })
+        })
         await this.companyComponent.labels.forEach((label: Date, index: number) => {
           this.data[index] = 0;
         })
