@@ -118,12 +118,12 @@
                 <app-tracks [trackId]='_managerServices.track._id'></app-tracks>
               </div>
             </div>
-            <div *ngIf="_managerServices.artist && _managerServices.artist.indexcard" class="card">
+            <div  class="card">
               <div class="card-header" id="headingFour" style="background-color:#b06e45">
                 <div class="row">
                   <div class="col-10 d-flex justify-content-center">
                     <h5 class="mb-0">
-                      <button class="btn btn-warning" data-toggle="collapse" data-target="#artistCollapse"
+                      <button *ngIf="_managerServices.artist && _managerServices.artist.indexcard" class="btn btn-warning" data-toggle="collapse" data-target="#artistCollapse"
                         aria-expanded="true" aria-controls="artistCollapse">
                         {{_managerServices.artist.indexcard['name']}}
                       </button>

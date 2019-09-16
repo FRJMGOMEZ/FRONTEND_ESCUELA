@@ -31,7 +31,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-center">Asignaciones {{_managerServices.artist.indexcard['name']}} {{_managerServices.artist.indexcard['surname']}} </h5>
+        <h5 *ngIf="_managerServices.artist" class="modal-title text-center">Asignaciones {{_managerServices.artist.indexcard['name']}} {{_managerServices.artist.indexcard['surname']}} </h5>
         <button (click)="hideModal()" type="button" class="close" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
