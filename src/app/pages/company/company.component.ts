@@ -53,7 +53,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
       await this.checkDates();
       this.checkNumberOfDays().then(async (labelsNumber: number) => {
         await this.setLabels(labelsNumber);
-        console.log('emit');
         this.notification.emit(this.chartSelected);
       })
     })

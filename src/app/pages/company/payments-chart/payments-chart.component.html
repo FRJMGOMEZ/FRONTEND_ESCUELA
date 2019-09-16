@@ -36,7 +36,7 @@
         </div>
       </div>
   </div>
-  <div class="col-4">
+  <div class="col-4" *ngIf="_paymentServices.payments.length > 0" >
     <table class='table scrollableTable mb-0' style='background: #F5F1E3'>
       <thead class='mr-4 d-flex justify-content-around'>
         <th style="width:25%">Cantidad</th>
@@ -44,16 +44,16 @@
         <th style="width:25%">Track</th>
         <th style="width:25%" > <p *ngIf="_paymentServices.state != 'CARGO' " >Artista</p> <p *ngIf="_paymentServices.state === 'CARGO' " >CARGO MUSIC</p> </th>
       </thead>
-      <tbody *ngIf="_paymentServices.payments.length > 0" #tbody style='width:100%'>
+      <tbody #tbody style='width:100%'>
         <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
           <td style="width:25%">{{payment.amount.toFixed(2)}}</td>
           <td style="width:25%">{{payment.date | date: 'M/d/y'}}</td>
-          <td *ngIf="payment.track" style="width:25%">{{payment.track.title}}</td>
-          <td style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' && payment.artist ">{{payment.artist['indexcard']['name']}}</p> <p *ngIf="typeOfSearch === 'CARGOMUSIC' "></p> </td>
+          <td style="width:25%">{{payment.track.title}}</td>
+          <td style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' ">{{payment.artist.indexcard['name']}}</p> <p *ngIf="typeOfSearch === 'CARGOMUSIC' "></p> </td>
         </tr>
       </tbody>
       <hr>
-      <div class="row m-3" style='background:#F5F1E3;'>
+      <div class="row m-3" style='background:rgb(59, 53, 31);'>
         <div class="col-2"></div>
         <div class="col-8 d-flex justify-content-around">
           <button (click)="switchPage(-5)" *ngIf="_paymentServices.from > 0" class="btn btn-warning">PREV</button>
