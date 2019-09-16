@@ -1,0 +1,8 @@
+.scrollableTable tbody {
+     height: 388px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
