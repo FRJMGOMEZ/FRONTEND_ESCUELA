@@ -75,6 +75,7 @@ export class IncomesService {
   getIncomesNotLiquidated(){
     let url = `${URL_SERVICES}incomesNotLiquidated?from=${this.fromINL}&limit=5`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res:any)=>{
+      console.log(res.incomes);
       this.incomesNotLiquidated = res.incomes;
       this.iNLCount = res.count;
     }))
