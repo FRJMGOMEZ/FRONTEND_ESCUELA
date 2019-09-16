@@ -112,7 +112,7 @@ export class IndexcardModalComponent implements OnInit {
       await this._alumniServices.postAlumni(alumni).subscribe();
       this.hideModal();
     } else if (this.role === 'ARTIST') {
-      let artist = await new Artist(indexcard._id);
+      let artist:any = {indexcard:indexcard._id}
       await this._managerServices.postArtist(artist).subscribe((artist)=>{
         this.hideModal()
         this._modalController.notification.emit(artist._id)
