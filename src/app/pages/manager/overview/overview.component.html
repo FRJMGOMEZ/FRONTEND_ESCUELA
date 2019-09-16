@@ -123,7 +123,7 @@
                 <div class="row">
                   <div class="col-10 d-flex justify-content-center">
                     <h5 class="mb-0">
-                      <button *ngIf="_managerServices.artist && _managerServices.artist.indexcard" class="btn btn-warning" data-toggle="collapse" data-target="#artistCollapse"
+                      <button *ngIf="_managerServices.artist" class="btn btn-warning" data-toggle="collapse" data-target="#artistCollapse"
                         aria-expanded="true" aria-controls="artistCollapse">
                         {{_managerServices.artist.indexcard['name']}}
                       </button>
