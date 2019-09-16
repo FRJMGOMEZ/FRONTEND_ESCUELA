@@ -7,6 +7,7 @@ export class Payment {
         public date: Date,
         public sent:boolean = false,
         public sentDate?:Date,
+        public artist?:any,
         public _id?: string) {
     }
 }

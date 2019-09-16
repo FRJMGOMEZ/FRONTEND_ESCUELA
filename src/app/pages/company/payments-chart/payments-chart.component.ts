@@ -38,11 +38,7 @@ export class PaymentsChartComponent implements OnInit {
   }
 
  async setPaymentsData() {
-        this._paymentServices.searchPayments().subscribe(()=>{
-          timer(300).subscribe(()=>{
-            this.showTable = true;
-          })
-        })
+      
         await this.companyComponent.labels.forEach((label: Date, index: number) => {
           this.data[index] = 0;
         })
@@ -61,6 +57,11 @@ export class PaymentsChartComponent implements OnInit {
           let dataLabel = await this.dataLabel();
           this.chart.setInfo(this.labels, this.data, 'payments', dataLabel);
         })
+          this._paymentServices.searchPayments().subscribe(() => {
+            timer(500).subscribe(() => {
+            this.showTable = true;
+           })
+   })
   }
 
   dataLabel(){
