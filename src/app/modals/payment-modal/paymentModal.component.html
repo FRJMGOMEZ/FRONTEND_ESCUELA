@@ -74,7 +74,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let assignation of assignations" >
-                        <td>{{assignation.artist.indexcard.name}}</td>
+                        <td>{{assignation.artist.indexcard['name']}}</td>
                         <td>{{assignation.percent}}%</td>
                         <td>{{(assignation.percent/100)*amountAssigned}} euros</td>
                       </tr>
@@ -101,7 +101,7 @@
                 <tbody>
                   <tr *ngFor="let payment of _paymentService.payments let i =index">
                     <td>{{payment.amount}}</td>
-                    <td>{{payment.artist.indexcard.name}}</td>
+                    <td>{{payment.artist.indexcard['name']}}</td>
                   </tr>
                 </tbody>
               </table>
