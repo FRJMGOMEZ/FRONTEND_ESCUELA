@@ -1,27 +1,21 @@
-import { Component, ElementRef, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { timer } from 'rxjs';
 import { IncomeModalController } from 'src/app/modals/income-modal/incomesModalController.service';
 import { IncomesService } from '../../../providers/incomes.service';
 import Swal from 'sweetalert2';
-import { DemoService } from '../../../providers/demo.service';
 
 @Component({
   selector: 'app-incomes',
   templateUrl: './incomes.component.html',
   styleUrls: ['./incomes.component.scss']
 })
-export class IncomesComponent implements OnDestroy, OnInit {
+export class IncomesComponent implements OnDestroy {
 
   @ViewChild("input0") input0: ElementRef;
   @ViewChild("input1") input1: ElementRef;
 
   constructor(private _incomeModalController:IncomeModalController,
-              public _incomeServices:IncomesService,
-              public _demoServices:DemoService) { }
-
-  ngOnInit(){
-    this._demoServices.incomesPopup();
-  }            
+              public _incomeServices:IncomesService) { }
 
   postIncome(){
     this._incomeModalController.showModal();

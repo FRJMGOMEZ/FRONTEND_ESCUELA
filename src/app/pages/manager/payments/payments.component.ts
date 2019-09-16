@@ -3,7 +3,6 @@ import { PaymentsService } from '../../../providers/payments.service';
 import Swal from 'sweetalert2';
 import { LetterService } from '../../../providers/letter.service';
 import { UserServices } from '../../../providers/user.service';
-import { DemoService } from 'src/app/providers/demo.service';
 
 @Component({
   selector: 'app-payments',
@@ -18,12 +17,9 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   constructor(public _paymentServices:PaymentsService,
               public _letterServices:LetterService,
-              public _userService:UserServices,
-              public _demoServices:DemoService) { }
+              public _userService:UserServices) { }
 
   ngOnInit() {
-
-    this._demoServices.paymentsPopup();
     //// Payments section ///
     this._letterServices.getUsers();
     this._letterServices.getLetters().subscribe()

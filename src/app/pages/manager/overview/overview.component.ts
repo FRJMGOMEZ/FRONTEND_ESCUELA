@@ -1,17 +1,15 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef,ViewChild, Renderer2} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
 import { IndexcardModalController } from '../../../modals/index-card-modal/indexcardModalController';
-import { DemoService } from '../../../providers/demo.service';
-import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit,AfterViewInit {
+export class OverviewComponent implements OnInit {
 
   @ViewChild('searchGetColumn') searchGetColumn: ElementRef
   @ViewChild('navigateColumn') navigateColumn: ElementRef
@@ -24,12 +22,11 @@ export class OverviewComponent implements OnInit,AfterViewInit {
     public _managerServices: ManagerService,
     public _albumsModalController: AlbumModalController,
     private _indexcardModalController: IndexcardModalController,
-    private renderer: Renderer2,
-    public _demoServices:DemoService) { }
+    private renderer: Renderer2) { }
 
   ngOnInit() {
 
-    this._ar.params.subscribe(async(params) => {
+    this._ar.params.subscribe((params) => {
 
       let input = params['input']
       if (input === '#') {
@@ -47,13 +44,13 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       this._managerServices.from = from;
 
       if (input) {
-        await this._managerServices.searchItems(input, item, from).subscribe()
+        this._managerServices.searchItems(input, item, from).subscribe()
       } else {
         if (item) {
-          await this._managerServices.getItems(from).subscribe(()=>{
-          })
+          this._managerServices.getItems(from).subscribe()
         }
       }
+
       let albumId = params['albumId'];
       let trackId = params['trackId'];
       let artistId = params['artistId'];
@@ -61,40 +58,32 @@ export class OverviewComponent implements OnInit,AfterViewInit {
       if (albumId != '#') {
         if (this._managerServices.album) {
           if (this._managerServices.album._id != albumId) {
-           await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-           })
+            this._managerServices.getItemById(albumId, 'album').subscribe()
           }
         } else {
-         await this._managerServices.getItemById(albumId, 'album').subscribe(()=>{
-         })
+          this._managerServices.getItemById(albumId, 'album').subscribe()
         }
       }
 
       if (trackId != '#') {
         if (this._managerServices.track) {
           if (this._managerServices.track._id != trackId) {
-           await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-           })
+            this._managerServices.getItemById(trackId, 'track').subscribe()
           }
         } else {
-          await this._managerServices.getItemById(trackId, 'track').subscribe(()=>{
-          })
+          this._managerServices.getItemById(trackId, 'track').subscribe()
         }
       }
 
       if (artistId != '#') {
         if (this._managerServices.artist) {
           if (this._managerServices.artist._id != artistId) {
-            await this._managerServices.getItemById(artistId, 'artist').subscribe()
+            this._managerServices.getItemById(artistId, 'artist').subscribe()
           }
         } else {
-         await this._managerServices.getItemById(artistId, 'artist').subscribe()
+          this._managerServices.getItemById(artistId, 'artist').subscribe()
         }
       }
-  
-      timer(1000).subscribe(()=>{
-        this.columnsSize()
-      })
     })
 
     this._albumsModalController.notification.subscribe((id) => {
@@ -115,37 +104,34 @@ export class OverviewComponent implements OnInit,AfterViewInit {
     })
   }
 
-  ngAfterViewInit(){
-    this._demoServices.managerOverviewPopup();
-  }
-
   ngAfterViewChecked(): void {
-    //this.columnsSize()
+    this.columnsSize()
+
   }
 
   async idNavigation(id?: string, collection?: string) {
-    await this._managerServices.idNavigation(id, collection);
-    timer(500).subscribe(()=>{
-      this.collapseAcordions(collection);
-    })
+    await this._managerServices.idNavigation(id, collection)
+    setTimeout(() => {
+      console.log('what to do');
+      this.collapseAcordions(collection)
+    },500)
   }
 
   columnsSize() {
-    console.log(this.searchGetColumn,this.navigateColumn);
-      if (this.searchGetColumn && !this.navigateColumn) {
-        this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
-      } else if (this.navigateColumn && !this.searchGetColumn) {
-        this.renderer.addClass(this.navigateColumn.nativeElement, 'col-12')
-      } else {
-        if (this.searchGetColumn && this.navigateColumn) {
-          this.renderer.removeClass(this.searchGetColumn.nativeElement, 'col-12')
-          this.renderer.removeClass(this.navigateColumn.nativeElement, 'col-12')
-          this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-3')
-          this.renderer.addClass(this.navigateColumn.nativeElement, 'col-9')
-        }
+    if (this.searchGetColumn && !this.navigateColumn) {
+      this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-12')
+    } else if (this.navigateColumn && !this.searchGetColumn) {
+      this.renderer.addClass(this.navigateColumn.nativeElement, 'col-12')
+    } else {
+      if (this.searchGetColumn && this.navigateColumn) {
+        this.renderer.removeClass(this.searchGetColumn.nativeElement, 'col-12')
+        this.renderer.removeClass(this.navigateColumn.nativeElement, 'col-12')
+        this.renderer.addClass(this.searchGetColumn.nativeElement, 'col-3')
+        this.renderer.addClass(this.navigateColumn.nativeElement, 'col-9')
       }
+    }
   }
-  
+
   placeHolderContent() {
     let message;
     switch (this._managerServices.item) {
@@ -161,23 +147,23 @@ export class OverviewComponent implements OnInit,AfterViewInit {
   }
 
   collapseAcordions(type: string) {
-      switch (type) {
-        case 'artist':
-          this.renderer.addClass(this.artistCollapseControl.nativeElement, 'show')
-          if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
-          if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
-          break;
-        case 'album':
-          this.renderer.addClass(this.albumCollapseControl.nativeElement, 'show')
-          if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
-          if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
-          break;
-        case 'track':
-          this.renderer.addClass(this.trackCollapseControl.nativeElement, 'show')
-          if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
-          if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
-          break;
-      }
+    switch (type) {
+      case 'artist':
+        this.renderer.addClass(this.artistCollapseControl.nativeElement, 'show')
+        if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
+        if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
+        break;
+      case 'album':
+        this.renderer.addClass(this.albumCollapseControl.nativeElement, 'show')
+        if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
+        if (this.trackCollapseControl) { this.renderer.removeClass(this.trackCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.trackCollapseControl.nativeElement, 'hide'); }
+        break;
+      case 'track':
+        this.renderer.addClass(this.trackCollapseControl.nativeElement, 'show')
+        if (this.albumCollapseControl) { this.renderer.removeClass(this.albumCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.albumCollapseControl.nativeElement, 'hide'); }
+        if (this.artistCollapseControl) { this.renderer.removeClass(this.artistCollapseControl.nativeElement, 'show'); this.renderer.addClass(this.artistCollapseControl.nativeElement, 'hide'); }
+        break;
+    }
   }
 
   postAlbum() {

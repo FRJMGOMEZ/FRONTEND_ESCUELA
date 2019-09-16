@@ -14,7 +14,6 @@ export class Day {
              public hour9: EventModel[],
              public hour10: EventModel[],
              public hour11: EventModel[],
-             public hour12:EventModel[],
              public date:Date,
              public _id?:string
          ) {}

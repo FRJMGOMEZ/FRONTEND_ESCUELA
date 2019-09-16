@@ -174,7 +174,6 @@ export class DayComponent implements OnInit, OnDestroy {
           this._facilitieServices.facilities = this._facilitieServices.facilities.filter((eachFacilitie) => { return eachFacilitie._id != facilitie._id })
         } else {
           let space = this.heightOfEventsFrame;
-          console.log(this.heightOfEventsFrame);
           facilitie.space = space;
         }
       });
@@ -197,7 +196,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   getWidth() {
-    return `${Math.round((((this.dayPlace.nativeElement.offsetWidth-6) / 13) * 12) / 5)}px`;
+    return `${Math.round(((this.dayPlace.nativeElement.offsetWidth / 13) * 12) / 5)}px`;
   }
                                     //////// After init ////////
   switchFacilities(number: number = 0) {

@@ -68,7 +68,7 @@ constructor(public companyComponent:CompanyComponent,
 
 
 
-  moveRight(direction?: string) {
+  moveRight(direction: string) {
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
         this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0]);
@@ -92,7 +92,7 @@ constructor(public companyComponent:CompanyComponent,
     }
   }
 
-  moveLeft(direction?: string) {
+  moveLeft(direction: string) {
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
         this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0] + 604800000);

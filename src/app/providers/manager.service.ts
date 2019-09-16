@@ -15,26 +15,24 @@ import { TrackModalController } from '../modals/track-modal/trackModalController
 })
 export class ManagerService {
 
-  public album:Album
-  public track:Track
-  public artist:Artist
+  album:Album
+  track:Track
+  artist:Artist
 
-  public albumsCount:number
-  public tracksCount:number
-  public artistsCount:number
+  albumsCount:number
+  tracksCount:number
+  artistsCount:number
 
-  public albums:Album[]=[]
-  public tracks:Track[]=[]
-  public artists:Artist[]=[]
+  albums:Album[]=[]
+  tracks:Track[]=[]
+  artists:Artist[]=[]
 
-  public input: string=''
-  public from:number=0;
-  public item: string
-  public count:number=0
+  input: string=''
+  from:number=0;
+  item: string
+  count:number=0
 
-  public dataStored:boolean=false
-
-
+  dataStored:boolean=false
 
   constructor(public _userServices:UserServices,
              private http:HttpClient,
@@ -105,24 +103,34 @@ export class ManagerService {
     let from = this.from;
     let input = this.input || '#';
     let url = `/overview/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}`;
-      this._router.navigate([url])
+
+    return new Promise((resolve,reject)=>{
+      this._router.navigate([url]).then(()=>{
+        setTimeout(()=>{
+          resolve()
+        },150)
+      })
+    })
   }
 
   getItems(from: number = 0, limit: number = 6,item?:string){
     item = item || this.item;
     let url = `${URL_SERVICES}${item}?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
-      if(item === 'artists'){
-        if (this._trackModalController.hidden === 'hidden') {
+      switch (item) {
+        case 'tracks': this.tracks = res.tracks; this.count = res.count;
+          break;
+        case 'albums':
+        this.albums = res.albums; this.count = res.count;
+          break;
+        case 'artists':
+        if(this._trackModalController.hidden){
           this.artists = res.artists;
           this.count = res.count;
-        } else {
+        }else{
           return res.artists
         };
-      }else if(item === 'albums'){
-        this.albums = res.albums; this.count = res.count;
-      }else if(item === 'tracks'){
-        this.tracks = res.tracks; this.count = res.count;
+          break;
       }
     }),
       catchError(this._errorHandler.handleError))
@@ -226,8 +234,6 @@ export class ManagerService {
     }),
       catchError(this._errorHandler.handleError))
   }
-
-  
 
   postTrack(track: Track) {
     let url = `${URL_SERVICES}track`;

@@ -102,7 +102,7 @@ export class EventsModalComponent implements OnInit {
         this.minutesPrevValue = 0;
         this.hoursPrevValue = 0;
       }
-      this.spaceAvailable = 13;
+      this.spaceAvailable = 12;
       this.spaceAvailable = this.spaceAvailable - this.event.position;
       let hour = this._calendarServices.currentDay[`hour${parseInt(String(this.event.position))}`];
       await this.checkOtherHoursEventsSpace(hour)
@@ -114,7 +114,6 @@ export class EventsModalComponent implements OnInit {
   private checkOtherHoursEventsSpace(hour: EventModel[]) {
     return new Promise((resolve) => {
       let hours = [
-        this._calendarServices.currentDay.hour12,
         this._calendarServices.currentDay.hour11,
         this._calendarServices.currentDay.hour10,
         this._calendarServices.currentDay.hour9,
@@ -349,8 +348,7 @@ export class EventsModalComponent implements OnInit {
         this._calendarServices.currentDay.hour8,
         this._calendarServices.currentDay.hour9,
         this._calendarServices.currentDay.hour10,
-        this._calendarServices.currentDay.hour11,
-        this._calendarServices.currentDay.hour12
+        this._calendarServices.currentDay.hour11
       ];
       let hourIndex = currentEvent.hour;
       let prevEventsInSameFacilitie = [];
@@ -388,12 +386,7 @@ export class EventsModalComponent implements OnInit {
                             if (res === false) {
                               let res = await this.fixEventPosition(event, 11);
                               if (res === false) {
-                                let res = await this.fixEventPosition(event, 12);
-                                if(res === false){
-                                  return
-                                } else {
-                                  currentEvent.position = event.position + event.duration;
-                                }
+                                return;
                               } else {
                                 currentEvent.position = event.position + event.duration;
                               }
@@ -466,7 +459,7 @@ export class EventsModalComponent implements OnInit {
       this.createMode = false;
       this.modifyMode = false;
 
-      this.spaceAvailable = 13;
+      this.spaceAvailable = 12;
       this.startPosition = null;
 
       this.timeValue1=0;

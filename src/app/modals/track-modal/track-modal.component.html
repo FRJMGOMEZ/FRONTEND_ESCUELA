@@ -19,7 +19,7 @@
                             <hr>
                             <h5 class='text-center'>ASIGNACIONES</h5>
                             <div *ngFor="let assignation of track.assignations" class='d-flex justify-content-between'>
-                                <p *ngIf="assignation.artist['indexcard']">{{assignation.artist['indexcard']['name']}}</p>
+                                <p *ngIf="assignation.artist['indexcard']">{{assignation.artist['indexcard'].name}}</p>
                                 <p>% asignado :{{assignation.percent}}</p>
                                 <button (click)="removeAssignation(assignation.artist['_id'])" class='btn btn-danger'>x</button>
                             </div>

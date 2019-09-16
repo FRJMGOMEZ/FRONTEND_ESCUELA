@@ -16,14 +16,12 @@
           <tbody class="mb-0">
             <tr *ngFor="let income of _incomeServices.incomesNotLiquidated let i = index"
               class="d-flex justify-content-around" style="width: 100%">
-              <td *ngIf="income.debitor" style="width:10%">{{income.debitor.name}}</td>
+              <td style="width:10%">{{income.debitor.name}}</td>
               <td style="width:10%">{{income.liquidatedAmount}}</td>
               <td style="width:10%">{{income.notLiquidatedAmount}}</td>
               <td style="width:10%">
                 <button (click)='postPayments(income._id)' class="btn btn-warning">Liquidar</button>
-                <!--
-<button *ngIf="income.liquidatedAmount === 0" class="btn btn-warning"><i class="fas fa-edit"></i></button>
-                -->
+                <button *ngIf="income.liquidatedAmount === 0" class="btn btn-warning"><i class="fas fa-edit"></i></button>
               </td>
               <td style="width:60%">
                 <table class=' table scrollableTable' style='height:100px;width:100%'>
@@ -38,7 +36,7 @@
                       class="d-flex justify-content-around" style="width:100%">
                       <td style="width:20%">{{payment.date | date}}</td>
                       <td style="width:20%">{{payment.amount}}</td>
-                      <td *ngIf="payment.artist" style="width:20%">{{payment.artist.indexcard['name']}}</td>
+                      <td style="width:20%">{{payment.artist.indexcard.name}}</td>
                       <td style="width:40%">{{payment._id}}</td>
                     </tr>
                   </tbody>

@@ -37,14 +37,6 @@ export class LetterService {
        if(this.letters.length > 0){
          this.letterSelectedId = this.letters[this.letters.length - 1]._id;
          this.selectLetter();
-       }else{
-         this.form = new FormGroup({
-           name: new FormControl('', Validators.required),
-           user: new FormControl('', [Validators.required, Validators.email]),
-           content: new FormControl('', Validators.required),
-           bottom: new FormControl('', Validators.required)
-         })
-         this.setNewLetter();
        }
     }))
   }            
@@ -56,8 +48,7 @@ export class LetterService {
       content: new FormControl('', Validators.required),
       bottom: new FormControl('', Validators.required)
     })
-    console.log(this.letterSelectedId);
-    let letterSelected = this.letters.filter((letter:Letter)=>{return letter._id === this.letterSelectedId})[0];
+    let letterSelected = this.letters.filter((letter:Letter)=>{return letter._id === this.letterSelectedId})[0]
     if(letterSelected){
       await letterSelected.content.forEach((extract: string, index: number) => {
         letterSelected.content[index] = letterSelected.content[index].split('\n').join(' ');
@@ -105,21 +96,18 @@ export class LetterService {
     newLetter.name = value.name;
 
     if(!this.letterSelectedId){
-      console.log('setNeLetter');
       let url = `${URL_SERVICES}letter`
       return this.http.post(url, newLetter, { headers: this._userServices.headers }).pipe(map((res: any) => {
         this.letters.push(res.letter);
         this.letterSelectedId = res.letter._id;
+        this.selectLetter()
         Swal.fire({
           text: `Nuevo modelo ${this.form.value.name} creado`,
           showCloseButton: true,
           type: "success"
-        }).then(()=>{
-          this.selectLetter()
-        })       
+        })
       }))
     }else{
-      console.log(this.letterSelectedId);
       let url = `${URL_SERVICES}letter/${this.letterSelectedId}`
       return this.http.put(url, newLetter, { headers: this._userServices.headers }).pipe(map((res: any) => {
         this.letters.forEach((letter:Letter,index:number)=>{

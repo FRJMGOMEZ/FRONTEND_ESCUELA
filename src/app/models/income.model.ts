@@ -1,5 +1,5 @@
-import { Debitor } from './debitor.modal';
 import { Payment } from './payment.model';
+import { Debitor } from './debitor.modal';
 
 export class Income {
     constructor(
@@ -8,7 +8,7 @@ export class Income {
         public date: Date,
         public liquidatedAmount?: number,
         public description?:string,
-        public payments?: Payment[],
+        public payments?: string[] |Payment[],
         public _id?: string) {
     }
 }

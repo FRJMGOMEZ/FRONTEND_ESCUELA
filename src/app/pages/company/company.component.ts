@@ -3,7 +3,6 @@ import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../providers/incomes.service';
 import { timer } from 'rxjs';
-import { DemoService } from 'src/app/providers/demo.service';
 
 @Component({
   selector: 'app-company',
@@ -27,11 +26,9 @@ export class CompanyComponent implements OnInit, OnDestroy {
   public labels: Date[]=[]
 
   constructor(public _paymentServices: PaymentsService,
-              public _incomeServices:IncomesService,
-              public _demoServices:DemoService) { }
+              public _incomeServices:IncomesService) { }
 
   async ngOnInit() {
-    this._demoServices.companyPopup()
     this._paymentServices.state = 'CARGO';
   }
 
@@ -53,6 +50,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
       await this.checkDates();
       this.checkNumberOfDays().then(async (labelsNumber: number) => {
         await this.setLabels(labelsNumber);
+        console.log('emit');
         this.notification.emit(this.chartSelected);
       })
     })

@@ -11,17 +11,26 @@ import { OverviewComponent } from '../overview.component';
   templateUrl: './artist.component.html',
   styleUrls: ['./artist.component.scss']
 })
-export class ArtistComponent {
+export class ArtistComponent implements OnInit {
 
   @ViewChild('input') input: ElementRef
 
   @Input('artistId') artistId: string
 
-  constructor(public _managerServices: ManagerService,
-    private _indexcardModalController: IndexcardModalController,
-    private _trackModalController: TrackModalController,
-    public overviewComponent: OverviewComponent,
-    public _assignationsModalController: AssignationsModalController) { }
+  ngOnInit(): void {
+    if(this.artistId){
+    this._managerServices.artist.payments =  _.sortBy(this._managerServices.artist.payments,(payment)=>{
+       return payment.track
+    })
+    }
+  }
+
+  constructor(public _managerServices:ManagerService,
+             private _indexcardModalController:IndexcardModalController,
+             private _trackModalController:TrackModalController,
+             public overviewComponent:OverviewComponent,
+             public _assignationsModalController:AssignationsModalController) { }
+
 
   changeFrom(number: number) {
     if (this._managerServices.from + number >= 0) {
