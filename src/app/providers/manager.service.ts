@@ -117,6 +117,7 @@ export class ManagerService {
     item = item || this.item;
     let url = `${URL_SERVICES}${item}?from=${from}&limit=${limit}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      let artists;
       switch (item) {
         case 'tracks': this.tracks = res.tracks; this.count = res.count;
           break;
@@ -128,10 +129,11 @@ export class ManagerService {
           this.artists = res.artists;
           this.count = res.count;
         }else{
-          return res.artists
+          artists = res.artists
         };
           break;
       }
+      return artists;
     }),
       catchError(this._errorHandler.handleError))
   }
