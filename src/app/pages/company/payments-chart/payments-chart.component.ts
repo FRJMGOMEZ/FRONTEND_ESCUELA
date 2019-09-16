@@ -67,7 +67,7 @@ export class PaymentsChartComponent implements OnInit {
     })
   }
 
-  moveRight(direction: string){
+  moveRight(direction?: string){
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
         this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0]);
@@ -91,7 +91,7 @@ export class PaymentsChartComponent implements OnInit {
     }
   }
 
-  moveLeft(direction: string) {
+  moveLeft(direction?: string) {
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
         this.companyComponent.picker0['_selected'] = new Date(this._paymentServices.inputs[0] + 604800000);
