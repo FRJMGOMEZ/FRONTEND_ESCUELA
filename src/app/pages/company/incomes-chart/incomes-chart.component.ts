@@ -67,6 +67,9 @@ constructor(public companyComponent:CompanyComponent,
   }
 
 
+  kldkñlañdkaklsñ(){
+
+  }
 
   moveRight(direction?: string) {
     if (this.companyComponent.chartBy === 'weeks') {
