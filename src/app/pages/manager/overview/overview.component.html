@@ -61,16 +61,16 @@
       <div class="col-12" style="height:85%">
         <div class="row" style="background-color:white;height:100%">
           <div #searchGetColumn
-            *ngIf="_managerServices.albums.length != 0 || _managerServices.tracks.length != 0 || _managerServices.artists.length != 0"
+            *ngIf="_managerServices.albums.length > 0 || _managerServices.tracks.length > 0 || _managerServices.artists.length > 0"
             style='border:1px solid black; height:100%' class="col-12 p-0 d-flex flex-column">
             <div class='d-flex justify-content-end'>
               <button
                 (click)="_managerServices.albums =[];_managerServices.tracks=[];_managerServices.artists=[];_managerServices.getOrSearch('#')"
                 class='btn btn-danger '>X</button>
             </div>
-            <app-albums *ngIf="_managerServices.albums.length != 0"></app-albums>
-            <app-tracks *ngIf="_managerServices.tracks.length != 0"></app-tracks>
-            <app-artist *ngIf="_managerServices.artists.length != 0"></app-artist>
+            <app-albums *ngIf="_managerServices.albums.length > 0"></app-albums>
+            <app-tracks *ngIf="_managerServices.tracks.length > 0"></app-tracks>
+            <app-artist *ngIf="_managerServices.artists.length > 0"></app-artist>
           </div>
           <div #navigateColumn *ngIf="_managerServices.album || _managerServices.track || _managerServices.artist "
             class='m-0 p-0 col-12' id="accordion2" style='border:1px solid black;height:100%'>
