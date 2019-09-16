@@ -83,7 +83,7 @@
               <td style="width:20%">{{payment.amount}}</td>
               <td *ngIf="'payment.artist'" style="width:20%">{{payment.artist['indexcard']['name']}}</td>
               <td style="width:20%">{{payment.date || date}}</td>
-              <td style="width:20%">{{payment.track.title}}</td>
+              <td *ngIf="payment.track" style="width:20%">{{payment.track.title}}</td>
               <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>
               <td style="width:20%" *ngIf="payment.sent && !payment.sentDate">¡Email enviado!</td>
               <td style="width:20%" *ngIf="payment.sent && payment.sentDate">¡Email enviado el día {{payment.sentDate | date}}!</td>

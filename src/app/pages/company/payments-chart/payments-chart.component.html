@@ -48,7 +48,7 @@
         <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
           <td style="width:25%">{{payment.amount.toFixed(2)}}</td>
           <td style="width:25%">{{payment.date | date: 'M/d/y'}}</td>
-          <td style="width:25%">{{payment.track.title}}</td>
+          <td *ngIf="payment.track" style="width:25%">{{payment.track.title}}</td>
           <td style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' && payment.artist ">{{payment.artist['indexcard']['name']}}</p> <p *ngIf="typeOfSearch === 'CARGOMUSIC' "></p> </td>
         </tr>
       </tbody>
