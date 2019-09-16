@@ -6,7 +6,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let artist of _managerServices.artists let i=index">
-                    <td> <a style="color:blue" routerLinkActive="router-link-active"
+                    <td> <a *ngIf="artist.indexcard" style="color:blue" routerLinkActive="router-link-active"
                             (click)="overviewComponent.idNavigation(artist._id,'artist')">{{artist.indexcard['name']}}</a> </td>
                             <td></td>
                 </tr>
@@ -40,7 +40,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let payment of _managerServices.artist.payments">
-                <td> <a (click)="_managerServices.idNavigation(payment.track['_id'],'artist')">{{payment.track['title']}}</a> </td>
+                <td> <a *ngIf="payment.track" (click)="_managerServices.idNavigation(payment.track['_id'],'artist')">{{payment.track['title']}}</a> </td>
                 <td>
                     <p>{{payment.amount}}</p>
                 </td>

@@ -59,7 +59,7 @@
                             style='height:80px'>
                             <div class='d-flex justify-content-between'
                                 *ngFor="let assignation of _managerServices.album.tracks[i].assignations">
-                                <a (click)="overviewComponent.idNavigation(assignation.artist._id,'artist')"
+                                <a *ngIf="assignation.artist" (click)="overviewComponent.idNavigation(assignation.artist._id,'artist')"
                                     style='color:blue'>{{assignation.artist['indexcard']['name']}} </a>
                                 <p> {{assignation.percent}}%</p>
                             </div>

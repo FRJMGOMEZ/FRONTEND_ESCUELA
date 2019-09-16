@@ -16,7 +16,7 @@
           <tbody class="mb-0">
             <tr *ngFor="let income of _incomeServices.incomesNotLiquidated let i = index"
               class="d-flex justify-content-around" style="width: 100%">
-              <td style="width:10%">{{income.debitor.name}}</td>
+              <td *ngIf="income.debitor" style="width:10%">{{income.debitor.name}}</td>
               <td style="width:10%">{{income.liquidatedAmount}}</td>
               <td style="width:10%">{{income.notLiquidatedAmount}}</td>
               <td style="width:10%">

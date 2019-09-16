@@ -26,7 +26,7 @@
         <button (click)='pushAssignation(trackId)' class='btn btn-primary'><i class="fas fa-edit"></i></button>
         <button (click)="deleteTrack()" class="btn btn-danger" >X</button>
        </div>
-        <div>TITULO: {{_managerServices.track.title}}</div>
+        <div *ngIf="_managerServices.track.title" >TITULO: {{_managerServices.track.title}}</div>
         <div *ngIf="_managerServices.track.album">
             ALBUM:<a (click)="overviewComponent.idNavigation(_managerServices.track.album['_id'],'album')" style='cursor:pointer;color:blue'> {{_managerServices.track.album['title']}}</a>
           </div>
@@ -40,7 +40,7 @@
     <table class='table scrollableTable'>
         <thead>
             <th>Nombre</th>
-            <th>CARGO {{_managerServices.track.percent}}%</th>
+            <th *ngIf="_managerServices.track.percent" >CARGO {{_managerServices.track.percent}}%</th>
         </thead>
         <tbody *ngIf="trackId">
             <tr *ngFor="let assignation of _managerServices.track.assignations let i=index">
