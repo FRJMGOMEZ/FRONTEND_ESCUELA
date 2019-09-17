@@ -31,9 +31,7 @@ export class IncomesService {
   public lastSearchCriteria: string = '';
 
   constructor(private http:HttpClient,
-              private _userServices:UserServices) {
-                console.log('instanced');
-               }
+              private _userServices:UserServices) {}
 
   postIncome(income:Income,debitor?:Debitor){
     let url = `${URL_SERVICES}income`;
@@ -103,7 +101,6 @@ export class IncomesService {
     let from =this.fromINL ? this.incomeType === 'notLiquidated' : this.fromIL;
     let url = `${URL_SERVICES}searchIncomes/${this.inputs}/${this.incomeType}?from=${from}&limit=5`;
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      console.log(res.incomes);
       if(this.incomeType === 'liquidated'){
         this.iLCount=res.count;
         this.incomesLiquidated = res.incomes;

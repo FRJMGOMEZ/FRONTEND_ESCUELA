@@ -16,13 +16,10 @@ export class IncomeModalComponent implements OnInit {
   public income:Income
 
   constructor(public _modalService:IncomeModalController,
-              public _incomeServices:IncomesService) {
-                console.log('income modal init')
-               }
+              public _incomeServices:IncomesService) {}
 
   ngOnInit() {
     this._modalService.notification.subscribe(()=>{ 
-      console.log("incomes modal running")
       if(this._modalService.id){
         let income = this._incomeServices.incomesLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0]
          || this._incomeServices.incomesNotLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0] 

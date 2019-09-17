@@ -19,7 +19,7 @@
             </div>
             <div class="col-12 m-2 p-2" *ngIf="_dashboardServices.unreadMessages">
                 <h5>Tienes mensajes sin leer....</h5>
-                <div class="scrollable" style="height:120px">
+                <div class="scrollable">
                     <table class='table'>
                         <tr>
                             <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3;width:100%'>
@@ -32,11 +32,11 @@
                     </table>
                 </div>
             </div>
-            <div class="col-12 m-2 p-2">
+            <div class="col-12 mt-5 p-2">
                 <div class="row">
-                    <div class='col-12' *ngIf="_dashboardServices.pendingTasks">
+                    <div class='col-12 m-3' *ngIf="_dashboardServices.pendingTasks">
                         <h5>Tienes tareas pendientes de completar ...</h5>
-                        <div class="scrollable" style="height:50%">
+                        <div class="scrollable">
                             <table class='table'>
                                 <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
@@ -49,9 +49,9 @@
                             </table>
                         </div>
                     </div>
-                    <div class='col-12' *ngIf="_dashboardServices.uncheckedTasks">
+                    <div class='col-12 m-3' *ngIf="_dashboardServices.uncheckedTasks">
                         <h5>Se te han asignado nuevas tareas ...</h5>
-                        <div class="scrollable" style="height:50%">
+                        <div class="scrollable">
                             <table class='table'>
                                 <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>

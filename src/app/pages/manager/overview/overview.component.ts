@@ -112,7 +112,6 @@ export class OverviewComponent implements OnInit {
   async idNavigation(id?: string, collection?: string) {
     await this._managerServices.idNavigation(id, collection)
     setTimeout(() => {
-      console.log('what to do');
       this.collapseAcordions(collection)
     },500)
   }

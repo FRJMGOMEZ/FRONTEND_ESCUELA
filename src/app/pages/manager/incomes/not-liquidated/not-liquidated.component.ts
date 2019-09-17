@@ -33,7 +33,6 @@ export class NotLiquidatedComponent implements OnInit {
     if(!this._incomeServices.searchMode){
       this._incomeServices.getIncomesNotLiquidated().subscribe()
     }else{
-      console.log('seacrhMode');
       this.incomesComponent.search();
     }
   }

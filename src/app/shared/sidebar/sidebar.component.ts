@@ -43,7 +43,6 @@ export class SidebarComponent{
 
     if (item === '#' ){
       item = 'albums';
-      console.log(item);
     }
 
     let url = `/overview/${item}/${input}/${from}/${albumId}/${trackId}/${artistId}`

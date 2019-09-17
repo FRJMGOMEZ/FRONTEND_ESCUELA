@@ -31,7 +31,7 @@ export class CalendarService {
               private socket:Socket,
               private _calendarModalController:CalendarModalController,
               private _eventModalController:EventModalController
-          ) {console.log('calendar init')}
+          ) {}
 
   //////// WEEK ///////
 
@@ -233,7 +233,6 @@ export class CalendarService {
             return
           })
         }else{
-          console.log(res.day);
           this.currentDay = res.day;
           return
         }
