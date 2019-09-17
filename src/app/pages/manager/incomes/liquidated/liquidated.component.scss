@@ -6,3 +6,19 @@
     overflow-x: hidden;
     /* Hide the horizontal scroll */
 }
+
+
+@media (min-width: 1700px) {
+    .scrollableTable tbody {
+        height:440px
+    }
+
+    
+}
+@media (min-width: 2200px) {
+
+   .scrollableTable tbody {
+       height:750px
+   }
+}
+ 

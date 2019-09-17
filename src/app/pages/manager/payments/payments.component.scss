@@ -1,0 +1,24 @@
+
+.scrollableTable tbody {
+     height: 120px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+
+@media (min-width: 1700px) {
+    .scrollableTable tbody {
+        height:200px
+    }
+
+    
+}
+@media (min-width: 2200px) {
+
+   .scrollableTable tbody {
+       height:470px
+   }
+}
+ 

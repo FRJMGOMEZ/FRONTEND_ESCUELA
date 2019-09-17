@@ -1,6 +1,21 @@
 canvas{
-
   width: 600px !important;
   height:380px !important;
+}
+
+@media (min-width: 1700px) {
+  canvas{
+  width: 700px !important;
+  height:400px !important;
+
+}   
+}
+@media (min-width: 2200px) {
+  canvas{
+
+  width: 800px !important;
+  height:600px !important;
 
 }
+}
+ 
