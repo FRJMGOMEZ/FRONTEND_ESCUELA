@@ -28,3 +28,25 @@
 .pagesContainerFixed{
 border-right: 0px;
 }
+
+@media (min-width: 1700px) {
+    .printable{
+        margin-top:80px;
+    }
+    .scrollableTable tbody{
+        height:250px
+    } 
+}
+
+@media (min-width: 2200px) {
+    .printable{
+        margin-top:160px;
+    }
+    .scrollableTable tbody {
+        height:300px
+    } 
+}
+
+
+
+ 

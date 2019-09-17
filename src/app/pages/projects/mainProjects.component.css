@@ -1,0 +1,17 @@
+.scrollable{
+    height:350px
+}
+
+@media (min-width: 1700px) {
+    .scrollable{
+    height:450px
+}
+ 
+}
+
+@media (min-width: 2200px) {
+    .scrollable{
+    height:550px
+}
+ 
+}

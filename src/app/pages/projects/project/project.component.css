@@ -4,3 +4,25 @@
     border: 1px solid black;
     cursor: pointer;
 }
+
+
+.projectBottomFrame{
+    height:500px
+}
+
+@media (min-width: 1700px) {
+
+    .projectBottomFrame{
+    height:600px
+}
+  
+}
+
+@media (min-width: 2200px) {
+
+    .projectBottomFrame{
+    height:1000px
+}
+   
+}
+ 

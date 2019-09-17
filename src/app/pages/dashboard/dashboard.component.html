@@ -17,28 +17,33 @@
                 <h5 class='text-center'>No hay nuevas notificaciones
                 </h5>
             </div>
-            <div class="col-12 m-2 p-2" *ngIf="_dashboardServices.unreadMessages">
+            <div class="col-12 " *ngIf="_dashboardServices.unreadMessages">
                 <h5>Tienes mensajes sin leer....</h5>
-                <div class="scrollable">
-                    <table class='table'>
-                        <tr>
-                            <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3;width:100%'>
-                                <div>
-                                    <p><i class="far fa-bell"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
+                    <table class='table scrollableTable'>
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
+                                    <div>
+                                        <p><i class="far fa-bell"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a
+                                                style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
-                </div>
             </div>
-            <div class="col-12 mt-5 p-2">
+            <div class="col-12 p-2">
                 <div class="row">
-                    <div class='col-12 m-3' *ngIf="_dashboardServices.pendingTasks">
+                    <div class='col-12' *ngIf="_dashboardServices.pendingTasks">
                         <h5>Tienes tareas pendientes de completar ...</h5>
-                        <div class="scrollable">
-                            <table class='table'>
-                                <tr>
+                        <div >
+                            <table class='table scrollableTable'>
+                                <thead></thead>
+                                <tbody>
+                                    <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
                                         <div *ngIf="project.pendingTasks">
                                             <p><i class="far fa-bell"></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
@@ -46,19 +51,26 @@
                                         </div>
                                     </td>
                                 </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class='col-12 m-3' *ngIf="_dashboardServices.uncheckedTasks">
+                    <div class='col-12 ' *ngIf="_dashboardServices.uncheckedTasks">
                         <h5>Se te han asignado nuevas tareas ...</h5>
-                        <div class="scrollable">
-                            <table class='table'>
-                                <tr>
-                                    <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
-                                        <p *ngIf="project.uncheckedTasks"><i class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
-                                        </p>
-                                    </td>
-                                </tr>
+                        <div >
+                            <table class='table scrollableTable'>
+                              <thead></thead>
+                                <tbody>
+                                    <tr>
+                                        <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
+                                            <p *ngIf="project.uncheckedTasks"><i
+                                                    class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el
+                                                proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
                             </table>
                         </div>
                     </div>
