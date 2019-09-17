@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-5">
                         <div class="row btn btn-group">
                             <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning">LIQUIDACIONES</button>
                             <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning">INGRESOS</button>
@@ -52,6 +52,9 @@
                             </div>
                         </div>
                     </div>
+                        <div class="col-1 d-flex justify-content-end align-items-center animated shake">
+                            <i (click)="_demoServices.graphsPopup(true)" class="fas fa-info m-4" style='cursor:pointer;color:blue'></i>
+                        </div>
                 </div>
             </div>
             <div class="col-12 mb-4"style="height:5%">

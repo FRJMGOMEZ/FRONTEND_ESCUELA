@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
 import { IndexcardModalController } from '../../../modals/index-card-modal/indexcardModalController';
+import { DemoService } from '../../../providers/demo.service';
 
 @Component({
   selector: 'app-overview',
@@ -22,7 +23,8 @@ export class OverviewComponent implements OnInit {
     public _managerServices: ManagerService,
     public _albumsModalController: AlbumModalController,
     private _indexcardModalController: IndexcardModalController,
-    private renderer: Renderer2) { }
+    private renderer: Renderer2,
+    public _demoServices:DemoService) { }
 
   ngOnInit() {
 
@@ -102,11 +104,11 @@ export class OverviewComponent implements OnInit {
         }
       }
     })
+    this._demoServices.overviewPopup();
   }
 
   ngAfterViewChecked(): void {
     this.columnsSize()
-
   }
 
   async idNavigation(id?: string, collection?: string) {

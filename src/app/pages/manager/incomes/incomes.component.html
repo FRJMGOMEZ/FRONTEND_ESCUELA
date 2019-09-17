@@ -12,6 +12,7 @@
             <button class="btn btn-warning" [ngStyle]="{'opacity':buttonsStyles('notLiquidated')}"
               (click)="_incomeServices.incomeType='notLiquidated'">INGRESOS NO LIQUIDADOS</button>
           </div>
+          <div class="col-2"></div>
           <div class="col-7 m-2">
             <div class="row d-flex justify-content-around">
               <div class="col-6 d-flex justify-content-around">
@@ -63,6 +64,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="col-2 d-flex justify-content-end align-items-center animated shake">
+            <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info m-4" style='cursor:pointer;color:blue'></i>
           </div>
         </div>
       </div>

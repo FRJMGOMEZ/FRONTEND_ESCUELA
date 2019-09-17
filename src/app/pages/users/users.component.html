@@ -57,8 +57,8 @@
             </tbody>
         </table>
         <div class='d-flex justify-content-around'>
-            <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-secondary'>Previous</button>
-            <button *ngIf="_userServices.count > from+5" (click)='changeFrom(5)' class='btn btn-secondary'>Following</button>
+            <button *ngIf="from && from > 0" (click)='changeFrom(-5)' class='btn btn-warning'>PREV</button>
+            <button *ngIf="_userServices.count > from+5" (click)='changeFrom(5)' class='btn btn-warning'>NEXT</button>
         </div>
     </div>
   </div>

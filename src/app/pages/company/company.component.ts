@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef,EventEmitter, Outpu
 import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../providers/incomes.service';
+import{DemoService} from '../../providers/demo.service';
 import { timer } from 'rxjs';
 
 @Component({
@@ -26,10 +27,12 @@ export class CompanyComponent implements OnInit, OnDestroy {
   public labels: Date[]=[]
 
   constructor(public _paymentServices: PaymentsService,
-              public _incomeServices:IncomesService) { }
+              public _incomeServices:IncomesService,
+              public _demoServices:DemoService) { }
 
   async ngOnInit() {
     this._paymentServices.state = 'CARGO';
+    this._demoServices.graphsPopup();
   }
 
   changeSelection(type:string){
