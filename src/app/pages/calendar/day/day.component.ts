@@ -20,6 +20,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   @ViewChild('printable') printable: ElementRef;
   @ViewChild("dayPlace", { read: ElementRef }) dayPlace: ElementRef;
+  @ViewChild("rowDayPlace", { read: ElementRef }) rowDayPlace: ElementRef;
 
   inProgress: boolean = true;
 
@@ -35,7 +36,8 @@ export class DayComponent implements OnInit, OnDestroy {
   facilitieFrom: number = 0;
   cardWidth: string;
   position: number = 0;
-  heightOfEventsFrame: number = 520;
+  heightOfEventsFrame: number;
+  heightPerCard:number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,10 +48,14 @@ export class DayComponent implements OnInit, OnDestroy {
     public _calendarModalController: CalendarModalController,
     public _facilitieServices: FacilitiesService,
     public _demoServices:DemoService,
-    private _spinnerServices:SpinnerService
+    private _spinnerServices:SpinnerService,
+    public renderer:Renderer2
   ) {}
 
   ngOnInit() {
+
+    this.checkWindowSize();
+
     this.activatedRoute.params.subscribe(async(params)=>{
       let dayId = await params['dayId'];
       let weekId = await params['weekId'];
@@ -162,7 +168,28 @@ export class DayComponent implements OnInit, OnDestroy {
     this.getWeeksAroundDates()});
   }
 
-  onResize(){
+  checkWindowSize(){
+    if (window.innerHeight > 720) {
+      if(window.innerHeight > 1000){
+        this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '1040px');
+        this.heightOfEventsFrame = 1040;
+        this.heightPerCard = 80;
+
+      }else{
+        this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '650px');
+        this.heightOfEventsFrame = 650;
+        this.heightPerCard = 50;
+      }
+    }else{
+      this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '520px');
+      this.heightOfEventsFrame = 520;
+      this.heightPerCard = 40;
+    }
+
+  }
+
+  onResize(event:any){
+    this.checkWindowSize();
     this.inProgress = true;
     this._spinnerServices.openSpinner();
     this.init()

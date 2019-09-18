@@ -99,7 +99,7 @@
                 <div #dayPlace  class="col-12">
                     <div class="row">
                         <div class="col-1 m-0 p-0">
-                            <div  class="row d-flex flex-column card-group p-0 m-0 " style='height:520px;'>
+                            <div #rowDayPlace  class="row d-flex flex-column card-group p-0 m-0 " style='height:520px;'>
                                 <div class="card ">
                                     <div class="card-body text-center">
                                         8-9
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div (window:resize)="onResize()"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " style='height:520px'>
+                        <div (window:resize)="onResize($event)"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " [ngStyle]="{'height': heightOfEventsFrame}">
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
                                 <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': getWidth()} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>
