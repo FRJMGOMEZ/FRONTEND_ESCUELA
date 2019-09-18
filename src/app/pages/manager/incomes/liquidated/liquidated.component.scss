@@ -15,10 +15,29 @@
 
     
 }
-@media (min-width: 2200px) {
 
-   .scrollableTable tbody {
-       height:750px
-   }
+@media (min-width: 2250px) {
+
+    .scrollableTable tbody {
+        height:520px
+    }
+
 }
- 
+
+
+
+@media (min-width: 2800px) {
+    .scrollableTable tbody {
+        height:590px
+    }
+
+}
+
+
+@media (min-width: 3000px) {
+    .scrollableTable tbody {
+        height:900px
+    }
+
+    
+}

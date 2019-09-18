@@ -23,7 +23,7 @@
                 <th>Estado</th>
                 <th></th>
             </thead>
-            <tbody style="height:400px">
+            <tbody>
                 <tr *ngFor="let user of _userServices.users">
                     <td>
                         <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' [src]="user.img | imgPipe:'users'"

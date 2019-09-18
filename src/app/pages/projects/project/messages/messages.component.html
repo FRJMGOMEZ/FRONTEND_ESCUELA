@@ -5,8 +5,8 @@
                 <button class='btn btn-warning' (click)='getMessages()' *ngIf="_chatServices.messagesCount > messages.length">CARGAR MÁS</button>
             </div>
             <div *ngFor="let message of messages">
-                <div class="card">
-                    <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == _userServices.userOnline._id }" style='height:25px;background:white;border:none'>
+                <div class="card ">
+                    <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == _userServices.userOnline._id }" style='background:white;border:none'>
                         <strong [ngClass]="{'badge badge': message.user._id == _userServices.userOnline._id  , 'badge badge-warning': message.user._id != _userServices.userOnline._id  }">{{message.user['name']}}</strong>
                     </div>
                     <div class="card-body m-0 pt-0 pb-0 ">
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer p-0 m-0 text-center" style='height:25px; background:white;border:none'>
+                    <div class="card-footer p-0 m-0 text-center" style='background:white;border:none'>
                         <span class='badge'>{{message.date|date:'medium'}}</span>
                     </div>
                 </div>

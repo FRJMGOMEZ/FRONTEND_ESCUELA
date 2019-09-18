@@ -33,7 +33,7 @@
                                     <div>
                                         <button (click)='addProfessor(_subjectServices.subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid black;background:#F5F1E3">
+                                    <cdk-virtual-scroll-viewport class="virtual-scroll" itemSize='40px' style="border:1px solid black;background:#F5F1E3">
                                         <table class='table'>
                                             <tr>
                                                 <td class="row">
@@ -55,7 +55,7 @@
                                     <div>
                                         <button (click)='addAlumni(_subjectServices.subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <cdk-virtual-scroll-viewport itemSize='40px' style="height:120px;border:1px solid black;background:#F5F1E3">
+                                    <cdk-virtual-scroll-viewport class="virtual-scroll" itemSize='40px' style=";border:1px solid black;background:#F5F1E3">
                                         <table class='table' *ngIf="_subjectServices.subjectSelected.alumnis">
                                             <tr>
                                                 <td class="row">

@@ -8,7 +8,7 @@ import { FilesServices } from '../../providers/files.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styles: []
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit,OnDestroy {
   

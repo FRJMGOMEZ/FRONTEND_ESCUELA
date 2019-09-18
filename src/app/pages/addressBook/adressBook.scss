@@ -1,0 +1,51 @@
+.scrollable{
+    height:55px;
+}
+.virtual-scroll{
+    height:150px
+}
+
+
+
+@media (min-width: 1700px) {
+    .scrollable{
+    height:70px;
+}  
+.virtual-scroll{
+    height:180px
+}
+
+}
+
+
+@media (min-width: 2600px) {
+    .scrollable{
+    height:90px;
+}
+.virtual-scroll{
+    height:200px
+}
+}
+
+
+
+@media (min-width: 2800px) {
+    .scrollable{
+    height:110px;
+} 
+.virtual-scroll{
+    height:220px
+}
+}
+
+
+@media (min-width: 3000px) {
+    .scrollable{
+    height:140px;
+}  
+.virtual-scroll{
+    height:290px
+}
+}
+
+

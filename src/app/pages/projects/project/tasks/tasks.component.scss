@@ -52,3 +52,22 @@
     width: 10%;
     /* Optional */
 }
+
+
+@media (min-width: 1700px) {
+    .scrollableTableMyTasks tbody {
+        height:80px
+    }
+    .scrollableTableGroupTasks tbody {
+     height: 160px;
+    }
+}
+
+@media (min-width: 2250px) {
+    .scrollableTableMyTasks tbody {
+        height:120px
+    }
+    .scrollableTableGroupTasks tbody {
+     height: 180px;
+    }  
+}

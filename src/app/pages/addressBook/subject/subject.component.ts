@@ -9,7 +9,7 @@ import { SwalService } from '../../../providers/swal.service';
 @Component({
   selector: "app-subject",
   templateUrl: "./subject.component.html",
-  styles: []
+  styleUrls: ["../adressBook.scss"]
 })
 export class SubjectComponent implements OnInit, OnDestroy  {
 

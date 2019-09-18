@@ -24,7 +24,7 @@
                 <div><strong> {{alumni.indexcard['name']}}</strong></div>
               </td>
               <td style='width: 40% '>
-                <div class='scrollable ' style="height:80px;border:1px solid black;background:#F5F1E3">
+                <div class='scrollable' style="border:1px solid black;background:#F5F1E3">
                   <div class="d-flex justify-content-around" *ngFor="let subject of _alumniServices.alumnis[i].subjects">
                     <a class="list-group-item list-group-item-action">{{subject.name}}</a>
                     <button (click)="_subjectServices.addOrDeleteAlumni(subject._id,alumni._id).subscribe()"

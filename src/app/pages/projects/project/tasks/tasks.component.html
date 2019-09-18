@@ -1,10 +1,8 @@
-<div class="row d-flex" style='background: #F5F1E3;height:100%'>
-    <div class='col-12 d-flex justify-content-center m-1'>
-        <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+<div class="row d-flex d-flex" style='background: #F5F1E3;height:100%'>
+    <div class='col-12 d-flex flex-column justify-content-center mb-1' >
+        <div class="row d-flex justify-content-center" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
-    </div>
-    <div class='col-12 d-flex flex-column justify-content-center mb-1' >
         <div class="row d-flex justify-content-center">
                 <h5 *ngIf="_projectServices.groupTasks.length>0 text-center">Tareas del grupo de trabajo</h5>
         </div>

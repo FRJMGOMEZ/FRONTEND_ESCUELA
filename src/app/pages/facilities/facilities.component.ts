@@ -7,7 +7,9 @@ import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-facilities',
-  templateUrl: "./facilities.component.html", styles: ['table { table-layout: fixed; }', 'div.scrollable {width: 100%;height: 100%;margin: 0;padding: 0;overflow: auto;}']
+  templateUrl: "./facilities.component.html",
+  styleUrls:["./facilities.component.css"]
+
 })
 export class FacilitiesComponent implements OnInit,OnDestroy {
 

@@ -1,38 +1,40 @@
 <div class="row animated fadeIn pagesContainerFixed">
-    <div class="col-12">
+    <div class="col-12" >
         <div class="row">
             <div class="col-12 list-group">
                 <h5 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h5>
                 <button (click)='postFacilitie()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
             </div>
             <div class="col-12 animated fadeIn" style='background:#DCD4D2'>
-                <table class='table' style='background:#F5F1E3;border:1px solid #F0B841'>
-                    <tr>
+                <table class='table scrollableTable' style='background:#F5F1E3;border:1px solid #F0B841'>
+                    <thead>
                         <th>Nombre</th>
                         <th>Estado</th>
                         <th></th>
-                    </tr>
-                    <tr *ngFor="let facilitie of _facilitieServices.facilities let i=index">
-                        <td>
-                            <div><strong> {{facilitie.name}}</strong></div>
-                        </td>
-                        <td>
-                            <label *ngIf="!facilitie.status">
-                                <button class='btn btn-warning' (click)=changeStatus(facilitie)>Activar</button>
-                            </label>
-                            <label *ngIf="facilitie.status">
-                                <button class='btn btn-warning' (click)=changeStatus(facilitie)>Desactivar</button>
-                            </label>
-                        </td>
-                        <td>
-                            <button (click)='putFacilitie(facilitie._id)' class="btn btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    </thead>   
+                    <tbody>
+                        <tr *ngFor="let facilitie of _facilitieServices.facilities let i=index">
+                            <td>
+                                <div><strong> {{facilitie.name}}</strong></div>
+                            </td>
+                            <td>
+                                <label *ngIf="!facilitie.status">
+                                    <button class='btn btn-warning' (click)=changeStatus(facilitie)>Activar</button>
+                                </label>
+                                <label *ngIf="facilitie.status">
+                                    <button class='btn btn-warning' (click)=changeStatus(facilitie)>Desactivar</button>
+                                </label>
+                            </td>
+                            <td>
+                                <button (click)='putFacilitie(facilitie._id)' class="btn btn-primary">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button (click)="deleteFacilitie(facilitie._id)" class="btn btn-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>           
                 </table>
                 <div class='d-flex justify-content-around mb-2 '>
                     <button *ngIf="from && from > 0" (click)='changeFrom(-5) ' class='btn btn-secondary '>Previous</button>

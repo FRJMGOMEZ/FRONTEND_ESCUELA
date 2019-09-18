@@ -17,6 +17,7 @@ import { UploadFilesModalController } from '../modals/upload-files-modal/uploadF
 import { IncomeModalController } from '../modals/income-modal/incomesModalController.service';
 import { PaymentModalController } from '../modals/payment-modal/paymentModalController.service';
 import { SpinnerService } from '../providers/spinner.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-pages',
@@ -51,10 +52,14 @@ export class PagesComponent implements OnInit {
     this.socket.on('connect', () => {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
+      Swal.fire({
+        text: 'La sesión lleva demasiado tiempo inactiva, te hemos redirigimos al dashboard',
+        showCloseButton: true,
+        type: 'info'
+      })    
     })
     this.socket.on('disconnect',()=>{
       this._userServices.socketOn = false;
-        alert('La conexión con el servidor se ha interrumpido')
         if(!this._alumniModalController.hidden){this._alumniModalController.hideModal()}
         if (!this._calendarModalController.hidden) { this._calendarModalController.hideModal() }
         if (!this._eventsModalController.hidden) { this._eventsModalController.hideModal() }

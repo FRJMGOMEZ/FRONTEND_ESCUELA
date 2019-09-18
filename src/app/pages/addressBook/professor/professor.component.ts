@@ -8,7 +8,8 @@ import { SwalService } from '../../../providers/swal.service';
 
 @Component({
   selector: "app-professor",
-  templateUrl: "./professor.component.html", styles: ['table { table-layout: fixed; }', 'div.scrollable {width: 100%;height: 100%;margin: 0;padding: 0;overflow: auto;}']
+  templateUrl: "./professor.component.html",
+  styleUrls: ["../adressBook.scss"]
 })
 export class ProfessorComponent implements OnInit, OnDestroy {
 

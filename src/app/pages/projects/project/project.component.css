@@ -18,11 +18,26 @@
   
 }
 
-@media (min-width: 2200px) {
+@media (min-width: 2250px) {
 
     .projectBottomFrame{
     height:1000px
 }
-   
+}
+
+
+
+@media (min-width: 2800px) {
+     .projectBottomFrame{
+    height:1000px
+}
+}
+
+
+@media (min-width: 3000px) {
+     .projectBottomFrame{
+    height:1300px
+}
+    
 }
  
