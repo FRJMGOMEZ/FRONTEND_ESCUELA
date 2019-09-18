@@ -53,7 +53,7 @@ export class PagesComponent implements OnInit {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
       Swal.fire({
-        text: 'La sesión lleva demasiado tiempo inactiva, te hemos redirigimos al dashboard',
+        text: 'La sesión lleva demasiado tiempo inactiva( y por ello el servidor gratuito de HEROKU entra en pausa ), te he redirigido al dashboard',
         showCloseButton: true,
         type: 'info'
       })    
