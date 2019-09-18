@@ -49,13 +49,15 @@ export class PagesComponent implements OnInit {
               ) { }
 
   ngOnInit() {
+
     this.socket.on('connect', () => {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
       Swal.fire({
         text: 'La sesión lleva demasiado tiempo inactiva( y por ello el servidor gratuito de HEROKU entra en pausa ), te he redirigido al dashboard',
         showCloseButton: true,
-        type: 'info'
+        type: 'info',
+        heightAuto: false
       })    
     })
     this.socket.on('disconnect',()=>{

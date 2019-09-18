@@ -5,17 +5,52 @@ canvas{
 
 @media (min-width: 1700px) {
   canvas{
-  width: 700px !important;
-  height:400px !important;
+  width: 800px !important;
+  height:500px !important;
 
 }   
 }
-@media (min-width: 2200px) {
+
+@media (min-width: 2250px) {
+
   canvas{
 
-  width: 800px !important;
+  width: 950px !important;
   height:600px !important;
 
 }
+}
+
+@media (min-width: 2600px) {
+
+  canvas{
+
+  width: 1100px !important;
+  height:750px !important;
+
+}
+}
+
+
+
+@media (min-width: 2800px) {
+  canvas{
+
+  width: 1200px !important;
+  height:850px !important;
+
+}
+   
+}
+
+
+@media (min-width: 3000px) {
+  canvas{
+
+  width: 1350px !important;
+  height:1000px !important;
+
+}
+    
 }
  
