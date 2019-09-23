@@ -24,14 +24,14 @@
                 <button *ngIf="income.liquidatedAmount === 0" class="btn btn-warning"><i class="fas fa-edit"></i></button>
               </td>
               <td style="width:60%">
-                <table class=' table scrollableTable' style='height:100px;width:100%'>
+                <table class=' table scrollableTable insideTable' style='height:100px;width:100%'>
                   <thead class="mr-3" class="d-flex justify-content-around">
                     <th class="p-1" style="width:20%">Fecha</th>
                     <th class="p-1" style="width:20%">Importe</th>
                     <th class="p-1" style="width:20%">Artista</th>
                     <th class="p-1" style="width:40%">ID</th>
                   </thead>
-                  <tbody style='height:100px'>
+                  <tbody>
                     <tr *ngFor="let payment of _incomeServices.incomesNotLiquidated[i].payments"
                       class="d-flex justify-content-around" style="width:100%">
                       <td style="width:20%">{{payment.date | date}}</td>

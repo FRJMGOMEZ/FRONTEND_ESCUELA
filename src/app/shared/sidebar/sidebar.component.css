@@ -26,6 +26,19 @@
     margin-bottom: 2px
 }
 
+.lateral_bar .menu a:hover {
+    background: #F0B841;
+    color: black;
+    text-decoration: none
+}
+
+.lateral_bar .menu .data a:hover {
+    background: black;
+    color: white;
+    text-decoration: none;
+}
+
+
 .lateral_bar img {
     width: 100px;
     height: 100px;
@@ -39,21 +52,84 @@
     padding: 20px;
 }
 
-.lateral_bar .menu .footer {
-    background: black;
-    height: 22px;
-    display: block;
-    padding: 20px
+
+
+@media (min-height: 694px) {
+     .lateral_bar .menu a {
+    padding: calc(1.10*20px);
+}
+.lateral_bar img {
+    width: calc(1.10*100px);
+    height: calc(1.10*100px);
+    padding: calc(1.10*10px);
+}
 }
 
-.lateral_bar .menu a:hover {
-    background: #F0B841;
-    color: black;
-    text-decoration: none
+@media (min-height: 781px) {
+     .lateral_bar .menu a {
+    padding: calc(1.25*20px);
+}
+.lateral_bar img {
+    width: calc(1.25*100px);
+    height: calc(1.25*100px);
+    padding: calc(1.25*10px);
+}
+ 
 }
 
-.lateral_bar .menu .data a:hover {
-    background: black;
-    color: white;
-    text-decoration: none;
+@media (min-height: 833px) {
+     .lateral_bar .menu a {
+    padding: calc(1.35*20px);
 }
+.lateral_bar img {
+    width: calc(1.35*100px);
+    height: calc(1.35*100px);
+    padding: calc(1.35*10px);
+}
+ 
+}
+
+@media (min-height: 937px) {
+  .lateral_bar .menu a {
+    padding: calc(1.50*20px);
+}
+.lateral_bar img {
+    width: calc(1.50*100px);
+    height: calc(1.50*100px);
+    padding: calc(1.50*10px);
+}
+}
+
+@media (min-height: 1250px) {
+  .lateral_bar .menu a {
+    padding: calc(2*20px);
+}
+.lateral_bar img {
+    width: calc(2*100px);
+    height: calc(2*100px);
+    padding: calc(2*10px);
+}
+}
+
+@media (min-height: 1875px) {
+     .lateral_bar .menu a {
+    padding: calc(2.90*20px);
+}
+.lateral_bar img {
+    width: calc(2.90*100px);
+    height: calc(2.90*100px);
+    padding: calc(2.90*10px);
+}
+}
+
+@media (min-height: 2500px) {
+  .lateral_bar .menu a {
+    padding: calc(3.90*20px);
+}
+.lateral_bar img {
+    width: calc(3.90*100px);
+    height: calc(3.90*100px);
+    padding: calc(3.90*10px);
+}
+}
+

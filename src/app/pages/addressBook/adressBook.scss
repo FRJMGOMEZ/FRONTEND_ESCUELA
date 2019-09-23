@@ -6,45 +6,66 @@
 }
 
 
-
-@media (min-width: 1700px) {
-    .scrollable{
-    height:70px;
+@media (min-height: 694px) {
+      .scrollable{
+    height:calc(1.1*55px);
 }  
 .virtual-scroll{
-    height:180px
-}
-
-}
-
-
-@media (min-width: 2600px) {
-    .scrollable{
-    height:90px;
-}
-.virtual-scroll{
-    height:200px
+    height:calc(1.1*150px)
 }
 }
 
-
-
-@media (min-width: 2800px) {
-    .scrollable{
-    height:110px;
-} 
-.virtual-scroll{
-    height:220px
-}
-}
-
-
-@media (min-width: 3000px) {
-    .scrollable{
-    height:140px;
+@media (min-height: 781px) {
+ .scrollable{
+    height:calc(1.25*55px);
 }  
 .virtual-scroll{
-    height:290px
+    height:calc(1.25*150px)
+}
+}
+
+@media (min-height: 833px) {
+ .scrollable{
+    height:calc(1.35*55px);
+}  
+.virtual-scroll{
+    height:calc(1.35*150px)
+}
+}
+
+@media (min-height: 937px) {
+ .scrollable{
+    height:calc(1.5*55px);
+}  
+.virtual-scroll{
+    height:calc(1.5*150px)
+}
+}
+
+@media (min-height: 1250px) {
+ .scrollable{
+    height:calc(2*55px);
+}  
+.virtual-scroll{
+    height:calc(2*150px)
+}
+}
+
+@media (min-height: 1875px) {
+  .scrollable{
+    height:calc(3*55px);
+}  
+.virtual-scroll{
+    height:calc(3*150px)
+}
+}
+
+@media (min-height: 2500px) {
+ .scrollable{
+    height:calc(3.9*55px);
+}  
+.virtual-scroll{
+    height:calc(3.9*150px)
 }
 }
 

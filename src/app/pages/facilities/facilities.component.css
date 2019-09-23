@@ -2,20 +2,44 @@
     height: 420px;
 }
 
-@media (min-width: 1700px) {
+@media (min-height: 694px) {
     .scrollableTable tbody{
-    height: 550px;
+    height:calc(1.1*420px);
 }
 }
 
-@media (min-width: 2600px) {
- .scrollableTable tbody{
-    height: 800px;
+@media (min-height: 781px) {
+  .scrollableTable tbody{
+    height:calc(1.25*420px);
 }
 }
 
-@media (min-width: 2800px) {
+@media (min-height: 833px) {
+  .scrollableTable tbody{
+    height:calc(1.35*420px);
+}
+}
+
+@media (min-height: 937px) {
+  .scrollableTable tbody{
+    height:calc(1.5*420px);
+}
+}
+
+@media (min-height: 1250px) {
+  .scrollableTable tbody{
+    height:calc(2*420px);
+}
+}
+
+@media (min-height: 1875px) {
     .scrollableTable tbody{
-    height: 1000px;
+    height:calc(3*420px);
+} 
+}
+
+@media (min-height: 2500px) {
+  .scrollableTable tbody{
+    height:calc(3.9*420px);
 }
 }

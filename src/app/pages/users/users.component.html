@@ -26,7 +26,7 @@
             <tbody>
                 <tr *ngFor="let user of _userServices.users">
                     <td>
-                        <img class='img-fluid' style='height:100px;width:100px; cursor: pointer ' [src]="user.img | imgPipe:'users'"
+                        <img class='img-fluid' style='cursor: pointer ' [src]="user.img | imgPipe:'users'"
                             class='img100 img-circle'>
                     </td>
                     <td>{{user.email}}</td>

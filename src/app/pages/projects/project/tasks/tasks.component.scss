@@ -5,15 +5,6 @@
     display: block;
 }
 
-.scrollableTableGroupTasks tbody {
-     height: 120px;
-    /* Just for the demo          */
-    overflow-y: auto;
-    /* Trigger vertical scroll    */
-    overflow-x: hidden;
-    /* Hide the horizontal scroll */
-}
-
 .scrollableTableGroupTasks table {
     width: 100%;
     /* Optional */
@@ -26,20 +17,9 @@
 }
 
 
-
-
 .scrollableTableMyTasks thead,
 .scrollableTableMyTasks tbody {
     display: block;
-}
-
-.scrollableTableMyTasks tbody {
-     height: 50px;
-    /* Just for the demo          */
-    overflow-y: auto;
-    /* Trigger vertical scroll    */
-    overflow-x: hidden;
-    /* Hide the horizontal scroll */
 }
 
 .scrollableTableMyTasks table {
@@ -53,21 +33,83 @@
     /* Optional */
 }
 
+.scrollableTableMyTasks tbody {
+     height: 50px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
 
-@media (min-width: 1700px) {
-    .scrollableTableMyTasks tbody {
-        height:80px
+.scrollableTableGroupTasks tbody {
+     height: 120px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+
+@media (min-height: 694px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(1.1 *50px)
     }
     .scrollableTableGroupTasks tbody {
-     height: 160px;
+     height: calc(1.1*120px);
     }
 }
 
-@media (min-width: 2250px) {
-    .scrollableTableMyTasks tbody {
-        height:120px
+@media (min-height: 781px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(1.25 *50px)
     }
     .scrollableTableGroupTasks tbody {
-     height: 180px;
-    }  
+     height: calc(1.25*120px);
+    }
+}
+
+@media (min-height: 833px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(1.35 *50px)
+    }
+    .scrollableTableGroupTasks tbody {
+     height: calc(1.35*120px);
+    }
+}
+
+@media (min-height: 937px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(1.5 *50px)
+    }
+    .scrollableTableGroupTasks tbody {
+     height: calc(1.5*120px);
+    }
+}
+
+@media (min-height: 1250px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(2 *50px)
+    }
+    .scrollableTableGroupTasks tbody {
+     height: calc(2*120px);
+    }
+}
+
+@media (min-height: 1875px) {
+   .scrollableTableMyTasks tbody {
+        height:calc(3 *50px)
+    }
+    .scrollableTableGroupTasks tbody {
+     height: calc(3*120px);
+    } 
+}
+
+@media (min-height: 2500px) {
+ .scrollableTableMyTasks tbody {
+        height:calc(3.9 *50px)
+    }
+    .scrollableTableGroupTasks tbody {
+     height: calc(3.9*120px);
+    }
 }

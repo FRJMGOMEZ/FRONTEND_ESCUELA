@@ -1,16 +1,152 @@
 <div class='row d-flex justify-content-center' style='background:#F5F1E3;display:block;height:100%'>
-    <div class="card m-0 p-0 row d-flex flex-row" *ngFor="let file of _projectServices.textFiles"style='height:150px;width:170px'>
-        <div class="col-11 m-0 p-0">
-            <div class="row">
-                <div class="col-12"><img (click)='showFile(file._id)' style='height: 100%;width:100%' class='img-fluid' [src]="file | imgPipe"></div>
-                <div class="col-12"><small>{{file.title}}</small></div>
+    <div class="col-12 d-flex justify-content-center" *ngIf="_projectServices.textFiles.length === 0">
+        <h5>No hay archivos disponibles</h5>
+    </div>
+    <div class="col-12 d-flex flex-column justify-content-start scrollable">   
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i <= 5">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
-            <a  (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i > 5 && i <= 11">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div *ngIf="_projectServices.textFiles.length === 0">
-        <h5>No hay archivos disponibles</h5>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf=" i>11 && i <= 17" >
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row"*ngIf="i > 17 && i <= 23">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row"  *ngIf="i > 23 && i <= 29">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i > 29 && o <= 35">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i > 35 && o <= 40">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i > 40 && o <= 45">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-0 d-flex justify-content-center">
+            <div *ngFor="let file of _projectServices.textFiles let i = index">
+                <div class="card m-0 p-0 row d-flex flex-row" *ngIf="i > 45 && o <= 50">
+                    <div class="col-11 m-0 p-0">
+                        <div class="row">
+                            <div class="col-12"><img (click)='showFile(file._id)' class='img-fluid imgSize'
+                                    [src]="file | imgPipe"></div>
+                            <div class="col-12"><small>{{file.title}}</small></div>
+                        </div>
+                    </div>
+                    <div class="col-1 m-0 p-0" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                        <a (click)='deleteFile(file._id)' routerLinkActive="active"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 </div>

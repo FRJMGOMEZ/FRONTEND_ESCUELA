@@ -8,7 +8,7 @@ import { OverviewComponent } from '../overview.component';
 @Component({
   selector: 'app-tracks',
   templateUrl: './tracks.component.html',
-  styleUrls: ['./tracks.component.scss']
+  styleUrls: ['../overview.component.scss']
 })
 
 export class TracksComponent implements OnInit {

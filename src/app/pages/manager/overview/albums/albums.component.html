@@ -8,7 +8,7 @@
             <tr *ngFor="let album of _managerServices.albums let i=index">
                 <td><a (click)="overviewComponent.idNavigation(album._id,'album')" style='color:blue'>{{album.title}}</a></td>
                 <td>
-                    <div class="scrollable" style="height:80px">
+                    <div class="scrollable">
                         <div *ngFor="let track of _managerServices.albums[i].tracks">
                             <a style="color:blue" routerLinkActive="router-link-active" (click)="overviewComponent.idNavigation(track._id,'track')">
                                {{track.title}}
@@ -55,8 +55,7 @@
                     <td><a (click)="overviewComponent.idNavigation(track._id,'track')" style='color:blue'>{{track.title}}</a>
                     </td>
                     <td>
-                        <div *ngIf="_managerServices.album.tracks[i].assignations.length > 0" class='scrollable'
-                            style='height:80px'>
+                        <div *ngIf="_managerServices.album.tracks[i].assignations.length > 0" class='scrollable'>
                             <div class='d-flex justify-content-between'
                                 *ngFor="let assignation of _managerServices.album.tracks[i].assignations">
                                 <a (click)="overviewComponent.idNavigation(assignation.artist._id,'artist')"

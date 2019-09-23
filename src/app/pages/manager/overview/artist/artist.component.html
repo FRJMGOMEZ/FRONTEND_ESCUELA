@@ -14,7 +14,7 @@
         <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
     </div>
 </div>
-<div class="row scrollableTable m-2" *ngIf="artistId"style="height:100%">
+<div class="row scrollableTable m-2" *ngIf="artistId">
   <div class="col-12 d-flex justify-content-between">
     <div class="d-flex justify-content-start">
        <button (click)="deleteArtist()" class="btn btn-danger">X</button>

@@ -1,8 +1,46 @@
 .scrollableTable tbody {
-     height: 388px;
-    /* Just for the demo          */
-    overflow-y: auto;
-    /* Trigger vertical scroll    */
-    overflow-x: hidden;
-    /* Hide the horizontal scroll */
+     height: 400px;
+}
+
+
+@media (min-height: 694px) {
+ .scrollableTable tbody {
+     height:calc(1.1*400px);
+}
+}
+
+@media (min-height: 781px) {
+ .scrollableTable tbody {
+     height:calc(1.25*400px);
+}
+}
+
+@media (min-height: 833px) {
+ .scrollableTable tbody {
+     height:calc(1.35*400px);
+}
+}
+
+@media (min-height: 937px) {
+ .scrollableTable tbody {
+     height:calc(1.5*400px);
+}
+}
+
+@media (min-height: 1250px) {
+ .scrollableTable tbody {
+     height:calc(2*400px);
+}
+}
+
+@media (min-height: 1875px) {
+   .scrollableTable tbody {
+     height:calc(3*400px);
+} 
+}
+
+@media (min-height: 2500px) {
+ .scrollableTable tbody {
+     height:calc(3.9*400px);
+}
 }

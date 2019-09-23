@@ -49,7 +49,6 @@ export class PagesComponent implements OnInit {
               ) { }
 
   ngOnInit() {
-
     this.socket.on('connect', () => {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
@@ -79,4 +78,10 @@ export class PagesComponent implements OnInit {
     })
     this._userServices.userOnlineSocket().subscribe()
   }
+
+  onResize(){
+  
+  }
+
+  
 }

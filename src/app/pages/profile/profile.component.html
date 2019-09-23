@@ -2,7 +2,7 @@
         <div class='col-12 text-center m-2 d-flex justify-content-center'>
             <div class='d-flex flex-column justify-content-center p-2'>
                 <div>
-                    <img class='img-fluid' style='height:250px;width:250px' [src]="_userServices.userOnline.img | imgPipe">
+                    <img class='img-fluid' [src]="_userServices.userOnline.img | imgPipe">
                 </div>
                 <div>
                     <a (click)='changeImg()'><strong style='cursor: pointer;'>CAMBIAR IMAGEN</strong></a>

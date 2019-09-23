@@ -6,17 +6,17 @@
                             <div class=" col-6 form-check">
                                 <div class="d-flex flex-column">
                                     <div>
-                                        <mat-form-field>
-                                            <input matInput [matDatepicker]="picker0" placeholder="Elige una fecha">
-                                            <mat-datepicker-toggle matSuffix [for]="picker0"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker0></mat-datepicker>
+                                        <mat-form-field class="datePickerContainer" >
+                                            <input matInput class="datePickerInput" [matDatepicker]="picker0" placeholder="Elige una fecha">
+                                            <mat-datepicker-toggle class="datePickerToggle" matSuffix [for]="picker0"></mat-datepicker-toggle>
+                                            <mat-datepicker (open)="calendarEvent()"  #picker0></mat-datepicker>
                                         </mat-form-field>
                                     </div>
                                     <div>
-                                        <mat-form-field>
+                                        <mat-form-field class="datePickerContainer">
                                             <input matInput [matDatepicker]="picker1" placeholder="Elige una fecha">
                                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                                            <mat-datepicker #picker1></mat-datepicker>
+                                            <mat-datepicker  #picker1></mat-datepicker>
                                         </mat-form-field>
                                     </div>
                                 </div>

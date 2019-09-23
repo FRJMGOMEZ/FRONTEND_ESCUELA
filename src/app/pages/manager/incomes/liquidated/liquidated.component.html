@@ -16,14 +16,14 @@
             <td style="width:20%">{{income.debitor?.name}}</td>
             <td style="width:20%">{{income.liquidatedAmount}}</td>
             <td style="width:60%">
-              <table class='table scrollableTable' style='height:100px;width:100%'>
+              <table class='table scrollableTable insideTable'>
                 <thead class="d-flex justify-content-around">
                   <th class='p-1' style="width:20%">Fecha</th>
                   <th class='p-1' style="width:20%">Importe</th>
                   <th class="p-1" style="width:20%">Artista</th>
                   <th class='p-1' style="width:40%">ID</th>
                 </thead>
-                <tbody style='height:70px'>
+                <tbody >
                   <tr *ngFor='let payment of _incomeServices.incomesLiquidated[i].payments' class="d-flex justify-content-around" style="width:100%">
                     <td style="width:20%">{{payment.date | date}}</td>
                     <td style="width:20%">{{payment.amount}}</td>

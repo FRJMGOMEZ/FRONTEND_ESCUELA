@@ -1,6 +1,6 @@
 .scroll-box {
     overflow-y: scroll;
-    height: 350px;
+    height: 320px;
     padding: 1rem;
 
 }
@@ -19,29 +19,111 @@
     }
 }
 
+.cardWithImage{
+    height:150px;
+}
+
 .form-control:focus {
   border-color: white;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-
-@media (min-width: 1700px) {
-
-.scroll-box{
-    height:450px
-}
-  
+.imgSize{
+    height:65px;
+    width:65px
 }
 
-@media (min-width: 2600px) {
-
-    
-.scroll-box{
-    height:750px
-}
+@media (min-height: 694px) {
+ .scroll-box{
+    height:calc(1.1*320px)
 }
 
-.myMessageCard{
-    height:25px
+.imgSize{
+    height:calc(1.1*65px);
+    width:calc(1.1*65px)
 }
+.cardWithImage{
+    height:calc(1.1*150px);
+}
+}
+
+@media (min-height: 781px) {
+ .scroll-box{
+    height:calc(1.25*320px)
+}
+.imgSize{
+    height:calc(1.25*65px);
+    width:calc(1.25*65px)
+}
+.cardWithImage{
+    height:calc(1.25*150px);
+}
+}
+
+@media (min-height: 833px) {
+ .scroll-box{
+    height:calc(1.35*320px)
+}
+.imgSize{
+    height:calc(1.35*65px);
+    width:calc(1.35*65px)
+}
+.cardWithImage{
+    height:calc(1.35*150px);
+}
+}
+
+@media (min-height: 937px) {
+  .scroll-box{
+    height:calc(1.5*320px)
+}
+.imgSize{
+    height:calc(1.5*65px);
+    width:calc(1.5*65px)
+}
+.cardWithImage{
+    height:calc(1.5*150px);
+}
+}
+
+@media (min-height: 1250px) {
+  .scroll-box{
+    height:calc(2*320px)
+}
+
+.imgSize{
+    height:calc(2*65px);
+    width:calc(2*65px)
+}
+.cardWithImage{
+    height:calc(2.2*150px);
+}
+}
+
+@media (min-height: 1875px) {
+    .scroll-box{
+    height:calc(3*320px)
+}
+.imgSize{
+    height:calc(3*65px);
+    width:calc(3*65px)
+} 
+.cardWithImage{
+    height:calc(3.3*150px);
+}
+}
+
+@media (min-height: 2500px) {
+  .scroll-box{
+    height:calc(3.9*320px)
+}
+.imgSize{
+    height:calc(3.9*65px);
+    width:calc(3.9*65px)
+}
+.cardWithImage{
+    height:calc(4.2*150px);
+}
+}
+

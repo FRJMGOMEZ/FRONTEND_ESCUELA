@@ -9,7 +9,7 @@ import { OverviewComponent } from '../overview.component';
 @Component({
   selector: 'app-artist',
   templateUrl: './artist.component.html',
-  styleUrls: ['./artist.component.scss']
+  styleUrls: ['../overview.component.scss']
 })
 export class ArtistComponent implements OnInit {
 

@@ -1,0 +1,111 @@
+
+.imgSize{
+    height:110px;
+    width:110px
+}
+.card{
+    height:150px;
+    width:120px;
+}
+
+.scrollable{
+    height:400px
+}
+
+@media (min-height: 694px) {
+ .imgSize{
+    height:calc(1.1*110px);
+    width:calc(1.1*110px)
+}
+.card{
+    height:calc(1.1*150px);
+    width:calc(1.1*120px);
+}
+.scrollable{
+    height:calc(1.1*400px);
+}
+}
+
+@media (min-height: 781px) {
+ .imgSize{
+    height:calc(1.25*110px);
+    width:calc(1.25*110px)
+}
+.card{
+    height:calc(1.25*150px);
+    width:calc(1.25*120px);
+}
+.scrollable{
+    height:calc(1.25*400px);
+}
+}
+
+@media (min-height: 833px) {
+ .imgSize{
+    height:calc(1.35*110px);
+    width:calc(1.35*110px)
+}
+.card{
+    height:calc(1.35*150px);
+    width:calc(1.35*120px);
+}
+.scrollable{
+    height:calc(1.35*400px);
+}
+}
+
+@media (min-height: 937px) {
+ .imgSize{
+    height:calc(1.5*110px);
+    width:calc(1.5*110px)
+}
+.card{
+    height:calc(1.5*150px);
+    width:calc(1.5*120px);
+}
+.scrollable{
+    height:calc(1.5*400px);
+}
+}
+
+@media (min-height: 1250px) {
+ .imgSize{
+    height:calc(2*110px);
+    width:calc(2*110px)
+}
+.card{
+    height:calc(2*150px);
+    width:calc(2*120px);
+}
+.scrollable{
+    height:calc(2*400px);
+}
+}
+
+@media (min-height: 1875px) {
+  .imgSize{
+    height:calc(3*110px);
+    width:calc(3*110px)
+}
+.card{
+    height:calc(3*150px);
+    width:calc(3*120px);
+}
+.scrollable{
+    height:calc(3*400px);
+}  
+}
+
+@media (min-height: 2500px) {
+ .imgSize{
+    height:calc(3.9*110px);
+    width:calc(3.9*110px)
+}
+.card{
+    height:calc(3.9*150px);
+    width:calc(3.9*120px);
+}
+.scrollable{
+    height:calc(3.9*400px);
+}
+}

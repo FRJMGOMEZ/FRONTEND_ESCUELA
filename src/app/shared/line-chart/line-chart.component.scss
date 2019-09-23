@@ -1,56 +1,55 @@
 canvas{
   width: 600px !important;
-  height:380px !important;
+  height:300px !important;
 }
 
-@media (min-width: 1700px) {
+
+@media (min-height: 694px) {
   canvas{
-  width: 800px !important;
-  height:500px !important;
-
-}   
+  width: calc(1.10 * 600px) !important;
+  height:calc(1.10 *300px) !important;
+}
 }
 
-@media (min-width: 2250px) {
-
+@media (min-height: 781px) {
   canvas{
-
-  width: 950px !important;
-  height:600px !important;
-
+  width: calc(1.25 * 600px) !important;
+  height:calc(1.25 *300px) !important;
 }
 }
 
-@media (min-width: 2600px) {
-
+@media (min-height: 833px) {
   canvas{
-
-  width: 1100px !important;
-  height:750px !important;
-
+  width: calc(1.35 * 600px) !important;
+  height:calc(1.35 *300px) !important;
 }
 }
 
-
-
-@media (min-width: 2800px) {
+@media (min-height: 937px) {
   canvas{
-
-  width: 1200px !important;
-  height:850px !important;
-
+  width: calc(1.5 * 600px) !important;
+  height:calc(1.5 *300px) !important;
 }
-   
 }
 
-
-@media (min-width: 3000px) {
+@media (min-height: 1250px) {
   canvas{
-
-  width: 1350px !important;
-  height:1000px !important;
-
+  width: calc(2 * 600px) !important;
+  height:calc(2 *300px) !important;
 }
-    
+}
+
+@media (min-height: 1875px) {
+    canvas{
+  width: calc(2.9 * 600px) !important;
+  height:calc(2.9 *300px) !important;
+}
+}
+
+@media (min-height: 2500px) {
+ canvas{
+  width: calc(3.9 * 600px) !important;
+  height:calc(3.9 *300px) !important;
+}
 }
  

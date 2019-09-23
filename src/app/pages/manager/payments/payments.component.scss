@@ -9,17 +9,51 @@
 }
 
 
-@media (min-width: 1700px) {
-    .scrollableTable tbody {
-        height:180px
+@media (min-height: 694px) {
+ .scrollableTable tbody {
+        height: calc(1.1*120px)
         
 }
 }
 
-@media (min-width: 3000px) {
-    .scrollableTable tbody {
-        height:520px
-    }
+@media (min-height: 781px) {
+ .scrollableTable tbody {
+        height: calc(1.25*120px)
+        
+}
+}
 
-    
+@media (min-height: 833px) {
+  .scrollableTable tbody {
+        height: calc(1.35*120px)
+        
+}
+}
+
+@media (min-height: 937px) {
+ .scrollableTable tbody {
+        height: calc(1.5*120px)
+        
+}
+}
+
+@media (min-height: 1250px) {
+ .scrollableTable tbody {
+        height: calc(2*120px)
+        
+}
+}
+
+@media (min-height: 1875px) {
+   .scrollableTable tbody {
+        height: calc(3*120px)
+        
+} 
+}
+
+@media (min-height: 2500px) {
+ .scrollableTable tbody {
+        height: calc(3.9*120px)
+        
+}
 }

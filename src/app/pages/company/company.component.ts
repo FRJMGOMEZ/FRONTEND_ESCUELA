@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef,EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef,EventEmitter, Output, Renderer2 } from '@angular/core';
 import { PaymentsService } from '../../providers/payments.service';
 import { DaysOfWeekPipe } from 'src/app/pipes/days-of-week.pipe';
 import { IncomesService } from '../../providers/incomes.service';
 import{DemoService} from '../../providers/demo.service';
 import { timer } from 'rxjs';
+import { MatDatepicker } from '@angular/material';
 
 @Component({
   selector: 'app-company',
@@ -18,9 +19,11 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   public chartSelected: string = 'payments';
 
+  @ViewChild('mat-datepicker-0') datePicker:ElementRef
 
-  @ViewChild("picker0") picker0: ElementRef;
-  @ViewChild("picker1") picker1: ElementRef;
+
+  @ViewChild("picker0") picker0: MatDatepicker<any>;
+  @ViewChild("picker1") picker1: MatDatepicker<any>
 
   public notification = new EventEmitter<string>();
 
@@ -28,11 +31,17 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   constructor(public _paymentServices: PaymentsService,
               public _incomeServices:IncomesService,
-              public _demoServices:DemoService) { }
+              public _demoServices:DemoService,
+              private renderer:Renderer2) { }
 
   async ngOnInit() {
     this._paymentServices.state = 'CARGO';
     this._demoServices.graphsPopup();
+   
+  }
+
+  calendarEvent(){
+     console.log(this.datePicker)
   }
 
   changeSelection(type:string){

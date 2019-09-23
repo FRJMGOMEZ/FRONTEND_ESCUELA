@@ -5,21 +5,21 @@
                 <button class='btn btn-warning' (click)='getMessages()' *ngIf="_chatServices.messagesCount > messages.length">CARGAR MÁS</button>
             </div>
             <div *ngFor="let message of messages">
-                <div class="card ">
+                <div class="card" [ngClass]="{'cardWithImage': message.file}" >
                     <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == _userServices.userOnline._id }" style='background:white;border:none'>
                         <strong [ngClass]="{'badge badge': message.user._id == _userServices.userOnline._id  , 'badge badge-warning': message.user._id != _userServices.userOnline._id  }">{{message.user['name']}}</strong>
                     </div>
                     <div class="card-body m-0 pt-0 pb-0 ">
-                        <div class="row d-flex" [ngClass]="{'justify-content-end': message.user._id == _userServices.userOnline._id }">
+                        <div class="row " [ngClass]="{'justify-content-end': message.user._id == _userServices.userOnline._id }">
                             <div>
                                 <p>{{message.message}}</p>
                             </div>
                             <div class="col-12"></div>
                             <div *ngIf="message.file">
-                                <img (click)="openFile(message.file['_id'])" [src]="message.file|imgPipe : 'projectFiles'" alt="" style='height:100px;width:100px'>
+                                <img class="imgSize" (click)="openFile(message.file['_id'])" [src]="message.file|imgPipe : 'projectFiles'" alt="">
                             </div>
                             <div class="col-12"></div>
-                            <div *ngIf="message.file" style='width:100px;border:none'>
+                            <div *ngIf="message.file" style='border:none'>
                                 <span><small>{{message.file['title']}}</small></span>
                             </div>
                         </div>
@@ -31,19 +31,22 @@
             </div>
         </div>
     </div>
-    <div class='col-12 input-group mt-3 d-flex flex-row align-items-end' style="background:white">
-        <div class='row m-2 p-2' *ngIf="temporaryImg || fileUpload" style='width:20%'>
-            <div class='col-11 p-0 m-0'>
-                <img *ngIf="temporaryImg" class='img-fluid' [src]="temporaryImg | imgPipe" alt=''>
-                <img *ngIf='fileUpload' class='img-fluid' [src]="fileUpload | imgPipe" alt="">
+    <div class='col-12 input-group mt-2 d-flex flex-row align-items-end' style="background:white">
+        <div class='row' *ngIf="temporaryImg || fileUpload" style='width:20%'>
+            <div class='col-7 p-0 m-0'>
+                <img  *ngIf="temporaryImg" class='img-fluid imgSize m-2' [src]="temporaryImg | imgPipe" alt=''>
+                <img   *ngIf='fileUpload' class='img-fluid imgSize m-2' [src]="fileUpload | imgPipe" alt="">
+            </div>
+            <div class="col-4 d-flex justify-content-center p-0 m-0">
+                <label><input [(ngModel)]="download" type="checkbox">Permitir descarga</label>
             </div>
             <div class="col-1 p-0 m-0">
                 <button class='btn btn-warning' (click)='fileUpload=null;temporaryImg=null'>x</button>
             </div>
-            <div class="col-12 p-0">
-                <span> <small>{{fileTitle}}</small></span>
-                <label><input [(ngModel)]="download"type="checkbox">Permitir descarga</label>
+            <div class="col-12">
+                    <span> <small>{{fileTitle}}</small></span>
             </div>
+            
         </div>
         <div [ngStyle]="{'width': temporaryImg || fileUpload ? '75%' : '100%'}">
             <textarea (keyup.enter)='sendMessage()' #input [(ngModel)]="message" class='form-control ' value="" placeholder="Send Message" style="border: none">

@@ -61,9 +61,10 @@ export class UserServices {
         let url = `${URL_SERVICES}user`;
         return this.http.post(url, user).pipe(map((res:any)=>{
             Swal.fire({
-             text:res.message,
-             type:'info',
-             showCloseButton:true
+                text: res.message,
+                type: 'info',
+                showCloseButton: true,
+                heightAuto: false
             })
         })
          ,catchError(this._errorHandler.handleError)

@@ -8,7 +8,7 @@ import { timer, Subscription } from 'rxjs';
 @Component({
   selector: 'app-incomes-chart',
   templateUrl: './incomes-chart.component.html',
-  styleUrls: ['./incomes-chart.component.scss']
+  styleUrls: ['./incomes-chart.component.css']
 })
 export class IncomesChartComponent implements OnInit, OnDestroy {
 

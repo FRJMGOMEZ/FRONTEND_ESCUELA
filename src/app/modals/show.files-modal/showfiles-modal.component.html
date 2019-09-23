@@ -1,13 +1,13 @@
 <div *ngIf="file" class='animated fadeIn'>
-    <div class="modal" style='display:flex' role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+    <div class="modal"  style='display:flex' role="dialog">
+        <div  [ngClass]="{'imgModalContent': imgFormats.indexOf(file.format)>=0 , 'textModalContent':textFormats.indexOf(file.format)>=0  }" class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content"  >
                 <div class="modal-header">
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div *ngIf="file" class="modal-body">
+                <div *ngIf="file"  class="modal-body">
                     <div *ngIf="textFormats.indexOf(file.format)>=0">
                         <span class='text-center' *ngIf="progress!== 100 ">Archivo cargandose...</span>
                         <span class='text-center' *ngIf="progress ===100">Carga completada</span>
@@ -16,7 +16,7 @@
                         </div>
                         <div *ngIf="file.format === 'pdf'">
                             <div class="scroll-box">
-                                <pdf-viewer #myPdf [src]="file | filesPipe" [render-text]="true" style="display:flex;" [autoresize]="true" [original-size]="false" (page-rendered)="pageRendered($event)" (after-load-complete)="pdfLoaded($event)">
+                                <pdf-viewer class="myPdf"  [src]="file | filesPipe" [render-text]="true" style="display:flex;" [autoresize]="true" [original-size]="false" (page-rendered)="pageRendered($event)" (after-load-complete)="pdfLoaded($event)">
                                 </pdf-viewer>
                             </div>
                             <p>{{file.title}}</p>
@@ -27,7 +27,7 @@
                     </div>
                     <div *ngIf="imgFormats.indexOf(file.format)>=0" class='d-flex flex-column'>
                         <div class='d-flex justify-content-center'>
-                            <img #myImg [src]="file | imgPipe" class='img-fluid text-center' style='cursor: pointer' style='height:300px;width:300px'>
+                            <img class="myImg"  [src]="file | imgPipe" class='text-center img-fluid' >
                         </div>
                         <p>{{file.title}}</p>
                         <button *ngIf="file.download" (click)='downloadFile(myImg.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">

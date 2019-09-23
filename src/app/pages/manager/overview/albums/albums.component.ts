@@ -9,7 +9,7 @@ import { OverviewComponent } from '../overview.component';
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
-  styleUrls: ['./albums.component.scss']
+  styleUrls: ['../overview.component.scss']
 })
 export class AlbumsComponent  {
 

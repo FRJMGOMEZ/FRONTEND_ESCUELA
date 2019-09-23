@@ -5,39 +5,118 @@
     cursor: pointer;
 }
 
+.imgSize{
+   height:65px;
+   width:65px
+}
 
 .projectBottomFrame{
-    height:500px
-}
-
-@media (min-width: 1700px) {
-
-    .projectBottomFrame{
-    height:600px
-}
-  
-}
-
-@media (min-width: 2250px) {
-
-    .projectBottomFrame{
-    height:1000px
-}
+    height:480px
 }
 
 
+.scrollableTable tbody{
+ height:350px
+}
 
-@media (min-width: 2800px) {
+@media (min-height: 694px) {
      .projectBottomFrame{
-    height:1000px
+    height:calc(1.1*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(1.1*350px)
+}
+.imgSize{
+   height:calc(1.1*65px);
+   width:calc(1.1*65px)
+}
+
+}
+
+@media (min-height: 781px) {
+ .projectBottomFrame{
+    height:calc(1.25*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(1.25*350px)
+}
+.imgSize{
+   height:calc(1.25*65px); 
+   width:calc(1.25*65px)
+}
+}
+
+@media (min-height: 833px) {
+ .projectBottomFrame{
+    height:calc(1.35*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(1.35*350px)
+}
+.imgSize{
+   height:calc(1.35*65px);
+   width:calc(1.35*65px)
+}
+}
+
+@media (min-height: 937px) {
+ .projectBottomFrame{
+    height:calc(1.5*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(1.5*350px)
+}
+.imgSize{
+   height:calc(1.5*65px);
+   width:calc(1.5*65px)
+}
+}
+
+@media (min-height: 1250px) {
+ .projectBottomFrame{
+    height:calc(2*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(2*350px)
+}
+.imgSize{
+   height:calc(2*65px);
+   width:calc(2*65px)
+}
+}
+
+@media (min-height: 1875px) {
+   .projectBottomFrame{
+    height:calc(3*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(3*350px)
+}
+.imgSize{
+   height:calc(3*65px);
+   width:calc(3*65px)
+} 
+}
+
+@media (min-height: 2500px) {
+ .projectBottomFrame{
+    height:calc(3.9*480px)
+}
+
+.scrollableTable tbody{
+ height:calc(3.9*350px)
+}
+.imgSize{
+   height:calc(3.9*65px);
+   width:calc(3.9*65px)
 }
 }
 
 
-@media (min-width: 3000px) {
-     .projectBottomFrame{
-    height:1300px
-}
-    
-}
  

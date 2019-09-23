@@ -7,38 +7,70 @@
     /* Hide the horizontal scroll */
 }
 
-
-@media (min-width: 1700px) {
-    .scrollableTable tbody {
-        height:440px
-    }
-
-    
-}
-
-@media (min-width: 2250px) {
-
-    .scrollableTable tbody {
-        height:520px
-    }
-
+.insideTable tbody{
+    height: 100px !important
 }
 
 
-
-@media (min-width: 2800px) {
+@media (min-height: 694px) {
     .scrollableTable tbody {
-        height:590px
+        height:calc(1.1*320px)
     }
-
+    .insideTable tbody{
+    height: calc(1.1*100px) !important
+}
 }
 
-
-@media (min-width: 3000px) {
-    .scrollableTable tbody {
-        height:900px
+@media (min-height: 781px) {
+  .scrollableTable tbody {
+        height:calc(1.25*320px)
     }
-
-    
+    .insideTable tbody{
+    height: calc(1.25*100px) !important
 }
- 
+}
+
+@media (min-height: 833px) {
+  .scrollableTable tbody {
+        height:calc(1.35*320px)
+    }
+    .insideTable tbody{
+    height: calc(1.35*100px) !important
+}
+}
+
+@media (min-height: 937px) {
+  .scrollableTable tbody {
+        height:calc(1.5*320px)
+    }
+    .insideTable tbody{
+    height: calc(1.5*100px) !important
+}
+}
+
+@media (min-height: 1250px) {
+  .scrollableTable tbody {
+        height:calc(2*320px)
+    }
+    .insideTable tbody{
+    height: calc(2*100px) !important
+}
+}
+
+@media (min-height: 1875px) {
+   .scrollableTable tbody {
+        height:calc(3*320px)
+    }
+    .insideTable tbody{
+    height: calc(3*100px) !important
+}  
+}
+
+@media (min-height: 2500px) {
+  .scrollableTable tbody {
+        height:calc(3.9*320px)
+    }
+    .insideTable tbody{
+    height: calc(3.9*100px) !important
+}
+}

@@ -26,6 +26,7 @@ export class PaymentsChartComponent implements OnInit {
               public companyComponent: CompanyComponent) { }
 
   async ngOnInit() {
+    console.log(window.innerWidth)
     this._paymentServices.state='CARGO';
     this.companyComponent.generateChart();
     this.companySubscription=this.companyComponent.notification.subscribe((selection:string) => {

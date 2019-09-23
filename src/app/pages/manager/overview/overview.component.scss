@@ -2,18 +2,116 @@
     height:450px
 
 }
-@media (min-width: 1700px) {
 
-    .overviewRow{
-    height:600px
-
-} 
+@media (min-height: 694px) {
+  .overviewRow{
+    height:calc(1.1*450px)
 }
-@media (min-width: 2200px) {
+}
 
-    .overviewRow{
-    height:800px
+@media (min-height: 781px) {
+ .overviewRow{
+    height:calc(1.25*450px)
+}
+}
 
-}   
+@media (min-height: 833px) {
+ .overviewRow{
+    height:calc(1.35*450px)
+}
+}
+
+@media (min-height: 937px) {
+ .overviewRow{
+    height:calc(1.5*450px)
+}
+}
+
+@media (min-height: 1250px) {
+ .overviewRow{
+    height:calc(2*450px)
+}
+}
+
+@media (min-height: 1875px) {
+  .overviewRow{
+    height:calc(3*450px)
+}  
+}
+
+@media (min-height: 2500px) {
+ .overviewRow{
+    height:calc(3.9*450px)
+}
+}
+.scrollable{
+    height:80px
+}
+
+.scrollableTable tbody{
+    height:170px
+}
+
+@media (min-height: 694px) {
+ .scrollable{
+    height:calc(1.1*80px)
+}
+.scrollableTable tbody{
+    height:calc(1.1*170px)
+}
+}
+
+@media (min-height: 781px) {
+ .scrollable{
+    height:calc(1.27*80px)
+}
+.scrollableTable tbody{
+    height:calc(1.27*170px)
+}
+}
+
+@media (min-height: 833px) {
+ .scrollable{
+    height:calc(1.40*80px)
+}
+.scrollableTable tbody{
+    height:calc(1.40*170px)
+}
+}
+
+@media (min-height: 937px) {
+ .scrollable{
+    height:calc(1.55*80px)
+}
+.scrollableTable tbody{
+    height:calc(1.55*170px)
+}
+}
+
+@media (min-height: 1250px) {
+ .scrollable{
+    height:calc(2.1*80px)
+}
+.scrollableTable tbody{
+    height:calc(2.1*170px)
+}
+}
+
+@media (min-height: 1875px) {
+  .scrollable{
+    height:calc(3.25*80px)
+}
+.scrollableTable tbody{
+    height:calc(3.25*170px)
+}  
+}
+
+@media (min-height: 2500px) {
+   .scrollable{
+    height:calc(4.1*80px)
+}
+.scrollableTable tbody{
+    height:calc(4.1*170px)
+} 
 }
  

@@ -153,6 +153,7 @@ export class ProjectServices {
           }
         }
       })
+            console.log(this.imageFiles);
       this.myTasks = [];
       this.groupTasks = [];
       res.project.tasks.forEach((task:any)=>{
@@ -404,6 +405,12 @@ export class ProjectServices {
         } else {
           this.groupTasks.push(taskOrder.task)
         }
+        this.groupTasks = _.sortBy(this.groupTasks, (task) => {
+          return task.dateLimit
+        })
+        this.myTasks = _.sortBy(this.myTasks, (task) => {
+          return task.dateLimit
+        })
       } else if(taskOrder.order === 'put'){
         if(taskOrder.task.user['_id'] === this._userServices.userOnline._id){
            this.myTasks.forEach((task,index)=>{
@@ -458,6 +465,7 @@ export class ProjectServices {
 
   postTask(task: Task) {
     let url = `${URL_SERVICES}task`
+    console.log(task);
     return this.http.post(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
       if (res.task.user._id === this._userServices.userOnline._id) {
         this.taskChecked(res.task._id).subscribe()

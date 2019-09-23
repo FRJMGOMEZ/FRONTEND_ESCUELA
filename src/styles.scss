@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 .hidden {
-    display: none
+    display: none;
 }
 
 a {
@@ -18,116 +18,9 @@ button {
 
 * {
     font-family: 'EB Garamond', serif;
-    font-size: 13px
+    font-size: 13px;
 }
 
-@media (min-width: 1700px) {
-
-    * {
-    font-size: 15px
-} 
-}
-
-@media (min-width: 1800px) {
-
-    * {
-    font-size: 16px
-} 
-}
-
-@media (min-width: 1800px) {
-
-    * {
-    font-size: 17px
-} 
-}
-
-@media (min-width: 1900px) {
-
-    * {
-    font-size: 18px
-} 
-}
-
-@media (min-width: 2000px) {
-
-    * {
-    font-size: 19px
-} 
-}
-
-@media (min-width: 2100px) {
-
-    * {
-    font-size: 20px
-} 
-}
-
-@media (min-width: 2200px) {
-    * {
-    font-size: 21px
-}
-    
-}
-
-@media (min-width: 2300px) {
-    * {
-    font-size: 22px
-}
-    
-}
-
-@media (min-width: 2400px) {
-    * {
-    font-size: 23px
-}
-    
-}
-
-
-@media (min-width: 2500px) {
-    * {
-    font-size: 24px
-}
-    
-}
-
-@media (min-width: 2600px) {
-    * {
-    font-size: 26px
-}
-}
-
-@media (min-width: 2700px) {
-    * {
-    font-size: 28px
-}
-}
-
-@media (min-width: 2800px) {
-    * {
-    font-size: 30px
-}
-}
-
-@media (min-width: 2900px) {
-    * {
-    font-size: 32px
-}
-    
-}
-
-@media (min-width: 3000px) {
-    * {
-    font-size: 34px
-}
-}
-
-@media (min-width: 3100px) {
-    * {
-    font-size: 36px
-}
-}
 
 div.scrollable {
     width: 100%;
@@ -183,3 +76,107 @@ i{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@media (min-height: 694px) {
+    * {
+    font-size:calc(1.10* 13px);
+}
+  .form-check-input
+{
+   zoom : 1.1
+}
+}
+
+@media (min-height: 781px) {
+   * {
+    font-size:calc(1.25* 13px);
+}
+  .form-check-input
+{
+   zoom : 1.25
+}
+}
+
+@media (min-height: 833px) {
+  * {
+    font-size:calc(1.35* 13px);
+}
+  .form-check-input
+{
+   zoom : 1.35
+}
+}
+
+@media (min-height: 937px) {
+  * {
+    font-size:calc(1.50* 13px);
+}
+  .form-check-input
+{
+   zoom : 1.50
+}
+}
+
+@media (min-height:1250px) {
+  * {
+    font-size:calc(2* 13px);
+}
+  .form-check-input
+{
+   zoom : 2
+}
+
+}
+
+@media (min-height: 1875px) {
+   * {
+    font-size:calc(3* 13px);
+}
+  .form-check-input
+{
+   zoom : 3
+}
+}
+
+@media (min-height: 2500px) {
+  * {
+    font-size:calc(3.90* 13px);
+}
+  .form-check-input
+{
+   zoom : 3.9
+}
+}
+
+
+
+///// SIZES REF ////
+
+@media (min-height: 694px) {
+ 
+}
+
+@media (min-height: 781px) {
+ 
+}
+
+@media (min-height: 833px) {
+ 
+}
+
+@media (min-height: 937px) {
+ 
+}
+
+@media (min-height: 1250px) {
+ 
+}
+
+@media (min-height: 1875px) {
+    
+}
+
+@media (min-height: 2500px) {
+ 
+}

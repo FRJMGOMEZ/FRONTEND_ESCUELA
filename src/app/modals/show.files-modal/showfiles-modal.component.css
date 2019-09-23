@@ -1,5 +1,55 @@
 .scroll-box {
     overflow-y: scroll;
-    height: 300px;
+    height: 400px;
     padding: 1rem
+}
+
+
+@media (min-height: 694px) {
+ .scroll-box {
+    height: calc(1.1*400px);
+}
+
+}
+
+@media (min-height: 781px) {
+  .scroll-box {
+    height: calc(1.25*400px);
+}
+
+}
+
+@media (min-height: 833px) {
+  .scroll-box {
+    height: calc(1.35*400px);
+}
+
+}
+
+@media (min-height: 937px) {
+  .scroll-box {
+    height: calc(2*400px);
+}
+
+}
+
+@media (min-height: 1250px) {
+  .scroll-box {
+    height: calc(2*400px);
+}
+
+}
+
+@media (min-height: 1875px) {
+    .scroll-box {
+    height: calc(3*400px);
+}
+
+}
+
+@media (min-height: 2500px) {
+  .scroll-box {
+    height: calc(3.9*400px);
+}
+
 }

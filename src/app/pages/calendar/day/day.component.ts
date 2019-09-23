@@ -169,13 +169,13 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   checkWindowSize(){
-    if (window.innerHeight > 720) {
-      if(window.innerHeight > 1000){
-        if(window.innerHeight > 1800){
-          if(window.innerHeight > 2499){
-            this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '2340px');
-            this.heightOfEventsFrame = 2340;
-            this.heightPerCard = 180;
+    if (window.innerHeight >= 781) {
+      if(window.innerHeight >= 1250){
+        if(window.innerHeight >= 1875){
+          if(window.innerHeight > 2500){
+            this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '2080px');
+            this.heightOfEventsFrame = 2080;
+            this.heightPerCard = 160;
           }else{
             this.renderer.setStyle(this.rowDayPlace.nativeElement, 'height', '1560px');
             this.heightOfEventsFrame = 1560;
@@ -200,7 +200,6 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   onResize(event:any){
-    console.log(window.innerHeight);
     this.checkWindowSize();
     this.inProgress = true;
     this._spinnerServices.openSpinner();

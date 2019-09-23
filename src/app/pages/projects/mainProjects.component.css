@@ -2,17 +2,44 @@
     height:350px
 }
 
-@media (min-width: 1700px) {
-    .scrollable{
-    height:450px
+@media (min-height: 694px) {
+ .scrollable{
+    height:calc(1.1*350px)
 }
- 
 }
 
-@media (min-width: 2200px) {
-    .scrollable{
-    height:550px
+@media (min-height: 781px) {
+  .scrollable{
+    height:calc(1.25*350px)
 }
- 
 }
- 
+
+@media (min-height: 833px) {
+  .scrollable{
+    height:calc(1.35*350px)
+}
+}
+
+@media (min-height: 937px) {
+  .scrollable{
+    height:calc(1.5*350px)
+}
+}
+
+@media (min-height: 1250px) {
+  .scrollable{
+    height:calc(2*350px)
+}
+}
+
+@media (min-height: 1875px) {
+   .scrollable{
+    height:calc(3*350px)
+}
+}
+
+@media (min-height: 2500px) {
+  .scrollable{
+    height:calc(3.9*350px)
+}
+}

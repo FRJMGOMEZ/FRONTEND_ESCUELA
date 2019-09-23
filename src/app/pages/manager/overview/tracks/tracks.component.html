@@ -20,7 +20,7 @@
         <button *ngIf="_managerServices.count > _managerServices.from + 6" (click)='changeFrom(6) ' class='btn btn-secondary '>Following</button>
     </div>
 </div>
-<div class="row scrollableTable ml-1 mr-1" *ngIf="trackId" style='border-top: 1px black;height:100%'>
+<div class="row scrollableTable ml-1 mr-1" *ngIf="trackId" style='border-top: 1px black'>
     <div class=' col-12 d-flex justify-content-around '>
        <div>
         <button (click)='pushAssignation(trackId)' class='btn btn-primary'><i class="fas fa-edit"></i></button>

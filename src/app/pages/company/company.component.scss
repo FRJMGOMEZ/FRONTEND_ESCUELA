@@ -1,0 +1,94 @@
+.datePicker{
+    height:50px;
+    width:200px
+}
+
+.datePickerInput{
+   height:20px;
+   width:140px
+}
+
+.datePickerToggle{
+
+}
+
+
+@media (min-height: 694px) {
+  .datePickerContainer{
+    height:calc(1.1 *50px);
+    width:calc(1.1 *200px)
+}
+.datePickerInput{
+   height:calc(1.1*20px);
+   width:calc(1.1*140px);
+}
+}
+
+@media (min-height: 781px) {
+   .datePickerContainer{
+    height:calc(1.25 *50px);
+    width:calc(1.25 *200px)
+}
+.datePickerInput{
+   height:calc(1.25*20px);
+   width:calc(1.25*140px);
+}
+}
+
+@media (min-height: 833px) {
+  .datePickerContainer{
+    height:calc(1.35 *50px);
+    width:calc(1.35 *200px)
+}
+.datePickerInput{
+   height:calc(1.35*20px);
+   width:calc(1.35*140px);
+}
+}
+
+@media (min-height: 937px) {
+ .datePickerContainer{
+    height:calc(1.5 *50px);
+    width:calc(1.5 *200px)
+}
+.datePickerInput{
+   height:calc(1.5*20px);
+   width:calc(1.5*140px);
+}
+}
+
+@media (min-height: 1250px) {
+  .datePickerContainer{
+    height:calc(2 *50px);
+    width:calc(2 *200px)
+}
+.datePickerInput{
+   height:calc(2*20px);
+   width:calc(2*140px);
+}
+}
+
+@media (min-height: 1875px) {
+    .datePickerContainer{
+    height:calc(3 *50px);
+    width:calc(3 * 200px)
+}
+.datePickerInput{
+   height:calc(4*20px);
+   width:calc(4*140px);
+}
+}
+
+@media (min-height: 2500px) {
+    .datePickerContainer{
+    height:calc(3.9 *50px);
+    width:calc(3.9 *200px)
+}
+.datePickerInput{
+   height:calc(4.5*20px);
+   width:calc(4.5*140px);
+}
+.mat-calendar{
+    transform: scale(6)
+}
+}

@@ -1,5 +1,5 @@
 <div class="row d-flex d-flex" style='background: #F5F1E3;height:100%'>
-    <div class='col-12 d-flex flex-column justify-content-center mb-1' >
+    <div class='col-12 d-flex flex-column justify-content-start mb-1' >
         <div class="row d-flex justify-content-center" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
@@ -7,7 +7,7 @@
                 <h5 *ngIf="_projectServices.groupTasks.length>0 text-center">Tareas del grupo de trabajo</h5>
         </div>
         <div class="row justify-content-center">
-            <input #input type="text">
+            <input #input placeholder="Escribe el nombre del usuario" type="text">
             <div class='btn-group'>
                 <button (click)='_projectServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
                 <button (click)='_projectServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
@@ -89,7 +89,8 @@
         </table>
       </div>
     </div>
-    <div *ngIf="_projectServices.myTasks.length === 0 && _projectServices.groupTasks.length === 0">
+    <div class=" col-12 d-flex justify-content-center"
+        *ngIf="_projectServices.myTasks.length === 0 && _projectServices.groupTasks.length === 0">
         <h5>No hay tareas asignadas</h5>
     </div>
 </div>

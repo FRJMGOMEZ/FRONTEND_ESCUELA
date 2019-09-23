@@ -29,43 +29,77 @@
 border-right: 0px;
 }
 
-@media (min-width: 1500px) {
+
+.scrollableTable tbody{
+        height:200px
+} 
+
+.facilitiesRow{
+    height:47px;
+}
+
+ @media (min-height: 694px) {
+ 
     .printable{
-        margin-top:30px;
+        margin-top: 10px
     }
+    
 }
 
-@media (min-width: 1700px) {
-    
-    .scrollableTable tbody{
-        height:300px
+@media (min-height: 781px) {
+ .scrollableTable tbody{
+        height:calc(1.25*200px)
     } 
+    .printable{
+        margin-top: 15px
+    }
+    .facilitiesRow{
+    height:calc(1.1*47px);
+}  
 }
 
+@media (min-height: 937px) {
+    .printable{
+        margin-top: 50px
+    }
+}
 
-@media (min-width: 2600px) {
+@media (min-height: 1250px) {
+ .scrollableTable tbody{
+        height:calc(2*200px)
+    } 
+    .printable{
+        margin-top: 20px
+    }
+     .facilitiesRow{
+    height:calc(2*47px);
+}
+}
 
+@media (min-height: 1875px) {
    .scrollableTable tbody{
-        height:360px
-    }
+        height:calc(3*200px)
+    } 
+    .printable{
+        margin-top: 25px
+    } 
+     .facilitiesRow{
+    height:calc(3*47px);
+}
 }
 
-
-
-@media (min-width: 2800px) {
-    .scrollableTable tbody{
-        height:390px
+@media (min-height: 2500px) {
+ .scrollableTable tbody{
+        height:calc(3.5*200px)
+    } 
+    .printable{
+        margin-top: 200px
     }
-    
+     .facilitiesRow{
+    height:calc(3.5*47px);
+}
 }
 
-
-@media (min-width: 3000px) {
-    .scrollableTable tbody{
-        height:420px
-    }
-    
-}
 
 
 

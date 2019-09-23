@@ -20,6 +20,36 @@ export class DemoService {
 
   constructor() { }
 
+
+
+  loginPopup(onclick:boolean = false){
+    if(!this.login || onclick)
+   {Swal.fire({
+        title: "USUARIOS ADMINISTRADORES",
+        text: 'Los usuarios habilitados como administradores son: freddieQueen@gmail.com , janisJap@gmail.com ,lennonJohn1940@gmail.com ,y ninaSim@gmail.com, el password de los cuatro es 123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
+        , type: "info",
+        confirmButtonText: "OK",
+        heightAuto: false
+      }).then(() => {
+        this.login = true;
+      })
+    }      
+  }
+
+  dashboardPopup(onclick: boolean = false){
+    if(!this.dashboard || onclick){
+      Swal.fire({
+        title: "BIENVENIDA/O AL DASHBOARD",
+        text: 'En esta pantalla obtenemos todos los cambios producidos en nuestros calendario de eventos , las tareas que nos son asignadas , las que tenemos pendientes en los proyectos de los que formamos parte, además de los mensajes recibidos en los mismos, todo ello se actualiza en tiempo real, gracias al uso de sockets'
+        , type: "info",
+        confirmButtonText: "OK",
+        heightAuto:false
+      }).then(()=>{
+        this.dashboard = true;
+      })
+    }
+  }
+
   calendarPopup(onclick: boolean = false) {
     if (!this.calendar || onclick) {
       Swal.fire({
@@ -34,9 +64,9 @@ export class DemoService {
     }
   }
 
-  graphsPopup(onclick:boolean = false){
-    if(!this.graphs || onclick)
-   {Swal.fire({
+  graphsPopup(onclick: boolean = false) {
+    if (!this.graphs || onclick) {
+      Swal.fire({
         title: "APARTADO DE GRAFICAS",
         text: 'Observa y analiza la evolución de ingresos y liquidaciones, según los parámetros establecidos',
         type: "info",
@@ -45,11 +75,11 @@ export class DemoService {
       }).then(() => {
         this.graphs = true;
       })
-    }      
+    }
   }
-  overviewPopup(onclick:boolean = false){
-    if(!this.overview || onclick)
-   {Swal.fire({
+  overviewPopup(onclick: boolean = false) {
+    if (!this.overview || onclick) {
+      Swal.fire({
         title: "MANAGER OVERVIEW",
         text: 'Crea artistas y albúmes, y dentro de estos, tracks(en los que puedes asignar porcentajes de liquidacion por cada artista participante en su creación)',
         type: "info",
@@ -58,7 +88,7 @@ export class DemoService {
       }).then(() => {
         this.overview = true;
       })
-    }      
+    }
   }
 
   incomesPopup(onclick: boolean = false) {
@@ -85,34 +115,6 @@ export class DemoService {
         heightAuto: false
       }).then(() => {
         this.payments = true;
-      })
-    }
-  }
-
-  loginPopup(onclick:boolean = false){
-    if(!this.login || onclick)
-   {Swal.fire({
-        title: "USUARIOS ADMINISTRADORES",
-        text: 'Los usuarios habilitados como administradores son: freddieQueen@gmail.com , janisJap@gmail.com ,lennonJohn1940@gmail.com ,y ninaSim@gmail.com, el password de los cuatro es 123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
-        , type: "info",
-        confirmButtonText: "OK",
-        heightAuto: false
-      }).then(() => {
-        this.login = true;
-      })
-    }      
-  }
-
-  dashboardPopup(onclick: boolean = false){
-    if(!this.dashboard || onclick){
-      Swal.fire({
-        title: "BIENVENIDA/O AL DASHBOARD",
-        text: 'En esta pantalla obtenemos todos los cambios producidos en nuestros calendario de eventos , las tareas que nos son asignadas , las que tenemos pendientes en los proyectos de los que formamos parte, además de los mensajes recibidos en los mismos, todo ello se actualiza en tiempo real, gracias al uso de sockets'
-        , type: "info",
-        confirmButtonText: "OK",
-        heightAuto:false
-      }).then(()=>{
-        this.dashboard = true;
       })
     }
   }

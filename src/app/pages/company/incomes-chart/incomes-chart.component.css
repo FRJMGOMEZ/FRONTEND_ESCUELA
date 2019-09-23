@@ -3,19 +3,18 @@
 }
 
 
-
 @media (min-height: 694px) {
  .scrollableTable tbody{
         height: calc(250*3000px)
     }
-   
+  
 }
 
 @media (min-height: 781px) {
  .scrollableTable tbody{
         height: calc(250*1.25px)
     }
-  
+   
 }
 
 @media (min-height: 833px) {
@@ -29,7 +28,7 @@
  .scrollableTable tbody{
         height: calc(250*1.50px)
     }
-    
+  
 }
 
 @media (min-height: 1250px) {
@@ -43,12 +42,12 @@
     .scrollableTable tbody{
         height: calc(250*2.90px)
     }
-  
+     
 }
 
 @media (min-height: 2500px) {
  .scrollableTable tbody{
         height: calc(250*3.90px)
     }
-  
+ 
 }

@@ -8,9 +8,31 @@
     /* Hide the horizontal scroll */
 }
 
-@media (min-width: 1700px) {
+/*MAIN REF  1210px  */
+
+@media (min-height: 694px) {
  .scrollableTable tbody {
-    height:140px;
+    height:calc(100*1.10px);
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+}
+@media (min-height: 781px) {
+ .scrollableTable tbody {
+    height:calc(100 * 1.25px);
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+}
+@media (min-height: 833px) {
+ .scrollableTable tbody {
+    height:calc(100 * 1.35px);
     /* Just for the demo          */
     overflow-y: auto;
     /* Trigger vertical scroll    */
@@ -19,9 +41,9 @@
 }
 }
 
-@media (min-width: 2200px) {
+@media (min-height: 937px) {
  .scrollableTable tbody {
-    height:240px;
+    height:calc(100 * 1.50px);
     /* Just for the demo          */
     overflow-y: auto;
     /* Trigger vertical scroll    */
@@ -29,6 +51,42 @@
     /* Hide the horizontal scroll */
 }
 }
+
+
+@media (min-height: 1250px) {
+ .scrollableTable tbody {
+    height:calc(100* 2px);
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+}
+
+@media (min-height: 1875px) {
+    .scrollableTable tbody {
+    height:calc(100* 3px);
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+}
+
+@media (min-height: 2500px) {
+ .scrollableTable tbody {
+    height:calc(100* 3.90px);
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+}
+
+
 
 div.scrollable {
     width: 100%;

@@ -40,7 +40,6 @@ export class DashboardService {
     let headers = new HttpHeaders().set('token',localStorage.getItem('token'))
     return this.http.get(url,{headers}).pipe(
       map(async(res: any) => {
-        console.log(this.projects);
         await this.projects.forEach((project)=>{
           project.messages = []
         })
@@ -48,7 +47,6 @@ export class DashboardService {
         this.unreadMessages=false;
         }
         res.messages.forEach((message: any) => {
-          console.log(this.projects);
           message.project.messages = [];
           if (this.projects.length === 0) {
             message.project.messages.push(message.message)
@@ -81,7 +79,6 @@ export class DashboardService {
     let headers = new HttpHeaders().set('token', localStorage.getItem('token'))
     return this.http.get(url, { headers }).pipe(
       map(async(res: any) => {
-        console.log(this.projects);
         await this.projects.forEach((project) => {
           project.uncheckedTasks = []
           project.pendingTasks = []
@@ -90,7 +87,7 @@ export class DashboardService {
           this.uncheckedTasks = false;
           this.pendingTasks = false;
         }
-        console.log(this.projects);
+        console.log(res.tasks);
         res.tasks.forEach((task: any) => {
           if (this.projects.length === 0) {
             if (!task.checked) {
@@ -128,7 +125,7 @@ export class DashboardService {
             } else {
               let index = this.projects.map((project: any) => { return project._id }).indexOf(task.project._id);
               if (!task.checked) {
-                console.log(this.projects[index]);
+  
                 if (this.projects[index].uncheckedTasks.length === 0) {
                   this.projects[index].uncheckedTasks = [];
                   this.uncheckedTasks = true;

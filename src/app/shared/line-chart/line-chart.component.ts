@@ -37,7 +37,6 @@ export class LineChartComponent {
   }
 
   render(){
-    console.log(this.labelFontSize);
     this.renderer.setProperty(this.canvasRef.nativeElement, 'id', this.chartId);
     this.chart = new Chart(this.chartId, {
       type: 'line',
@@ -99,21 +98,33 @@ export class LineChartComponent {
 
   checkLabelsSize(){
     return new Promise((resolve,reject)=>{
-      if (window.innerHeight > 693) {
-        if (window.innerHeight > 832) {
-          if (window.innerHeight > 1249) {
-            if (window.innerHeight > 2499) {
-              resolve(28);
+      if (window.innerHeight >= 694) {
+        if (window.innerHeight >= 781) {
+          if (window.innerHeight >= 833) {
+            if (window.innerHeight >= 937) {
+              if(window.innerHeight >= 1250){
+                if(window.innerHeight >= 1875){
+                  if(window.innerHeight >= 2500){
+                     resolve(12*3.9)
+                  }else{
+                    resolve(12* 2.9)
+                  }
+                }else{
+                  resolve(12 * 2);
+                }
+              }else{
+                resolve(12 * 1.5);
+              }
             } else {
-              resolve(24);
+              resolve(12*1.35);
             }
 
           } else {
-            resolve(20)
+            resolve(12 *1.25)
           }
 
         } else {
-          resolve(16);
+          resolve(12*1.1);
         }
 
       } else {
