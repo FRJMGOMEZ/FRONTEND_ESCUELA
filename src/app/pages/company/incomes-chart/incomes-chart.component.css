@@ -5,7 +5,7 @@
 
 @media (min-height: 694px) {
  .scrollableTable tbody{
-        height: calc(250*3000px)
+        height: calc(250*1.1px)
     }
   
 }
