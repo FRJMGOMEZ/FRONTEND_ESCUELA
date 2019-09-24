@@ -20,13 +20,11 @@ export class DemoService {
 
   constructor() { }
 
-
-
   loginPopup(onclick:boolean = false){
     if(!this.login || onclick)
    {Swal.fire({
         title: "USUARIOS ADMINISTRADORES",
-        text: 'Los usuarios habilitados como administradores son: freddieQueen@gmail.com , janisJap@gmail.com ,lennonJohn1940@gmail.com ,y ninaSim@gmail.com, el password de los cuatro es 123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
+        text: 'USUARIOS ADMINISTRADORES: freddieQueen@gmail.com , janisJap@gmail.com ,lennonJohn1940@gmail.com ,y ninaSim@gmail.com. PASSWORD:123. Puedes utilizar CHROME para loggearte con uno y MOZILLA para loggearte con otro con el fin de probar la interacción en tiempo real entre los dos'
         , type: "info",
         confirmButtonText: "OK",
         heightAuto: false
