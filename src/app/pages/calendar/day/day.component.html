@@ -26,17 +26,17 @@
                 </div>
                 <div class='col-12 mt-2 '>
                     <h5 class='text-center'>Eventos con permanencia</h5>
-                    <table class='table scrollableTable m-0' style="height:150px;background:#F5F1E3">
+                    <table class='table scrollableTable m-0' style="background:#F5F1E3">
                         <tbody>
                             <tr *ngFor="let event of _calendarServices.permanentEvents">
-                                <td>Nombre: {{event.name}}</td>
-                                <td>Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
-                                <td>
+                                <td style="width:33%">Nombre: {{event.name}}</td>
+                                <td style="width:33%">Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
+                                <td style="width:33%">
                                     <p *ngIf="event.endDate != null">Termina el día : {{event.endDate | date }} a las
                                         {{event.position | timeConversor2 : event.duration}}</p>
                                     <p *ngIf="event.endDate === null">Se prorroga indefinidamente</p>
                                 </td>
-                                <td>
+                                <td style="width:33%">
                                     <button *ngIf="_userServices.checkRole()" class='bg-warning'
                                         (click)='deletePermanentEvent(event._id)'><i class="far fa-trash-alt"></i></button>
                                     <button *ngIf="_userServices.checkRole()" class='bg-warning'
