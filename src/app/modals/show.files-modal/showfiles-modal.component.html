@@ -1,6 +1,6 @@
 <div *ngIf="file" class='animated fadeIn'>
     <div class="modal"  style='display:flex' role="dialog">
-        <div  [ngClass]="{'imgModalContent': imgFormats.indexOf(file.format)>=0 , 'textModalContent':textFormats.indexOf(file.format)>=0  }" class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content"  >
                 <div class="modal-header">
                     <button (click)="hideModal()" type="button" class="close" aria-label="Close">
@@ -27,7 +27,7 @@
                     </div>
                     <div *ngIf="imgFormats.indexOf(file.format)>=0" class='d-flex flex-column'>
                         <div class='d-flex justify-content-center'>
-                            <img class="myImg"  [src]="file | imgPipe" class='text-center img-fluid' >
+                            <img  [src]="file | imgPipe" class='text-center myImg' style='cursor: pointer'>
                         </div>
                         <p>{{file.title}}</p>
                         <button *ngIf="file.download" (click)='downloadFile(myImg.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">

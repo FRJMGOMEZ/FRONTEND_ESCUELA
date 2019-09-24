@@ -4,10 +4,18 @@
     padding: 1rem
 }
 
+.myImg{
+  height:300px!important;
+  width:300px!important;
+}
 
 @media (min-height: 694px) {
  .scroll-box {
     height: calc(1.1*400px);
+}
+.myImg{
+  height:calc(1.1*300px)!important;
+  width:calc(1.1*300px)!important;
 }
 
 }
@@ -16,12 +24,20 @@
   .scroll-box {
     height: calc(1.25*400px);
 }
+.myImg{
+  height:calc(1.25*300px)!important;
+  width:calc(1.25*300px)!important;
+}
 
 }
 
 @media (min-height: 833px) {
   .scroll-box {
     height: calc(1.35*400px);
+}
+.myImg{
+  height:calc(1.35*300px)!important;
+  width:calc(1.35*300px)!important;
 }
 
 }
@@ -30,12 +46,20 @@
   .scroll-box {
     height: calc(2*400px);
 }
+.myImg{
+  height:calc(1.5*300px)!important;
+  width:calc(1.5*300px)!important;
+}
 
 }
 
 @media (min-height: 1250px) {
   .scroll-box {
     height: calc(2*400px);
+}
+.myImg{
+  height:calc(2*300px)!important;
+  width:calc(2*300px)!important;
 }
 
 }
@@ -44,12 +68,20 @@
     .scroll-box {
     height: calc(3*400px);
 }
+.myImg{
+  height:calc(3*300px)!important;
+  width:calc(3*300px)!important;
+}
 
 }
 
 @media (min-height: 2500px) {
   .scroll-box {
     height: calc(3.9*400px);
+}
+.myImg{
+  height:calc(3.9*300px)!important;
+  width:calc(3.9*300px)!important;
 }
 
 }
