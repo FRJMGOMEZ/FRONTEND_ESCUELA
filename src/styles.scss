@@ -77,7 +77,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-@media (min-height: 694px) {
+@media (min-height: 694px) and(min-width: 1522px)  {
     * {
     font-size:calc(1.10* 13px);
 }
@@ -87,7 +87,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 }
 
-@media (min-height: 781px) {
+@media (min-height: 781px)and(min-width: 1712px) {
    * {
     font-size:calc(1.25* 13px);
 }
@@ -97,7 +97,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 }
 
-@media (min-height: 833px) {
+@media (min-height: 833px)and(min-width: 1826px) {
   * {
     font-size:calc(1.35* 13px);
 }
@@ -107,7 +107,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 }
 
-@media (min-height: 937px) {
+@media (min-height: 937px)and(min-width: 2055px) {
   * {
     font-size:calc(1.50* 13px);
 }
@@ -117,7 +117,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 }
 
-@media (min-height:1250px) {
+@media (min-height:1250px)and(min-width: 2740px) {
   * {
     font-size:calc(2* 13px);
 }
@@ -128,7 +128,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 }
 
-@media (min-height: 1875px) {
+@media (min-height: 1875px)and(min-width: 4110px) {
    * {
     font-size:calc(3* 13px);
 }
@@ -138,7 +138,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 }
 
-@media (min-height: 2500px) {
+@media (min-height: 2500px)and(min-width: 5480px) {
   * {
     font-size:calc(3.90* 13px);
 }

@@ -49,6 +49,7 @@ export class PagesComponent implements OnInit {
               ) { }
 
   ngOnInit() {
+    console.log(window.innerWidth)
     this.socket.on('connect', () => {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
@@ -80,7 +81,7 @@ export class PagesComponent implements OnInit {
   }
 
   onResize(){
-  
+    console.log(window.innerWidth);
   }
 
   
