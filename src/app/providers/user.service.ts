@@ -39,9 +39,13 @@ export class UserServices {
                  if(res){
                      return res
                  }else{
-                     console.log('LOCKED BY GUARD')
-                     this.router.navigate(['/login']);
-                     return res
+                     this.router.navigate(['/login']).then(()=>{
+                          Swal.fire(
+                         {type:'info',
+                          text: 'Disculpa, actualmente el usuario está siendo utilizado, prueba con otro, gracias. ',
+                          showCloseButton:true})
+                         return res
+                     })    
                  }
         }))
     }

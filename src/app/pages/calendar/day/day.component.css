@@ -31,7 +31,8 @@ border-right: 0px;
 
 
 .scrollableTable tbody{
-        height:200px
+        height:200px;
+        width: 100%;
 } 
 
 .facilitiesRow{
