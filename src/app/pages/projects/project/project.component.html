@@ -108,16 +108,16 @@
                                 <table class='table scrollableTable'>
                                     <tbody>
                                         <tr *ngFor="let user of _projectServices.participants">
-                                            <td style="width:25%">
-                                                <img class="imgSize" [src]="user.img | imgPipe" alt="">
+                                            <td style="width:40%">
+                                                <img class="imgSize img-fluid" [src]="user.img | imgPipe" alt="">
                                             </td>
-                                            <td style="width:25%">
+                                            <td style="width:30%">
                                                 <p>{{user.name}}</p>
                                             </td>
-                                            <td style="width:25%" >
+                                            <td style="width:15%" >
                                                 <i *ngIf="user.connected" class="fas fa-eye"></i>
                                             </td>
-                                            <td style="width:25%">
+                                            <td style="width:15%">
                                                 <p><button
                                                         *ngIf="_projectServices.checkAdmin(this._projectServices.projectSelectedId) && _userServices.userOnline._id != user._id"
                                                         (click)="removeParticipant(user._id)" class='btn btn-danger'>X</button></p>
