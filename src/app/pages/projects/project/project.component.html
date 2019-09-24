@@ -106,9 +106,11 @@
                             </div>
                             <div class='col-12' style="border:1px solid black;background:#F5F1E3">
                                 <table class='table scrollableTable'>
+                                    <thead>                                        
+                                    </thead>
                                     <tbody>
                                         <tr *ngFor="let user of _projectServices.participants">
-                                            <td style="width:40%">
+                                            <td class="p-0" style="width:40%">
                                                 <img class="imgSize img-fluid" [src]="user.img | imgPipe" alt="">
                                             </td>
                                             <td style="width:30%">

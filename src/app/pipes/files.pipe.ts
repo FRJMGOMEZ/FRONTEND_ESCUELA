@@ -13,7 +13,7 @@ export class FilesPipe implements PipeTransform {
   constructor(public http:HttpClient){}
   transform(file:FileModel) {
     if(environment.production){
-      return this.http.get(file.location)
+      return file.location
     }else{
       let url = `${URL_SERVICES}files/${file.type}/${file.name}`;
       return url
