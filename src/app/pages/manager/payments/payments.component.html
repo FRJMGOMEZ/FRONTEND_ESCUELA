@@ -1,6 +1,7 @@
 <div class='row animated fadeIn pagesContainerFixed'>
   <div class="col-12 mt-3">
     <div class="row d-flex justify-content-center">
+      <div class="col-1"></div>
       <div class="col-10 d-flex justify-content-around">
         <div class="row d-flex justify-content-around">
           <div class="col-3 d-flex justify-content-around m-0 p-0">
@@ -55,19 +56,19 @@
                   </div>
               </div>
           </div>
-          <div class="col-3">
-            <div class="row d-flex justify-content-start">
-              <div class="col-8 d-flex justify-content-center">
+          <div class="col-4">
+            <div class="row d-flex justify-content-center">
+              <div class="col-12 d-flex justify-content-center">
                 <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="stateChange('all')" class="btn btn-warning">Todos</button>
                 <button [ngStyle]="{'opacity': buttonsStyle('sent')}" (click)="stateChange('sent')"  class="btn btn-warning">Pagos enviados</button>
                 <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="stateChange('notSent')"  class="btn btn-warning">Pagos no enviados</button>
               </div>
             </div>
           </div>
-          <div class="col-1 d-flex justify-content-end align-items-center animated shake">
-            <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info m-4" style='cursor:pointer;color:blue'></i>
-          </div>
         </div>
+      </div>
+      <div class="col-1 d-flex justify-content-end animated shake">
+        <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info m-4" style='cursor:pointer;color:blue'></i>
       </div>
       <div *ngIf="_paymentServices.payments.length >0" class="col-12">
         <table class='table scrollableTable mb-0' style='background: #F5F1E3'>
