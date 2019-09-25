@@ -45,8 +45,8 @@ export class LineChartComponent {
         datasets: dataSets
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: false,
+        maintainAspectRatio: true,
         tooltips: {
           enabled: false
         },

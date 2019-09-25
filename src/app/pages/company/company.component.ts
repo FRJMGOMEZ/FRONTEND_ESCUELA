@@ -19,7 +19,6 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   public chartSelected: string = 'payments';
 
-  @ViewChild('mat-datepicker-0') datePicker:ElementRef
   @ViewChild("picker0") picker0: MatDatepicker<any>;
   @ViewChild("picker1") picker1: MatDatepicker<any>
 
@@ -59,7 +58,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
 checkDates(){
     return new Promise(async(resolve,reject)=>{
-      if (!this.picker1['_selected'] && !this.picker0['_selected']) {
+      if (!this.picker1.startAt && !this.picker0.startAt) {
         let date1 = await this.filterPipe.transform(new Date(new Date().getTime() - (86400000 * 7)));
         date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
         switch (this.chartSelected) {
@@ -83,13 +82,14 @@ checkDates(){
   }
   async setDates() {
     return new Promise(async(resolve,reject)=>{
+      console.log(this.picker0,this.picker1);
       if(this.chartSelected === 'incomes'){
-      this._incomeServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
-      this._incomeServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
+      this._incomeServices.inputs[0] = await new Date(this.picker0.startAt).getTime();
+      this._incomeServices.inputs[1] = await new Date(this.picker1.startAt).getTime();
       resolve()
     }else if(this.chartSelected === 'payments'){
-      this._paymentServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
-      this._paymentServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
+      this._paymentServices.inputs[0] = await new Date(this.picker0.startAt).getTime();
+      this._paymentServices.inputs[1] = await new Date(this.picker1.startAt).getTime();
       resolve()
     }
     })
