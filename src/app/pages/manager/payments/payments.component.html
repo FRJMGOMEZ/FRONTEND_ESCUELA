@@ -1,8 +1,7 @@
 <div class='row animated fadeIn pagesContainerFixed'>
   <div class="col-12 mt-3">
     <div class="row d-flex justify-content-center">
-      <div class="col-1"></div>
-      <div class="col-10 d-flex justify-content-around">
+      <div class="col-11 d-flex justify-content-around">
         <div class="row d-flex justify-content-around">
           <div class="col-3 d-flex justify-content-around m-0 p-0">
             <div class="form-check">
@@ -12,7 +11,7 @@
                 Buscar por <a routerLinkActive="router-link-active" style='color:blue'>CANTIDAD</a>
               </label>
             </div>
-            <div class="form-check">
+            <div *ngIf="_paymentServices.paymentTypes.indexOf('CARGO') < 0" class="form-check">
               <input class="form-check-input" type="radio" name="artist" id="artist" value="artist"
                [(ngModel)]="_paymentServices.paymentSearchCriteria" >
               <label  class="form-check-label" for="artist">
@@ -51,17 +50,18 @@
                         </div>
                    </div>
                   <div class="col-3 d-flex flex-column m-0 p-0">
-                    <button (click)="searchPayment()" class='btn btn-warning'>BUSCAR</button>
-                    <button class='btn btn-warning' (click)="getAll()">TODOS</button>
+                    <button (click)="searchPayment()" class='btn btn-warning text-center'><i class="fas fa-search"></i></button>
+                    <button class='btn btn-warning text-center' (click)="getAll()">TODOS</button>
                   </div>
               </div>
           </div>
           <div class="col-4">
             <div class="row d-flex justify-content-center">
               <div class="col-12 d-flex justify-content-center">
-                <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="stateChange('all')" class="btn btn-warning">Todos</button>
-                <button [ngStyle]="{'opacity': buttonsStyle('sent')}" (click)="stateChange('sent')"  class="btn btn-warning">Pagos enviados</button>
-                <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="stateChange('notSent')"  class="btn btn-warning">Pagos no enviados</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="paymentTypeChange('all')" class="btn btn-warning">Todos</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('sent')}" (click)="paymentTypeChange('sent')"  class="btn btn-warning">Pagos enviados</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="paymentTypeChange('notSent')"  class="btn btn-warning">Pagos no enviados</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('CARGO')}" (click)="paymentTypeChange('CARGO')" class="btn btn-warning">CARGO</button>   
               </div>
             </div>
           </div>
@@ -82,10 +82,10 @@
           <tbody #tbody style='width:100%'>
             <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
               <td style="width:20%">{{payment.amount}}</td>
-              <td style="width:20%">{{payment.artist.indexcard.name}}</td>
+              <td style="width:20%"> <p *ngIf="payment.artist" >{{payment.artist.indexcard.name}}</p> <p *ngIf="!payment.artist">CARGO</p> </td>
               <td style="width:20%">{{payment.date || date}}</td>
               <td style="width:20%">{{payment.track.title}}</td>
-              <td style="width:20%" *ngIf="!payment.sent"> <button (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>
+              <td style="width:20%" *ngIf="!payment.sent"> <button *ngIf="payment.artist" (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>
               <td style="width:20%" *ngIf="payment.sent && !payment.sentDate">¡Email enviado!</td>
               <td style="width:20%" *ngIf="payment.sent && payment.sentDate">¡Email enviado el día {{payment.sentDate | date}}!</td>
             </tr>
@@ -138,6 +138,9 @@
             <span>[[nombre de artista]]</span>
             <span> [[apellido de artista]] </span>
             <span> [[email de artista]]</span>
+            <span> [[cantidad liquidación]]</span>
+            <span> [[título track]]</span>
+            <span>[[título albúm]]</span>
            </div>
             <div class="row">
               <div class="col-12 d-flex justify-content-center mb-2">

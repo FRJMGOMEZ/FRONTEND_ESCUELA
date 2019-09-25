@@ -17,9 +17,6 @@ export class DemoService {
   incomes:boolean = false;
   payments:boolean = false;
 
-
-  constructor() { }
-
   loginPopup(onclick:boolean = false){
     if(!this.login || onclick)
    {Swal.fire({

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { timer } from 'rxjs';
 import { IncomeModalController } from 'src/app/modals/income-modal/incomesModalController.service';
 import { IncomesService } from '../../../providers/incomes.service';
@@ -21,6 +21,7 @@ export class IncomesComponent implements OnDestroy,OnInit {
 
   ngOnInit(){
     this._demoServices.incomesPopup();
+    this._incomeServices.incomeType = 'notLiquidated'
   }            
 
   postIncome(){
@@ -32,12 +33,12 @@ export class IncomesComponent implements OnDestroy,OnInit {
    switch (this._incomeServices.searchCriteria) {
       case 'origin':
         this._incomeServices.inputs[0] = this.input0.nativeElement.value;
-        this._incomeServices.search().subscribe()
+        this._incomeServices.searchIncomes().subscribe()
         break;
       case 'amount':
         this._incomeServices.inputs[0] = String(this.input0.nativeElement.value);
         this._incomeServices.inputs[1] = String(this.input1.nativeElement.value);
-        this._incomeServices.search().subscribe();
+        this._incomeServices.searchIncomes().subscribe();
         break;
       case 'date':
         this.checkDateFormat().then(async()=>{
@@ -53,7 +54,7 @@ export class IncomesComponent implements OnDestroy,OnInit {
           })
           this._incomeServices.inputs[1] = await new Date(values2[2], values2[1] - 1, values2[0]).getTime();
 
-          this._incomeServices.search().subscribe();
+          this._incomeServices.searchIncomes().subscribe();
         })
       
         break;
@@ -105,12 +106,9 @@ export class IncomesComponent implements OnDestroy,OnInit {
   }
 
   ngOnDestroy(){
-    this._incomeServices.searchMode=false;
     this._incomeServices.incomeType = '';
-    this._incomeServices.incomesLiquidated=[];
-    this._incomeServices.incomesNotLiquidated=[];
-    this._incomeServices.fromIL = 0;
-    this._incomeServices.fromINL =0;
+    this._incomeServices.incomes
+    this._incomeServices.from = 0;
     this._incomeServices.searchCriteria='';
     this._incomeServices.lastSearchCriteria='';
   }

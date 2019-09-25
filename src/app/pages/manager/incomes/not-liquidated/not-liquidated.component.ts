@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IncomesService } from '../../../../providers/incomes.service';
 import { PaymentModalController } from '../../../../modals/payment-modal/paymentModalController.service';
 import { IncomesComponent } from '../incomes.component';
@@ -15,12 +15,8 @@ export class NotLiquidatedComponent implements OnInit {
              public incomesComponent:IncomesComponent) { }
 
   ngOnInit() {
-    this.incomesComponent.input0.nativeElement.value = '';
-    if (this.incomesComponent.input1) {
-      this.incomesComponent.input1.nativeElement.value = '';
-    }
-    this._incomeServices.searchMode = false;
-    this._incomeServices.getIncomesNotLiquidated().subscribe();
+    this._incomeServices.from = 0;
+    this._incomeServices.getIncomes().subscribe();
   }
 
   postPayments(incomeId:string){
@@ -29,9 +25,9 @@ export class NotLiquidatedComponent implements OnInit {
   }
 
   switch(amount:number){
-    this._incomeServices.fromINL+=amount;
-    if(!this._incomeServices.searchMode){
-      this._incomeServices.getIncomesNotLiquidated().subscribe()
+    this._incomeServices.from+=amount;
+    if(!this._incomeServices.lastSearchCriteria === undefined){
+      this._incomeServices.getIncomes().subscribe()
     }else{
       this.incomesComponent.search();
     }

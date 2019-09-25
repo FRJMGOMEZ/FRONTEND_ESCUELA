@@ -15,13 +15,11 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   public filterPipe = new DaysOfWeekPipe();
 
-  public chartBy: string = 'days';
+  public chartBy: string = 'weeks';
 
   public chartSelected: string = 'payments';
 
   @ViewChild('mat-datepicker-0') datePicker:ElementRef
-
-
   @ViewChild("picker0") picker0: MatDatepicker<any>;
   @ViewChild("picker1") picker1: MatDatepicker<any>
 
@@ -31,17 +29,10 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   constructor(public _paymentServices: PaymentsService,
               public _incomeServices:IncomesService,
-              public _demoServices:DemoService,
-              private renderer:Renderer2) { }
+              public _demoServices:DemoService) { }
 
   async ngOnInit() {
-    this._paymentServices.state = 'CARGO';
     this._demoServices.graphsPopup();
-   
-  }
-
-  calendarEvent(){
-     console.log(this.datePicker)
   }
 
   changeSelection(type:string){
@@ -69,20 +60,20 @@ export class CompanyComponent implements OnInit, OnDestroy {
 
   async checkDates(){
     if (!this.picker1['_selected'] && !this.picker0['_selected']) {
-      let date1 = await this.filterPipe.transform(new Date());
+      let date1 = await this.filterPipe.transform(new Date(new Date().getTime() - (86400000 * 7)));
       date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
       switch(this.chartSelected){
         case 'payments':
           this._paymentServices.inputs[0] = await date1.getTime();
-          this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 7);
+          this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 13);
           this.picker0['_selected'] = await new Date(date1);
-          this.picker1['_selected'] = await new Date(this._paymentServices.inputs[0] + (86400000 * 7));
+          this.picker1['_selected'] = await new Date(this._paymentServices.inputs[0] + (86400000 * 13));
           break;
        case 'incomes':
           this._incomeServices.inputs[0] = await date1.getTime();
-          this._incomeServices.inputs[1] = await this._incomeServices.inputs[0] + (86400000 * 7);
+          this._incomeServices.inputs[1] = await this._incomeServices.inputs[0] + (86400000 * 13);
           this.picker0['_selected'] = await new Date(date1);
-          this.picker1['_selected'] = await new Date(this._incomeServices.inputs[0] + (86400000 * 7));
+          this.picker1['_selected'] = await new Date(this._incomeServices.inputs[0] + (86400000 * 13));
           break;
       }
       return
@@ -164,6 +155,8 @@ export class CompanyComponent implements OnInit, OnDestroy {
   
 
   ngOnDestroy() {
+    this._incomeServices.incomeType='notLiquidated';
+    this._paymentServices.paymentTypes = [];
     this._incomeServices.inputs=[];
     this._paymentServices.inputs = [];
   }

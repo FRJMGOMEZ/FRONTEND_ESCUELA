@@ -13,25 +13,23 @@
           <a (click)="moveRight()" class="text-left m-4"><i class="fas fa-arrow-left"></i></a>
         </div>
         <div class="col-12 d-flex justify-content-center">
-          <div class="form-check">
-            <input [(ngModel)]="_paymentServices.state" (change)="companyComponent.generateChart()" class="form-check-input"
-              type="radio" name="exampleRadios" id="exampleRadios3" value="CARGO">
-            <label class="form-check-label" for="exampleRadios3">
-              LIQUIDACIONES CARGO MUSIC
-            </label>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="liquidated" (change)="onSelection()" class="form-check-input" type="checkbox"
+              id="inlineCheckbox1">
+            <label class="form-check-label" for="inlineCheckbox1">LIQUIDACIONES ARTISTAS LIQUIDADAS</label>
           </div>
-          <div class="form-check">
-            <input [(ngModel)]="_paymentServices.state" (change)="companyComponent.generateChart()" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value='notSent'>
-            <label class="form-check-label active" for="exampleRadios1">
-              LIQUIDACIONES ARTISTAS (NO LIQUIDADAS)
-            </label>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="notLiquidated" (change)="onSelection()" class="form-check-input" type="checkbox"
+              id="inlineCheckbox2">
+            <label class="form-check-label" for="inlineCheckbox2">LIQUIDACIONES ARTISTAS NO LIQUIDADAS</label>
           </div>
-          <div class="form-check">
-            <input [(ngModel)]="_paymentServices.state" (change)="companyComponent.generateChart()"
-              class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="sent">
-            <label class="form-check-label active" for="exampleRadios2">
-              LIQUIDACIONES ARTISTAS (LIQUIDADAS)
-            </label>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="CARGO" (change)="onSelection()" class="form-check-input" type="checkbox" id="inlineCheckbox2">
+            <label class="form-check-label" for="inlineCheckbox2">CARGO</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="all" (change)="onSelection()" class="form-check-input" type="checkbox" id="inlineCheckbox2">
+            <label class="form-check-label" for="inlineCheckbox2">TODAS</label>
           </div>
         </div>
       </div>
@@ -49,7 +47,8 @@
           <td style="width:25%">{{payment.amount.toFixed(2)}}</td>
           <td style="width:25%">{{payment.date | date: 'M/d/y'}}</td>
           <td style="width:25%">{{payment.track.title}}</td>
-          <td style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' && payment.artist ">{{payment.artist.indexcard.name}}</p> <p *ngIf="typeOfSearch === 'CARGOMUSIC' "></p> </td>
+          <td style="width:25%" > <p *ngIf="typeOfSearch != 'CARGOMUSIC' && payment.artist ">{{payment.artist.indexcard.name}}</p> 
+                         <p *ngIf="typeOfSearch === 'CARGOMUSIC' "> </p> </td>
         </tr>
       </tbody>
       <hr>
@@ -57,7 +56,7 @@
         <div class="col-2"></div>
         <div class="col-8 d-flex justify-content-around">
           <button (click)="switchPage(-5)" *ngIf="_paymentServices.from > 0" class="btn btn-warning">PREV</button>
-          <button (click)="switchPage(5)" *ngIf="_paymentServices.from + 5 <=  _paymentServices.count"
+          <button (click)="switchPage(5)" *ngIf="_paymentServices.from + 5 <  _paymentServices.count"
             class="btn btn-warning">NEXT</button>
         </div>
       </div>

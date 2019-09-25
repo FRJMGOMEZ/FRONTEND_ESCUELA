@@ -32,7 +32,7 @@ export class PaymentModalComponent implements OnInit {
   ngOnInit() {
     this._modalService.notification.subscribe(()=>{
       if(this._modalService.id){
-       this.income =  this._incomeServices.incomesNotLiquidated.filter((income)=>{return income._id === this._modalService.id})[0];
+       this.income =  this._incomeServices.incomes.filter((income)=>{return income._id === this._modalService.id})[0];
       }
     })
   }

@@ -28,8 +28,8 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     ///// Letter section /////
     this._paymentServices.searchMode = false;
     this._paymentServices.getPayments().subscribe();
-
     this._demoServices.paymentsPopup();
+    this.paymentTypeChange('all');
 
   }
 
@@ -90,25 +90,39 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   buttonsStyle(type:string){
-    if(type === 'all'){
-      if (this._paymentServices.state === 'sent' || this._paymentServices.state === 'notSent' ){
+    if (type === 'all') {
+      if (this._paymentServices.paymentTypes.indexOf('all')==0) {
+        console.log(this._paymentServices.paymentTypes.indexOf('all'))
+        return '1'
+      } else {
         return '0.5'
       }
-    }else if(type === 'sent'){
-      if (this._paymentServices.state === 'all' || this._paymentServices.state === 'notSent') {
+    } else if (type === 'sent') {
+      if (this._paymentServices.paymentTypes.indexOf('sent') == 0) {
+        return '1'
+      } else {
         return '0.5'
       }
 
-    }else if (type === 'notSent'){
-      if (this._paymentServices.state === 'sent' || this._paymentServices.state === 'all') {
+    } else if (type === 'notSent') {
+      if (this._paymentServices.paymentTypes.indexOf('notSent') == 0) {
+        return '1'
+      } else {
+        return '0.5'
+      }
+    } else if (type === 'CARGO') {
+      if (this._paymentServices.paymentTypes.indexOf('CARGO') == 0) {
+        return '1'
+      } else {
+        console.log('CARGO')
         return '0.5'
       }
     }
   }
 
-  stateChange(state:string){
+  paymentTypeChange(paymentType:string){
     this._paymentServices.from = 0;
-    this._paymentServices.state = state;
+    this._paymentServices.paymentTypes = [paymentType];
     if(this._paymentServices.searchMode){
       this.searchPayment();
     }else{
@@ -128,7 +142,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
   this._paymentServices.payments = []
   this._paymentServices.paymentSearchCriteria = 'amount';
-  this._paymentServices.state= 'all';
+  this._paymentServices.paymentTypes= ['all'];
   this._paymentServices.searchMode = false;
   this._paymentServices.inputs = []
   this._paymentServices.from= 0;

@@ -18,17 +18,19 @@ export class PaymentsChartComponent implements OnInit {
 
   public companySubscription : Subscription;
 
-  @ViewChild('chart') chart: LineChartComponent;
+  public liquidated:boolean=true;
+  public notLiquidated:boolean=true;
+  public CARGO:boolean=true;
+  public all:boolean=true;
 
-  public showTable:boolean=false;
+  public showTable: boolean = false;
+
+  @ViewChild('chart') chart: LineChartComponent;
 
   constructor(public _paymentServices: PaymentsService,
               public companyComponent: CompanyComponent) { }
 
   async ngOnInit() {
-    console.log(window.innerWidth)
-    this._paymentServices.state='CARGO';
-    this.companyComponent.generateChart();
     this.companySubscription=this.companyComponent.notification.subscribe((selection:string) => {
       if(selection === 'payments'){
         timer().subscribe(() => {
@@ -36,43 +38,117 @@ export class PaymentsChartComponent implements OnInit {
         })
       }
     })
+    this.onSelection();
   }
+
+  onSelection(){
+    this._paymentServices.from = 0;
+
+    if(this.CARGO || this.liquidated || this.notLiquidated || this.all){
+      this.setpaymentTypes();
+      this.companyComponent.generateChart()
+    }else{
+      this._paymentServices.paymentTypes = [];
+      this.companyComponent.generateChart();
+    }       
+  }
+
+  setpaymentTypes(){
+    if (this.CARGO) {
+      this._paymentServices.paymentTypes.push('CARGO');
+    } else {
+      this._paymentServices.paymentTypes = this._paymentServices.paymentTypes.filter((paymentTypes: string) => { return paymentTypes != 'CARGO' });
+    }
+    if (this.liquidated) {
+      this._paymentServices.paymentTypes.push('sent');
+    } else {
+      this._paymentServices.paymentTypes = this._paymentServices.paymentTypes.filter((paymentTypes: string) => { return paymentTypes != 'sent' });
+    }
+    if (this.notLiquidated) {
+      this._paymentServices.paymentTypes.push('notSent');
+    } else {
+      this._paymentServices.paymentTypes = this._paymentServices.paymentTypes.filter((paymentTypes: string) => { return paymentTypes != 'notSent' });
+    }
+    if (this.all) {
+      this._paymentServices.paymentTypes = ['all'];
+    } else {
+      this._paymentServices.paymentTypes = this._paymentServices.paymentTypes.filter((paymentTypes: string) => { return paymentTypes != 'all' });
+    }
+  }
+
 
  async setPaymentsData() {
-      
-        await this.companyComponent.labels.forEach((label: Date, index: number) => {
-          this.data[index] = 0;
-        })
-        this._paymentServices.getPaymentsData().subscribe(async(payments)=>{
-          await this.companyComponent.labels.forEach((label: Date, index: number) => {
-            payments.forEach((payment: Payment) => {
-              if (new Date(payment.date).getTime() >= label.getTime() && new Date(payment.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
-                this.data[index] += payment.amount;
-              }
-            })
-          })
-          this.labels = await[];
-          await this.companyComponent.labels.forEach((date: Date, index: number) => {
-            this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-          })
-          let dataLabel = await this.dataLabel();
-          this.chart.setInfo(this.labels, this.data, 'payments', dataLabel);
-        })
-          this._paymentServices.searchPayments().subscribe(() => {
-            timer(500).subscribe(() => {
-            this.showTable = true;
-           })
+   if(this._paymentServices.paymentTypes.length > 0){
+     this._paymentServices.searchPayments().subscribe(()=>{
+       this.showTable = true;
+     });
+   }else{
+     this._paymentServices.payments=[];
+   }
+
+   await this.companyComponent.labels.forEach((date: Date, index: number) => {
+     this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
    })
+
+   let dataArray = [];
+   let dataLabels = [];
+   let dataColors = [];
+
+   if (this.all) {
+     let data = await this.paymentsDataSearch('all');
+     await dataArray.push(data);
+     dataLabels.push('TODOS');
+     dataColors.push('red');
+   }
+   if (this.liquidated) {
+     let data = await this.paymentsDataSearch('sent');
+     await dataArray.push(data);
+     dataLabels.push('ARTISTAS LIQUIDADAS');
+     dataColors.push('green');
+   }
+   if (this.notLiquidated) {
+     let data = await this.paymentsDataSearch('notSent');
+     await dataArray.push(data);
+     dataLabels.push('ARTISTAS NO LIQUIDADAS');
+     dataColors.push('blue');
+   }
+   if (this.CARGO) {
+     let data = await this.paymentsDataSearch('CARGO');
+     await dataArray.push(data);
+     dataLabels.push('CARGO');
+     dataColors.push('orange');
+   }
+
+    this.chart.setInfo(this.labels,dataArray, dataLabels,dataColors,'payments');
+    timer(500).subscribe(() => {
+      this.setpaymentTypes()
+      this.clean()
+    })     
+}
+
+  async paymentsDataSearch(paymentTypes:string){
+    return new Promise((resolve,reject)=>{
+      this._paymentServices.paymentTypes=[paymentTypes];
+      this._paymentServices.getPaymentsChartData().subscribe(async (payments) => {
+        let data = []
+        await this.companyComponent.labels.forEach((label: Date, index: number) => {
+          data[index] = 0;
+        })
+        await this.companyComponent.labels.forEach((label: Date, index: number) => {
+          payments.forEach((payment: Payment) => {
+            if (new Date(payment.date).getTime() >= label.getTime() && new Date(payment.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
+              data[index] += payment.amount;
+            }
+          })
+        })
+        resolve(data)
+      })
+    })        
   }
 
-  dataLabel(){
-    return new Promise<string>((resolve,reject)=>{
-      if (this._paymentServices.state === 'CARGO'){
-        resolve('CARGO')
-      }else{
-        resolve('ARTISTAS')
-      }
-    })
+  clean() {
+    this.companyComponent.labels = [];
+    this.labels = [];
   }
 
   moveRight(direction?: string){
@@ -129,12 +205,10 @@ export class PaymentsChartComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this._paymentServices.payments = [];
     this.companySubscription.unsubscribe();
     this._paymentServices.payments = [];
-    this._paymentServices.from = 0;
     this._paymentServices.count = 0;
-    this._paymentServices.state = 'all';
+    this._paymentServices.from = 0;
   }
 
 }

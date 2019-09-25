@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { IncomesService } from '../../../../providers/incomes.service';
 import { IncomesComponent } from '../incomes.component';
 
@@ -14,18 +14,14 @@ export class LiquidatedComponent implements OnInit {
              private incomesComponent:IncomesComponent) { }
 
   ngOnInit() {
-    this.incomesComponent.input0.nativeElement.value = '';
-    if(this.incomesComponent.input1){
-      this.incomesComponent.input1.nativeElement.value = '';
-    }
-    this._incomeServices.searchMode = false;
-    this._incomeServices.getIncomesLiquidated().subscribe()
+    this._incomeServices.from = 0;
+    this._incomeServices.getIncomes().subscribe()
   }
 
   switch(amount: number) {
-    this._incomeServices.fromIL+=amount;
-    if (!this._incomeServices.searchMode) {
-      this._incomeServices.getIncomesLiquidated().subscribe()
+    this._incomeServices.from+=amount;
+    if (!this._incomeServices.lastSearchCriteria === undefined) {
+      this._incomeServices.getIncomes().subscribe()
     } else {
       this.incomesComponent.search();
     }

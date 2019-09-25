@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2} from '@angular/core';
+import { Component, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import { Chart } from 'chart.js';
+import { DataLabelSet } from '../../models/chartDataSet.model';
 
 @Component({
   selector: 'app-line-chart',
@@ -10,10 +11,8 @@ export class LineChartComponent {
 
   public chart: Chart = null;
 
-  public data:number[]=[]
+  public dataSets:DataLabelSet[]=[]
   public labels:string[]=[]
-
-  public dataLabel:string;
 
   public chartId:string='initial';
 
@@ -21,36 +20,29 @@ export class LineChartComponent {
 
   @ViewChild('canvasRef') canvasRef : ElementRef;
 
-  constructor( private renderer:Renderer2){
-
-  }
+  constructor( private renderer:Renderer2){}
   
-  setInfo(labels:string[],data:number[],id:string,dataLabel:string){
-    this.dataLabel=dataLabel;
-    this.labels=labels;
-    this.data = data;
-    this.chartId = id;
+  async setInfo(labels:string[],data:any[],dataLabel:string[],dataColors:string[],chartId:string){
+    this.chartId=chartId;
+    this.dataSets=[];
+    await data.forEach((dataArray:number[],index:number)=>{
+      let dataSet = new DataLabelSet(dataLabel[index], dataArray, false, dataColors[index]);
+       this.dataSets.push(dataSet)
+    });
+    this.labels=labels; 
     this.checkLabelsSize().then((size:number)=>{
       this.labelFontSize = size;
-      this.render();
+      this.render(this.dataSets);
     })
   }
 
-  render(){
+  render(dataSets:DataLabelSet[]){
     this.renderer.setProperty(this.canvasRef.nativeElement, 'id', this.chartId);
     this.chart = new Chart(this.chartId, {
       type: 'line',
       data: {
         labels: this.labels,
-        datasets: [
-          { 
-            label:this.dataLabel,
-            fill: false,
-            data: this.data,
-            backgroundColor: '#168ede',
-            borderColor: '#168ede'
-          }
-        ]
+        datasets: dataSets
       },
       options: {
         responsive: true,
@@ -62,7 +54,8 @@ export class LineChartComponent {
           display: true,
           position: 'bottom',
           labels: {
-            fontColor: 'white'
+            fontSize: this.labelFontSize,
+            fontColor: 'black'
           }
         },
         scales: {
@@ -87,7 +80,7 @@ export class LineChartComponent {
   onResize(){
     this.checkLabelsSize().then((size:number)=>{
       this.labelFontSize = size;
-      this.render()
+      this.render(this.dataSets);
     })  
   }
 

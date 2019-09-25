@@ -16,7 +16,11 @@ export class IncomesChartComponent implements OnInit, OnDestroy {
 
   public data: number[] = [];
 
-  public companySubscription: Subscription
+  public companySubscription: Subscription;
+
+  public liquidated:boolean = true;
+  public notLiquidated:boolean=true;
+  public all:boolean=true;
 
   @ViewChild('chart') chart: LineChartComponent;
 
@@ -25,8 +29,6 @@ constructor(public companyComponent:CompanyComponent,
             public _incomeServices:IncomesService){}
 
  ngOnInit(){
-   this._incomeServices.incomeType = 'liquidated';
-   this.companyComponent.generateChart()
    this.companySubscription = this.companyComponent.notification.subscribe((selection:string) => {
      if(selection === 'incomes'){
        timer().subscribe(() => {
@@ -34,42 +36,89 @@ constructor(public companyComponent:CompanyComponent,
        })
      }
    })
+   this.onSelection();
+ }
+
+ onSelection(){
+   if(this.liquidated && this.notLiquidated){
+       this._incomeServices.incomeType='all';
+     this._incomeServices.from = 0;
+   }else{
+    if(this.all){
+      this._incomeServices.incomeType='all';
+    }else{
+      if (!this.liquidated) {
+        this._incomeServices.incomeType = "notLiquidated"
+      }
+      if (!this.notLiquidated) {
+        this._incomeServices.incomeType = "liquidated"
+      }
+    }
+   }
+   this.companyComponent.generateChart()
  }
 
   async setIncomesData() {
-  await this._incomeServices.search().subscribe()
-  await this.companyComponent.labels.forEach((label: Date, index: number) => {
-        this.data[index] = 0;
-  })
-  this._incomeServices.getIncomesData().subscribe(async(incomes)=>{
-      await this.companyComponent.labels.forEach(async (label: Date, index: number) => {
-        await incomes.forEach((income: Income) => {
-          if (new Date(income.date).getTime() >= label.getTime() && new Date(income.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
-            this.data[index] += income['amount'];
-          }
-        })
-      })
+  await this._incomeServices.searchIncomes().subscribe()
+
+  let dataArray=[];
+  let dataLabels=[];
+  let dataColors=[];
+  let ids=[];
+
     await this.companyComponent.labels.forEach((date: Date, index: number) => {
       this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     })
-    this.chart.setInfo(this.labels, this.data, 'incomes', 'CARGO');
-    timer(200).subscribe(() => {
 
+  if(this.all){
+    let data= await this.incomesDataSearch('all');
+    await dataArray.push(data);
+    dataLabels.push('TODOS');
+    dataColors.push('red');
+  }
+  if(this.liquidated){
+    let data = await this.incomesDataSearch('liquidated');
+    await dataArray.push(data);
+    dataLabels.push('INGRESOS LIQUIDADOS');
+    dataColors.push('green');
+  }
+  if(this.notLiquidated){
+    let data = await this.incomesDataSearch('notLiquidated');
+    await dataArray.push(data);
+    dataLabels.push('INGRESOS NO LIQUIDADOS');
+    dataColors.push('blue');
+  }
+    this.chart.setInfo(this.labels, dataArray,dataLabels,dataColors,'incomeChart');
+    timer(200).subscribe(() => {
       this.clean()
     })
-  });  
+  }
+
+  incomesDataSearch(type:string){
+    return new Promise<any[]>((resolve,reject)=>{
+      this._incomeServices.incomeType = type;
+      this._incomeServices.getIncomesChartData().subscribe(async (incomes) => {
+        let data=[];
+        await this.companyComponent.labels.forEach((label: Date, index: number) => {
+          data[index] = 0;
+        })
+        await this.companyComponent.labels.forEach(async (label: Date, index: number) => {
+          await incomes.forEach((income: Income) => {
+            if (new Date(income.date).getTime() >= label.getTime() && new Date(income.date).getTime() < this.companyComponent.labels[index + 1].getTime()) {
+              data[index] += income['amount'];
+            }
+          })
+        })
+        resolve(data);
+      }); 
+    })
   }
 
   clean(){
     this.companyComponent.labels = [];
     this.labels = [];
-    this.data = [];
   }
 
-
-  kldkñlañdkaklsñ(){
-
-  }
 
   moveRight(direction?: string) {
     if (this.companyComponent.chartBy === 'weeks') {
@@ -120,22 +169,17 @@ constructor(public companyComponent:CompanyComponent,
   }
 
   switch(amount: number) {
-    if(this._incomeServices.incomeType==='liquidated'){
-      this._incomeServices.fromIL += amount;
-    }else{
-      this._incomeServices.fromINL += amount;
-    }
-    this._incomeServices.search().subscribe(); 
+    this._incomeServices.from*=amount;
+    this._incomeServices.searchIncomes().subscribe(); 
   }
 
   ngOnDestroy(){
        this._incomeServices.incomeType = 'liquidated';
        this.companySubscription.unsubscribe();
-       this._incomeServices.iLCount = 0;
-       this._incomeServices.iNLCount = 0;
+       this._incomeServices.count = 0;
+       this._incomeServices.count = 0;
        this._incomeServices.incomeType = '';
-       this._incomeServices.incomesLiquidated = [];
-       this._incomeServices.incomesNotLiquidated = [];
+       this._incomeServices.incomes = [];
   }
 
 }

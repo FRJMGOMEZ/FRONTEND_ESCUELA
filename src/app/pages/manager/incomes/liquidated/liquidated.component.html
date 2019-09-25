@@ -1,4 +1,4 @@
-<div *ngIf="_incomeServices.incomesLiquidated.length > 0" class="row m-2 " style="width:100%;height: 100%">
+<div *ngIf="_incomeServices.incomes.length > 0" class="row m-2 " style="width:100%;height: 100%">
   <div class="col-12 p-0">
     <div class="row">
     <div class="col-12 d-flex justify-content-center">
@@ -12,7 +12,7 @@
           <th style="width:60%">Liquidaciones</th>
         </thead>
         <tbody  #tbody style='width:100%'>
-          <tr class="d-flex justify-content-around" *ngFor="let income of _incomeServices.incomesLiquidated let i=index">
+          <tr class="d-flex justify-content-around" *ngFor="let income of _incomeServices.incomes let i=index">
             <td style="width:20%">{{income.debitor?.name}}</td>
             <td style="width:20%">{{income.liquidatedAmount}}</td>
             <td style="width:60%">
@@ -24,7 +24,7 @@
                   <th class='p-1' style="width:40%">ID</th>
                 </thead>
                 <tbody >
-                  <tr *ngFor='let payment of _incomeServices.incomesLiquidated[i].payments' class="d-flex justify-content-around" style="width:100%">
+                  <tr *ngFor='let payment of _incomeServices.incomes[i].payments' class="d-flex justify-content-around" style="width:100%">
                     <td style="width:20%">{{payment.date | date}}</td>
                     <td style="width:20%">{{payment.amount}}</td>
                     <td style="width:20%">{{payment.artist?.indexcard?.name}}</td>
@@ -39,8 +39,8 @@
         <div class="row m-3" style='background:#F5F1E3;'>
           <div class="col-2"></div>
           <div class="col-8 d-flex justify-content-around">
-            <button (click)="switch(-5)" *ngIf="_incomeServices.fromIL > 0" class="btn btn-warning">PREV</button>
-            <button (click)="switch(5)" *ngIf="_incomeServices.fromIL + 5 <=  _incomeServices.iLCount  "  class="btn btn-warning">NEXT</button>
+            <button (click)="switch(-5)" *ngIf="_incomeServices.from > 0" class="btn btn-warning">PREV</button>
+            <button (click)="switch(5)" *ngIf="_incomeServices.from + 5 <=  _incomeServices.count  "  class="btn btn-warning">NEXT</button>
           </div>
           <div class="col-2"></div>
         </div>

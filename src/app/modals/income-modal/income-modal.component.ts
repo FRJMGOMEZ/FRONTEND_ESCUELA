@@ -21,8 +21,7 @@ export class IncomeModalComponent implements OnInit {
   ngOnInit() {
     this._modalService.notification.subscribe(()=>{ 
       if(this._modalService.id){
-        let income = this._incomeServices.incomesLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0]
-         || this._incomeServices.incomesNotLiquidated.filter((income: Income) => { return income._id === this._modalService.id })[0] 
+        let income = this._incomeServices.incomes.filter((income: Income) => { return income._id === this._modalService.id })[0]
         this.income = new Income(income.notLiquidatedAmount,income.debitor,income.date);
         this.debitor = this.income.debitor;
       }else{

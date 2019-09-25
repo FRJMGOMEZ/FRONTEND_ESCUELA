@@ -1,4 +1,4 @@
-<div *ngIf="_incomeServices.incomesNotLiquidated.length > 0" class="row m-2" style="width:100%;height: 100%">
+<div *ngIf="_incomeServices.incomes.length > 0" class="row m-2" style="width:100%;height: 100%">
   <div class="col-12 p-0">
     <div class="row">
       <div class="col-12 d-flex justify-content-center">
@@ -14,7 +14,7 @@
             <th style="width:60%">Liquidaciones</th>
           </thead>
           <tbody class="mb-0">
-            <tr *ngFor="let income of _incomeServices.incomesNotLiquidated let i = index"
+            <tr *ngFor="let income of _incomeServices.incomes let i = index"
               class="d-flex justify-content-around" style="width: 100%">
               <td style="width:10%">{{income.debitor.name}}</td>
               <td style="width:10%">{{income.liquidatedAmount}}</td>
@@ -32,7 +32,7 @@
                     <th class="p-1" style="width:40%">ID</th>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let payment of _incomeServices.incomesNotLiquidated[i].payments"
+                    <tr *ngFor="let payment of _incomeServices.incomes[i].payments"
                       class="d-flex justify-content-around" style="width:100%">
                       <td style="width:20%">{{payment.date | date}}</td>
                       <td style="width:20%">{{payment.amount}}</td>
@@ -48,8 +48,8 @@
           <div class="row m-3" style='background:#F5F1E3;'>
             <div class="col-2"></div>
             <div class="col-8 d-flex justify-content-around">
-              <button (click)="switch(-5)" *ngIf="_incomeServices.fromINL > 0" class="btn btn-warning">PREV</button>
-              <button (click)="switch(5)" *ngIf="_incomeServices.fromINL + 5 <=  _incomeServices.iNLCount  "
+              <button (click)="switch(-5)" *ngIf="_incomeServices.from > 0" class="btn btn-warning">PREV</button>
+              <button (click)="switch(5)" *ngIf="_incomeServices.from + 5 <=  _incomeServices.count  "
                 class="btn btn-warning">NEXT</button>
             </div>
             <div class="col-2"></div>

@@ -14,7 +14,7 @@ export class PaymentsService {
 
   public payments:Payment[]=[]
   public paymentSearchCriteria:string = 'amount';
-  public state:string = 'all';
+  public paymentTypes:string[] = [];
   public searchMode:boolean = false;
   public inputs: any[] = []
   public from:number = 0;
@@ -32,7 +32,7 @@ export class PaymentsService {
   }
   
   getPayments(){
-    let url = `${URL_SERVICES}payments?from=${this.from}&state=${this.state}`
+    let url = `${URL_SERVICES}payments?from=${this.from}&paymentTypes=${this.paymentTypes}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
       res.payments = _.sortBy(res.payments, (payment:Payment) => {
         return payment.date
@@ -45,15 +45,16 @@ export class PaymentsService {
 
   searchPayments(from?: number,limit:number=5){
     from = from | this.from;
-    let url = `${URL_SERVICES}searchPayments/${this.inputs}?from=${from}&limit=${limit}&state=${this.state}`
+    let url = `${URL_SERVICES}searchPayments/${this.inputs}?from=${from}&limit=${limit}&paymentTypes=${this.paymentTypes}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+      console.log(res.count);
       this.payments = res.payments;
       this.count = res.count;
     }))
   }
 
-  getPaymentsData(){
-    let url = `${URL_SERVICES}getPaymentsData/${this.inputs}?state=${this.state}`
+  getPaymentsChartData(){
+    let url = `${URL_SERVICES}getPaymentsData/${this.inputs}?paymentTypes=${this.paymentTypes}`
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       return res.data
     }))
@@ -62,7 +63,7 @@ export class PaymentsService {
   sendPaymentNotification(paymentId:string,letterId:string){
     let url = `${URL_SERVICES}sendPaymentNotification/${paymentId}/${letterId}`;
     return this.http.put(url,{},{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      if (this.state === 'all') {
+      if (this.paymentTypes.indexOf('all')>=0) {
       this.payments.forEach((payment:Payment,index:number)=>{
           if (payment._id === res.payment._id) {
             this.payments[index] = res.payment;
