@@ -47,52 +47,52 @@ export class CompanyComponent implements OnInit, OnDestroy {
   }
 
   async generateChart(selection?: string) {
+    this.labels=[];
     if(selection){this.chartSelected=selection};
-    this.labels = [];
-    timer().subscribe(async()=>{
       await this.checkDates();
-      this.checkNumberOfDays().then(async (labelsNumber: number) => {
-        await this.setLabels(labelsNumber);
-        this.notification.emit(this.chartSelected);
-      })
-    })
+        this.checkNumberOfDays().then(async (labelsNumber: number) => {
+          await this.setLabels(labelsNumber);
+          this.notification.emit(this.chartSelected);
+        })
+      
   }
 
-  async checkDates(){
-    if (!this.picker1['_selected'] && !this.picker0['_selected']) {
-      let date1 = await this.filterPipe.transform(new Date(new Date().getTime() - (86400000 * 7)));
-      date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
-      switch(this.chartSelected){
-        case 'payments':
-          this._paymentServices.inputs[0] = await date1.getTime();
-          this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 13);
-          this.picker0['_selected'] = await new Date(date1);
-          this.picker1['_selected'] = await new Date(this._paymentServices.inputs[0] + (86400000 * 13));
-          break;
-       case 'incomes':
-          this._incomeServices.inputs[0] = await date1.getTime();
-          this._incomeServices.inputs[1] = await this._incomeServices.inputs[0] + (86400000 * 13);
-          this.picker0['_selected'] = await new Date(date1);
-          this.picker1['_selected'] = await new Date(this._incomeServices.inputs[0] + (86400000 * 13));
-          break;
+checkDates(){
+    return new Promise(async(resolve,reject)=>{
+      if (!this.picker1['_selected'] && !this.picker0['_selected']) {
+        let date1 = await this.filterPipe.transform(new Date(new Date().getTime() - (86400000 * 7)));
+        date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
+        switch (this.chartSelected) {
+          case 'payments':
+            this._paymentServices.inputs[0] = await date1.getTime();
+            this._paymentServices.inputs[1] = await this._paymentServices.inputs[0] + (86400000 * 13);
+            break;
+          case 'incomes':
+            this._incomeServices.inputs[0] = await date1.getTime();
+            this._incomeServices.inputs[1] = await this._incomeServices.inputs[0] + (86400000 * 13);
+            break;
+        }
+        resolve()
+      } else {
+        await this.setDates().then(()=>{
+          resolve()
+        })
       }
-      return
-    } else {
-      await this.setDates();
-      return
-    }
+    })
+    
   }
-
   async setDates() {
-    if(this.chartSelected === 'incomes'){
+    return new Promise(async(resolve,reject)=>{
+      if(this.chartSelected === 'incomes'){
       this._incomeServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
       this._incomeServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
-      return
+      resolve()
     }else if(this.chartSelected === 'payments'){
       this._paymentServices.inputs[0] = await new Date(this.picker0['_selected']).getTime();
       this._paymentServices.inputs[1] = await new Date(this.picker1['_selected']).getTime();
-      return
+      resolve()
     }
+    })
   }
 
   checkNumberOfDays() {

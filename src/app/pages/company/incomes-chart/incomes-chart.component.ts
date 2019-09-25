@@ -31,9 +31,8 @@ constructor(public companyComponent:CompanyComponent,
  ngOnInit(){
    this.companySubscription = this.companyComponent.notification.subscribe((selection:string) => {
      if(selection === 'incomes'){
-       timer().subscribe(() => {
-         this.setIncomesData();
-       })
+       this.labels = []; 
+       this.setIncomesData();
      }
    })
    this.onSelection();
@@ -64,7 +63,6 @@ constructor(public companyComponent:CompanyComponent,
   let dataArray=[];
   let dataLabels=[];
   let dataColors=[];
-  let ids=[];
 
     await this.companyComponent.labels.forEach((date: Date, index: number) => {
       this.labels[index] = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
@@ -88,10 +86,8 @@ constructor(public companyComponent:CompanyComponent,
     dataLabels.push('INGRESOS NO LIQUIDADOS');
     dataColors.push('blue');
   }
-    this.chart.setInfo(this.labels, dataArray,dataLabels,dataColors,'incomeChart');
-    timer(200).subscribe(() => {
-      this.clean()
-    })
+  let labels = this.labels;
+    this.chart.setInfo(labels, dataArray,dataLabels,dataColors,'incomeChart');
   }
 
   incomesDataSearch(type:string){
@@ -114,55 +110,49 @@ constructor(public companyComponent:CompanyComponent,
     })
   }
 
-  clean(){
-    this.companyComponent.labels = [];
-    this.labels = [];
-  }
-
-
-  moveRight(direction?: string) {
+ async moveRight(direction?: string) {
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0]);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1] + 604800000);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1] + 604800000);
         this.companyComponent.generateChart();
       } else {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0]);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1] - 604800000);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1] - 604800000);
         this.companyComponent.generateChart();
       }
     } else {
       if (direction === 'forward') {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0]);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1] + 86400000);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1] + 86400000);
        this.companyComponent.generateChart();
       } else {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0]);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1] - 86400000);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0]);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1] - 86400000);
         this.companyComponent.generateChart();
       }
     }
   }
 
-  moveLeft(direction?: string) {
+  async moveLeft(direction?: string) {
     if (this.companyComponent.chartBy === 'weeks') {
       if (direction === 'forward') {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0] + 604800000);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1]);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0] + 604800000);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1]);
         this.companyComponent.generateChart();
       } else {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0] - 604800000);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1]);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0] - 604800000);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1]);
         this.companyComponent.generateChart();
       }
     } else {
       if (direction === 'forward') {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0] + 86400000);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1]);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0] + 86400000);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1]);
         this.companyComponent.generateChart();
       } else {
-        this.companyComponent.picker0['_selected'] = new Date(this._incomeServices.inputs[0] - 86400000);
-        this.companyComponent.picker1['_selected'] = new Date(this._incomeServices.inputs[1]);
+        this.companyComponent.picker0['_selected'] = await new Date(this._incomeServices.inputs[0] - 86400000);
+        this.companyComponent.picker1['_selected'] = await new Date(this._incomeServices.inputs[1]);
         this.companyComponent.generateChart();
       }
     }
@@ -174,11 +164,9 @@ constructor(public companyComponent:CompanyComponent,
   }
 
   ngOnDestroy(){
-       this._incomeServices.incomeType = 'liquidated';
        this.companySubscription.unsubscribe();
+       this._incomeServices.incomeType = 'liquidated';
        this._incomeServices.count = 0;
-       this._incomeServices.count = 0;
-       this._incomeServices.incomeType = '';
        this._incomeServices.incomes = [];
   }
 
