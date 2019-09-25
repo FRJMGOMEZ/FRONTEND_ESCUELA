@@ -50,7 +50,7 @@
           <div class="col-2"></div>
           <div class="col-8 d-flex justify-content-around">
             <button (click)="switch(-5)" *ngIf="_incomeServices.from > 0" class="btn btn-warning">PREV</button>
-            <button (click)="switch(5)" *ngIf="_incomeServices.from + 5 <=  _incomeServices.iNLCount  "
+            <button (click)="switch(5)" *ngIf="_incomeServices.from + 5 <=  _incomeServices.count  "
               class="btn btn-warning">NEXT</button>
           </div>
           <div class="col-2"></div>
