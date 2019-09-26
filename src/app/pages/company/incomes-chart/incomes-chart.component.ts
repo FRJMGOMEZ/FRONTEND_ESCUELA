@@ -86,7 +86,7 @@ constructor(public companyComponent:CompanyComponent,
     dataLabels.push('INGRESOS NO LIQUIDADOS');
     dataColors.push('blue');
   }
-  let labels = this.labels;
+    let labels = this.labels;
     this.chart.setInfo(labels, dataArray,dataLabels,dataColors,'incomeChart');
   }
 
