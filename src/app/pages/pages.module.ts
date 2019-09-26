@@ -42,6 +42,7 @@ import { CompanyComponent } from './company/company.component';
 import { IncomesChartComponent } from './company/incomes-chart/incomes-chart.component';
 import { PaymentsChartComponent } from './company/payments-chart/payments-chart.component';
 import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldM
     MatDatepickerModule, 
     MatInputModule,
     MatNativeDateModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatProgressSpinnerModule
   ],
   exports: [],
   bootstrap: [],
