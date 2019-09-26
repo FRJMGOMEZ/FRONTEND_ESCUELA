@@ -59,7 +59,7 @@ export class CompanyComponent implements OnInit, OnDestroy {
 checkDates(){
     return new Promise(async(resolve,reject)=>{
       if (!this.picker1.startAt && !this.picker0.startAt) {
-        let date1 = await this.filterPipe.transform(new Date(new Date().getTime() - (86400000 * 7)));
+        let date1 = new Date(new Date().getTime() - (86400000 * 14));
         date1 = await new Date(date1.getFullYear(), date1.getMonth(), date1.getDate(), 0, 0, 0, 0);
         switch (this.chartSelected) {
           case 'payments':
