@@ -43,7 +43,9 @@ export class UserServices {
                           Swal.fire(
                          {type:'info',
                           text: 'Disculpa, actualmente el usuario está siendo utilizado, prueba con otro, gracias. ',
-                          showCloseButton:true})
+                          showCloseButton:true,
+                          heightAuto: false
+                         })
                          return res
                      })    
                  }
