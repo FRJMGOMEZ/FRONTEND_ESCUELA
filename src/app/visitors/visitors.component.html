@@ -1,0 +1,17 @@
+
+<div class="row">
+  <div class="col-12">
+      <table class="table scrollableTable">
+        <thead class="d-flex jusitfy-content-around">
+          <th style="width:50%">Email</th>
+          <th style="width:50%">Fecha</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let visit of visitors" class="d-flex jusitfy-content-around">
+            <td style="width:50%">{{visit.email}}</td>
+            <td style="width:50%">{{visit.date | date:'medium'}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>

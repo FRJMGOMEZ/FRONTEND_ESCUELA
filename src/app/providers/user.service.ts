@@ -32,37 +32,6 @@ export class UserServices {
         this.uploadFromStorage();
     }
 
-    checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token') || 'noToken'
-        let headers = new HttpHeaders().set('token',token)
-        return this.http.put(`${URL_SERVICES}checkToken`,{},{headers}).pipe(map((res:boolean)=>{
-                 if(res){
-                     return res
-                 }else{
-                     this.router.navigate(['/login']).then(()=>{
-                          Swal.fire(
-                         {type:'info',
-                          text: 'Disculpa, actualmente el usuario está siendo utilizado, prueba con otro, gracias. ',
-                          showCloseButton:true,
-                          heightAuto: false
-                         })
-                         return res
-                     })    
-                 }
-        }))
-    }
-
-
-    updateToken(){
-        let url = `${URL_SERVICES}updateToken`
-        return this.http.get(url,{headers:this.headers}).pipe(map((res:any)=>{
-            this.token = res.token;
-            localStorage.setItem('token',this.token)
-            return true
-        })
-        ,catchError(this._errorHandler.handleError))
-    }
-
     postUser(user: User) {
         let url = `${URL_SERVICES}user`;
         return this.http.post(url, user).pipe(map((res:any)=>{
@@ -89,6 +58,30 @@ export class UserServices {
               return
         })
         ,catchError(this._errorHandler.handleError))
+    }
+
+    checkToken(): Observable<boolean> {
+        let token = localStorage.getItem('token') || 'noToken'
+        let userId = localStorage.getItem('user');
+        userId = JSON.parse(userId)._id;
+        let headers = new HttpHeaders().set('token', token)
+        return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
+            if (res.token) {
+                this.saveInStorage(this.userOnline._id, this.userOnline, token);
+                return true
+            } else {
+                this.router.navigate(['/login']).then(() => {
+                    Swal.fire(
+                        {
+                            type: 'info',
+                            text: res.message,
+                            showCloseButton: true,
+                            heightAuto: false
+                        })
+                })
+                return false
+            }
+        }))
     }
 
     userSocketEmit(order:string,user:string){

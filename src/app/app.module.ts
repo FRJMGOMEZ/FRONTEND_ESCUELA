@@ -22,6 +22,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { VisitorsComponent } from './visitors/visitors.component';
 
 
 registerLocaleData(localeEs);
@@ -34,7 +35,8 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    PagesComponent
+    PagesComponent,
+    VisitorsComponent
   ],
   imports: [
     SharedModule,
