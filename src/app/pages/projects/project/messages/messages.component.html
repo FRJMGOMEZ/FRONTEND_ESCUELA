@@ -5,7 +5,7 @@
                 <button class='btn btn-warning' (click)='getMessages()' *ngIf="_chatServices.messagesCount > messages.length">CARGAR MÁS</button>
             </div>
             <div *ngFor="let message of messages">
-                <div class="card" [ngClass]="{'cardWithImage': message.file}" >
+                <div class="card p-2" [ngClass]="{'cardWithImage': message.file}" >
                     <div class="card-header m-0 p-0" [ngClass]="{'text-right': message.user._id == _userServices.userOnline._id }" style='background:white;border:none'>
                         <strong [ngClass]="{'badge badge': message.user._id == _userServices.userOnline._id  , 'badge badge-warning': message.user._id != _userServices.userOnline._id  }">{{message.user['name']}}</strong>
                     </div>

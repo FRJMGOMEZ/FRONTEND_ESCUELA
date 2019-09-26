@@ -1,117 +1,120 @@
 .overviewRow{
-    height:450px
+    height:490px
 
 }
-
-@media (min-height: 694px) {
-  .overviewRow{
-    height:calc(1.1*450px)
+.scrollableTable tbody{
+    height:210px
 }
-}
-
-@media (min-height: 781px) {
- .overviewRow{
-    height:calc(1.25*450px)
-}
-}
-
-@media (min-height: 833px) {
- .overviewRow{
-    height:calc(1.35*450px)
-}
-}
-
-@media (min-height: 937px) {
- .overviewRow{
-    height:calc(1.5*450px)
-}
-}
-
-@media (min-height: 1250px) {
- .overviewRow{
-    height:calc(2*450px)
-}
-}
-
-@media (min-height: 1875px) {
-  .overviewRow{
-    height:calc(3*450px)
-}  
-}
-
-@media (min-height: 2500px) {
- .overviewRow{
-    height:calc(3.9*450px)
-}
+.scrollableTableSearch tbody{
+    height:370px!important
 }
 .scrollable{
-    height:80px
-}
-
-.scrollableTable tbody{
-    height:170px
+   height:80px
 }
 
 @media (min-height: 694px) {
- .scrollable{
+  .overviewRow{
+    height:calc(1.1*490px)
+}
+.scrollable{
     height:calc(1.1*80px)
 }
 .scrollableTable tbody{
-    height:calc(1.1*170px)
+    height:calc(1.1*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(1.1*370px)!important
 }
 }
 
 @media (min-height: 781px) {
- .scrollable{
+ .overviewRow{
+    height:calc(1.25*490px)
+}
+.scrollable{
     height:calc(1.27*80px)
 }
 .scrollableTable tbody{
-    height:calc(1.27*170px)
+    height:calc(1.27*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(1.25*370px)!important
 }
 }
 
 @media (min-height: 833px) {
- .scrollable{
+ .overviewRow{
+    height:calc(1.35*490px)
+}
+.scrollable{
     height:calc(1.40*80px)
 }
 .scrollableTable tbody{
-    height:calc(1.40*170px)
+    height:calc(1.40*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(1.35*370px)!important
 }
 }
 
 @media (min-height: 937px) {
+ .overviewRow{
+    height:calc(1.5*490px)
+}
  .scrollable{
     height:calc(1.55*80px)
 }
 .scrollableTable tbody{
-    height:calc(1.55*170px)
+    height:calc(1.55*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(1.5*370px)!important
 }
 }
 
 @media (min-height: 1250px) {
- .scrollable{
+ .overviewRow{
+    height:calc(2*490px)
+}
+.scrollable{
     height:calc(2.1*80px)
 }
 .scrollableTable tbody{
-    height:calc(2.1*170px)
+    height:calc(2.1*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(2*370px)!important
 }
 }
 
 @media (min-height: 1875px) {
+  .overviewRow{
+    height:calc(3*490px)
+}
   .scrollable{
     height:calc(3.25*80px)
 }
 .scrollableTable tbody{
-    height:calc(3.25*170px)
-}  
+    height:calc(3.25*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(3*370px)!important
+}    
 }
 
 @media (min-height: 2500px) {
-   .scrollable{
+ .overviewRow{
+    height:calc(3.9*490px)
+}
+ .scrollable{
     height:calc(4.1*80px)
 }
 .scrollableTable tbody{
-    height:calc(4.1*170px)
+    height:calc(4.1*210px)
+}
+.scrollableTableSearch tbody{
+    height:calc(3.9*370px)!important
 } 
 }
+
  
