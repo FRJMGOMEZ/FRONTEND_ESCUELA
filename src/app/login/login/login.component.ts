@@ -30,6 +30,9 @@ export class LoginComponent implements OnInit {
     if (this.email.length > 0) {
       this.rememberMe = true;
     }
+    if(this._userServices.userOnline){
+      this._userServices.logout();
+    }
   }
 
  async login(form: NgForm) {
