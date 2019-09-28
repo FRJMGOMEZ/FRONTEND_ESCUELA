@@ -25,8 +25,8 @@
                                     <p>{{project.description}}</p>
                                 </div>
                                 <div class="col-12 justify-content-center">
-                                    <button *ngIf="!project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Activar</button>
-                                    <button *ngIf="project.status && _projectServices.checkAdmin(project._id)" (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Desactivar</button>
+                                    <button  (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Activar</button>
+                                    <button appProjectRole (click)='changeProjectStatus(project._id) ' class='btn btn-warning '>Desactivar</button>
                                 </div>
                             </div>
                         </div>
