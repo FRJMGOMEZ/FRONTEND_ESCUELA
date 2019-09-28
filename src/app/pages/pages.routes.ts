@@ -18,6 +18,9 @@ import { OverviewComponent } from './manager/overview/overview.component';
 
 const pagesRoutes: Routes = [
 
+      
+      { path: "", redirectTo: "/dashboard", pathMatch: "full" } ,  
+
       {
        path: "dashboard",
        component: DashboardComponent
@@ -76,9 +79,7 @@ const pagesRoutes: Routes = [
         path: 'company',
         canActivate: [AdminGuard],
         component: CompanyComponent
-      },
-
-        { path: "", redirectTo: "/dashboard", pathMatch: "full" }    
+      } 
 ];
 
 export const PAGESROUTES = RouterModule.forChild(pagesRoutes);

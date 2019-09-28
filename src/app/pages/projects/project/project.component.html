@@ -20,16 +20,16 @@
                 <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown">CONFIGURACION</a>
                 <div class="dropdown-menu" aria-labelledby="dp-config">
 
-                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                    <div appProjectRole>
                         <a (click)="putProject(_projectServices.projectSelectedId)" routerLinkActive="router-link-active" class='dropdown-item'>EDITAR PROYECTO</a>
                     </div>
-                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                    <div appProjectRole>
                         <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item'>AÑADIR ADMINISTRADOR</a>
                     </div>
                     <div *ngIf="_projectServices.participants.length > 1">
                         <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item'>SALIR DE PROYECTO</a>
                     </div>
-                    <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+                    <div appProjectRole>
                         <a (click)='deleteProject(_projectServices.projectSelectedId)' routerLinkActive="router-link-active" class='dropdown-item'>ELIMINAR PROYECTO</a>
                     </div>
                 </div>
@@ -47,11 +47,11 @@
                             <h5 class='text-center '>{{_projectServices.name}}</h5>
                         </div>
                         <div class='col-1 m-0 p-0 d-flex align-items-center'>
-                            <span *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId) && _projectServices.status"
+                            <span appProjectRole *ngIf="_projectServices.status"
                                 style='cursor: pointer; color:black' class='bg-warning'
                                 (click)='changeProjectStatus()'>Activo</span>
                             <span
-                                *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId) && !_projectServices.status"
+                                appProjectRole *ngIf="!_projectServices.status"
                                 style='cursor: pointer; color:black' class='bg-warning'
                                 (click)='changeProjectStatus()'>Inactivo</span>
                         </div>
@@ -120,15 +120,15 @@
                                                 <i *ngIf="user.connected" class="fas fa-eye"></i>
                                             </td>
                                             <td style="width:15%">
-                                                <p><button
-                                                        *ngIf="_projectServices.checkAdmin(this._projectServices.projectSelectedId) && _userServices.userOnline._id != user._id"
+                                                <p><button appProjectRole
+                                                        *ngIf=" _userServices.userOnline._id != user._id"
                                                         (click)="removeParticipant(user._id)" class='btn btn-danger'>X</button></p>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)"
+                            <div appProjectRole
                                 class='d-flex justify-content-center mt-2 '>
                                 <button (click)='addParticipant()' class='btn btn-warning '>Añadir participante</button>
                             </div>

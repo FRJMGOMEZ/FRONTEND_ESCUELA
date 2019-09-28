@@ -4,12 +4,12 @@
     </div>
     <nav class='menu d-flex d-sm-block justify-content-center text-center flex-column flex-md-row '>
         
-<a *ngIf="_userServices.checkRole()" [routerLink]="['/company']" routerLinkActive="router-link-active " ><i class="fas fa-chart-line m-1"></i> <span>GRÁFICAS</span> </a>
+<a appRole [routerLink]="['/company']" routerLinkActive="router-link-active " ><i class="fas fa-chart-line m-1"></i> <span>GRÁFICAS</span> </a>
         
         <a (click)="toCalendar()" routerLinkActive="router-link-active"><i class="far fa-calendar-alt m-1 "></i><span>MI CALENDARIO</span></a>
         <a (click)='toProjects()' routerLinkActive="router-link-active"><i class="fas fa-project-diagram m-1 "></i><span>MIS PROYECTOS</span></a>
         <div class="nav-item dropdown">
-            <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+            <a appRole href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-compact-disc m-1 "></i><span>MANAGER</span>
             </a>
             <div class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="nav-item dropdown">
-            <a *ngIf="_userServices.checkRole()" href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+            <a appRole href="" class='nav-link dropdown-toggle' data-toggle='dropdown' role='button' id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-chalkboard-teacher m-1"></i> <span>ESCUELA</span>
             </a>
             <div (click)='_demoServices.dataPopup()' class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
@@ -33,9 +33,9 @@
                 </div>
             </div>
         </div>
-        <a [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI
+        <a  [routerLink]="['/profile']" routerLinkActive="router-link-active"><i class="fas fa-user-circle m-1"></i><span>MI
                 PERFIL</span></a>
-        <a *ngIf="_userServices.checkRole()" [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:white'></i><span>USUARIOS</span></a>
+        <a appRole [routerLink]="['/users']" routerLinkActive="router-link-active" href=" "><i class="fas fa-id-card mr-1" style='color:white'></i><span>USUARIOS</span></a>
         <a (click)='logOut()' routerLinkActive='active'><i class="fas fa-sign-out-alt m-1"></i><span  style='cursor: pointer'></span></a>
     </nav>
 </div>

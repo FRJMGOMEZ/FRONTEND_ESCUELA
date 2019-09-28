@@ -340,14 +340,6 @@ export class ProjectServices {
     }))
   }
 
-  checkAdmin(id:string){
-    if(this.projects.filter((project:any)=>{return project._id === id})[0].administrators.indexOf(this._userServices.userOnline._id)<0){
-      return false
-    }else{
-      return true
-    }
-  }
-
   addOrRemoveParticipant( userId: string) {
     let url = `${URL_SERVICES}pullOrPushOutParticipant/${this.projectSelectedId}`;
     let body = { participant: userId };

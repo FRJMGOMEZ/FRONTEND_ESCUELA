@@ -7,8 +7,8 @@
             <div class=' col-12 d-flex justify-content-center mt-3'>
                 <h4>MIS PROYECTOS</h4>
             </div>
-            <div *ngIf="_userServices.checkRole()" class='col-12 d-flex justify-content-center m-2 p-2 '>
-                <button (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
+            <div  class='col-12 d-flex justify-content-center m-2 p-2 '>
+                <button appRole (click)='newProject() ' class='btn btn-warning '>CREAR NUEVO PROYECTO</button>
             </div>
                 <div *ngIf="_projectServices.projects.length > 0 " class='scrollable' style="border:1px solid black;background:#F5F1E3">
                     <div *ngFor="let project of _projectServices.projects">

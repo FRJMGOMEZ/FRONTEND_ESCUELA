@@ -359,7 +359,7 @@ export class ManagerService {
 
   postAssignation(assignation:Assignation){
     let url = `${URL_SERVICES}assignation`
-    return this.http.post(url,assignation).pipe(map((res:any)=>{
+    return this.http.post(url, assignation, { headers: this._userServices.headers }).pipe(map((res:any)=>{
       return res.assignation
     }))
   }
@@ -373,7 +373,7 @@ export class ManagerService {
 
   removeAssignation(id:string){
     let url = `${URL_SERVICES}assignation/${id}`
-     return this.http.delete(url).pipe(map((res:any)=>{
+    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res:any)=>{
           return res.assignation
       }))
   }

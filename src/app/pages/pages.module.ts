@@ -43,6 +43,7 @@ import { IncomesChartComponent } from './company/incomes-chart/incomes-chart.com
 import { PaymentsChartComponent } from './company/payments-chart/payments-chart.component';
 import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProjectRoleDirective } from '../directives/project-role.directive';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CompanyComponent,
     OverviewComponent,
     IncomesChartComponent,
-    PaymentsChartComponent
+    PaymentsChartComponent,
+    ProjectRoleDirective
   ],
   imports: [
     PAGESROUTES,

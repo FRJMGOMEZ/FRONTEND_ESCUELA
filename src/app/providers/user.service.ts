@@ -61,9 +61,13 @@ export class UserServices {
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token') || 'noToken'
-        let userId = localStorage.getItem('user');
-        userId = JSON.parse(userId)._id;
+        let token = localStorage.getItem('token') || 'noToken';
+        let user = localStorage.getItem('user') || 'noUser';
+        if(user === 'noUser' || token === 'noToken' ){
+            this.router.navigate(['/login'])
+            return;
+        }else{
+        let userId = JSON.parse(user)._id 
         let headers = new HttpHeaders().set('token', token)
         return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
             if (res.token) {
@@ -82,6 +86,7 @@ export class UserServices {
                 return false
             }
         }))
+        }
     }
 
     userSocketEmit(order:string,user:string){
