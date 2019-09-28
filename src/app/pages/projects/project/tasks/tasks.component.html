@@ -1,6 +1,6 @@
 <div class="row d-flex d-flex" style='background: #F5F1E3;height:100%'>
     <div class='col-12 d-flex flex-column justify-content-start mb-1' >
-        <div class="row d-flex justify-content-center" *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)">
+        <div class="row d-flex justify-content-center" appProjectRole>
             <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
         </div>
         <div class="row d-flex justify-content-center">
@@ -41,9 +41,9 @@
                                 <i *ngIf="!task.checked" class="far fa-clock"></i>
                             </button>
                         </td>
-                        <td style="height:14%"><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)"
+                        <td style="height:14%"><i appProjectRole
                                 class="far fa-trash-alt" (click)='deleteTask(task._id)'></i>
-                            <i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" class="far fa-edit" (click)='putTask(task._id)'></i>
+                            <i appProjectRole class="far fa-edit" (click)='putTask(task._id)'></i>
                         </td>
                     </tr>
                 </tbody>
@@ -81,8 +81,8 @@
                             <i  *ngIf="!task.checked" class="far fa-clock"></i>
                         </button>
                     </td>
-                    <td style="height:14%"><i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='deleteTask(task._id)' class="far fa-trash-alt"></i>
-                         <i *ngIf="_projectServices.checkAdmin(_projectServices.projectSelectedId)" (click)='putTask(task._id)' class="far fa-edit"></i>
+                    <td style="height:14%"><i  (click)='deleteTask(task._id)' class="far fa-trash-alt"></i>
+                         <i appProjectRole (click)='putTask(task._id)' class="far fa-edit"></i>
                     </td>
                 </tr>
             </tbody>
