@@ -61,14 +61,13 @@ export class UserServices {
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token') || 'noToken';
-        let user = localStorage.getItem('user') || 'noUser';
-        if(user === 'noUser' || token === 'noToken' ){
+        let token = localStorage.getItem('token');
+        let user = localStorage.getItem('user');
+        if(!user || !token ){
             this.router.navigate(['/login'])
-            return;
         }else{
         let userId = JSON.parse(user)._id 
-        let headers = new HttpHeaders().set('token', token)
+        let headers = new HttpHeaders().set('token', token);
         return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
             if (res.token) {
                 this.saveInStorage(this.userOnline._id, this.userOnline, token);
@@ -86,7 +85,7 @@ export class UserServices {
                 return false
             }
         }))
-        }
+        } 
     }
 
     userSocketEmit(order:string,user:string){
@@ -105,8 +104,9 @@ export class UserServices {
                     } else {
                         this.userOnline.role = 'ADMIN_ROLE'
                     }
-                    this.saveInStorage(this.userOnline._id, this.userOnline, this.token)
-                    this.router.navigate(['/dashboard'])
+                    this.saveInStorage(this.userOnline._id, this.userOnline, this.token).then(()=>{
+                      this.router.navigate(['/dashboard'])
+                    })
                  }
             }
         }))

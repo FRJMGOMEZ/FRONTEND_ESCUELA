@@ -47,7 +47,6 @@ export class PaymentsService {
     from = from | this.from;
     let url = `${URL_SERVICES}searchPayments/${this.inputs}?from=${from}&limit=${limit}&paymentTypes=${this.paymentTypes}`
     return this.http.get(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      console.log(res.count);
       this.payments = res.payments;
       this.count = res.count;
     }))

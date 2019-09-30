@@ -68,9 +68,6 @@ export class MessagesComponent implements OnInit, OnDestroy{
         }
       }
     );
-
-    console.log(this._userServices.userOnline);
-
       
     this.filesSubscription=this._filesServices.files$.subscribe((fileOrder: FileOrder) => {
       if (fileOrder.order === "post") {

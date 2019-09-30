@@ -15,7 +15,6 @@ export class VisitorsComponent implements OnInit {
 
   ngOnInit() {
     this._visitorsServices.getVisitors().subscribe((visitors:AppVisitor[])=>{
-      console.log(visitors)
           this.visitors = visitors;
     })
   }

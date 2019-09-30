@@ -27,13 +27,9 @@ export class ShowFilesModalComponent implements OnInit {
   ngOnInit() {
  
     this._modalController.notification.subscribe(()=>{
-
       if(this._modalController.id){
         this._filesService.getFileById(this._modalController.id).subscribe((file)=>{
           this.file=file;
-          timer().subscribe(()=>{
-            console.log(window.innerHeight);
-          })
         })
       }
     })  

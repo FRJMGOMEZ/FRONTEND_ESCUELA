@@ -200,7 +200,6 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   onResize(event:any){
-    console.log(window.innerHeight)
     this.checkWindowSize();
     this.inProgress = true;
     this._spinnerServices.openSpinner();

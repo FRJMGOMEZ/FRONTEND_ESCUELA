@@ -82,7 +82,6 @@ checkDates(){
   }
   async setDates() {
     return new Promise(async(resolve,reject)=>{
-      console.log(this.picker0,this.picker1);
       if(this.chartSelected === 'incomes'){
       this._incomeServices.inputs[0] = await new Date(this.picker0.startAt).getTime();
       this._incomeServices.inputs[1] = await new Date(this.picker1.startAt).getTime();

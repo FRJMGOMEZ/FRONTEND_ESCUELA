@@ -92,7 +92,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   buttonsStyle(type:string){
     if (type === 'all') {
       if (this._paymentServices.paymentTypes.indexOf('all')==0) {
-        console.log(this._paymentServices.paymentTypes.indexOf('all'))
         return '1'
       } else {
         return '0.5'
@@ -114,7 +113,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       if (this._paymentServices.paymentTypes.indexOf('CARGO') == 0) {
         return '1'
       } else {
-        console.log('CARGO')
         return '0.5'
       }
     }

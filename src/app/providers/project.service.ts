@@ -153,7 +153,6 @@ export class ProjectServices {
           }
         }
       })
-            console.log(this.imageFiles);
       this.myTasks = [];
       this.groupTasks = [];
       res.project.tasks.forEach((task:any)=>{
@@ -457,7 +456,6 @@ export class ProjectServices {
 
   postTask(task: Task) {
     let url = `${URL_SERVICES}task`
-    console.log(task);
     return this.http.post(url, task, { headers: this._userServices.headers }).pipe(map((res: any) => {
       if (res.task.user._id === this._userServices.userOnline._id) {
         this.taskChecked(res.task._id).subscribe()
