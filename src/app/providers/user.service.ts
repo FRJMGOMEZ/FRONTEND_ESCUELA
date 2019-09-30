@@ -61,31 +61,42 @@ export class UserServices {
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token');
+        let token = localStorage.getItem('token') || undefined;
+        let headers;
+        if (token) { headers = new HttpHeaders().set('token', token); }
         let user = localStorage.getItem('user');
-        if(!user || !token ){
-            this.router.navigate(['/login'])
-        }else{
-        let userId = JSON.parse(user)._id 
-        let headers = new HttpHeaders().set('token', token);
+        let userId;
+        if (user) { userId = JSON.parse(user)._id };
+
         return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
-            if (res.token) {
-                this.saveInStorage(this.userOnline._id, this.userOnline, token);
-                return true
+            if (res.user) {
+                this.saveInStorage(res.user._id, res.user, res.token);
+                Swal.fire({
+                           title:`¡Hola! bienvenido/a a la DEMO de mi proyecto CARGOMUSICAPP`,
+                           text:`Se te ha asignado aleatoriamente el usuario: ${res.user.name.toUpperCase()} ${res.user.surname || ''}, gracias por la visita`,
+                           type:"info",
+                           showCloseButton: true,
+                           heightAuto: false
+                       })
+                return true;
             } else {
-                this.router.navigate(['/login']).then(() => {
-                    Swal.fire(
-                        {
-                            type: 'info',
-                            text: res.message,
-                            showCloseButton: true,
-                            heightAuto: false
-                        })
-                })
-                return false
+                if(res.token){
+                    this.saveInStorage(this.userOnline._id, this.userOnline, res.token);
+                    return true
+                }else{
+                    this.router.navigate(['/login']).then(() => {
+                        Swal.fire(
+                            {
+                                type: 'info',
+                                text: res.message,
+                                showCloseButton: true,
+                                heightAuto: false
+                            })
+                    })
+                    return false
+                }
             }
         }))
-        } 
     }
 
     userSocketEmit(order:string,user:string){
@@ -121,13 +132,13 @@ export class UserServices {
     }
 
     saveInStorage(id: string, user: User, token: string) {
-        return new Promise((resolve,reject)=>{
-            localStorage.setItem("id", id);
-            localStorage.setItem("user", JSON.stringify(user));
-            localStorage.setItem("token", token);
-            this.userOnline = user;
-            this.token = token;
-            this.headers = new HttpHeaders().set('token', this.token)
+        return new Promise(async(resolve,reject)=>{
+            await localStorage.setItem("id", id);
+            await localStorage.setItem("user", JSON.stringify(user));
+            await localStorage.setItem("token", token);
+            this.userOnline = await user;
+            this.token = await token;
+            this.headers = await new HttpHeaders().set('token', this.token)
             resolve()
         })
     }
@@ -212,7 +223,7 @@ export class UserServices {
 
     async logout() {
       let payload = await {user:this.userOnline._id}
-     await this.socket.emit('logOut',payload)
+      await this.socket.emit('logOut',payload)
           this.token = "";
           localStorage.removeItem("token");
           localStorage.removeItem("user");

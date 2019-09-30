@@ -18,4 +18,11 @@ getVisitors(){
     return res.visitors;
   }))
 }
+
+deleteVisitor(visitorId:string){
+  let url = `${URL_SERVICES}visitor/${visitorId}`
+  return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
+    return res.visitor;
+  }))
+}
 }

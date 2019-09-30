@@ -273,17 +273,17 @@ fixHeight(height: number) {
          if (reference + 0.75 < 1 && this.ourEvents[String(reference + 0.75)] === undefined) {
            resolve()
          } else { 
-           if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (12 - this.position + 1) - this.facilitie.space))){
+           if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (13 - this.position + 1) - this.facilitie.space))){
              resolve({ height: this.dayComponent.heightPerCard*0.75, position:reference })
            }else{resolve()}
         }
        } else {
-         if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (12 - this.position + 1) - this.facilitie.space))){
+         if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (13 - this.position + 1) - this.facilitie.space))){
            resolve({ height: this.dayComponent.heightPerCard*0.5, position: reference })
          }else{resolve()}
          }
      } else {
-       if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (12 - this.position + 1) - this.facilitie.space))){
+       if ((this.dayComponent.heightPerCard * (reference + 1) === (this.dayComponent.heightPerCard * (13 - this.position + 1) - this.facilitie.space))){
          resolve({ height: this.dayComponent.heightPerCard*0.25, position: reference })
        }else{resolve()} }     
   }) }

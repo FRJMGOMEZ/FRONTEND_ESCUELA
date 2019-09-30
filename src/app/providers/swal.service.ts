@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Swal from "sweetalert2";
 @Injectable({
-
   providedIn: 'root'
 })
 export class SwalService {
@@ -17,7 +16,8 @@ export class SwalService {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Confirmar',
-        cancelButtonText:'Cancelar'
+        cancelButtonText:'Cancelar',
+        heightAuto: false
       }).then((result) => {
         if (result.value) {
           resolve(true)

@@ -17,11 +17,6 @@
     padding: 0px;
 }
 
-
-td{
-  word-break: break-all
-}
-
 .day {
     cursor: pointer
 }

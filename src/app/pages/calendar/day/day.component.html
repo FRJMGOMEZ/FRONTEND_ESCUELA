@@ -10,12 +10,12 @@
                 <div class="col-12">
                   <div class="row mt-0 d-flex justify-content-between">
                     <div class="ml-3" style='display: flex'>
-                      <button class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
+                      <button [disabled]="inProgress" [ngStyle]="{ 'opacity':buttonStyle()} "  class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
                         {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
                       </button>
                     </div>
                     <div class="mr-3" style='display:flex'>
-                      <button class='btn-warning' (click)='toOtherWeek(nextWeek[0])'>
+                      <button [disabled]="inProgress" class='btn-warning' [ngStyle]="{ 'opacity':buttonStyle()} " (click)='toOtherWeek(nextWeek[0])'>
                         {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
                       </button>
                     </div>
@@ -167,9 +167,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div (window:resize)="onResize($event)"  *ngIf='!inProgress' class="col-11 d-flex justify-content-around " [ngStyle]="{'height': heightOfEventsFrame}">
+                        <div (window:resize)="onResize($event)"  *ngIf='!inProgress' class="col-11 m-0 p-0 d-flex justify-content-around " [ngStyle]="{'height': heightOfEventsFrame}">
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
-                                <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': getWidth()} "></app-event>
+                                <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': eventRowWidth} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>
                                 <app-event *ngIf="position >=2" [facilitie]='facilitie' [position]='2' [hour]="_calendarServices.currentDay.hour2 "></app-event>
                                 <app-event *ngIf="position >=3" [facilitie]='facilitie' [position]='3' [hour]="_calendarServices.currentDay.hour3 "></app-event>

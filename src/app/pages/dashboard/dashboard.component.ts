@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
 
 async ngOnInit() {
 
-  this._demoServices.dashboardPopup()
+  //this._demoServices.dashboardPopup()
 
     this._dashboardServices.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
   

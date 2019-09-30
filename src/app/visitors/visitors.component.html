@@ -3,13 +3,15 @@
   <div class="col-12">
       <table class="table scrollableTable">
         <thead class="d-flex jusitfy-content-around">
-          <th style="width:50%">Email</th>
-          <th style="width:50%">Fecha</th>
+          <th style="width:33%">Email</th>
+          <th style="width:33%">Fecha</th>
+          <th style = 'width:33%'></th>
         </thead>
         <tbody>
           <tr *ngFor="let visit of visitors" class="d-flex jusitfy-content-around">
-            <td style="width:50%">{{visit.email}}</td>
-            <td style="width:50%">{{visit.date | date:'medium'}}</td>
+            <td style="width:33%">{{visit.email}}</td>
+            <td style="width:33%">{{visit.date | date:'medium'}}</td>
+            <td style="width:33%"><i class="fas fa-trash-alt" (click)="deleteVisitor(visit._id)" ></i></td>
           </tr>
         </tbody>
       </table>

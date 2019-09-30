@@ -38,6 +38,7 @@ export class DayComponent implements OnInit, OnDestroy {
   position: number = 0;
   heightOfEventsFrame: number;
   heightPerCard:number;
+  eventRowWidth:string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -53,8 +54,8 @@ export class DayComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
     this.checkWindowSize();
+    this.getEventRowWidth();
 
     this.activatedRoute.params.subscribe(async(params)=>{
       let dayId = await params['dayId'];
@@ -142,21 +143,25 @@ export class DayComponent implements OnInit, OnDestroy {
     this._calendarServices.currentWeek = undefined;
     date = new Date(date);
     this._calendarServices.getWeekByDate(date.getTime()).subscribe((week: any) => {
-      if (week === 'no-week') {
-        this._calendarServices.postWeek(date).subscribe(() => {
-          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId: string) => {
-            this._calendarServices.getDayById(dayId).subscribe(() => {
-              this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
-            })
-          });
-        })
-      } else {
-        this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay(), week).then((dayId: string) => {
-          this._calendarServices.getDayById(dayId).subscribe(() => {
-            this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
+      timer(300).subscribe(()=>{
+        if (week === 'no-week') {
+          this._calendarServices.postWeek(date).subscribe(() => {
+            this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay()).then((dayId: string) => {
+              this._calendarServices.getDayById(dayId).subscribe(() => {
+                this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
+              })
+            });
           })
-        })
-      }
+        } else {
+          this._calendarServices.checkWeekDay(new Date(this._calendarServices.currentDay.date).getDay(), week).then((dayId: string) => {
+             timer(300).subscribe(()=>{
+               this._calendarServices.getDayById(dayId).subscribe(() => {
+                 this.router.navigate(["./calendar", this._calendarServices.currentWeek._id, dayId]);
+               })
+             })
+          })
+        }
+      })
     })
   }
 
@@ -201,6 +206,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   onResize(event:any){
     this.checkWindowSize();
+    this.getEventRowWidth();
     this.inProgress = true;
     this._spinnerServices.openSpinner();
     this.init()
@@ -223,6 +229,8 @@ export class DayComponent implements OnInit, OnDestroy {
       return
   }
 
+
+
   getWeeksAroundDates() {
       let weekDate = new Date(this._calendarServices.currentWeek.date);
       let date1 = new Date(weekDate.getFullYear(), weekDate.getMonth(), weekDate.getDate() - 7, 6, 0, 0, 0);
@@ -233,8 +241,8 @@ export class DayComponent implements OnInit, OnDestroy {
       this.nextWeek = [date3, date4];
   }
 
-  getWidth() {
-    return `${Math.round(((this.dayPlace.nativeElement.offsetWidth / 13) * 12) / 5)}px`;
+  getEventRowWidth() {
+      this.eventRowWidth=`${Math.round(((this.dayPlace.nativeElement.offsetWidth / 13) * 12) / 5)}px`;
   }
                                     //////// After init ////////
   switchFacilities(number: number = 0) {
@@ -276,6 +284,14 @@ export class DayComponent implements OnInit, OnDestroy {
     html2canvas(this.printable.nativeElement).then(function(canvas) {
      window.open().document.body.appendChild(canvas);
     });
+  }
+
+  buttonStyle(){
+    if(this.inProgress){
+      return '0.3'
+    }else{
+      return '1'
+    }
   }
 
   ngOnDestroy() {
