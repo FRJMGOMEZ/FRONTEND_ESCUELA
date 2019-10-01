@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { FileOrder } from '../models/file.model';
 import { Socket } from "ngx-socket-io";
 import { UserServices } from './user.service';
-import { ProjectServices } from './project.service';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +65,7 @@ export class FilesServices {
   deleteFile(fileId:string,projectId:string){
     let url = `${URL_SERVICES}deleteFile/${fileId}`;
     return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-        let fileOrder = new FileOrder(res.file,'delete')
+        let fileOrder = new FileOrder(res.file,'delete');
         this.fileSource.next(fileOrder);
         let payload = {fileOrder,room:projectId}
         this.emitFile(payload)

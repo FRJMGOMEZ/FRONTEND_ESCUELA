@@ -23,7 +23,6 @@ export class SidebarComponent{
               private _managerServices:ManagerService) {}
 
   toManagerOverview(){
-
     let item;
     let input = this._managerServices.input || '#';
     let from=this._managerServices.from;
@@ -50,9 +49,7 @@ export class SidebarComponent{
   }           
 
   logOut(){
-    setTimeout(()=>{
-      this._userServices.logout()
-    },1000)
+   this.router.navigate(['/login'])
   }
 
   toProjects(){

@@ -14,7 +14,7 @@
         <tbody  #tbody style='width:100%'>
           <tr class="d-flex justify-content-around" *ngFor="let income of _incomeServices.incomes let i=index">
             <td style="width:20%">{{income.debitor?.name}}</td>
-            <td style="width:20%">{{income.liquidatedAmount}}</td>
+            <td style="width:20%">{{income.liquidatedAmount.toFixed(2)}}</td>
             <td style="width:60%">
               <table class='table scrollableTable insideTable'>
                 <thead class="d-flex justify-content-around">
@@ -26,7 +26,7 @@
                 <tbody >
                   <tr *ngFor='let payment of _incomeServices.incomes[i].payments' class="d-flex justify-content-around" style="width:100%">
                     <td style="width:20%">{{payment.date | date}}</td>
-                    <td style="width:20%">{{payment.amount}}</td>
+                    <td style="width:20%">{{payment.amount.toFixed(2)}}</td>
                     <td style="width:20%">{{payment.artist?.indexcard?.name}}</td>
                     <td style="width:40%">{{payment._id}}</td>
                   </tr>
@@ -40,7 +40,7 @@
           <div class="col-2"></div>
           <div class="col-8 d-flex justify-content-around">
             <button (click)="switch(-5)" *ngIf="_incomeServices.from > 0" class="btn btn-warning">PREV</button>
-            <button (click)="switch(5)" *ngIf="_incomeServices.from + 5 <=  _incomeServices.count  "  class="btn btn-warning">NEXT</button>
+            <button (click)="switch(5)" *ngIf="  _incomeServices.count > _incomeServices.from + 5 "  class="btn btn-warning">NEXT</button>
           </div>
           <div class="col-2"></div>
         </div>

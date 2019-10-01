@@ -17,8 +17,8 @@
             <tr *ngFor="let income of _incomeServices.incomes let i = index"
               class="d-flex justify-content-around" style="width: 100%">
               <td style="width:10%">{{income.debitor.name}}</td>
-              <td style="width:10%">{{income.liquidatedAmount}}</td>
-              <td style="width:10%">{{income.notLiquidatedAmount}}</td>
+              <td style="width:10%">{{income.liquidatedAmount.toFixed(2)}}</td>
+              <td style="width:10%">{{income.notLiquidatedAmount.toFixed(2)}}</td>
               <td style="width:10%">
                 <button (click)='postPayments(income._id)' class="btn btn-warning">Liquidar</button>
                 <!--
@@ -37,7 +37,7 @@
                     <tr *ngFor="let payment of _incomeServices.incomes[i].payments"
                       class="d-flex justify-content-around" style="width:100%">
                       <td style="width:20%">{{payment.date | date}}</td>
-                      <td style="width:20%">{{payment.amount}}</td>
+                      <td style="width:20%">{{payment.amount.toFixed(2)}}</td>
                       <td *ngIf="payment.artist != null" style="width:20%">{{payment.artist?.indexcard['name']}}</td>
                       <td style="width:40%">{{payment._id}}</td>
                     </tr>

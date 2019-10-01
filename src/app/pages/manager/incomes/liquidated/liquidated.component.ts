@@ -20,10 +20,10 @@ export class LiquidatedComponent implements OnInit {
 
   switch(amount: number) {
     this._incomeServices.from+=amount;
-    if (!this._incomeServices.lastSearchCriteria === undefined) {
+    if (this._incomeServices.lastSearchCriteria === undefined) {
       this._incomeServices.getIncomes().subscribe()
     } else {
-      this.incomesComponent.search();
+      this.incomesComponent.search()
     }
   }
 }

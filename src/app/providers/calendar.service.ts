@@ -33,7 +33,7 @@ export class CalendarService {
               private _eventModalController:EventModalController
           ) {}
 
-  //////// WEEK ///////
+  //////// CRUD WEEK LOGIC ///////
 
   getWeekByDate(date:number) {
     let url = `${URL_SERVICES}week/${date}`;
@@ -183,24 +183,7 @@ export class CalendarService {
     });
   }
 
-  /////////// DAY //////////
-
-  userIn() {
-    return new Promise((resolve, reject) => {
-      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
-      this.socket.emit('userIn', payload, () => {
-        resolve()
-      })
-    })
-  }
-
-  userOut() {
-    return new Promise((resolve, reject) => {
-      let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
-      this.socket.emit('userOut', payload)
-      resolve()
-    })
-  }
+  //// DAY CRUD LOGIC ////
 
   getDayByDate(date:number) {
     let url = `${URL_SERVICES}dayByDate/${date}`;
@@ -240,7 +223,25 @@ export class CalendarService {
     );
   }
 
-    //////////// EVENTS ///////////
+  /////////// DAY SOCKET LOGIC //////////
+
+  userIn() {
+    return new Promise((resolve, reject) => {
+      let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
+      this.socket.emit('userIn', payload, () => {
+        resolve()
+      })
+    })
+  }
+  userOut() {
+    return new Promise((resolve, reject) => {
+      let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
+      this.socket.emit('userOut', payload)
+      resolve()
+    })
+  }
+
+  //////////// CRUD EVENTS LOGIC ///////////
 
   getEventsInProject(projectId: string) {
     let url = `${URL_SERVICES}events/projects/${projectId}`
@@ -253,7 +254,7 @@ export class CalendarService {
     let url = `${URL_SERVICES}permanentEvents`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
       this.permanentEvents = _.sortBy(res.events,(event)=>{
-        return event.startDate;
+        return - new Date(event.startDate).getTime();
       });
     }))
   }
@@ -266,7 +267,98 @@ export class CalendarService {
       })
     );
   }
+  postEvent(event: EventModel, dayId: string, limitDate: number = 8630000000000000) {
+    let url = `${URL_SERVICES}event/${dayId}/${String(limitDate)}`;
+    return this.http.post(url, event, { headers: this._userServices.headers }).pipe(
+      map((res: any) => {
+        let eventOrder = new EventOrder(res.event, 'post')
+        this.eventsSource.next(eventOrder)
+        if (res.event.permanent) {
+          this.permanentEvents.push(res.event);
+          this.permanentEvents = _.sortBy(this.permanentEvents, (eventToSort) => {
+            return - new Date(eventToSort.startDate).getTime()
+          })
+          this.permanentEvents.reverse()
+          this.emitEvent(eventOrder)
+        } else {
+          this.emitEvent()
+        }
+      })
+    );
+  }
 
+  putEvent(eventId: string, event: any) {
+    let url = `${URL_SERVICES}event/${eventId}`;
+    return this.http.put(url, event, { headers: this._userServices.headers }).pipe(
+      map((res: any) => {
+        let eventOrder = new EventOrder(res.event, 'put')
+        this.eventsSource.next(eventOrder)
+        if (res.event.permanent) {
+          if (this.permanentEvents.indexOf(res.event) >= 0) {
+            this.permanentEvents.forEach((event, index) => {
+              if (event._id === res.event._id) {
+                this.permanentEvents[index] = res.event
+              }
+            })
+          } else {
+            this.permanentEvents.push(res.event);
+            this.permanentEvents = _.sortBy(this.permanentEvents, (event: EventModel) => {
+              return - new Date(event.startDate).getTime()
+            })
+          }
+          this.emitEvent(eventOrder)
+        } else {
+          this.emitEvent()
+        }
+      })
+    );
+  }
+
+  pullEvent(dayId: string, eventId: string) {
+    let url = `${URL_SERVICES}pullEvent/${dayId}/${eventId}`
+    return this.http.put(url, event, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this.eventsSource.next()
+      if (res.event.permanent) {
+        if (res.event.permanent) {
+          this.permanentEvents.forEach((event, index) => {
+            if (event._id === res.event._id) {
+              this.permanentEvents[index] = res.event
+            }
+          })
+        }
+        let eventOrder = new EventOrder(res.event, 'put')
+        this.emitEvent(eventOrder)
+      } else {
+        this.emitEvent()
+      }
+
+    }))
+  }
+
+  deleteEvent(eventId: string) {
+    let url = `${URL_SERVICES}event/${eventId}`
+    return this.http.delete(url, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      this.eventsSource.next()
+      if (res.event.permanent) {
+        this.permanentEvents = _.sortBy(this.permanentEvents.filter((event) => { return event._id != res.event._id }), (eventToSort: EventModel) => {
+          return - new Date(eventToSort.startDate).getTime()
+        })
+        let eventOrder = new EventOrder(res.event, 'delete')
+        this.emitEvent(eventOrder)
+      } else {
+        this.emitEvent()
+      }
+    }))
+  }
+
+  checkPermanentEvents(event: EventModel) {
+    let url = `${URL_SERVICES}checkPermanentEvents`
+    return this.http.put(url, event, { headers: this._userServices.headers }).pipe(map((res: any) => {
+      return res.day
+    }))
+  }
+  
+   /////// EVENTS SOCKET LOGIC /////
   emitEvent(eventOrder?:EventOrder) {
     let payload = {eventOrder,room:this.currentDay._id}
      this.socket.emit('event',payload)
@@ -287,7 +379,7 @@ export class CalendarService {
         if (payload.eventOrder.order === 'post') {
           this.permanentEvents.push(payload.eventOrder.event);
           this.permanentEvents = _.sortBy(this.permanentEvents,(eventToSort:EventModel)=>{
-                return eventToSort.startDate
+                return -new Date(eventToSort.startDate).getTime()
           })
         } else if (payload.eventOrder.order === 'put') {
           if(this.permanentEvents.indexOf(payload.eventOrder.event)>=0){
@@ -299,105 +391,17 @@ export class CalendarService {
           }else{
             this.permanentEvents.push(payload.eventOrder.event);
             this.permanentEvents = _.sortBy(this.permanentEvents,(event:EventModel)=>{
-              return event.startDate
+              return -new Date(event.startDate).getTime()
             })
           }
         } else if (payload.eventOrder.order === 'delete') {
           this.permanentEvents = _.sortBy(this.permanentEvents.filter((event: EventModel) => { return event._id != payload.eventOrder.event._id }),(eventToSort)=>{
-             return eventToSort.startDate
+             return -new Date(eventToSort.startDate).getTime()
           }) 
         }
       }
     }))}
 
 
-  postEvent(event: EventModel, dayId: string, limitDate:number= 8630000000000000) {
-    let url = `${URL_SERVICES}event/${dayId}/${String(limitDate)}`;
-    return this.http.post(url, event, { headers:this._userServices.headers }).pipe(
-      map((res: any) => {
-        let eventOrder = new EventOrder(res.event,'post')
-        this.eventsSource.next(eventOrder)
-        if(res.event.permanent){
-          this.permanentEvents.push(res.event);
-          this.permanentEvents = _.sortBy(this.permanentEvents,(eventToSort)=>{
-            return eventToSort.startDate
-          })
-          this.emitEvent(eventOrder)
-        }else{
-          this.emitEvent()
-        }
-      })
-    );
-  }
-
-  putEvent(eventId: string, event: any) {
-    let url = `${URL_SERVICES}event/${eventId}`;
-    return this.http.put(url, event, { headers:this._userServices.headers }).pipe(
-      map((res: any) => {
-        let eventOrder = new EventOrder(res.event,'put')
-        this.eventsSource.next(eventOrder)
-        if(res.event.permanent){
-          if(this.permanentEvents.indexOf(res.event)>=0){
-            this.permanentEvents.forEach((event, index) => {
-              if (event._id === res.event._id) {
-                this.permanentEvents[index] = res.event
-              }
-            })
-          }else{
-            this.permanentEvents.push(res.event);
-            this.permanentEvents = _.sortBy(this.permanentEvents,(event:EventModel)=>{
-              return event.startDate
-            })
-          }
-          this.emitEvent(eventOrder)
-        }else{
-          this.emitEvent()
-        }
-      })
-    );
-  }
-
-  pullEvent(dayId:string,eventId:string){
-    let url = `${URL_SERVICES}pullEvent/${dayId}/${eventId}`
-    return this.http.put(url,event,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      this.eventsSource.next()
-      if (res.event.permanent) {
-        if (res.event.permanent) {
-          this.permanentEvents.forEach((event, index) => {
-            if (event._id === res.event._id) {
-              this.permanentEvents[index] = res.event
-            }
-          })
-        }
-        let eventOrder = new EventOrder(res.event, 'put')
-        this.emitEvent(eventOrder)
-      }else{
-        this.emitEvent()
-      }
-
-    }))
-  }
-
-  deleteEvent(eventId:string){
-    let url = `${URL_SERVICES}event/${eventId}`
-    return this.http.delete(url,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-      this.eventsSource.next()
-      if(res.event.permanent){
-        this.permanentEvents = _.sortBy(this.permanentEvents.filter((event) => { return event._id != res.event._id }),(eventToSort:EventModel)=>{
-          return eventToSort.startDate
-        }) 
-        let eventOrder = new EventOrder(res.event, 'delete')
-        this.emitEvent(eventOrder)
-      }else{
-        this.emitEvent()
-      }
-    }))
-  }
-
-  checkPermanentEvents(event:EventModel){
-    let url = `${URL_SERVICES}checkPermanentEvents`
-    return this.http.put(url,event,{headers:this._userServices.headers}).pipe(map((res:any)=>{
-       return res.day
-    }))
-  }
+ 
 }

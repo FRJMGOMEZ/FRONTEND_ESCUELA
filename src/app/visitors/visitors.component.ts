@@ -21,7 +21,6 @@ export class VisitorsComponent implements OnInit {
 
   deleteVisitor(id:string){
     this._visitorsServices.deleteVisitor(id).subscribe((visitor:AppVisitor)=>{
-      console.log(visitor);
       this.visitors = this.visitors.filter((eachVisitor:AppVisitor)=>{return eachVisitor._id != visitor._id})
     })
   }
