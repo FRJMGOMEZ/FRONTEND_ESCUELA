@@ -78,11 +78,11 @@
             </div>
         </div>
     </div>
-    <div class="col-5" style='background:#F5F1E3'>
-        <div class="row">
-            <div class="col-12 mt-1" style="height:30%">
+    <div class="col-5 mt-2" >
+        <div class="row" style='background:#F5F1E3'>
+            <div class="col-12  " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center'>Echa un vistazo a los eventos programados para hoy....</h5>
+                    <h5 class='text-center pt-1'>Echa un vistazo a los eventos programados para hoy....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <table class='table scrollableTable'>
@@ -107,9 +107,9 @@
                     </table>
                 </div>
             </div>
-            <div class="col-12 mt-1" style="height:30%">
+            <div class="col-12 " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center'>Revisa los eventos en curso...</h5>
+                    <h5 class='text-center pt-1'>Revisa los eventos en curso...</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <div class=" col-12 ">
@@ -139,9 +139,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 mt-1" style="height: 30%">
+            <div class="col-12 " style="height: 30%">
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center'>Aquí tienes los eventos más próximos...</h5>
+                    <h5 class='text-center pt-1'>Aquí tienes los eventos más próximos...</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class=' row d-flex justify-content-around flex-row'>
                     <div class="col-12">
