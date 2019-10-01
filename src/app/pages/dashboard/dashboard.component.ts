@@ -31,66 +31,43 @@ export class DashboardComponent implements OnInit {
     public _spinnerServices:SpinnerService) {}
 
 async ngOnInit() {
+    //////// USER IN DASHBOARD ROOM ///////
+    this._dashboardServices.dashboardIn()
 
-  //this._demoServices.dashboardPopup()
-
+    ///////// GETTING USER PROJECTS ////////
     this._dashboardServices.userProjects = await JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
   
+
+    ///////  UPDATING USER PROJECTS /////////
     this.projectsUsersSocket = this._projectServices.usersSocket().subscribe(() => {
       if (this._dashboardServices.userProjects != JSON.parse(localStorage.getItem("user")).projects.map(project => { return project._id; })) {
         this.getTasksAndLastMessages();
         this._dashboardServices.userProjects = JSON.parse(localStorage.getItem('user')).projects.map((project) => { return project._id })
       }
     })
-
-    this._dashboardServices.dashboardIn()
-
+    
+    /////// UPDATING NOTIFICATIONS ////
     this.dashboardSubscription = this._dashboardServices.dashboardSocket().subscribe()
-
+    
+     //////// GETTING NOTIFICATIONS /////
     this.getTasksAndLastMessages();
-
     this._dashboardServices.getEvents().subscribe()
-
-    this._spinnerServices.closeSpinner();
   }
 
+
+
+  /////// LOGIC FUNCTIONS //////
   getTasksAndLastMessages() {
     this._dashboardServices.getTasks().subscribe()
     timer(300).subscribe(() => {
       this._dashboardServices.getLastMessages().subscribe()
     })
-
   }
 
+
+  /////// ROUTER FUNCTIONS //////
   toProject(projectId:Project){
      this.router.navigate(['/projects',projectId])
-  }
-
-  hi(){
-    let today = new Date();
-    if(today.getHours() >= 21 && today.getHours() < 5){
-      return `BUENAS NOCHES`
-    } else if (today.getHours() > 5 && today.getHours() < 15){
-      return `BUENOS DÍAS`
-    }else{
-      return `BUENAS TARDES`
-    }
-  }
-
-  checkTasksNumber(tasks:number,type:string){
-      if(type==='pending'){
-        if (tasks === 1) {
-            return ` Tienes 1 tarea pendiente`
-        } else {
-            return `Tienes ${tasks} tareas pendientes`       
-        }
-      }else if (type==='unchecked'){
-        if (tasks === 1) {
-          return ` Tienes 1 tarea nueva`
-        } else {
-          return `Tienes ${tasks} tareas nuevas`
-        }
-      }
   }
 
   toEvent(date?:Date){
@@ -120,6 +97,36 @@ async ngOnInit() {
       }
     })
   }
+ 
+  
+  /////// RENDER FUNCTIONS //////
+  hi() {
+    let today = new Date();
+    if (today.getHours() >= 21 && today.getHours() < 5) {
+      return `BUENAS NOCHES`
+    } else if (today.getHours() > 5 && today.getHours() < 15) {
+      return `BUENOS DÍAS`
+    } else {
+      return `BUENAS TARDES`
+    }
+  }
+
+  checkTasksNumber(tasks: number, type: string) {
+    if (type === 'pending') {
+      if (tasks === 1) {
+        return ` Tienes 1 tarea pendiente`
+      } else {
+        return `Tienes ${tasks} tareas pendientes`
+      }
+    } else if (type === 'unchecked') {
+      if (tasks === 1) {
+        return ` Tienes 1 tarea nueva`
+      } else {
+        return `Tienes ${tasks} tareas nuevas`
+      }
+    }
+  }
+
 
   ngOnDestroy(): void {
     this._dashboardServices.dashboardOut()

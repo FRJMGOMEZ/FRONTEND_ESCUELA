@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProjectServices } from '../../providers/project.service';
 import { Task } from 'src/app/models/task.model';
 import { UserServices } from 'src/app/providers/user.service';
+import { TasksService } from '../../providers/tasks.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -24,7 +25,8 @@ export class TaskModalComponent implements OnInit {
    
   constructor(public _modalController:TaskModalController,
             private _projectServices:ProjectServices,
-            private _userServices:UserServices) { }
+            private _userServices:UserServices,
+            public _taskServices:TasksService) { }
 
   ngOnInit() {
     this._modalController.notification.subscribe(()=>{
@@ -63,7 +65,7 @@ export class TaskModalComponent implements OnInit {
     if(this.form.valid){
       this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 6, 0, 0, 0);
       let task = new Task(this.form.value.description, this._userServices.userOnline._id,this.taskUserId , this._projectServices.projectSelectedId, this.startDate, this.dateLimit);
-      this._projectServices.putTask(this.taskId,task).subscribe(()=>{
+      this._taskServices.putTask(this.taskId,task).subscribe(()=>{
         this.hideModal()
       })
     }
@@ -73,7 +75,7 @@ export class TaskModalComponent implements OnInit {
     if(this.form.valid){
       this.dateLimit = new Date(this.dateLimit.getFullYear(), this.dateLimit.getMonth(), this.dateLimit.getDate(), 6, 0, 0, 0);
       let task = new Task(this.form.value.description,this._userServices.userOnline._id,this.form.value.user,this._projectServices.projectSelectedId,this.startDate,this.dateLimit);
-      this._projectServices.postTask(task).subscribe(()=>{
+      this._taskServices.postTask(task).subscribe(()=>{
         this.hideModal()
       })
     }

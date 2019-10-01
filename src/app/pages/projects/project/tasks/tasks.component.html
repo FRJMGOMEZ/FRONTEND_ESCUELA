@@ -9,8 +9,8 @@
         <div class="row justify-content-center">
             <input #input placeholder="Escribe el nombre del usuario" type="text">
             <div class='btn-group'>
-                <button (click)='_projectServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
-                <button (click)='_projectServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
+                <button (click)='_taskServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
+                <button (click)='_taskServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
             </div>
         </div>
         <div class="row" *ngIf="_projectServices.groupTasks.length>0" style='border-bottom:1px solid black'>

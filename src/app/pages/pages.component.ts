@@ -25,9 +25,7 @@ import Swal from 'sweetalert2';
   styleUrls: ["./pages.component.css"]
 })
 export class PagesComponent implements OnInit {
-
-  public displaySpinner :boolean=true;
-
+  
   constructor(private socket:Socket,
               private _userServices:UserServices,
               private router:Router,
@@ -82,5 +80,7 @@ export class PagesComponent implements OnInit {
   onResize(){
   }
 
-  
+  ngOnDestroy(){
+    this._userServices.logout();
+  }  
 }

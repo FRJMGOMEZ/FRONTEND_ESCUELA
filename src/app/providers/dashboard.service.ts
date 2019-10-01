@@ -86,65 +86,67 @@ export class DashboardService {
         if(res.tasks.length === 0){
           this.uncheckedTasks = false;
           this.pendingTasks = false;
-        }
-        console.log(res.tasks);
-        res.tasks.forEach((task: any) => {
-          if (this.projects.length === 0) {
-            if (!task.checked) {
-              task.project.uncheckedTasks = [];
-              task.project.uncheckedTasks.push(task.description);
-              this.uncheckedTasks = true;
-              this.projects.push(task.project)
-              if(!task.project.pendingTasks){
-                task.project.pendingTasks = []
-              }
-              return
-            } else if (!task.ok) {
-              task.project.pendingTasks = [];
-              task.project.pendingTasks.push(task.description);
-              this.pendingTasks = true;
-              this.projects.push(task.project);
-              if(!task.project.uncheckedTasks){
-                task.project.uncheckedTasks = []
-              }
-              return
-            }
-          } else {
-            if (this.projects.map((project: any) => { return project._id }).indexOf(task.project._id) < 0) {
+        }else{
+          res.tasks.forEach((task: any) => {
+            if (this.projects.length === 0) {
               if (!task.checked) {
                 task.project.uncheckedTasks = [];
                 task.project.uncheckedTasks.push(task.description);
                 this.uncheckedTasks = true;
                 this.projects.push(task.project)
-              } else {
+                if (!task.project.pendingTasks) {
+                  task.project.pendingTasks = []
+                }
+                return
+              } else if (!task.ok) {
                 task.project.pendingTasks = [];
                 task.project.pendingTasks.push(task.description);
                 this.pendingTasks = true;
                 this.projects.push(task.project);
+                if (!task.project.uncheckedTasks) {
+                  task.project.uncheckedTasks = []
+                }
+                return
               }
             } else {
-              let index = this.projects.map((project: any) => { return project._id }).indexOf(task.project._id);
-              if (!task.checked) {
-  
-                if (this.projects[index].uncheckedTasks.length === 0) {
-                  this.projects[index].uncheckedTasks = [];
+              if (this.projects.map((project: any) => { return project._id }).indexOf(task.project._id) < 0) {
+                if (!task.checked) {
+                  task.project.uncheckedTasks = [];
+                  task.project.uncheckedTasks.push(task.description);
                   this.uncheckedTasks = true;
-                  this.projects[index].uncheckedTasks.push(task.description)
+                  this.projects.push(task.project)
                 } else {
-                  this.projects[index].uncheckedTasks.push(task.description)
+                  task.project.pendingTasks = [];
+                  task.project.pendingTasks.push(task.description);
+                  this.pendingTasks = true;
+                  this.projects.push(task.project);
                 }
               } else {
-                if (this.projects[index].pendingTasks.length === 0) {
-                  this.projects[index].pendingTasks = [];
-                  this.projects[index].pendingTasks.push(task.description)
-                  this.pendingTasks = true;
+                let index = this.projects.map((project: any) => { return project._id }).indexOf(task.project._id);
+                if (!task.checked) {
+
+                  if (this.projects[index].uncheckedTasks.length === 0) {
+                    this.projects[index].uncheckedTasks = [];
+                    this.uncheckedTasks = true;
+                    this.projects[index].uncheckedTasks.push(task.description)
+                  } else {
+                    this.projects[index].uncheckedTasks.push(task.description)
+                  }
                 } else {
-                  this.projects[index].pendingTasks.push(task.description)
+                  if (this.projects[index].pendingTasks.length === 0) {
+                    this.projects[index].pendingTasks = [];
+                    this.projects[index].pendingTasks.push(task.description)
+                    this.pendingTasks = true;
+                  } else {
+                    this.projects[index].pendingTasks.push(task.description)
+                  }
                 }
               }
             }
-          }
-        })
+          })
+
+        }
+       
       })
     )
   }

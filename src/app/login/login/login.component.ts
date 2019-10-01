@@ -5,6 +5,7 @@ import { UserServices } from 'src/app/providers/user.service';
 import { DemoService } from '../../providers/demo.service';
 import { RecoveringModalController } from '../recovering/recovering.modal,controller';
 import { Credentials } from '../../models/credentials';
+import { timer } from 'rxjs';
 
 @Component({
   selector: "app-login",
@@ -31,7 +32,10 @@ export class LoginComponent implements OnInit {
       this.rememberMe = true;
     }
     if(this._userServices.userOnline){
-      this._userServices.logout();
+       this._userServices.token = "";
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          localStorage.removeItem("id");
     }
   }
 
@@ -39,8 +43,11 @@ export class LoginComponent implements OnInit {
     if (form.invalid) {
       return;}
     let credentials = new Credentials(form.value.email,form.value.password);
-    await this._userServices.login(credentials, this.rememberMe).subscribe(() => {
-        this.router.navigate(["/dashboard"]);
+    await this._userServices.login(credentials, this.rememberMe).subscribe((res:any) => {
+         this._userServices.saveInStorage(res.user._id, res.user, res.token);
+         timer(500).subscribe(()=>{
+           this.router.navigate(["/dashboard"]);
+         })
     });
   }
 }

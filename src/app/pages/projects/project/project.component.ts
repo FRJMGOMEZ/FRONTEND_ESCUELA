@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { FilesServices } from 'src/app/providers/files.service';
 import { FileOrder } from 'src/app/models/file.model';
 import { DemoService } from 'src/app/providers/demo.service';
+import { TasksService } from 'src/app/providers/tasks.service';
 
 @Component({
   selector: "app-project",
@@ -40,7 +41,8 @@ export class ProjectComponent implements OnInit {
     private ar:ActivatedRoute,
     public _uploadFilesModalController:UploadFilesModalController,
     private _filesService:FilesServices,
-    public _demoServices:DemoService
+    public _demoServices:DemoService,
+    public _taskServices:TasksService
   ) {
     this.userOnline = this._userServices.userOnline;
   }
@@ -82,7 +84,7 @@ export class ProjectComponent implements OnInit {
       }
     })
 
-    this.tasksSocket = this._projectServices.taskSocket().subscribe()
+    this.tasksSocket = this._taskServices.taskSocket().subscribe()
   }
   
   ngAfterViewChecked(){

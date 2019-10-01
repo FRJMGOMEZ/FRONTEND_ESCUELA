@@ -22,7 +22,8 @@ export class ErrorHandlerService {
         title: errorMessage,
         type: 'warning',
         showCancelButton: true,
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
+        heightAuto: false
     })
     return throwError(errorMessage);
   }

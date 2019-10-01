@@ -53,21 +53,19 @@ export class UserServices {
                localStorage.removeItem("email");
            }
         let url = `${URL_SERVICES}login`;
-        return this.http.post(url,credentials).pipe(map(async(res: any) => {
-              await this.saveInStorage(res.user._id, res.user, res.token)
-              return
+        return this.http.post(url,credentials).pipe(map((res: any) => {
+              return res;
         })
         ,catchError(this._errorHandler.handleError))
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token') || undefined;
-        let headers;
-        if (token) { headers = new HttpHeaders().set('token', token); }
+        let token = localStorage.getItem('token');
+        if (!token) { token = 'noToken'};
         let user = localStorage.getItem('user');
         let userId;
-        if (user) { userId = JSON.parse(user)._id };
-
+        if (user) { userId = JSON.parse(user)._id }else{userId='noUser'};
+        let headers = new HttpHeaders().set('token', token);
         return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
             if (res.user) {
                 this.saveInStorage(res.user._id, res.user, res.token);
@@ -99,30 +97,6 @@ export class UserServices {
         }))
     }
 
-    userSocketEmit(order:string,user:string){
-        let payload = {order,user}
-        this.socket.emit('userSocket',payload)
-    }
-
-    userOnlineSocket() {
-        return this.socket.fromEvent('userSocket').pipe(map((payload: any) => {
-            if (this.userOnline._id === payload.user) {
-                if (payload.order === 'delete' || payload.order === 'changeStatus') {
-                    this.logout()
-                }else if (payload.order === 'changeRole') {
-                    if (this.userOnline.role === 'ADMIN_ROLE') {
-                        this.userOnline.role = 'USER_ROLE'
-                    } else {
-                        this.userOnline.role = 'ADMIN_ROLE'
-                    }
-                    this.saveInStorage(this.userOnline._id, this.userOnline, this.token).then(()=>{
-                      this.router.navigate(['/dashboard'])
-                    })
-                 }
-            }
-        }))
-    }
-
     checkRole(){
         if(this.userOnline.role === 'ADMIN_ROLE'){
             return true
@@ -134,8 +108,8 @@ export class UserServices {
     saveInStorage(id: string, user: User, token: string) {
         return new Promise(async(resolve,reject)=>{
             await localStorage.setItem("id", id);
-            await localStorage.setItem("user", JSON.stringify(user));
             await localStorage.setItem("token", token);
+            await localStorage.setItem("user", JSON.stringify(user));
             this.userOnline = await user;
             this.token = await token;
             this.headers = await new HttpHeaders().set('token', this.token)
@@ -189,38 +163,6 @@ export class UserServices {
         ,catchError(this._errorHandler.handleError))
     }
 
-    changeUserStatus(id:string){
-        let url = `${URL_SERVICES}changeUserStatus/${id}`
-        return this.http.put(url,{},{headers:this.headers}).pipe(map((res:any)=>{
-                this.users.forEach((user, index) => {
-                    if (user._id === res.user._id) {
-                        this.users[index].status = res.user.status;
-                        this.userSocketEmit('changeStatus',id)
-                    }
-                })
-        }),
-        catchError(this._errorHandler.handleError))
-    }
-
-    deleteUser(id:string){
-        let url = `${URL_SERVICES}user/${id}`
-        return this.http.delete(url,{headers:this.headers}).pipe(map((res:any)=>{
-            this.count--
-            this.userSocketEmit('delete',id)
-        }),
-        catchError(this._errorHandler.handleError))
-    }
-
-
-    changeRole(userId:string,role:string){
-        let url = `${URL_SERVICES}changeRole/${userId}/${role}`
-        return this.http.put(url,{},{headers:this.headers}).pipe(map(()=>{
-            this.userSocketEmit('changeRole',userId)
-        }),
-        catchError(this._errorHandler.handleError))
-    }
-
-
     async logout() {
       let payload = await {user:this.userOnline._id}
       await this.socket.emit('logOut',payload)
@@ -232,6 +174,60 @@ export class UserServices {
               this.userOnline = null;
           })
     }
-}
 
+    userSocketEmit(order: string, user: string) {
+        let payload = { order, user }
+        this.socket.emit('userSocket', payload)
+    }
+
+    userOnlineSocket() {
+        return this.socket.fromEvent('userSocket').pipe(map((payload: any) => {
+            if (this.userOnline._id === payload.user) {
+                if (payload.order === 'delete' || payload.order === 'changeStatus') {
+                    this.logout()
+                } else if (payload.order === 'changeRole') {
+                    if (this.userOnline.role === 'ADMIN_ROLE') {
+                        this.userOnline.role = 'USER_ROLE'
+                    } else {
+                        this.userOnline.role = 'ADMIN_ROLE'
+                    }
+                    this.saveInStorage(this.userOnline._id, this.userOnline, this.token).then(() => {
+                        this.router.navigate(['/dashboard'])
+                    })
+                }
+            }
+        }))
+    }
+
+    changeUserStatus(id: string) {
+        let url = `${URL_SERVICES}changeUserStatus/${id}`
+        return this.http.put(url, {}, { headers: this.headers }).pipe(map((res: any) => {
+            this.users.forEach((user, index) => {
+                if (user._id === res.user._id) {
+                    this.users[index].status = res.user.status;
+                    this.userSocketEmit('changeStatus', id)
+                }
+            })
+        }),
+            catchError(this._errorHandler.handleError))
+    }
+
+    deleteUser(id: string) {
+        let url = `${URL_SERVICES}user/${id}`
+        return this.http.delete(url, { headers: this.headers }).pipe(map((res: any) => {
+            this.count--
+            this.userSocketEmit('delete', id)
+        }),
+            catchError(this._errorHandler.handleError))
+    }
+
+
+    changeRole(userId: string, role: string) {
+        let url = `${URL_SERVICES}changeRole/${userId}/${role}`
+        return this.http.put(url, {}, { headers: this.headers }).pipe(map(() => {
+            this.userSocketEmit('changeRole', userId)
+        }),
+            catchError(this._errorHandler.handleError))
+    }
+}
 
