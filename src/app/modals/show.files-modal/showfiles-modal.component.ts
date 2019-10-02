@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FileModel} from '../../models/file.model';
 import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +12,9 @@ import { timer } from 'rxjs';
   styleUrls: ["./showfiles-modal.component.css"]
 })
 export class ShowFilesModalComponent implements OnInit {
+
+  @ViewChild('myPdf') myPdf : ElementRef;
+  @ViewChild('myImg') myImg : ElementRef;
   
   file:FileModel;
 
