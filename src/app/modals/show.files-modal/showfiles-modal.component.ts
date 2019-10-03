@@ -4,10 +4,6 @@ import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FilesServices } from 'src/app/providers/files.service';
-import * as AWS from 'aws-sdk/global';
-import * as S3 from 'aws-sdk/clients/s3';
-import { environment } from '../../../environments/environment';
-
 
 
 @Component({
