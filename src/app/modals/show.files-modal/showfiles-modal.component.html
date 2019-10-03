@@ -20,9 +20,11 @@
                                 </pdf-viewer>
                             </div>
                             <p>{{file.title}}</p>
-                            <button *ngIf="file && progress === 100 && file.download" (click)='downloadFile(myPdf.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+                           <!--
+<button *ngIf="file && progress === 100 && file.download" (click)='downloadFile(myPdf.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
                       <i class='fa fa-save '></i>
                       Descargar pdf</button>
+                           -->
                         </div>
                     </div>
                     <div *ngIf="imgFormats.indexOf(file.format)>=0" class='d-flex flex-column'>
@@ -30,9 +32,10 @@
                             <img  #myImg [src]="file | imgPipe" class='text-center myImg' style='cursor: pointer'>
                         </div>
                         <p>{{file.title}}</p>
-                        <button    *ngIf="file.download" (click)='downloadFile(myImg.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
+                    <!--
+                        <button *ngIf="file.download" (click)='downloadFile(myImg.src)' type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10">
                             <i class='fa fa-save '></i>
-                            Descargar archivo</button>
+                            Descargar archivo</button>-->
                     </div>
                 </div>
             </div>
