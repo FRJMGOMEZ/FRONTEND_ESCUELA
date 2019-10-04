@@ -49,27 +49,6 @@ export class ShowFilesModalComponent implements OnInit {
   }
 
   getFileBlob(url: string) {
-
-    /*if (environment.production){
-
-      AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-      });
-      const s3 = new S3();
-      var params = {
-        Bucket: process.env.S3_BUCKET_NAME,
-        Body: this.file.data,
-        Key: this.file.name
-      }
-      s3.upload(params, function (err, data) {
-        if (err) {
-          return res.status(500).json({ ok: false, err })
-        }
-        resolve({ fileName, data, extension })
-      });
-    }*/
-
     return this.http.get(url, { observe: 'response', responseType: 'blob' })
       .pipe(map((res: any) => {
         return new Blob([res.body], { type: res.headers.get('Content-Type') });
