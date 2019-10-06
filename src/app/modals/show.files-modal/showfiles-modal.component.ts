@@ -4,8 +4,6 @@ import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FilesServices } from 'src/app/providers/files.service';
-import { environment } from '../../../environments/environment';
-
 
 @Component({
   selector: "app-files-modal",
@@ -39,13 +37,7 @@ export class ShowFilesModalComponent implements OnInit {
   }
 
   downloadFile(source:string) {
-   if(environment.production){
-    this._filesService.getSignedAwsUrl(this.file).subscribe((res:any)=>{
-     this.getFileBlob(res).subscribe()
-    })
-   }else{
      this.getFileBlob(source).subscribe()
-   }
   }
 
   getFileBlob(url: string) {

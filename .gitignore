@@ -42,6 +42,7 @@ Dinahosting.
 
 Task manager.
 
+src/app/config/awsCredentials.ts
 
 
 Rastreo edici�n documentos. 

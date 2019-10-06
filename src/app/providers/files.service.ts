@@ -62,10 +62,10 @@ export class FilesServices {
      })
   }
 
-  getSignedAwsUrl(file:FileModel){
-    let url = `${URL_SERVICES}signedAwsUrl/${file.type}/${file.name}`;
+  getAwsFileBuffer(file:FileModel){
+    let url = `${URL_SERVICES}getAwsImgBuffer/${file.name}`;
     return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res:any)=>{
-      console.log(res);
+      return res.data
     }))
   }
 

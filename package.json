@@ -30,7 +30,7 @@
     "@types/jquery": "^3.3.27",
     "@types/sweetalert": "^2.0.4",
     "@types/underscore": "^1.8.9",
-    "aws-sdk": "^2.541.0",
+    "aws-sdk": "^2.543.0",
     "buffer": "^5.2.1",
     "chart.js": "^2.8.0",
     "compression": "^1.7.4",

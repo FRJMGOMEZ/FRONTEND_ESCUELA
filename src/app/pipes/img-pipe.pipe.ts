@@ -1,7 +1,5 @@
-
 import { Pipe, PipeTransform } from '@angular/core';
 import { URL_SERVICES } from '../config/config';
-import { environment } from 'src/environments/environment';
 
 @Pipe({
   name: 'imgPipe',
@@ -36,12 +34,12 @@ export class ImgPipe implements PipeTransform {
         let textFormats = ['pdf'];
         let imgFormats = ['png', 'jpg', 'gif', 'jpeg','JPG'];
         if (imgFormats.indexOf(file.format) >= 0) {
-          if (environment.production) {
-            return file.location
-          }else{
+          if (!file.location.includes('cargomusic')) {
             url = `${URL_SERVICES}files/`
-            url +=`${file.type}/${file.name}`
+            url += `${file.type}/${file.name}`
             return url;
+          }else{
+            return `${URL_SERVICES}getAwsFileBuffer/${file.name}`
           }
         } else if (textFormats.indexOf(file.format) >= 0) {
           url = `${URL_SERVICES}files/icons`
@@ -54,4 +52,3 @@ export class ImgPipe implements PipeTransform {
     } 
       }
   }
-
