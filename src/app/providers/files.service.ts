@@ -3,7 +3,7 @@ import { URL_SERVICES } from '../config/config';
 import { Subject } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { FileOrder } from '../models/file.model';
+import { FileOrder, FileModel } from '../models/file.model';
 import { Socket } from "ngx-socket-io";
 import { UserServices } from './user.service';
 
@@ -60,6 +60,13 @@ export class FilesServices {
        xhr.open('PUT', url, true);
        xhr.send(formData)
      })
+  }
+
+  getSignedAwsUrl(file:FileModel){
+    let url = `${URL_SERVICES}signedAwsUrl/${file.type}/${file.name}`;
+    return this.http.get(url, { headers: this._userServices.headers }).pipe(map((res:any)=>{
+      console.log(res);
+    }))
   }
 
   deleteFile(fileId:string,projectId:string){

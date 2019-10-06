@@ -4,6 +4,7 @@ import { ShowFilesModalController } from './showfilesModal.controller';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FilesServices } from 'src/app/providers/files.service';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -27,8 +28,7 @@ export class ShowFilesModalComponent implements OnInit {
     private _filesService:FilesServices
   ) {}
   
-  ngOnInit() {
- 
+  ngOnInit() { 
     this._modalController.notification.subscribe(()=>{
       if(this._modalController.id){
         this._filesService.getFileById(this._modalController.id).subscribe((file)=>{
@@ -39,19 +39,23 @@ export class ShowFilesModalComponent implements OnInit {
   }
 
   downloadFile(source:string) {
-      this.getFileBlob(source).subscribe(res => {
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(res);
-        a.download = this.file.title;
-        document.body.appendChild(a);
-        a.click();
-      });
+   if(environment.production){
+    this._filesService.getSignedAwsUrl(this.file).subscribe((res:any)=>{
+     this.getFileBlob(res).subscribe()
+    })
+   }else{
+     this.getFileBlob(source).subscribe()
+   }
   }
 
   getFileBlob(url: string) {
     return this.http.get(url, { observe: 'response', responseType: 'blob' })
       .pipe(map((res: any) => {
-        return new Blob([res.body], { type: res.headers.get('Content-Type') });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([res.body], { type: res.headers.get('Content-Type') }));
+        a.download = this.file.title;
+        document.body.appendChild(a);
+        a.click();
       }))
   }
 
