@@ -74,15 +74,17 @@ async ngOnInit() {
     date =new Date(date);
     if(date.getTime()< new Date().getTime()){
       let numberOfWeeks = 10000;
+      let today = new Date();
       for (let i = 0; i <= numberOfWeeks;i++){
-        if(date.getTime()< new Date().getTime()){
-          date = new Date(date.getTime() + 604800000);
-        }else{
-          i= numberOfWeeks;
+        date = new Date(date.getTime() + 604800000);
+        if (new Date().getTime() <= date.getTime() ){
+          date = new Date(date.getTime());
+          break;
         }
       }
     }
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 6, 0, 0, 0);
+    console.log(date)
     this._calendarServices.getDayByDate(date.getTime()).subscribe((res) => {
       if(res === 'no-day'){
         this._calendarServices.postWeek(date).subscribe(()=>{
