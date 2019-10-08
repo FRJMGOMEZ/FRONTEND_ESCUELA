@@ -21,6 +21,11 @@ button {
     font-size: 12px;
 }
 
+.animated {
+   -webkit-animation-duration: 1s;
+   animation-duration: 1s;
+}
+
 div.scrollable {
     width: 100%;
     height: 100%;
@@ -152,6 +157,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
    zoom : 3.9
 }
 }
+
 
 
 

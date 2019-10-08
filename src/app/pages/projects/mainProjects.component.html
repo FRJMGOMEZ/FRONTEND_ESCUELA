@@ -2,7 +2,7 @@
     <div class="col-12" *ngIf="!_projectServices.projectSelectedId">
         <div class="row d-flex justify-content-center">
             <div class="col-12 d-flex justify-content-end animated shake">
-                <i class="fas fa-info m-4"  (click)="_demoServices.projectsPopup(true)" style='color:blue'></i>
+                <i class="fas fa-info fa-lg m-4"  (click)="_demoServices.projectsPopup(true)" style='color:blue'></i>
             </div>
             <div class=' col-12 d-flex justify-content-center mt-3'>
                 <h4>MIS PROYECTOS</h4>
@@ -17,7 +17,7 @@
                                 <div class="col-12 d-flex justify-content-center">
                                     <p>
                                         <a (click)='toProject(project._id) '>
-                                            <p style='color:blue '>Navegar a {{project.name}}</p>
+                                            <p class="projectName animated tada" style='color:blue'>Navegar a {{project.name}}</p>
                                         </a>
                                     </p>
                                 </div>

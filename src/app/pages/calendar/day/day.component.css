@@ -38,11 +38,14 @@ border-right: 0px;
 .facilitiesRow{
     height:47px;
 }
+.printable{
+        margin-top: 10px
+    }
 
  @media (min-height: 694px) {
  
     .printable{
-        margin-top: 10px
+        margin-top: 15px
     }
     
 }
@@ -94,7 +97,7 @@ border-right: 0px;
         height:calc(3.5*200px)
     } 
     .printable{
-        margin-top: 150px
+        margin-top: 70px
     }
      .facilitiesRow{
     height:calc(3.5*47px);

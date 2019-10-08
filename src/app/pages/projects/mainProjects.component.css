@@ -2,9 +2,16 @@
     height:350px
 }
 
+.projectName{
+  font-size:20px
+}
+
 @media (min-height: 694px) {
  .scrollable{
     height:calc(1.1*350px)
+}
+.projectName{
+  font-size:calc(1.1*20px)
 }
 }
 
@@ -12,11 +19,17 @@
   .scrollable{
     height:calc(1.25*350px)
 }
+.projectName{
+  font-size:calc(1.25*20px)
+}
 }
 
 @media (min-height: 833px) {
   .scrollable{
     height:calc(1.35*350px)
+}
+.projectName{
+  font-size:calc(1.35*20px)
 }
 }
 
@@ -24,11 +37,17 @@
   .scrollable{
     height:calc(1.5*350px)
 }
+.projectName{
+  font-size:calc(1.5*20px)
+}
 }
 
 @media (min-height: 1250px) {
   .scrollable{
     height:calc(2*350px)
+}
+.projectName{
+  font-size:calc(2*20px)
 }
 }
 
@@ -36,10 +55,16 @@
    .scrollable{
     height:calc(3*350px)
 }
+.projectName{
+  font-size:calc(3*20px)
+}
 }
 
 @media (min-height: 2500px) {
   .scrollable{
     height:calc(3.9*350px)
+}
+.projectName{
+  font-size:calc(3.9*20px)
 }
 }

@@ -1,12 +1,15 @@
 <div class='row animated fadeIn pagesContainerFixed'>
   <div class="col-12 d-flex flex-column justify-content-around">
     <div class="row" style="height:20%">
-      <div class='col-12 d-flex justify-content-center m-1'>
-        <button (click)="postIncome()" class='btn btn-warning'>AÑADIR NUEVO INGRESO</button>
+      <div class='col-11 d-flex justify-content-center mt-1 mb-1'>
+        <button (click)="postIncome()" class='btn btn-warning ml-5'>AÑADIR NUEVO INGRESO</button>
+      </div>
+      <div class="col-1 d-flex justify-content-end align-items-start animated shake">
+        <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info fa-lg m-4" style='cursor:pointer;color:blue'></i>
       </div>
       <div class="col-12">
         <div class="row d-flex justify-content-center">
-          <div class="col-12 d-flex justify-content-center">
+          <div class="col-12 d-flex justify-content-center mr-5">
             <button class="btn btn-warning" [ngStyle]="{'opacity':buttonsStyles('liquidated')}"
               (click)="_incomeServices.incomeType='liquidated'">INGRESOS LIQUIDADOS</button>
             <button class="btn btn-warning" [ngStyle]="{'opacity':buttonsStyles('notLiquidated')}"
@@ -66,8 +69,7 @@
               </div>
             </div>
           </div>
-          <div class="col-2 d-flex justify-content-end align-items-center animated shake">
-            <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info m-4" style='cursor:pointer;color:blue'></i>
+          <div class="col-2 d-flex justify-content-end align-items-start animated shake">
           </div>
         </div>
       </div>

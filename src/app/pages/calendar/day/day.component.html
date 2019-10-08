@@ -2,7 +2,7 @@
         <div class="col-4 mt-0">
             <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row">
                 <div class="col-12 animated shake">
-                         <i style="color:blue" (click)="_demoServices.calendarPopup(true)" class="fas fa-info m-4"></i>
+                         <i style="color:blue" (click)="_demoServices.calendarPopup(true)" class="fas fa-info fa-lg m-4"></i>
                 </div>
                 <div class="col-12 d-flex flex-column text-center mt-1">
                     <h5 *ngIf="_calendarServices.currentDay">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
@@ -46,19 +46,19 @@
                         </tbody>
                     </table>
                 </div>
-                <div class='col-12 m-3 p-3'>
+                <div class='col-12 m-3 p-3 animated zoomIn'>
                     <p style='color:red'>*Aquellos eventos con permanencia indefinida se definirán con el color rojo*</p>
                     <p style='color:green'>*Aquellos eventos con permanencia definida en el tiempo se definirán con el color verde*</p>
                     <p style='color:blue'>*Aquellos eventos cuya duración sea solo de un día se definirán con el color azul*</p>
                 </div>
             </div>            
         </div>
-        <div #printable class="col-8 printable">
+        <div #printable class="col-8 printable ">
             <div class="row">
               <div class="col-1" style='background: #F0B841'>
                 <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>
               </div>
-                <div class="col-11" style='background: #F0B841'>
+                <div class="col-11 " style='background: #F0B841'>
                     <div *ngIf="_calendarServices.currentWeek && _calendarServices.currentDay" class="row m-0 p-0 d-flex justify-content-around" style='height:30px'>
                                 <button *ngIf="_calendarServices.currentWeek.monday['_id'] !=_calendarServices.currentDay._id " (click)="toOtherDay(_calendarServices.currentWeek.monday['_id'])"  class='text-center day btn btn-warning'>
                                     Lunes {{_calendarServices.currentWeek.monday['date']|date:'d'}}
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div (window:resize)="onResize($event)"  *ngIf='!inProgress' class="col-11 m-0 p-0 d-flex justify-content-around " [ngStyle]="{'height': heightOfEventsFrame}">
+                        <div (window:resize)="onResize($event)"  *ngIf='!inProgress' class="col-11 m-0 p-0 d-flex justify-content-around animated fadeIn " [ngStyle]="{'height': heightOfEventsFrame}">
                             <div *ngFor="let facilitie of _facilitieServices.facilities" class="d-flex flex-column ">
                                 <app-event *ngIf="position >=0" [facilitie]='facilitie' [position]='0' [hour]="_calendarServices.currentDay.hour0" [ngStyle]="{ 'width': eventRowWidth} "></app-event>
                                 <app-event *ngIf="position >=1" [facilitie]='facilitie' [position]='1' [hour]="_calendarServices.currentDay.hour1 "></app-event>

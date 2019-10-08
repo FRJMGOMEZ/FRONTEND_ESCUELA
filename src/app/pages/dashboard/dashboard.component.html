@@ -4,21 +4,21 @@
              <div class="col-12" style='background:#F0B841;border:1px solid black'>
         <div class="row p-2">
             <div class='col-11 d-flex justify-content-center'>
-                <h3 class='text-center animated bounceInDown'>¡{{hi()}} {{_userServices.userOnline.name}}...!</h3>
+                <h2 style="text-shadow: 1px 0 black" class='text-center animated zoomIn'>¡{{hi()}} {{_userServices.userOnline.name}}...!</h2>
             </div>
             <div class="col-1 d-flex justify-content-end align-items-center animated shake">
-                <i (click)="_demoServices.dashboardPopup(true)" class="fas fa-info" style='cursor:pointer;color:blue'></i>
+                <i (click)="_demoServices.dashboardPopup(true)" class="fas fa-info fa-lg" style='cursor:pointer;color:blue'></i>
             </div>
         </div>
     </div>
-    <div class='col-7' style='height:100%'>
+    <div class='col-7 mt-5' style='height:100%'>
         <div class="row m-1">
             <div *ngIf="!_dashboardServices.unreadMessages && !_dashboardServices.pendingTasks && !_dashboardServices.uncheckedTasks" class="col-12">
-                <h5 class='text-center'>No hay nuevas notificaciones
-                </h5>
+                <h3 class='text-center'>No hay nuevas notificaciones
+                </h3>
             </div>
-            <div class="col-12 " *ngIf="_dashboardServices.unreadMessages">
-                <h5>Tienes mensajes sin leer....</h5>
+            <div class="col-12 animated bounceInUp bounce1 " *ngIf="_dashboardServices.unreadMessages">
+                <h5 class="text-center" style="color:black">TIENES MENSAJES NUEVOS...</h5>
                     <table class='table scrollableTable'>
                         <thead>
                         </thead>
@@ -26,7 +26,7 @@
                             <tr>
                                 <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
                                     <div>
-                                        <p><i class="far fa-bell"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a
+                                        <p><i class="far fa-bell" style="color:blue"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a
                                                 style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
                                         </p>
                                     </div>
@@ -37,8 +37,8 @@
             </div>
             <div class="col-12 p-2">
                 <div class="row">
-                    <div class='col-12' *ngIf="_dashboardServices.pendingTasks">
-                        <h5>Tienes tareas pendientes de completar ...</h5>
+                    <div class='col-12  animated bounceInUp bounce2 ' *ngIf="_dashboardServices.pendingTasks">
+                        <h5 class="text-center" style="color:black">TIENES TAREAS PENDIENTES DE COMPLETAR...</h5>
                         <div >
                             <table class='table scrollableTable'>
                                 <thead></thead>
@@ -46,7 +46,7 @@
                                     <tr>
                                     <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
                                         <div *ngIf="project.pendingTasks">
-                                            <p><i class="far fa-bell"></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                            <p><i style="color:blue" class="far fa-bell"></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
                                             </p>
                                         </div>
                                     </td>
@@ -55,16 +55,15 @@
                             </table>
                         </div>
                     </div>
-                    <div class='col-12 ' *ngIf="_dashboardServices.uncheckedTasks">
-                        <h5>Se te han asignado nuevas tareas ...</h5>
-                        <div >
+                    <div class='col-12 animated bounceInUp bounce3' *ngIf="_dashboardServices.uncheckedTasks">
+                        <h5 class="text-center" style="color:black">SE TE HAN ASIGNADO NUEVAS TAREAS...</h5>
+                        <div  >
                             <table class='table scrollableTable'>
                               <thead></thead>
                                 <tbody>
                                     <tr>
                                         <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
-                                            <p *ngIf="project.uncheckedTasks"><i
-                                                    class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el
+                                            <p *ngIf="project.uncheckedTasks"><i style="color:blue" class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el
                                                 proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
                                             </p>
                                         </td>
@@ -78,11 +77,11 @@
             </div>
         </div>
     </div>
-    <div class="col-5 mt-2" >
+    <div class="col-5 mt-2 " >
         <div class="row" style='background:#F5F1E3'>
             <div class="col-12  " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center pt-1'>Echa un vistazo a los eventos programados para hoy....</h5>
+                    <h5 style="color:black" class='text-center pt-1'>ECHA UN VISTAZO A LOS EVENTOS PROGRAMADOS PARA HOY....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <table class='table scrollableTable'>
@@ -96,7 +95,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let todayEvent of _dashboardServices.eventsToday">
-                                <td> <a (click)='toEvent(todayEvent.startDate)' style='color: blue'>{{todayEvent.name}}</a></td>
+                                <td> <a (click)='toEvent(todayEvent.startDate)'class="animated bounce" style='color: blue'>{{todayEvent.name}}</a></td>
                                 <td>{{todayEvent.facilitie['name']}}</td>
                                 <td> {{todayEvent.position | timeConversor2: null}}</td>
                                 <td>{{todayEvent.endDate | date: 'EEEE d MMMM' }}
@@ -109,7 +108,7 @@
             </div>
             <div class="col-12 " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center pt-1'>Revisa los eventos en curso...</h5>
+                    <h5 style="color:black" class='text-center pt-1'>REVISA LOS EVENTOS EN CURSO....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <div class=" col-12 ">
@@ -123,9 +122,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let eventOnCourse of _dashboardServices.eventsOnCourse">
-                                    <td> <a (click)='toEvent(eventOnCourse.startDate)'
-                                            style='color: blue'>{{eventOnCourse.name}}</a>
+                                <tr  *ngFor="let eventOnCourse of _dashboardServices.eventsOnCourse">
+                                    <td > <a  (click)='toEvent(eventOnCourse.startDate)'
+                                            style='color: blue' class="animated bounce">{{eventOnCourse.name}}
+                                        </a>
                                     </td>
                                     <td>{{eventOnCourse.facilitie['name']}}</td>
                                     <td> {{eventOnCourse.startDate | date : 'EEEE d MMMM' }}
@@ -141,7 +141,7 @@
             </div>
             <div class="col-12 " style="height: 30%">
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 class='text-center pt-1'>Aquí tienes los eventos más próximos...</h5>
+                <h5 style="color:black" class='text-center pt-1'>AQUÍ TIENES LOS EVENTOS MÁS PRÓXIMOS....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class=' row d-flex justify-content-around flex-row'>
                     <div class="col-12">

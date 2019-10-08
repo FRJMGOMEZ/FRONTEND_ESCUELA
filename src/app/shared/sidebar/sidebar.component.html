@@ -14,9 +14,9 @@
             </a>
             <div class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
                 <div class='d-flex justify-content-end flex-column'>
-                    <a class='dropdown-item' (click)="toManagerOverview()" routerLinkActive="router-link-active"><i class="fas fa-compact-disc " style='color:black'></i>OVERVIEW</a>
-                    <a class='dropdown-item' [routerLink]="['/incomes']" routerLinkActive="router-link-active" href=""><i class="fas fa-money-check-alt" style='color:black'></i>INGRESOS</a>
-                    <a class='dropdown-item' [routerLink]="['/payments']" routerLinkActive="router-link-active"><i class="fas fa-hand-holding-usd" style='color:black'></i>LIQUIDACIONES</a>
+                    <a class='dropdown-item' (click)="toManagerOverview()" routerLinkActive="router-link-active"><i class="fas fa-compact-disc " style='color:black'></i><span>OVERVIEW</span></a>
+                    <a class='dropdown-item' [routerLink]="['/incomes']" routerLinkActive="router-link-active" href=""><i class="fas fa-money-check-alt" style='color:black'></i><span>INGRESOS</span></a>
+                    <a class='dropdown-item' [routerLink]="['/payments']" routerLinkActive="router-link-active"><i class="fas fa-hand-holding-usd" style='color:black'></i><span>LIQUIDACIONES</span></a>
                 </div>
             </div>
         </div>
@@ -26,8 +26,8 @@
             </a>
             <div (click)='_demoServices.dataPopup()' class="dropdown-menu data" aria-labelledby="dropdownMenuButton" style='background:#F0B841'>
                 <div class='d-flex justify-content-end flex-column'>
-                    <a class='dropdown-item' [routerLink]="['/alumnis']" routerLinkActive="router-link-active" href=""><i class="fas fa-user-graduate mr-1"style='color:black'></i>ALUMNOS</a>
-                    <a class='dropdown-item' [routerLink]="['/professors']" routerLinkActive="router-link-active"><i class="fas fa-chalkboard-teacher mr-1"style='color:black'></i>PROFESORES</a>
+                    <a class='dropdown-item' [routerLink]="['/alumnis']" routerLinkActive="router-link-active" href=""><span><i class="fas fa-user-graduate mr-1"style='color:black'></i></span>ALUMNOS</a>
+                    <a class='dropdown-item' [routerLink]="['/professors']" routerLinkActive="router-link-active"><i class="fas fa-chalkboard-teacher mr-1"style='color:black'></i><span>PROFESORES</span></a>
                     <a [routerLink]="['/subjects']" routerLinkActive="router-link-active" href=" "><i class="fas fa-guitar mr-1" style='color:black'></i><span>MATERIAS</span></a>
                     <a [routerLink]="['/facilities']" routerLinkActive="router-link-active" href=" "><i class="fas fa-door-open mr-1" style='color:black'></i><span>INSTALACIONES</span></a>
                 </div>
