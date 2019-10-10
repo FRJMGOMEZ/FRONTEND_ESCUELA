@@ -15,6 +15,7 @@ import { IncomesComponent } from './manager/incomes/incomes.component';
 import { PaymentsComponent } from './manager/payments/payments.component';
 import { CompanyComponent } from './company/company.component';
 import { OverviewComponent } from './manager/overview/overview.component';
+import { VisitorsComponent } from '../visitors/visitors.component';
 
 const pagesRoutes: Routes = [
 
@@ -79,7 +80,12 @@ const pagesRoutes: Routes = [
         path: 'company',
         canActivate: [AdminGuard],
         component: CompanyComponent
-      } 
+      }, 
+       {
+        path: "visitors",
+        component: VisitorsComponent,
+        data: { title: "VISITORS", description: "Visitors" }
+  },
 ];
 
 export const PAGESROUTES = RouterModule.forChild(pagesRoutes);

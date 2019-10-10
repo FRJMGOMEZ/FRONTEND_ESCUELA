@@ -8,7 +8,6 @@ import { DaysOfWeekPipe } from './days-of-week.pipe';
 import { PdfPipe } from './pdf.pipe';
 import {FilesPipe} from './files.pipe';
 
-
 @NgModule({
   imports: [],
   declarations: [ImgPipe, TimeConversorPipe, TimeConversor1Pipe, TimeConversorPipe2, FrontImgPipe, DaysOfWeekPipe, PdfPipe,FilesPipe ],

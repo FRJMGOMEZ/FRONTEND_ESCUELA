@@ -3,9 +3,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import{ScrollingModule} from '@angular/cdk/scrolling';
 
-//My modules//
-import { PipesModule } from "../pipes/pipes.module";
-
 ///Manteinance//
 import { SubjectComponent } from './addressBook/subject/subject.component';
 import { UsersComponent } from './users/users.component';
@@ -43,7 +40,9 @@ import { IncomesChartComponent } from './company/incomes-chart/incomes-chart.com
 import { PaymentsChartComponent } from './company/payments-chart/payments-chart.component';
 import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ProjectRoleDirective } from '../directives/project-role.directive';
+import { VisitorsComponent } from '../visitors/visitors.component';
+import { PipesModule } from '../pipes/pipes.module';
+
 
 @NgModule({
   declarations: [
@@ -76,13 +75,12 @@ import { ProjectRoleDirective } from '../directives/project-role.directive';
     OverviewComponent,
     IncomesChartComponent,
     PaymentsChartComponent,
-    ProjectRoleDirective
+    VisitorsComponent
   ],
   imports: [
     PAGESROUTES,
     CommonModule,
     ScrollingModule,
-    PipesModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
@@ -90,7 +88,8 @@ import { ProjectRoleDirective } from '../directives/project-role.directive';
     MatInputModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    PipesModule
   ],
   exports: [],
   bootstrap: [],

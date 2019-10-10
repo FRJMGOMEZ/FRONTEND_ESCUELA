@@ -4,18 +4,12 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { LoginComponent } from './login/login/login.component';
 import { PagesComponent } from './pages/pages.component';
 import { CheckTokenGuard } from './guards/check-token.guard';
-import { VisitorsComponent } from './visitors/visitors.component';
 
 const ROUTES: Routes = [
   {
     path: "login",
     component: LoginComponent,
     data: { title: "LOGIN", description: "Login" }
-  },
-  {
-    path: "visitors",
-    component: VisitorsComponent,
-    data: { title: "VISITORS", description: "Visitors" }
   },
   {
     path: "register",

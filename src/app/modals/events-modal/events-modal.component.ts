@@ -42,19 +42,18 @@ export class EventsModalComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this._modalController.notification.subscribe(res => {
-      if (this._projectServices.projects.length === 0) {
-        this._projectServices.getProjects().subscribe()
-      }
       if (res) {
+         ////////////// Creación evento //////////
       this.event = new EventModel("","",0,res.position,this.userOnline._id,res.facilitieId,Number(parseInt(String(res.position))),new Date(this._calendarServices.currentDay.date).getDay(),false,new Date(this._calendarServices.currentDay.date),null,null);
       this.facilitie = this._facilitieServices.facilities.filter((facilite) => { return facilite._id === this.event.facilitie })[0];
       this.page = '1'; 
       this.createMode = true;
       this.editMode=false;
       this.modifyMode=false;
-        this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
+      
+      //////// Cuando se crea el evento, muestra la info en la página 7 //////
+      this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
           if(eventOrder){
             if (eventOrder.order === 'post') {
               this.resetValues().then(async() => {
@@ -67,6 +66,7 @@ export class EventsModalComponent implements OnInit {
             }
           }
         })
+        /////////// Muestra un evento creado  /////
       }else{
         this._calendarServices.getEventById(this._modalController.id).subscribe(async(event: EventModel) => {
           this.editMode = true;
@@ -77,6 +77,7 @@ export class EventsModalComponent implements OnInit {
             this.page = "7";
         });
         }
+        /////// Cuando se edita el evento, muestra la info en la página 7 /////// 
       this.eventsSubscription = this._calendarServices.events$.subscribe((eventOrder: EventOrder) => {
         if (eventOrder.order === 'put') {
           this.resetValues().then(async () => {
@@ -89,12 +90,24 @@ export class EventsModalComponent implements OnInit {
         }
       });
     });
+
+    this.getProjects();
+  }
+  getProjects(){
+    if (this._projectServices.projects.length === 0) {
+      this._projectServices.getProjects().subscribe()
+    }
   }
 
-  ////// PAGE 3 ///////
+  ////// PAGE 1, se maneja desde el template------ Determina la permanencia o no del evento /////
+
+  ///// PAGE 2, manejado desde el template ------- Asignación de eventos a proyectos /////
+
+  ////// PAGE 3, selección hora del inicio del evento ///////
   startPosition: number;
   prevPosition: number;
   prevSpaceAvailable: number;
+
    async page3(back?:string) {
       if(back){
         this.event.position = this.prevPosition;
@@ -106,9 +119,8 @@ export class EventsModalComponent implements OnInit {
       this.spaceAvailable = this.spaceAvailable - this.event.position;
       let hour = this._calendarServices.currentDay[`hour${parseInt(String(this.event.position))}`];
       await this.checkOtherHoursEventsSpace(hour)
-      await this.checkSpaceInEventHour(hour);
-      
-      this.page = "3";    
+      await this.checkSpaceInThisEventHour(hour);
+      this.page = "3";  
   }
 
   private checkOtherHoursEventsSpace(hour: EventModel[]) {
@@ -148,7 +160,7 @@ export class EventsModalComponent implements OnInit {
     });
   }
 
-  private checkSpaceInEventHour(hour: EventModel[]) {
+  private checkSpaceInThisEventHour(hour: EventModel[]) {
     return new Promise((resolve) => {
       if (hour.length > 0) {
         let eventsInSamePositionAndSameFacilitie = hour.filter((event: any) => {
@@ -182,18 +194,19 @@ export class EventsModalComponent implements OnInit {
     return Number(this.event.position) - parseInt(String(this.event.position));
   }
 
-  ////// PAGE 4 ///////
-   page4() {
-     this.prevSpaceAvailable = this.spaceAvailable;
-     this.prevPosition = this.event.position;
-     this.spaceAvailable -=this.startPosition;
-     this.event.duration = 0;
-     this.event.position += this.startPosition - (this.event.position - parseInt(String(this.event.position)));
+  ////// PAGE 4, selección de la duración del evento  ///////
+   async page4(back?:string) {
+     this.prevSpaceAvailable = await back ? this.spaceAvailable + this.startPosition : this.spaceAvailable;
+     this.prevPosition = await back ? this.event.position - (this.startPosition - (this.event.position - parseInt(String(this.event.position)))): this.event.position ;
+     this.spaceAvailable = await back ? this.spaceAvailable: this.spaceAvailable-this.startPosition ;
+     this.event.position = await back ? this.event.position : this.event.position + (this.startPosition - (this.event.position - parseInt(String(this.event.position))));
+     this.event.duration = 0;    
      this.timeValue1 = this.spaceAvailable;
      this.timeValue2 = this.spaceAvailable;
+     this.minutesPrevValue = 0;
+     this.hoursPrevValue=0;
      this.page = "4";
   }
-
   timeValue1: number = 0;
   timeValue2: number = 0;
   private minutesPrevValue: number = 0;
@@ -208,7 +221,6 @@ export class EventsModalComponent implements OnInit {
     this.timeValue2 -= Number(value);
     this.minutesPrevValue = Number(value);
   }
-
 
  /////// PAGE 5 ////////
   dayWithPermanentEvents: Day[];
@@ -225,7 +237,7 @@ export class EventsModalComponent implements OnInit {
         this.page = '5';
       }
       else {
-        this.page4()
+        this.page4('back')
       }
     }else{
       if (this.event.permanent) {

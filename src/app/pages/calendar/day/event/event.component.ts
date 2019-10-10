@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
@@ -10,7 +10,7 @@ import { UserServices } from '../../../../providers/user.service';
   templateUrl: "./event.component.html",
   styleUrls: ["./event.component.scss"],
 })
-export class EventComponent implements OnInit,AfterViewInit{
+export class EventComponent implements AfterViewInit{
 
   @Input() facilitie:any;
   @Input() position: number = 0
@@ -38,10 +38,6 @@ export class EventComponent implements OnInit,AfterViewInit{
     private _userServices:UserServices
   ) {
   }
-  ngOnInit() {
-
-  }
-
   ngAfterViewInit(): void {
     this.render().then(() => {
       this.dayComponent.notification.emit({ position: this.position });
@@ -154,7 +150,6 @@ export class EventComponent implements OnInit,AfterViewInit{
 }
   
  placeEvent(position:number) {
-
     return new Promise((resolve,reject)=>{
       let card;
       switch (position) {
@@ -167,7 +162,6 @@ export class EventComponent implements OnInit,AfterViewInit{
         case 0.75: card = this.newDiv3;
         break;
       } 
-
       card = this.renderer.createElement('div')
       this.renderer.addClass(card,'card');
       let cardBody = this.renderer.createElement('div');

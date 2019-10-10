@@ -12,7 +12,6 @@ import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
 import { URL_SERVICES } from './config/config';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
-import { PipesModule } from './pipes/pipes.module';
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { DemoService } from './providers/demo.service';
 import { PagesComponent } from './pages/pages.component';
@@ -22,7 +21,7 @@ import { ProvidersModule } from './providers/providers.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VisitorsComponent } from './visitors/visitors.component';
+import { PipesModule } from './pipes/pipes.module';
 
 
 registerLocaleData(localeEs);
@@ -35,17 +34,14 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    PagesComponent,
-    VisitorsComponent
+    PagesComponent
   ],
   imports: [
     SharedModule,
     ModalsModule,
-    PipesModule,
     BrowserModule,
     APPROUTES,
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     BrowserModule,
     RouterModule,
@@ -54,7 +50,9 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     ProvidersModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    PipesModule,
+    FormsModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
               { provide: LocationStrategy, useClass: HashLocationStrategy },
