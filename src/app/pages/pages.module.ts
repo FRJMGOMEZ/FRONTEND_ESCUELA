@@ -42,6 +42,7 @@ import { MatDatepickerModule, MatInputModule, MatNativeDateModule, MatFormFieldM
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VisitorsComponent } from '../visitors/visitors.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { ProjectRoleDirective } from '../directives/project-role.directive';
 
 
 @NgModule({
@@ -89,7 +90,8 @@ import { PipesModule } from '../pipes/pipes.module';
     MatNativeDateModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    PipesModule
+    PipesModule,
+    ProjectRoleDirective
   ],
   exports: [],
   bootstrap: [],
