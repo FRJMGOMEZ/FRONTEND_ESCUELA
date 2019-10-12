@@ -76,7 +76,8 @@ import { ProjectRoleDirective } from '../directives/project-role.directive';
     OverviewComponent,
     IncomesChartComponent,
     PaymentsChartComponent,
-    VisitorsComponent
+    VisitorsComponent,
+    ProjectRoleDirective
   ],
   imports: [
     PAGESROUTES,
@@ -90,8 +91,7 @@ import { ProjectRoleDirective } from '../directives/project-role.directive';
     MatNativeDateModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    PipesModule,
-    ProjectRoleDirective
+    PipesModule
   ],
   exports: [],
   bootstrap: [],

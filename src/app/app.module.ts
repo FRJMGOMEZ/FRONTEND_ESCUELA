@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from './pipes/pipes.module';
+import { RoleDirective } from './directives/role.directive';
 
 
 registerLocaleData(localeEs);
@@ -34,7 +35,8 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    PagesComponent
+    PagesComponent,
+    RoleDirective
   ],
   imports: [
     SharedModule,
