@@ -6,16 +6,13 @@ import { SidebarComponent } from "./sidebar/sidebar.component";
 import { CalendarComponent } from './calendar/calendar.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { LineChartComponent } from './line-chart/line-chart.component';
-import { RoleDirective } from '../directives/role.directive';
-
 
 
 @NgModule({
     declarations: [
         SidebarComponent,
         CalendarComponent,
-        LineChartComponent,
-        RoleDirective
+        LineChartComponent
     ],
 
     imports: [
@@ -27,8 +24,7 @@ import { RoleDirective } from '../directives/role.directive';
     exports: [
         SidebarComponent,
         CalendarComponent,
-        LineChartComponent,
-        RoleDirective
+        LineChartComponent
     ],
 
     providers: [],

@@ -86,7 +86,7 @@ import { ProjectRoleDirective } from '../directives/project-role.directive';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    MatDatepickerModule, 
+    MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
     MatFormFieldModule,
