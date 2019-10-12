@@ -12,7 +12,7 @@
           </div>
        </div>
       <div class='col-7  blackboard' >
-        <div class="row m-1 mt-3" style="background:#008080;height:90%">
+        <div class="row m-1 mt-3" style="background:#008080;height:90%;border:2px solid black;-webkit-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);">
             <div *ngIf="!_dashboardServices.unreadMessages && !_dashboardServices.pendingTasks && !_dashboardServices.uncheckedTasks" class="col-12">
                 <h3 class='text-center'>No hay nuevas notificaciones
                 </h3>
@@ -36,9 +36,7 @@
                     </table>
             </div>
             <hr>
-            <div class="col-12 p-2" style="border:2px solid black;-webkit-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);
-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);" >
+            <div class="col-12 p-2"  >
                 <div class="row">
                     <div class='col-12  animated bounceInUp bounce2 ' *ngIf="_dashboardServices.pendingTasks">
                         <h5 class="text-center" style="color:white;font-family: 'Mansalva', cursive;">TIENES TAREAS PENDIENTES DE COMPLETAR...</h5>
