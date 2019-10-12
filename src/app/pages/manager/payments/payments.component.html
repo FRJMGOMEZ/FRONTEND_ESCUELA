@@ -7,28 +7,28 @@
             <div class="form-check">
               <input checked class="form-check-input" type="radio" name="amount" id="amount" value="amount"
                [(ngModel)]="_paymentServices.paymentSearchCriteria">
-              <label class="form-check-label" for="amount">
-                Buscar por <a routerLinkActive="router-link-active" style='color:blue'>CANTIDAD</a>
+              <label class="form-check-label highlight" for="amount">
+                Buscar por <a  class="highlight" routerLinkActive="router-link-active" style='color:blue'>CANTIDAD</a>
               </label>
             </div>
             <div *ngIf="_paymentServices.paymentTypes.indexOf('CARGO') < 0" class="form-check">
               <input class="form-check-input" type="radio" name="artist" id="artist" value="artist"
                [(ngModel)]="_paymentServices.paymentSearchCriteria" >
-              <label  class="form-check-label" for="artist">
-                Buscar por <a routerLinkActive="router-link-active" style='color:blue'>ARTISTA</a>
+              <label  class="form-check-label highlight" for="artist">
+                Buscar por <a  class="highlight" routerLinkActive="router-link-active" style='color:blue'>ARTISTA</a>
               </label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="date" id="date" value="date"
                [(ngModel)]="_paymentServices.paymentSearchCriteria">
-              <label class="form-check-label" for="date">
-                Buscar por <a routerLinkActive="router-link-active" style='color:blue'>FECHA</a>
+              <label class="form-check-label highlight" for="date">
+                Buscar por <a  class="highlight" routerLinkActive="router-link-active" style='color:blue'>FECHA</a>
               </label>
             </div>
           </div>
             <div class="col-5 d-flex justify-content-center mb-2" >
               <div class="row">
-                   <div class="col-9 m-0 p-0  d-flex flex-column">
+                   <div class="col-9 m-0 p-1  d-flex flex-column">
                         <div *ngIf="_paymentServices.paymentSearchCriteria === 'artist'" class='d-flex justify-content-center'>
                           <input #input0 type="text" name="input" id="" placeholder="Introduce el nombre del artista">
                         </div>
@@ -50,18 +50,18 @@
                         </div>
                    </div>
                   <div class="col-3 d-flex flex-column m-0 p-0">
-                    <button (click)="searchPayment()" class='btn btn-warning text-center'><i class="fas fa-search"></i></button>
-                    <button class='btn btn-warning text-center' (click)="getAll()">TODOS</button>
+                    <button (click)="searchPayment()" class='btn btn-warning text-center mr-1'><i class="fas fa-search"></i></button>
+                    <button class='btn btn-warning highlight p-0 mr-1' (click)="getAll()"> <p class="text-center">TODOS</p> </button>
                   </div>
               </div>
           </div>
           <div class="col-4">
             <div class="row d-flex justify-content-center">
               <div class="col-12 d-flex justify-content-center">
-                <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="paymentTypeChange('all')" class="btn btn-warning">Todos</button>
-                <button [ngStyle]="{'opacity': buttonsStyle('sent')}" (click)="paymentTypeChange('sent')"  class="btn btn-warning">Pagos enviados</button>
-                <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="paymentTypeChange('notSent')"  class="btn btn-warning">Pagos no enviados</button>
-                <button [ngStyle]="{'opacity': buttonsStyle('CARGO')}" (click)="paymentTypeChange('CARGO')" class="btn btn-warning">CARGO</button>   
+                <button [ngStyle]="{'opacity': buttonsStyle('all')}" (click)="paymentTypeChange('all')" class="btn btn-warning highlight">Todos</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('sent')}" (click)="paymentTypeChange('sent')"  class="btn btn-warning highlight">Pagos enviados</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('notSent')}" (click)="paymentTypeChange('notSent')"  class="btn btn-warning highlight">Pagos no enviados</button>
+                <button [ngStyle]="{'opacity': buttonsStyle('CARGO')}" (click)="paymentTypeChange('CARGO')" class="btn btn-warning highlight">CARGO</button>   
               </div>
             </div>
           </div>
@@ -85,9 +85,11 @@
               <td style="width:20%"> <p *ngIf="payment.artist" >{{payment.artist.indexcard.name}}</p> <p *ngIf="!payment.artist">CARGO</p> </td>
               <td style="width:20%">{{payment.date || date}}</td>
               <td style="width:20%">{{payment.track.title}}</td>
-              <td style="width:20%" *ngIf="!payment.sent"> <button *ngIf="payment.artist" (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning">Enviar email</button></td>
-              <td style="width:20%" *ngIf="payment.sent && !payment.sentDate">¡Email enviado!</td>
-              <td style="width:20%" *ngIf="payment.sent && payment.sentDate">¡Email enviado el día {{payment.sentDate | date}}!</td>
+              <td style="width:20%" *ngIf="!payment.sent"> <button *ngIf="payment.artist" (click)="_paymentServices.sendPaymentNotification(payment._id,_letterServices.letterSelectedId).subscribe()" class="btn btn-warning highlight">Enviar email</button></td>
+              <td style="width:20%" *ngIf="payment.sent && !payment.sentDate"> <p class="highlight">¡Email enviado!</p></td>
+              <td style="width:20%" *ngIf="payment.sent && payment.sentDate"><p class="highlight">
+                ¡Email enviado el día {{payment.sentDate | date}}
+              </p>!</td>
             </tr>
           </tbody>
           <hr>
@@ -102,15 +104,15 @@
         </table>
       </div>
       <div class="col-12 m-0 p-0 d-flex justify-content-center">
-        <span style="color:red">*Selecciona un modelo de email para enviar a los artistas*</span> 
+        <span class="highlight" style="color:red">*Selecciona un modelo de email para enviar a los artistas*</span> 
       </div>
       <div class="col-12 mt-0">
-        <div class="row m-3" style="background: #F5F1E3;border:solid black 1px">
+        <div class="row m-2" style="background: #F5F1E3;border:solid black 1px">
           <div class="col-12 " style="background:#ffc107">
             <div class="row">
               <div class="col-7 d-flex justify-content-center">
                 <div>
-                  <label for="letterModels">Modelos disponibles</label>
+                  <label class="highlight" for="letterModels">Modelos disponibles</label>
                   <select [(ngModel)]="_letterServices.letterSelectedId" (ngModelChange)="_letterServices.selectLetter()">
                     <option  *ngFor="let letter of _letterServices.letters" [value]="letter._id">{{letter.name}}</option>
                       <option value="undefined"></option>
@@ -119,8 +121,8 @@
               </div>
               <div *ngIf="_letterServices.form" class="col-5 d-flex justify-content-around">
                 <button *ngIf="_letterServices.letterSelectedId" (click)="_letterServices.setNewLetter()"
-                  class="btn btn-primary">CREAR NUEVO MODELO EMAIL</button>
-                <button *ngIf="!_letterServices.form.pristine && _letterServices.form.value.content && _letterServices.form.value.user && _letterServices.form.value.name" class="btn btn-primary"
+                  class="btn btn-primary highlight">CREAR NUEVO MODELO EMAIL</button>
+                <button *ngIf="!_letterServices.form.pristine && _letterServices.form.value.content && _letterServices.form.value.user && _letterServices.form.value.name" class="btn btn-primary highlight"
                   (click)="_letterServices.saveLetter().subscribe()">GUARDAR</button>
               </div>
             </div>
@@ -128,12 +130,12 @@
           <div class="col-8 d-flex flex-column">
             <form ngNativeValidate action="" [formGroup]='_letterServices.form' *ngIf="_letterServices.form" id="letterModelForm">
             <div class="row m-1 d-flex justify-content-around">
-              <label *ngIf="_letterServices.letterSelectedId" for="name">Puedes modificar el nombre del modelo</label>
-              <label *ngIf="!_letterServices.letterSelectedId" for="name">Introduce el nombre del nuevo modelo(campo obligatorio)</label>
+              <label class="highlight" *ngIf="_letterServices.letterSelectedId" for="name">Puedes modificar el nombre del modelo</label>
+              <label class="highlight" *ngIf="!_letterServices.letterSelectedId" for="name">Introduce el nombre del nuevo modelo(campo obligatorio)</label>
               <input formControlName='name' class="form-control" name="name" type="text" id="name" placeholder="nombre del modelo"
                 [value]="_letterServices.form.value.name">
             </div>
-              <p class="text-center mb-0">TEXTO PRINCIPAL(campo obligatorio)</p>
+              <p class="text-center mb-0 highlight">TEXTO PRINCIPAL(campo obligatorio)</p>
            <div class="row d-flex justify-content-around">
             <span>[[nombre de artista]]</span>
             <span> [[apellido de artista]] </span>
@@ -152,12 +154,12 @@
           <div class="col-4">
             <form ngNativeValidate action="" [formGroup]='_letterServices.form' *ngIf="_letterServices.form" id="letterModelForm">
             <div class="row d-flex justify-content-center m-1">
-              <label for="usersEmails">Email emisor(campo obligatorio)</label>
+              <label class="highlight" for="usersEmails">Email emisor(campo obligatorio)</label>
               <select formControlName='user' class="form-control" name="user" >
                 <option *ngFor="let user of _letterServices.users" [value]="user._id">{{user.email}}</option>
               </select>
             </div>
-            <p class="text-center mb-0">DATOS</p>
+            <p class="text-center mb-0 highlight">DATOS</p>
             <div class="row d-flex justify-content-center mb-2">
               <textarea formControlName='bottom' class="form-control" name="bottom" cols="25" rows="3"></textarea>
             </div>

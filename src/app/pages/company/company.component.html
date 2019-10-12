@@ -1,5 +1,5 @@
 <div class="row pagesContainerFixed animated fadeIn">
-            <div class="col-12 m-1 " style="height:20%">
+            <div class="col-12 pt-2 pb-2" style="height:20%">
                 <div class="row">
                     <div class="col-6 d-flex justify-content-center">
                         <div class="row d-flex justify-content-around">
@@ -23,29 +23,29 @@
                             </div>
                             <div class="col-2 ml-2 d-flex flex-column justify-content-center">
                                 <div>
-                                  <button (click)="generateChart()" style="height:25px text-center" class="btn btn-warning">Generar gráfico</button>
+                                  <button (click)="generateChart()" style="height:25px text-center" class="btn btn-warning highlight">Generar gráfico</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-5">
                         <div class="row btn btn-group">
-                            <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning">LIQUIDACIONES</button>
-                            <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning">INGRESOS</button>
+                            <button (click)="changeSelection('payments')" [ngStyle]="{'opacity': buttonsStyle('payments')}" class="btn btn-warning highlight">LIQUIDACIONES</button>
+                            <button (click)="changeSelection('incomes')" [ngStyle]="{'opacity': buttonsStyle('incomes')}" class="btn btn-warning highlight">INGRESOS</button>
                         </div>
                         <div class="row mt-2 d-flex justify-content-center">
                             <div class="col-12  flex-column d-flex justify-content-center">
                                 <div class="form-check">
                                     <input (change)="chartByChange()" [(ngModel)]="chartBy" class="form-check-input" type="radio" name="chartBy" id="days"
                                         value="days">
-                                    <label class="form-check-label" for="days">
+                                    <label  class="form-check-label highlight" for="days">
                                         MOSTRAR GRÁFICO POR DÍAS
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input (change)="chartByChange()" [(ngModel)]="chartBy" class="form-check-input" type="radio" name="chartBy" id="weeks"
                                         value="weeks">
-                                    <label class="form-check-label" for="weeks">
+                                    <label class="form-check-label highlight" for="weeks">
                                         MOSTRAR GRÁFICO POR SEMANAS
                                     </label>
                                 </div>
@@ -57,10 +57,7 @@
                         </div>
                 </div>
             </div>
-            <div class="col-12 mb-4"style="height:5%">
-                <hr>
-            </div>
-            <div class="col-12 p-0 m-0"style="height:75%">
+            <div class="col-12 p-0 m-0"style="height:80%">
                 <app-incomes-chart *ngIf="chartSelected === 'incomes'"></app-incomes-chart>
                 <app-payments-chart *ngIf="chartSelected === 'payments'"></app-payments-chart>
             </div>

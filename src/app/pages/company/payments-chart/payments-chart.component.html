@@ -1,4 +1,4 @@
-<div class="row p-0 m-0">
+<div class="row m-0" style="height:100%">
   <div class="col-8">
       <div class="row">
         <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
@@ -7,7 +7,7 @@
           <a (click)="moveLeft('forward')" class="text-right"><i class="fas fa-arrow-right m-4"></i></a>
           -->
         </div>
-        <div class="col-10">
+        <div class="col-10 p-5 mt-2 mb-2"style="background:#008080; border:2px solid black;-webkit-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);-moz-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);">
           <app-line-chart  #chart></app-line-chart>
         </div>
         <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
@@ -16,30 +16,30 @@
           <a (click)="moveRight()" class="text-left m-4"><i class="fas fa-arrow-left"></i></a>
           -->
         </div>
-        <div class="col-12 d-flex justify-content-center">
+        <div class="col-12 d-flex justify-content-center mt-2">
           <div class="form-check form-check-inline">
             <input [(ngModel)]="liquidated" (change)="onSelection()" class="form-check-input" type="checkbox"
               id="inlineCheckbox1">
-            <label class="form-check-label" for="inlineCheckbox1">LIQUIDACIONES ARTISTAS LIQUIDADAS</label>
+            <label class="form-check-label highlight" for="inlineCheckbox1">LIQUIDACIONES ARTISTAS LIQUIDADAS</label>
           </div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="notLiquidated" (change)="onSelection()" class="form-check-input" type="checkbox"
               id="inlineCheckbox2">
-            <label class="form-check-label" for="inlineCheckbox2">LIQUIDACIONES ARTISTAS NO LIQUIDADAS</label>
+            <label class="form-check-label highlight" for="inlineCheckbox2">LIQUIDACIONES ARTISTAS NO LIQUIDADAS</label>
           </div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="CARGO" (change)="onSelection()" class="form-check-input" type="checkbox" id="inlineCheckbox2">
-            <label class="form-check-label" for="inlineCheckbox2">CARGO</label>
+            <label class="form-check-label highlight" for="inlineCheckbox2">CARGO</label>
           </div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="all" (change)="onSelection()" class="form-check-input" type="checkbox" id="inlineCheckbox2">
-            <label class="form-check-label" for="inlineCheckbox2">TODAS</label>
+            <label class="form-check-label highlight" for="inlineCheckbox2">TODAS</label>
           </div>
         </div>
       </div>
   </div>
-  <div class="col-4" *ngIf="showTable">
-    <table class='table scrollableTable mb-0' style='background: #F5F1E3'>
+  <div class="col-4 mt-3" *ngIf="showTable">
+    <table class='table scrollableTable mb-0 mt-1' style='background: #F5F1E3'>
       <thead class='mr-4 d-flex justify-content-around'>
         <th style="width:25%">Cantidad</th>
         <th style="width:25%">Fecha</th>
@@ -47,7 +47,8 @@
         <th style="width:25%" > <p *ngIf="_paymentServices.state != 'CARGO' " >Artista</p> <p *ngIf="_paymentServices.state === 'CARGO' " >CARGO MUSIC</p> </th>
       </thead>
       <tbody #tbody style='width:100%'>
-        <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-content-around">
+        <tr *ngFor="let payment of _paymentServices.payments" class="d-flex justify-conten
+        t-around">
           <td style="width:25%">{{payment.amount.toFixed(2)}}</td>
           <td style="width:25%">{{payment.date | date: 'M/d/y'}}</td>
           <td style="width:25%">{{payment.track.title}}</td>

@@ -81,7 +81,6 @@ export class PagesComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    //FIXME:VOLVER A INSTANCIAR EN PRODUCCIÓN ////
-    //this._userServices.logout();
+    this._userServices.logout();
   }  
 }

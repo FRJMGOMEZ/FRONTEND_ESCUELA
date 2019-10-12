@@ -2,14 +2,14 @@
     <div class='col-12'>
       <div class="row">
         <div class="col-12  list-group">
-          <h5 class='list-group-item-heading text-center mt-3'>ALUMNOS</h5>
+          <h5 class='list-group-item-heading text-center mt-3 highlight'>ALUMNOS</h5>
         <input #input placeholder="Buscar alumno" class='pb-2 mt-2' type="text" name="" id="">
         <div class='d-flex justify-content-center'>
-            <button class='btn btn-warning mb-2' (click)='_alumniServices.searchAlumnis(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_alumniServices.alumnis=[]'>BUSCAR
+            <button class='btn btn-warning mb-2 highlight' (click)='_alumniServices.searchAlumnis(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_alumniServices.alumnis=[]'>BUSCAR
                 ALUMNOS</button>
-            <button (click)='from=0;searchMode=false;getMode=true;_alumniServices.getAlumnis().subscribe();_alumniServices.alumnis=[]' class='btn btn-warning mb-2'>TODOS</button>
+            <button (click)='from=0;searchMode=false;getMode=true;_alumniServices.getAlumnis().subscribe();_alumniServices.alumnis=[]' class='btn btn-warning mb-2 highlight'>TODOS</button>
         </div>
-        <button (click)='postAlumni()' class='btn btn-warning m-2'>CREAR ALUMNO</button>
+        <button (click)='postAlumni()' class='btn btn-warning m-2 highlight'>CREAR ALUMNO</button>
         </div>
         <div class="col-12" style='background:#DCD4D2'>
           <table class=' table mb-2 ' style='background:#F5F1E3;border:1px solid #F0B841'>

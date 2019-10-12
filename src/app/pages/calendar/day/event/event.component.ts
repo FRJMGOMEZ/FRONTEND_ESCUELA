@@ -74,12 +74,13 @@ export class EventComponent implements AfterViewInit{
 
 
       let child = this.renderer.createElement("strong");
-      const plus = document.createTextNode("add");
+      const plus = document.createTextNode("+");
       child.appendChild(plus);
       child.setAttribute("id", "#child");
       this.renderer.setStyle(child, 'font-size', '10px');
-      this.renderer.setStyle(child, "color", "#f47742");
+      this.renderer.setStyle(child, "color", "black");
       this.renderer.setStyle(child, "cursor", "pointer");
+      this.renderer.addClass(child,'highlight')
 
       if (Number(this.facilitie.space) === spaceWithoutEvents) {
         if (this._userServices.checkRole()) {
@@ -308,7 +309,7 @@ fixHeight(height: number) {
       this.renderer.addClass(cardBody, 'text-center')
       if(this._userServices.checkRole()){
         const child = document.createElement(`strong`);
-        const name = document.createTextNode(`add`);
+        const name = document.createTextNode(`+`);
         child.append(name);
         this.renderer.setStyle(child,'font-size','10px');
         this.renderer.setStyle(child, "color", "#f47742");

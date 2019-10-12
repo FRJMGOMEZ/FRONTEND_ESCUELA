@@ -72,9 +72,11 @@ async ngOnInit() {
 
   toEvent(date?:Date){
     date =new Date(date);
-    if(date.getTime()< new Date().getTime()){
+    date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),0,0,0,0);
+    let today = new Date()
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0); 
+    if(date.getTime()< today.getTime()){
       let numberOfWeeks = 10000;
-      let today = new Date();
       for (let i = 0; i <= numberOfWeeks;i++){
         date = new Date(date.getTime() + 604800000);
         if (new Date().getTime() <= date.getTime() ){
@@ -115,15 +117,15 @@ async ngOnInit() {
   checkTasksNumber(tasks: number, type: string) {
     if (type === 'pending') {
       if (tasks === 1) {
-        return ` Tienes 1 tarea pendiente`
+        return ` TIENES 1 TAREA PENDIENTE`
       } else {
-        return `Tienes ${tasks} tareas pendientes`
+        return `TIENES ${tasks} TAREAS PENDIENTES`
       }
     } else if (type === 'unchecked') {
       if (tasks === 1) {
-        return ` Tienes 1 tarea nueva`
+        return ` TIENES 1 TAREA NUEVA`
       } else {
-        return `Tienes ${tasks} tareas nuevas`
+        return `TIENES ${tasks} TAREAS NUEVAS`
       }
     }
   }

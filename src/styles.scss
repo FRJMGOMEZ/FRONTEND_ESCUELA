@@ -16,11 +16,6 @@ button {
     src: url(/src/styles/EB_Garamond/EBGaramond-ExtraBold.woff2) format('woff2'), url(/src/styles/EB_Garamond/EBGaramond-ExtraBold.woff) format('woff')
 }
 
-* {
-    font-family: 'EB Garamond', serif;
-    font-size: 12px;
-}
-
 .animated {
    -webkit-animation-duration: 1s;
    animation-duration: 1s;
@@ -65,7 +60,7 @@ a {
 }
 
 .pagesContainerFixed{
-margin: 1%;
+margin: 0.2%;
 margin-top:0px;
 background:#DCD4D2;
 height: 100%;
@@ -75,21 +70,26 @@ i{
     cursor: pointer;
 }
 
+.highlight{
+  font-weight: bold;
+}
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Open Sans Condensed', sans-serif; }
 
 @media (min-width: 1300px)  {
     * {
-    font-size:13px;
-}
+    font-size:14px;
+    font-family: 'Open Sans Condensed', sans-serif;
+    }
 }
 
 @media (min-height: 694px) and(min-width: 1450px)  {
     * {
-    font-size:calc(1.10* 13px);
+    font-size:calc(1.10* 14px);
 }
   .form-check-input
 {
@@ -99,7 +99,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height: 781px)and(min-width: 1650px) {
    * {
-    font-size:calc(1.25* 13px);
+    font-size:calc(1.25* 14px);
 }
   .form-check-input
 {
@@ -109,7 +109,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height: 833px)and(min-width: 1700px) {
   * {
-    font-size:calc(1.35* 13px);
+    font-size:calc(1.35* 14px);
 }
   .form-check-input
 {
@@ -119,7 +119,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height: 937px)and(min-width: 2000px) {
   * {
-    font-size:calc(1.50* 13px);
+    font-size:calc(1.50* 14px);
 }
   .form-check-input
 {
@@ -129,7 +129,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height:1250px)and(min-width: 2600px) {
   * {
-    font-size:calc(2* 13px);
+    font-size:calc(2* 14px);
 }
   .form-check-input
 {
@@ -140,7 +140,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height: 1875px)and(min-width: 3900px) {
    * {
-    font-size:calc(3* 13px);
+    font-size:calc(3* 14px);
 }
   .form-check-input
 {
@@ -150,7 +150,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @media (min-height: 2500px)and(min-width: 5300px) {
   * {
-    font-size:calc(3.90* 13px);
+    font-size:calc(3.90* 14px);
 }
   .form-check-input
 {

@@ -115,7 +115,7 @@ export class OverviewComponent implements OnInit {
     await this._managerServices.idNavigation(id, collection)
     setTimeout(() => {
       this.collapseAcordions(collection)
-    },500)
+    },200)
   }
 
   columnsSize() {

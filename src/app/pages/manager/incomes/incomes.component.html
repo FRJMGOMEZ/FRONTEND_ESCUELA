@@ -2,7 +2,7 @@
   <div class="col-12 d-flex flex-column justify-content-around">
     <div class="row" style="height:20%">
       <div class='col-11 d-flex justify-content-center mt-1 mb-1'>
-        <button (click)="postIncome()" class='btn btn-warning ml-5'>AÑADIR NUEVO INGRESO</button>
+        <button (click)="postIncome()" class='btn btn-warning ml-5 highlight'>AÑADIR NUEVO INGRESO</button>
       </div>
       <div class="col-1 d-flex justify-content-end align-items-start animated shake">
         <i (click)="_demoServices.incomesPopup(true)" class="fas fa-info fa-lg m-4" style='cursor:pointer;color:blue'></i>
@@ -10,9 +10,9 @@
       <div class="col-12">
         <div class="row d-flex justify-content-center">
           <div class="col-12 d-flex justify-content-center mr-5">
-            <button class="btn btn-warning" [ngStyle]="{'opacity':buttonsStyles('liquidated')}"
+            <button class="btn btn-warning highlight" [ngStyle]="{'opacity':buttonsStyles('liquidated')}"
               (click)="_incomeServices.incomeType='liquidated'">INGRESOS LIQUIDADOS</button>
-            <button class="btn btn-warning" [ngStyle]="{'opacity':buttonsStyles('notLiquidated')}"
+            <button class="btn btn-warning highlight" [ngStyle]="{'opacity':buttonsStyles('notLiquidated')}"
               (click)="_incomeServices.incomeType='notLiquidated'">INGRESOS NO LIQUIDADOS</button>
           </div>
           <div class="col-2"></div>
@@ -22,22 +22,22 @@
                 <div class="form-check">
                   <input checked class="form-check-input" type="radio" name="origin" id="origin" value="origin"
                     [(ngModel)]="_incomeServices.searchCriteria">
-                  <label class="form-check-label" for="origin">
-                    Buscar por <a routerLinkActive="router-link-active" style='color:blue'>ORIGEN</a>
+                  <label class="form-check-label highlight" for="origin">
+                    Buscar por <a class="highlight" routerLinkActive="router-link-active" style='color:blue'>ORIGEN</a>
                   </label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="amount" id="amount" value="amount"
                     [(ngModel)]="_incomeServices.searchCriteria">
-                  <label class="form-check-label" for="amount">
-                    Buscar por <a routerLinkActive="router-link-active" style='color:blue'>CANTIDAD</a>
+                  <label class="form-check-label highlight" for="amount">
+                    Buscar por <a class="highlight" routerLinkActive="router-link-active" style='color:blue'>CANTIDAD</a>
                   </label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="date" id="date" value="date"
                     [(ngModel)]="_incomeServices.searchCriteria">
-                  <label class="form-check-label" for="date">
-                    Buscar por <a routerLinkActive="router-link-active" style='color:blue'>FECHA</a>
+                  <label class="form-check-label highlight" for="date">
+                    Buscar por <a class="highlight" routerLinkActive="router-link-active" style='color:blue'>FECHA</a>
                   </label>
                 </div>
               </div>
@@ -63,8 +63,8 @@
                   </div>
                 </div>
                 <div class='d-flex justify-content-center'>
-                  <button (click)="search()" class='btn btn-warning'>BUSCAR</button>
-                  <button (click)="_incomeServices.getIncomes().subscribe()"  class='btn btn-warning'>TODOS</button>
+                  <button (click)="search()" class='btn btn-warning highlight'>BUSCAR</button>
+                  <button (click)="_incomeServices.getIncomes().subscribe()"  class='btn btn-warning highlight'>TODOS</button>
                 </div>
               </div>
             </div>

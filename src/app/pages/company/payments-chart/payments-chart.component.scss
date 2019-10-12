@@ -1,54 +1,54 @@
 .scrollableTable tbody{
-    height:250px
+    height:280px
 }
 
 
 
 @media (min-height: 694px) {
  .scrollableTable tbody{
-        height: calc(250*1.1px)
+        height: calc(280*1.1px)
     }
    
 }
 
 @media (min-height: 781px) {
  .scrollableTable tbody{
-        height: calc(250*1.25px)
+        height: calc(280*1.25px)
     }
   
 }
 
 @media (min-height: 833px) {
  .scrollableTable tbody{
-        height: calc(250*1.35px)
+        height: calc(280*1.35px)
     }
   
 }
 
 @media (min-height: 937px) {
  .scrollableTable tbody{
-        height: calc(250*1.50px)
+        height: calc(280*1.50px)
     }
     
 }
 
 @media (min-height: 1250px) {
  .scrollableTable tbody{
-        height: calc(250*2.50px)
+        height: calc(280*2px)
     }
    
 }
 
 @media (min-height: 1875px) {
     .scrollableTable tbody{
-        height: calc(250*2.90px)
+        height: calc(280*2.90px)
     }
   
 }
 
 @media (min-height: 2500px) {
  .scrollableTable tbody{
-        height: calc(250*3.90px)
+        height: calc(280*3.90px)
     }
   
 }

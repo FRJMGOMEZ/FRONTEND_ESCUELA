@@ -1,16 +1,16 @@
 <div class="row d-flex d-flex" style='background: #F5F1E3;height:100%'>
     <div class='col-12 d-flex flex-column justify-content-start mb-1' >
         <div class="row d-flex justify-content-center" appProjectRole>
-            <button class='btn btn-warning' (click)='postTask()'>Crear nueva tarea</button>
+            <button class='btn btn-warning highlight' (click)='postTask()'>Crear nueva tarea</button>
         </div>
         <div class="row d-flex justify-content-center">
-                <h5 *ngIf="_projectServices.groupTasks.length>0 text-center">Tareas del grupo de trabajo</h5>
+                <h5 *ngIf="_projectServices.groupTasks.length>0 text-center" class="highlight">Tareas del grupo de trabajo</h5>
         </div>
         <div class="row justify-content-center">
             <input #input placeholder="Escribe el nombre del usuario" type="text">
             <div class='btn-group'>
-                <button (click)='_taskServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning'>Buscar por usuario</button>
-                <button (click)='_taskServices.getTasksByProject().subscribe()' class='btn btn-warning'>Todas</button>
+                <button (click)='_taskServices.getTasksByUser(input.value).subscribe()' class='btn btn-warning highlight'>Buscar por usuario</button>
+                <button (click)='_taskServices.getTasksByProject().subscribe()' class='btn btn-warning highlight'>Todas</button>
             </div>
         </div>
         <div class="row" *ngIf="_projectServices.groupTasks.length>0" style='border-bottom:1px solid black'>
@@ -52,7 +52,7 @@
     </div>
     <div class='col-12 d-flex flex-column justify-content-center mb-1 m-0'>
         <div *ngIf="_projectServices.myTasks.length>0" class="row d-flex justify-content-center">
-                <h5>Mis tareas</h5>
+                <h5 class="highlight">Mis tareas</h5>
         </div>    
       <div  *ngIf="_projectServices.myTasks.length>0">
         <table class='table scrollableTableMyTasks'>
@@ -91,6 +91,6 @@
     </div>
     <div class=" col-12 d-flex justify-content-center"
         *ngIf="_projectServices.myTasks.length === 0 && _projectServices.groupTasks.length === 0">
-        <h5>No hay tareas asignadas</h5>
+        <h5 class="highlight" >No hay tareas asignadas</h5>
     </div>
 </div>

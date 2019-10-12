@@ -2,19 +2,19 @@
     <div class='col-12 '>
       <div class="row">
         <div class="col-12 list-group m-2">
-          <h5 class='list-group-item-heading text-center'>PROFESORES</h5>
+          <h5 class='list-group-item-heading text-center highlight'>PROFESORES</h5>
           <input #input placeholder="Buscar profesor" type="text" name="" id="">
         </div>
         <div class='col-12 d-flex justify-content-center m-1 mb-3'>
-            <button class='btn btn-warning '
+            <button class='btn btn-warning highlight'
               (click)='_professorServices.searchProfessors(input.value,0).subscribe();searchMode = true;from =0;getMode=false;_professorServices.professors=[]'>BUSCAR
               PROFESORES</button>
             <button
               (click)='from=0;searchMode=false;getMode=true;_professorServices.getProfessors().subscribe();_professorServices.professors=[]'
-              class='btn btn-warning '>TODOS</button>
+              class='btn btn-warning highlight'>TODOS</button>
         </div>
         <div class="col-12 list-group p-0">
-                <button (click)='postProfessor()' class='btn btn-warning'>CREAR PROFESOR</button>
+                <button (click)='postProfessor()' class='btn btn-warning highlight'>CREAR PROFESOR</button>
         </div>
         </div>
         <div class="col-12 mt-2" style='background:#DCD4D2'>
@@ -40,7 +40,7 @@
               </td>
               <td>
                 <div>
-                  <button (click)='addSubject(professor._id)' class='btn btn-warning '>Añadir materia</button>
+                  <button (click)='addSubject(professor._id)' class='btn btn-warning highlight'>Añadir materia</button>
                 </div>
               </td>
               <td>

@@ -21,7 +21,6 @@ export class UserServices {
     socketOn:boolean=false
 
     count:number
-
     constructor(private http:HttpClient,
                 private router:Router,
                 private _errorHandler:ErrorHandlerService,
@@ -60,12 +59,12 @@ export class UserServices {
     }
 
     checkToken(): Observable<boolean> {
-        let token = localStorage.getItem('token');
-        if (!token) { token = 'noToken'};
+
+        let token = localStorage.getItem('token') ? localStorage.getItem('token') :'notToken';
         let user = localStorage.getItem('user');
-        let userId;
-        if (user) { userId = JSON.parse(user)._id }else{userId='noUser'};
+        let userId = user ? JSON.parse(user)._id : 'noUser';
         let headers = new HttpHeaders().set('token', token);
+        
         return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
             if (res.user) {
                 this.saveInStorage(res.user._id, res.user, res.token);

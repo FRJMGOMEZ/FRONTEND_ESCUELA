@@ -1,21 +1,21 @@
 <div class="row mr-1 ml-1 mt-0 p-0 animated fadeIn pagesContainerFixed">
-        <div class="col-4 mt-0">
+        <div class="col-4 m-0 p-1" >
             <div *ngIf="prevWeek.length > 0 && nextWeek.length > 0" class="row">
                 <div class="col-12 animated shake">
                          <i style="color:blue" (click)="_demoServices.calendarPopup(true)" class="fas fa-info fa-lg m-4"></i>
                 </div>
                 <div class="col-12 d-flex flex-column text-center mt-1">
-                    <h5 *ngIf="_calendarServices.currentDay">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
+                    <h5 *ngIf="_calendarServices.currentDay" class="highlight">{{_calendarServices.currentDay.date | date:'EEEE d MMMM , y'}}</h5>
                 </div>
                 <div class="col-12">
                   <div class="row mt-0 d-flex justify-content-between">
                     <div class="ml-3" style='display: flex'>
-                      <button [disabled]="inProgress" [ngStyle]="{ 'opacity':buttonStyle()} "  class='btn-warning' (click)='toOtherWeek(prevWeek[0])'>
+                      <button [disabled]="inProgress" [ngStyle]="{ 'opacity':buttonStyle()} "  class='btn-warning highlight' (click)='toOtherWeek(prevWeek[0])'>
                         {{prevWeek[0] | date:'dd MM yy'}} - {{prevWeek[1] | date:'dd MM yy'}}
                       </button>
                     </div>
                     <div class="mr-3" style='display:flex'>
-                      <button [disabled]="inProgress" class='btn-warning' [ngStyle]="{ 'opacity':buttonStyle()} " (click)='toOtherWeek(nextWeek[0])'>
+                      <button [disabled]="inProgress" class='btn-warning highlight' [ngStyle]="{ 'opacity':buttonStyle()} " (click)='toOtherWeek(nextWeek[0])'>
                         {{nextWeek[0]| date:'dd MM yy'}} - {{nextWeek[1]| date:'dd MM yy'}}
                       </button>
                     </div>
@@ -25,14 +25,20 @@
                     <button class='btn btn-warning' (click)=' _calendarModalController.showModal()'><i class="fas fa-search "></i></button>
                 </div>
                 <div class='col-12 mt-2 '>
-                    <h5 class='text-center'>Eventos con permanencia</h5>
+                    <h5 class='text-center highlight'>Eventos con permanencia</h5>
                     <table class='table scrollableTable m-0' style="background:#F5F1E3">
+                        <thead>
+                            <th style="width:25%">Nombre</th>
+                            <th style="width:25%">Inicio</th>
+                            <th style="width:25%">Finalización</th>
+                            <th style="width:25%"></th>
+                        </thead>
                         <tbody>
                             <tr *ngFor="let event of _calendarServices.permanentEvents">
-                                <td style="width:25%">Nombre: {{event.name}}</td>
-                                <td style="width:25%">Empieza el día : {{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
+                                <td style="width:25%">{{event.name}}</td>
+                                <td style="width:25%">{{event.startDate | date }} a las {{event.position | timeConversor2: null}} </td>
                                 <td style="width:25%">
-                                    <p *ngIf="event.endDate != null">Termina el día : {{event.endDate | date }} a las
+                                    <p *ngIf="event.endDate != null">{{event.endDate | date }} a las
                                         {{event.position | timeConversor2 : event.duration}}</p>
                                     <p *ngIf="event.endDate === null">Se prorroga indefinidamente</p>
                                 </td>
@@ -53,7 +59,7 @@
                 </div>
             </div>            
         </div>
-        <div #printable class="col-8 printable ">
+        <div #printable class="col-8 printable">
             <div class="row">
               <div class="col-1" style='background: #F0B841'>
                 <button class='btn btn-warning' (click)='snapshotCalendar()'><i class="fas fa-camera-retro"></i></button>

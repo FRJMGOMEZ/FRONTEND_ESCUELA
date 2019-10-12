@@ -1,36 +1,36 @@
     <div *ngIf="page && _projectServices.projectSelectedId" class="row animated fadeIn" style='background-color: #DCD4D2;width:100%'>
         <div class=' col-12 nav justify-content-around align-items-center p-2 ' style='background:#F0B841;color:black;width:100% '>
             <div>
-                <a class='dropdown-toggle dropdown-toggle-split' id='dp-proyectos' data-toggle="dropdown">MIS PROYECTOS</a>
+                <a class='dropdown-toggle dropdown-toggle-split highlight' id='dp-proyectos' data-toggle="dropdown">MIS PROYECTOS</a>
                 <div *ngIf="_projectServices.projects.length > 1" class="dropdown-menu" aria-labelledby="dp-proyectos">
                     <div *ngFor="let oneProject of _projectServices.projects">
-                        <a *ngIf="oneProject._id != _projectServices.projectSelectedId" (click)='toOtherProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item'>{{oneProject.name}}</a>
+                        <a *ngIf="oneProject._id != _projectServices.projectSelectedId" (click)='toOtherProject(oneProject._id)' routerLinkActive="router-link-active" class='dropdown-item highlight'>{{oneProject.name}}</a>
                     </div>
                 </div>
                 <div *ngIf="_projectServices.projects.length == 1" class="dropdown-menu" aria-labelledby="dp-proyectos">
                     <div>
-                        <a class='dropdown-item'>No participas en ningún otro proyecto</a>
+                        <a class='dropdown-item highlight'>No participas en ningún otro proyecto</a>
                     </div>
                 </div>
             </div>
             <div>
-                <a [routerLink]="['/projects']" (click)='this._projectServices.projectSelectedId=undefined' routerLinkActive="router-link-active" routerLinkActive="router-link-active" [routerLinkActive]>IR A MIS PROYECTOS</a>
+                <a class="highlight" [routerLink]="['/projects']" (click)='this._projectServices.projectSelectedId=undefined' routerLinkActive="router-link-active" routerLinkActive="router-link-active" [routerLinkActive]>IR A MIS PROYECTOS</a>
             </div>
             <div>
-                <a class='dropdown-toggle dropdown-toggle-split' id='dp-config' data-toggle="dropdown">CONFIGURACION</a>
+                <a class='dropdown-toggle dropdown-toggle-split highlight' id='dp-config' data-toggle="dropdown">CONFIGURACION</a>
                 <div class="dropdown-menu" aria-labelledby="dp-config">
 
                     <div appProjectRole>
-                        <a (click)="putProject(_projectServices.projectSelectedId)" routerLinkActive="router-link-active" class='dropdown-item'>EDITAR PROYECTO</a>
+                        <a (click)="putProject(_projectServices.projectSelectedId)" routerLinkActive="router-link-active" class='dropdown-item highlight'>EDITAR PROYECTO</a>
                     </div>
                     <div appProjectRole>
-                        <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item'>AÑADIR ADMINISTRADOR</a>
+                        <a (click)='addAdmin()' routerLinkActive="router-link-active" class='dropdown-item highlight'>AÑADIR ADMINISTRADOR</a>
                     </div>
                     <div *ngIf="_projectServices.participants.length > 1">
-                        <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item'>SALIR DE PROYECTO</a>
+                        <a (click)='getOut()' routerLinkActive="router-link-active" class='dropdown-item highlight'>SALIR DE PROYECTO</a>
                     </div>
                     <div appProjectRole>
-                        <a (click)='deleteProject(_projectServices.projectSelectedId)' routerLinkActive="router-link-active" class='dropdown-item'>ELIMINAR PROYECTO</a>
+                        <a (click)='deleteProject(_projectServices.projectSelectedId)' routerLinkActive="router-link-active" class='dropdown-item highlight'>ELIMINAR PROYECTO</a>
                     </div>
                 </div>
             </div>
@@ -44,15 +44,15 @@
                                 class="fas fa-info fa-lg" style="color:#F0B841"></i>
                         </div>
                         <div class='col-10 m-0 p-0 '>
-                            <h5 class='text-center '>{{_projectServices.name}}</h5>
+                            <h5 class='text-center highlight'>{{_projectServices.name}}</h5>
                         </div>
                         <div class='col-1 m-0 p-0 d-flex align-items-center'>
                             <span appProjectRole *ngIf="_projectServices.status"
-                                style='cursor: pointer; color:black' class='bg-warning'
+                                style='cursor: pointer; color:black' class='bg-warning highlight'
                                 (click)='changeProjectStatus()'>Activo</span>
                             <span
                                 appProjectRole *ngIf="!_projectServices.status"
-                                style='cursor: pointer; color:black' class='bg-warning'
+                                style='cursor: pointer; color:black' class='bg-warning highlight'
                                 (click)='changeProjectStatus()'>Inactivo</span>
                         </div>
                     </div>
@@ -68,19 +68,19 @@
                                 <div class="collapse navbar-collapse justify-content-around" id="navbarNav">
             
                                     <div>
-                                        <a (click)="switchPage('chat')">CHAT</a>
+                                        <a class="highlight" (click)="switchPage('chat')">CHAT</a>
                                     </div>
                                     <div>
-                                        <a (click)="switchPage('images')">IMAGENES</a>
+                                        <a class="highlight" (click)="switchPage('images')">IMAGENES</a>
                                     </div>
                                     <div>
-                                        <a (click)="switchPage('files')">ARCHIVOS</a>
+                                        <a class="highlight" (click)="switchPage('files')">ARCHIVOS</a>
                                     </div>
                                     <div>
-                                        <a (click)="switchPage('tasks')">TAREAS</a>
+                                        <a class="highlight" (click)="switchPage('tasks')">TAREAS</a>
                                     </div>
                                     <div>
-                                        <a (click)="switchPage('events')">EVENTOS</a>
+                                        <a class="highlight" (click)="switchPage('events')">EVENTOS</a>
                                     </div>
                                 </div>
                             </nav>
@@ -97,12 +97,12 @@
                 <div class="col-3 pl-0">
                     <div class="row">
                         <div *ngIf="_projectServices.description" class="col-12">
-                            <h5 class='text-center'>Descripción del proyecto:</h5>
+                            <h5 class='text-center highlight'>Descripción del proyecto:</h5>
                             <p>{{_projectServices.description}}</p>
                         </div>
                         <div class='col-12'>
                             <div class="d-flex justify-content-center">
-                                <h5 class='text-center'>PARTICIPANTES:</h5>
+                                <h5 class='text-center highlight'>PARTICIPANTES:</h5>
                             </div>
                             <div class='col-12' style="border:1px solid black;background:#F5F1E3">
                                 <table class='table scrollableTable'>
@@ -130,7 +130,7 @@
                             </div>
                             <div appProjectRole
                                 class='d-flex justify-content-center mt-2 '>
-                                <button (click)='addParticipant()' class='btn btn-warning '>Añadir participante</button>
+                                <button (click)='addParticipant()' class='btn btn-warning highlight'>Añadir participante</button>
                             </div>
                         </div>
                         <div class="col-12">

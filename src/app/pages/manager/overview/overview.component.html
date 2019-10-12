@@ -7,24 +7,24 @@
             <div class="form-check">
               <input class="form-check-input" type="radio" name="albums" id="albums" value="albums"
                 [(ngModel)]="_managerServices.item" checked>
-              <label class="form-check-label" for="albums">
-                Buscar por <a (click)="_managerServices.getOrSearch('albums')" routerLinkActive="router-link-active"
+              <label class="form-check-label highlight" for="albums">
+                Buscar por <a class="highlight" (click)="_managerServices.getOrSearch('albums')" routerLinkActive="router-link-active"
                   style='color:blue'>ALBUMES</a>
               </label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="tracks" id="tracks" value="tracks"
                 [(ngModel)]="_managerServices.item">
-              <label class="form-check-label" for="tracks">
-                Buscar por <a (click)="_managerServices.getOrSearch('tracks')" routerLinkActive="router-link-active"
+              <label class="form-check-label highlight" for="tracks">
+                Buscar por <a class="highlight" (click)="_managerServices.getOrSearch('tracks')" routerLinkActive="router-link-active"
                   style='color:blue'>PISTAS</a>
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="artists" id="artists" value="artists"
+              <input class="form-check-input highlight" type="radio" name="artists" id="artists" value="artists"
                 [(ngModel)]="_managerServices.item">
               <label class="form-check-label" for="artists">
-                Buscar por <a (click)="_managerServices.getOrSearch('artists')" routerLinkActive="router-link-active"
+                Buscar por <a class="highlight" (click)="_managerServices.getOrSearch('artists')" routerLinkActive="router-link-active"
                   style='color:blue'>ARTISTAS</a>
               </label>
             </div>
@@ -35,7 +35,7 @@
           <div class="col-2 p-0 list-group">
             <div class='d-flex justify-content-center '>
               <button (click)="_managerServices.getOrSearch(_managerServices.item,input.value)"
-                class='btn btn-warning'>BUSCAR</button>
+                class='btn btn-warning highlight'>BUSCAR</button>
             </div>
           </div>
           <div class="col-1 d-flex justify-content-end align-items-center animated shake">
@@ -47,12 +47,12 @@
                 <div class="form-check" style='width: 100%;'>
                   <input [(ngModel)]="_managerServices.dataStored" type="checkbox" class="form-check-input"
                     id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Mantener búsqueda guardada</label>
+                  <label class="form-check-label highlight" for="exampleCheck1">Mantener búsqueda guardada</label>
                 </div>
               </div>
               <div class='col-9 d-flex justify-content-center'>
-                <button (click)='postAlbum()' class='btn btn-warning'>NUEVO ALBUM</button>
-                <button (click)='postArtist()' class='btn btn-warning'>NUEVO ARTISTA</button>
+                <button (click)='postAlbum()' class='btn btn-warning highlight'>NUEVO ALBUM</button>
+                <button (click)='postArtist()' class='btn btn-warning highlight'>NUEVO ARTISTA</button>
               </div>
             </div>
           </div>

@@ -1,33 +1,33 @@
 <div class="row pagesContainerFixed animated fadeIn">
-    <div class="col-12">
-        <div class="row">
-             <div class="col-12" style='background:#F0B841;border:1px solid black'>
-        <div class="row p-2">
+ <div class="col-12">
+    <div class="row mt-2" >
+        <div class="col-12" style='background:#F5F1E3;border:1px solid black'>
+          <div class="row p-2">
             <div class='col-11 d-flex justify-content-center'>
                 <h2 style="text-shadow: 1px 0 black" class='text-center animated zoomIn'>¡{{hi()}} {{_userServices.userOnline.name}}...!</h2>
             </div>
             <div class="col-1 d-flex justify-content-end align-items-center animated shake">
                 <i (click)="_demoServices.dashboardPopup(true)" class="fas fa-info fa-lg" style='cursor:pointer;color:blue'></i>
             </div>
-        </div>
-    </div>
-    <div class='col-7 mt-5' style='height:100%'>
-        <div class="row m-1">
+          </div>
+       </div>
+      <div class='col-7  blackboard' >
+        <div class="row m-1 mt-3" style="background:#008080;height:90%">
             <div *ngIf="!_dashboardServices.unreadMessages && !_dashboardServices.pendingTasks && !_dashboardServices.uncheckedTasks" class="col-12">
                 <h3 class='text-center'>No hay nuevas notificaciones
                 </h3>
             </div>
-            <div class="col-12 animated bounceInUp bounce1 " *ngIf="_dashboardServices.unreadMessages">
-                <h5 class="text-center" style="color:black">TIENES MENSAJES NUEVOS...</h5>
+            <div class="col-12 animated bounceInUp bounce1 mt-3"style="font-family: 'Mansalva', cursive;" *ngIf="_dashboardServices.unreadMessages">
+                <h5 class="text-center" style="color:white">TIENES MENSAJES NUEVOS...</h5>
                     <table class='table scrollableTable'>
                         <thead>
                         </thead>
                         <tbody>
                             <tr>
-                                <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
+                                <td *ngFor="let project of _dashboardServices.projects" class="" style="background:#008080;font-family: 'Mansalva', cursive;">
                                     <div>
-                                        <p><i class="far fa-bell" style="color:blue"></i> Tienes {{project.messages.length}} mensajes sin leer en el proyecto :<a
-                                                style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                        <p style="color:white"><i class="far fa-bell fa-lg  fa-lg " style="color:#F0B841"></i> TIENES {{project.messages.length}} MENSAJES SIN LEER EN EL PROYECTO :<a
+                                                style='color: #F0B841;text-shadow: 1px 0 black' (click)='toProject(project._id)'>{{project.name.toUpperCase()}}</a>
                                         </p>
                                     </div>
                                 </td>
@@ -35,18 +35,22 @@
                         </tbody>
                     </table>
             </div>
-            <div class="col-12 p-2">
+            <hr>
+            <div class="col-12 p-2" style="border:2px solid black;-webkit-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);
+box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);" >
                 <div class="row">
                     <div class='col-12  animated bounceInUp bounce2 ' *ngIf="_dashboardServices.pendingTasks">
-                        <h5 class="text-center" style="color:black">TIENES TAREAS PENDIENTES DE COMPLETAR...</h5>
+                        <h5 class="text-center" style="color:white;font-family: 'Mansalva', cursive;">TIENES TAREAS PENDIENTES DE COMPLETAR...</h5>
                         <div >
                             <table class='table scrollableTable'>
                                 <thead></thead>
                                 <tbody>
                                     <tr>
-                                    <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
+                                    <td *ngFor="let project of _dashboardServices.projects" class=""  style="background:#008080;font-family: 'Mansalva', cursive;">
                                         <div *ngIf="project.pendingTasks">
-                                            <p><i style="color:blue" class="far fa-bell"></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} en el proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                            <p style="color:white"><i style="color:#F0B841" class="far fa-bell fa-lg "></i> {{checkTasksNumber(project.pendingTasks.length,'pending')}} 
+                                                EN EL PROYECTO: <a style='color: #F0B841;text-shadow: 1px 0 black' (click)='toProject(project._id)'>{{project.name.toUpperCase()}}</a>
                                             </p>
                                         </div>
                                     </td>
@@ -56,15 +60,15 @@
                         </div>
                     </div>
                     <div class='col-12 animated bounceInUp bounce3' *ngIf="_dashboardServices.uncheckedTasks">
-                        <h5 class="text-center" style="color:black">SE TE HAN ASIGNADO NUEVAS TAREAS...</h5>
+                        <h5 class="text-center" style="color:white;font-family: 'Mansalva', cursive;">SE TE HAN ASIGNADO NUEVAS TAREAS...</h5>
                         <div  >
                             <table class='table scrollableTable'>
                               <thead></thead>
                                 <tbody>
                                     <tr>
-                                        <td *ngFor="let project of _dashboardServices.projects" class="" style='background:#F5F1E3'>
-                                            <p *ngIf="project.uncheckedTasks"><i style="color:blue" class="far fa-bell"></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} asignadas en el
-                                                proyecto: <a style='color: blue' (click)='toProject(project._id)'>{{project.name}}</a>
+                                        <td *ngFor="let project of _dashboardServices.projects" class=""  style="background:#008080;font-family: 'Mansalva', cursive;">
+                                            <p style="color:white" *ngIf="project.uncheckedTasks"><i style="color:#F0B841" class="far fa-bell fa-lg "></i>{{checkTasksNumber(project.uncheckedTasks.length,'unchecked')}} ASIGNADAS EN EL
+                                                PROYECTO: <a style='color: #F0B841;text-shadow: 1px 0 black' (click)='toProject(project._id)'>{{project.name.toUpperCase()}}</a>
                                             </p>
                                         </td>
                                     </tr>
@@ -76,12 +80,12 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-5 mt-2 " >
-        <div class="row" style='background:#F5F1E3'>
+      </div>
+      <div class="col-5 "  >
+        <div class="row mt-3" style='background:#F5F1E3'>
             <div class="col-12  " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 style="color:black" class='text-center pt-1'>ECHA UN VISTAZO A LOS EVENTOS PROGRAMADOS PARA HOY....</h5>
+                    <h5 style="color:black;text-shadow: 1px 0 black" class='text-center pt-1'>ECHA UN VISTAZO A LOS EVENTOS PROGRAMADOS PARA HOY....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsToday.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <table class='table scrollableTable'>
@@ -108,7 +112,7 @@
             </div>
             <div class="col-12 " style="height:30%">
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                    <h5 style="color:black" class='text-center pt-1'>REVISA LOS EVENTOS EN CURSO....</h5>
+                    <h5 style="color:black;text-shadow: 1px 0 black" class='text-center pt-1'>REVISA LOS EVENTOS EN CURSO....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsOnCourse.length > 0" class=' row d-flex justify-content-around flex-row'>
                     <div class=" col-12 ">
@@ -141,7 +145,7 @@
             </div>
             <div class="col-12 " style="height: 30%">
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class="row d-flex justify-content-center" style="height: 10%;background:#F0B841;">
-                <h5 style="color:black" class='text-center pt-1'>AQUÍ TIENES LOS EVENTOS MÁS PRÓXIMOS....</h5>
+                <h5 style="color:black;text-shadow: 1px 0 black" class='text-center pt-1'>AQUÍ TIENES LOS EVENTOS MÁS PRÓXIMOS....</h5>
                 </div>
                 <div *ngIf="_dashboardServices.eventsComming.length> 0" class=' row d-flex justify-content-around flex-row'>
                     <div class="col-12">
@@ -171,13 +175,14 @@
                     </div>
                 </div>
             </div>
-
         </div>         
         <div *ngIf="_dashboardServices.eventsComming.length === 0 && _dashboardServices.eventsOnCourse.length === 0 && _dashboardServices.eventsToday.length === 0"
             class="row" style="height:100%">
             <h5 class='text-center'>No hay eventes recientes</h5>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 

@@ -1,8 +1,8 @@
 <div class="row m-1 animated fadeIn pagesContainerFixed">
     <div class="col-12">
         <div class='list-group' >
-            <h5 class='list-group-item-heading text-center mt-3'>MATERIAS</h5>
-            <button (click)='postSubject()' class='btn btn-warning m-2'>CREAR MATERIA</button>
+            <h5 class='list-group-item-heading text-center mt-3 highlight'>MATERIAS</h5>
+            <button (click)='postSubject()' class='btn btn-warning m-2 highlight'>CREAR MATERIA</button>
             <div class="row card-group">
                 <div *ngFor="let subject of _subjectServices.subjects" class="card" style='background:#F5F1E3'>
                     <div (click)='selectSubject(subject._id)' class="card-body d-flex justify-content-center">
@@ -28,7 +28,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class='d-flex justify-content-around'>
-                                        <h6 class='text-center'>PROFESORES</h6>
+                                        <h6 class='text-center highlight'>PROFESORES</h6>
                                     </div>
                                     <div>
                                         <button (click)='addProfessor(_subjectServices.subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
@@ -50,12 +50,12 @@
                                 </div>
                                 <div class="col-6">
                                     <div>
-                                        <h6 class='text-center'>ALUMNOS</h6>
+                                        <h6 class='text-center highlight'>ALUMNOS</h6>
                                     </div>
                                     <div>
                                         <button (click)='addAlumni(_subjectServices.subjectSelected._id)' class='btn btn-block btn-warning'>Añadir</button>
                                     </div>
-                                    <cdk-virtual-scroll-viewport class="virtual-scroll" itemSize='40px' style=";border:1px solid black;background:#F5F1E3">
+                                    <cdk-virtual-scroll-viewport class="virtual-scroll" itemSize='40px' style="border:1px solid black;background:#F5F1E3">
                                         <table class='table' *ngIf="_subjectServices.subjectSelected.alumnis">
                                             <tr>
                                                 <td class="row">

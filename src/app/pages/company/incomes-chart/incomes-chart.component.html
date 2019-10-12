@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-8">
+  <div class="col-8" >
     <div class="row">
       <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
        <!--
@@ -7,7 +7,7 @@
         <a (click)="moveLeft('forward')" class="text-right"><i class="fas fa-arrow-right m-4"></i></a>
        --> 
       </div>
-      <div class="col-10">
+      <div class="col-10 p-5 mt-2 mb-2" style="background:#008080;background:#008080; border:2px solid black;-webkit-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);-moz-box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);box-shadow: 6px 10px 15px 0px rgba(0,0,0,0.75);">
         <app-line-chart #chart></app-line-chart>
       </div>
       <div class="col-1 d-flex flex-column justify-content-center m-0 p-0 ">
@@ -17,7 +17,7 @@
 
         -->
       </div>
-      <div class="col-12 d-flex justify-content-center">
+      <div class="col-12 d-flex justify-content-center mt-3">
         <div class="form-check form-check-inline">
           <input [(ngModel)]="liquidated" (change)="onSelection()" class="form-check-input" type="checkbox" id="inlineCheckbox1">
           <label class="form-check-label" for="inlineCheckbox1">INGRESOS LIQUIDADOS</label>

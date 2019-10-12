@@ -26,28 +26,30 @@
 
 @media (min-height: 937px) {
  .scrollableTable tbody{
-        height: calc(250*1.50px)
+        height: calc(250*1.5px)
     }
   
 }
 
 @media (min-height: 1250px) {
  .scrollableTable tbody{
-        height: calc(250*2.50px)
+        height: calc(250*2px)
     }
    
 }
 
 @media (min-height: 1875px) {
     .scrollableTable tbody{
-        height: calc(250*2.90px)
+        height: calc(250*3px)
     }
      
 }
 
 @media (min-height: 2500px) {
  .scrollableTable tbody{
-        height: calc(250*3.90px)
+        height: calc(250*3.9px)
     }
  
 }
+
+

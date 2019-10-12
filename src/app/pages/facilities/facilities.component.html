@@ -2,8 +2,8 @@
     <div class="col-12" >
         <div class="row">
             <div class="col-12 list-group">
-                <h5 class='list-group-item-heading text-center mt-3'>INSTALACIONES</h5>
-                <button (click)='postFacilitie()' class='btn btn-warning m-2'>CREAR INSTALACION</button>
+                <h5 class='list-group-item-heading text-center mt-3 highlight'>INSTALACIONES</h5>
+                <button (click)='postFacilitie()' class='btn btn-warning m-2 highlight'>CREAR INSTALACION</button>
             </div>
             <div class="col-12 animated fadeIn" style='background:#DCD4D2'>
                 <table class='table scrollableTable' style='background:#F5F1E3;border:1px solid #F0B841'>
@@ -19,10 +19,10 @@
                             </td>
                             <td>
                                 <label *ngIf="!facilitie.status">
-                                    <button class='btn btn-warning' (click)=changeStatus(facilitie)>Activar</button>
+                                    <button class='btn btn-warning highlight' (click)=changeStatus(facilitie)>Activar</button>
                                 </label>
                                 <label *ngIf="facilitie.status">
-                                    <button class='btn btn-warning' (click)=changeStatus(facilitie)>Desactivar</button>
+                                    <button class='btn btn-warning highlight' (click)=changeStatus(facilitie)>Desactivar</button>
                                 </label>
                             </td>
                             <td>
