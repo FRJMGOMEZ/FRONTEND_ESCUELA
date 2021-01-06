@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { URL_SERVICES } from "../config/config";
-import { map, catchError } from "rxjs/operators";
+import { map, catchError, tap } from "rxjs/operators";
 import { User} from '../models/user.model'
 import { ErrorHandlerService } from './error-handler.service';
 import { Socket } from 'ngx-socket-io';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
+import { of } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -60,39 +61,45 @@ export class UserServices {
 
     checkToken(): Observable<boolean> {
 
-        let token = localStorage.getItem('token') ? localStorage.getItem('token') :'notToken';
-        let user = localStorage.getItem('user');
-        let userId = user ? JSON.parse(user)._id : 'noUser';
-        let headers = new HttpHeaders().set('token', token);
-        
-        return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
-            if (res.user) {
-                this.saveInStorage(res.user._id, res.user, res.token);
-                Swal.fire({
-                           title:`¡Hola! bienvenido/a a la DEMO de mi proyecto CARGOMUSICAPP`,
-                           text:`Se te ha asignado aleatoriamente el usuario: ${res.user.name.toUpperCase()} ${res.user.surname || ''}, gracias por la visita`,
-                           type:"info",
-                           showCloseButton: true,
-                           heightAuto: false
-                       })
-                return true;
-            } else {
-                if(res.token){
-                    this.saveInStorage(this.userOnline._id, this.userOnline, res.token);
-                    return true
-                }else{
-                    this.router.navigate(['/login']).then(() => {
-                        Swal.fire(
-                            {
-                                type: 'info',
-                                text: res.message,
-                                showCloseButton: true,
-                                heightAuto: false
-                            })
+        let token = localStorage.getItem('token') ? localStorage.getItem('token') :'';
+
+        if(token){
+            let user = localStorage.getItem('user');
+            let userId = user ? JSON.parse(user)._id : 'noUser';
+            let headers = new HttpHeaders().set('token', token);
+
+            return this.http.put(`${URL_SERVICES}checkToken`, { userId }, { headers }).pipe(map((res: any) => {
+                if (res.user) {
+                    this.saveInStorage(res.user._id, res.user, res.token);
+                    Swal.fire({
+                        title: `¡Hola! bienvenido/a a la DEMO de mi proyecto CARGOMUSICAPP`,
+                        text: `Se te ha asignado aleatoriamente el usuario: ${res.user.name.toUpperCase()} ${res.user.surname || ''}, gracias por la visita`,
+                        type: "info",
+                        showCloseButton: true,
+                        heightAuto: false
                     })
-                    return false
+                    return true;
+                } else {
+                    if (res.token) {
+                        this.saveInStorage(this.userOnline._id, this.userOnline, res.token);
+                        return true
+                    } else {
+                        this.router.navigate(['/login']).then(() => {
+                            Swal.fire(
+                                {
+                                    type: 'info',
+                                    text: res.message,
+                                    showCloseButton: true,
+                                    heightAuto: false
+                                })
+                        })
+                        return false
+                    }
                 }
-            }
+            }))
+        }
+        return of(true).pipe(tap(()=>{
+            this.router.navigate(['/login'])
         }))
     }
 
@@ -112,7 +119,7 @@ export class UserServices {
             this.userOnline = await user;
             this.token = await token;
             this.headers = await new HttpHeaders().set('token', this.token)
-            resolve()
+            resolve(true)
         })
     }
 
