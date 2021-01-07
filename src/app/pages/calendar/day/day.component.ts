@@ -7,7 +7,7 @@ import { EventModalController } from '../../../modals/events-modal/eventsModal.c
 import { UserServices } from '../../../providers/user.service';
 import Swal from "sweetalert2";
 import { Subscription, timer } from 'rxjs'
-import * as html2canvas from "html2canvas"
+import html2canvas from 'html2canvas';
 import { DemoService } from '../../../providers/demo.service';
 import { SpinnerService } from '../../../providers/spinner.service';
 
