@@ -1,4 +1,4 @@
-export class Indexcard {
+export class IndexcardModel {
 
     constructor(
         public role: string,

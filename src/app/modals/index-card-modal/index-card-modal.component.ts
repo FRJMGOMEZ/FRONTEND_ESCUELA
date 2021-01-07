@@ -10,8 +10,8 @@ import { UserServices } from 'src/app/providers/user.service';
 import { ManagerService } from '../../providers/manager.service';
 import { SwalService } from 'src/app/providers/swal.service';
 
-import { Indexcard } from 'src/app/models/indexcard.model';
 import { IndexcardService } from '../../providers/indexcards.service';
+import { IndexcardModel } from '../../models/index-card.model';
 
 
 @Component({
@@ -53,7 +53,7 @@ export class IndexcardModalComponent implements OnInit {
 
       if (this._modalController.id) {
         this.edition = true;
-        this._indexcardServices.searchindexcardById(this._modalController.id).subscribe((indexcard:Indexcard)=>{
+        this._indexcardServices.searchindexcardById(this._modalController.id).subscribe((indexcard:IndexcardModel)=>{
           this.form.setValue({
             name: indexcard.name,
             surname: indexcard.surname || "",
@@ -72,7 +72,7 @@ export class IndexcardModalComponent implements OnInit {
   postIndexcard() {
     if (this.form.valid) {
       let value = this.form.value;
-      let newIndexcard = new Indexcard(
+      let newIndexcard = new IndexcardModel(
         this.role,
         value.name || '',
         value.surname || '',
@@ -81,7 +81,7 @@ export class IndexcardModalComponent implements OnInit {
         value.home ||'',
         value.address || ''
       );
-      this._indexcardServices.postIndexcard(newIndexcard).subscribe(async (indexcard: Indexcard) => {
+      this._indexcardServices.postIndexcard(newIndexcard).subscribe(async (indexcard: IndexcardModel) => {
         this.postItem(indexcard)
       })
     }
@@ -90,7 +90,7 @@ export class IndexcardModalComponent implements OnInit {
   putIndexcard() {
     let indexcard;
     let value = this.form.value;
-       indexcard = new Indexcard(
+       indexcard = new IndexcardModel(
          this.role,
          value.name,
          value.surname,
@@ -99,12 +99,12 @@ export class IndexcardModalComponent implements OnInit {
          value.home,
          value.address
        );
-       this._indexcardServices.putIndexcard(indexcard,this._modalController.id).subscribe((indexcardUpdated:Indexcard)=>{
+       this._indexcardServices.putIndexcard(indexcard,this._modalController.id).subscribe((indexcardUpdated:IndexcardModel)=>{
             this.updateItem(indexcardUpdated)
        })
    }
 
- async postItem(indexcard:Indexcard){
+ async postItem(indexcard:IndexcardModel){
     if (this.role === "PROFESSOR") {
       let professor = new Professor(indexcard._id);
       await this._professorServices.postProfessor(professor).subscribe();
@@ -123,7 +123,7 @@ export class IndexcardModalComponent implements OnInit {
     }
   }
 
-  updateItem(indexcard: Indexcard) {
+  updateItem(indexcard: IndexcardModel) {
 
     //// actualizar albums ,tracks y liquidaciones ///
     switch (this.role) {
