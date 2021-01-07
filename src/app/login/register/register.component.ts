@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { UserServices } from '../../providers/user.service';
 import { User } from '../../models/user.model';
-import { IndexcardServices } from 'src/app/providers/indexcard.service';
-import { Indexcard } from 'src/app/models/indexcard.model';
 
 @Component({
   selector: 'app-register',
@@ -16,8 +14,7 @@ export class RegisterComponent implements OnInit {
   form:FormGroup
 
   constructor(private _userServices: UserServices,
-              private router: Router,
-              private _indexcardServices:IndexcardServices) { }
+              private router: Router) { }
 
   ngOnInit() {
 

@@ -1,5 +1,4 @@
 import { FileModel } from './file.model';
-import { Indexcard } from './indexcard.model';
 export class User {
     constructor(
         public name:string,
