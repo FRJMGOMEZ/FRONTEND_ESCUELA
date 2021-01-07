@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { IndexcardModalController } from './indexcard-modal-controller.service';
-import { IndexcardServices } from '../../providers/indexcard.service';
 import { Indexcard } from '../../models/indexcard.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AlumniServices } from 'src/app/providers/alumni.service';
@@ -11,6 +10,7 @@ import { Artist } from '../../models/artist.model';
 import { UserServices } from 'src/app/providers/user.service';
 import { ManagerService } from '../../providers/manager.service';
 import { SwalService } from 'src/app/providers/swal.service';
+import { IndexcardServices } from '../../providers/indexcard.service';
 
 @Component({
   selector: "app-index-card-modal",

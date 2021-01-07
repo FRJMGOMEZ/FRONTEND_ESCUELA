@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule, registerLocaleData } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import localeEs from "@angular/common/locales/Es";
 import { AppComponent } from './app.component';
 import { APPROUTES } from './app.routes';
 import { RegisterComponent } from './login/register/register.component';
@@ -22,9 +21,10 @@ import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from './pipes/pipes.module';
 import { RoleDirective } from './directives/role.directive';
+import localeEs from '@angular/common/locales/Es';
+import { HttpClientModule } from '@angular/common/http';
 
-
-registerLocaleData(localeEs);
+registerLocaleData('ESP');
 
 const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
 
@@ -52,7 +52,8 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     MatButtonModule,
     MatProgressSpinnerModule,
     PipesModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
     DemoService],
