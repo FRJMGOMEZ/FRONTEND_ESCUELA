@@ -28,4 +28,4 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: production
-        FOLDER: ../../dist/FRONTEND_ESCUELA
+        FOLDER: FRJMGOMEZ/FRONTEND_ESCUELA/dist/FRONTEND_ESCUELA
