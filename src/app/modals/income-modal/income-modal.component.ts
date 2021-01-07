@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IncomeModalController } from './incomesModalController.service';
+import { IncomeModalController } from './incomes-modal-controller.service';
 import { Debitor } from '../../models/debitor.modal';
 import { Income } from 'src/app/models/income.model';
 import { IncomesService } from '../../providers/incomes.service';

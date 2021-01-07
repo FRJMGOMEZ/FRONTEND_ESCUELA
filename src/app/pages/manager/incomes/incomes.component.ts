@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { timer } from 'rxjs';
-import { IncomeModalController } from 'src/app/modals/income-modal/incomesModalController.service';
+import { IncomeModalController } from 'src/app/modals/income-modal/incomes-modal-controller.service';
 import { IncomesService } from '../../../providers/incomes.service';
 import Swal from 'sweetalert2';
 import { DemoService } from '../../../providers/demo.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { EventModalController } from './eventsModal.controller';
+import { EventModalController } from './events-modal-controller.service';
 import { UserServices } from '../../providers/user.service';
 import { User } from 'src/app/models/user.model';
 import { CalendarService } from '../../providers/calendar.service';

@@ -1,9 +1,9 @@
 import { Component, ViewChild, ElementRef, Input, OnInit } from '@angular/core';
 import { ManagerService } from '../../../../providers/manager.service';
-import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcard-modal-controller';
-import { TrackModalController } from '../../../../modals/track-modal/trackModalController';
+import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcard-modal-controller.service';
+import { TrackModalController } from '../../../../modals/track-modal/track-modal-controller.service';
 import * as _ from 'underscore'
-import { AssignationsModalController } from '../../../../modals/assignations-modal/assignationsModal.controller';
+import { AssignationsModalController } from '../../../../modals/assignations-modal/assignations-modal-controller.service';
 import { OverviewComponent } from '../overview.component';
 
 @Component({

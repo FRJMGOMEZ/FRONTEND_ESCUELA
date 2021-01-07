@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FacilitiesModalController } from './facilities-modalController';
+import { FacilitiesModalController } from './facilities-modal-controller.service';
 import { Facilitie } from '../../models/facilitie.model';
 import { FacilitiesService } from '../../providers/facilities.service';
 import { NgForm } from '@angular/forms';

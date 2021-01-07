@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { PasswordModalController } from './passwordModalController.service';
+import { PasswordModalController } from './password-modal-controller.service';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { PasswordService } from '../../providers/password.service';

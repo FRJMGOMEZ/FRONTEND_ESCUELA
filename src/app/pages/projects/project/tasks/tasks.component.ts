@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { ProjectServices } from '../../../../providers/project.service';
-import { TaskModalController } from '../../../../modals/task-modal/task.modalController';
+import { TaskModalController } from '../../../../modals/task-modal/task-modal-controller.service';
 import { UserServices } from '../../../../providers/user.service';
 import { SwalService } from '../../../../providers/swal.service';
 import * as _ from 'underscore';

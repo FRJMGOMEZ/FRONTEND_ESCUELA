@@ -9,8 +9,8 @@ import * as _ from "underscore";
 import { Day } from '../models/day.model';
 import { UserServices } from './user.service';
 import { Socket } from 'ngx-socket-io';
-import { CalendarModalController } from '../modals/calendar-modal/calendar-modal.controller';
-import { EventModalController } from '../modals/events-modal/eventsModal.controller';
+import { CalendarModalController } from '../modals/calendar-modal/calendar-modal-controller.service';
+import { EventModalController } from '../modals/events-modal/events-modal-controller.service';
 
 @Injectable({
   providedIn: "root"

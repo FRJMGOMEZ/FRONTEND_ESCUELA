@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { UserServices } from '../../providers/user.service';
-import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
-import { PasswordModalController } from '../../modals/password-modal/passwordModalController.service';
+import { UploadFilesModalController } from '../../modals/upload-files-modal/upload-files-modal-controller.service';
+import { PasswordModalController } from '../../modals/password-modal/password-modal-controller.service';
 import { Subscription } from 'rxjs';
 import { FilesServices } from '../../providers/files.service';
 import { User } from 'src/app/models/user.model';

@@ -1,5 +1,5 @@
 import { Component, Input, Renderer2, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
-import { EventModalController } from '../../../../modals/events-modal/eventsModal.controller';
+import { EventModalController } from '../../../../modals/events-modal/events-modal-controller.service';
 import { DayComponent } from '../day.component';
 import { CalendarService } from '../../../../providers/calendar.service';
 import { SwalService } from '../../../../providers/swal.service';

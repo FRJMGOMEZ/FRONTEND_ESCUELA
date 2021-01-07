@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
+import { ShowFilesModalController } from '../../../../modals/show-files-modal/showfiles-modal-controller.service';
 import { FilesServices } from '../../../../providers/files.service';
 import { ProjectServices } from '../../../../providers/project.service';
 import { SwalService } from '../../../../providers/swal.service';

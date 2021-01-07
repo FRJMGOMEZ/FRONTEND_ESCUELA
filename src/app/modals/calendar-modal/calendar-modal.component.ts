@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { CalendarModalController } from './calendar-modal.controller';
+import { CalendarModalController } from './calendar-modal-controller.service';
 import { CalendarService } from '../../providers/calendar.service';
 import { Router } from '@angular/router';
 

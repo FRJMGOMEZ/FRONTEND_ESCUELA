@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, OnDestroy, Renderer2} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CalendarService } from '../../../providers/calendar.service';
-import { CalendarModalController } from '../../../modals/calendar-modal/calendar-modal.controller';
+import { CalendarModalController } from '../../../modals/calendar-modal/calendar-modal-controller.service';
 import { FacilitiesService } from '../../../providers/facilities.service';
-import { EventModalController } from '../../../modals/events-modal/eventsModal.controller';
+import { EventModalController } from '../../../modals/events-modal/events-modal-controller.service';
 import { UserServices } from '../../../providers/user.service';
 import Swal from "sweetalert2";
 import { Subscription, timer } from 'rxjs'
-import html2canvas from 'html2canvas';
+import * as html2canvas from 'html2canvas';
 import { DemoService } from '../../../providers/demo.service';
 import { SpinnerService } from '../../../providers/spinner.service';
 

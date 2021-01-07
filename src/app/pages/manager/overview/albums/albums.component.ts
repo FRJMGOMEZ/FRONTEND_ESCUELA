@@ -1,7 +1,7 @@
 import { Component,ViewChild, ElementRef, Input} from '@angular/core';
 import { ManagerService } from '../../../../providers/manager.service';
-import { AlbumModalController } from '../../../../modals/album-modal/albumModalController';
-import { TrackModalController } from '../../../../modals/track-modal/trackModalController';
+import { AlbumModalController } from '../../../../modals/album-modal/album-modal-controller.service';
+import { TrackModalController } from '../../../../modals/track-modal/track-modal-controller.service';
 import { SwalService } from 'src/app/providers/swal.service';
 import Swal from 'sweetalert2';
 import { OverviewComponent } from '../overview.component';

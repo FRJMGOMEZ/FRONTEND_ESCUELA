@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AssignationsModalController } from './assignationsModal.controller';
+import { AssignationsModalController } from './assignations-modal-controller.service';
 import { Assignation } from 'src/app/models/track.model';
 import { ManagerService } from '../../providers/manager.service';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { ProjectModalController } from '../../modals/project-modal/projectModalController';
+import { ProjectModalController } from '../../modals/project-modal/project-modal-controller.service';
 import { ProjectServices } from '../../providers/project.service';
 import * as _ from 'underscore';
 import { Router} from '@angular/router';

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user.model';
-import { UploadFilesModalController } from './uploadFilesModalController';
+import { UploadFilesModalController } from './upload-files-modal-controller.service';
 import { FilesServices } from '../../providers/files.service';
 import Swal from 'sweetalert2';
 

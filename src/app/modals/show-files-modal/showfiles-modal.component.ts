@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FileModel} from '../../models/file.model';
-import { ShowFilesModalController } from './showfilesModal.controller';
+import { ShowFilesModalController } from './showfiles-modal-controller.service';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { FilesServices } from 'src/app/providers/files.service';

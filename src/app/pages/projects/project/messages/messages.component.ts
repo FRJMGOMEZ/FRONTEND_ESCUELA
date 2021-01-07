@@ -8,7 +8,7 @@ import { FileOrder } from '../../../../models/file.model';
 import { ProjectServices } from '../../../../providers/project.service';
 import { MainProjectsComponent } from '../../mainProjects.component';
 import { UserServices } from '../../../../providers/user.service';
-import { ShowFilesModalController } from '../../../../modals/show.files-modal/showfilesModal.controller';
+import { ShowFilesModalController } from '../../../../modals/show-files-modal/showfiles-modal-controller.service';
 import { ProjectComponent } from '../project.component';
 import { SwalService } from '../../../../providers/swal.service';
 import * as _ from 'underscore';

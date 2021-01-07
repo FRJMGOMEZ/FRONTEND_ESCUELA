@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IncomesService } from '../../../../providers/incomes.service';
-import { PaymentModalController } from '../../../../modals/payment-modal/paymentModalController.service';
+import { PaymentModalController } from '../../../../modals/payment-modal/payment-modal-controller.service';
 import { IncomesComponent } from '../incomes.component';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TaskModalController } from './task.modalController';
+import { TaskModalController } from './task-modal-controller.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProjectServices } from '../../providers/project.service';
 import { Task } from 'src/app/models/task.model';

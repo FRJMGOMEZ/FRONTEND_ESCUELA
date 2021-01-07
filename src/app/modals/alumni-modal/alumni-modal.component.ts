@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlumnniModalController } from './alumniModal.controller';
+import { AlumnniModalController } from './alumni-modal-controller.service';
 import { AlumniServices } from '../../providers/alumni.service';
 import { SubjectServices } from '../../providers/subject.service';
 import { SubjectModel } from 'src/app/models/subject.model';

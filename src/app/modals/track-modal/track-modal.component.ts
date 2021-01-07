@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { TrackModalController } from './trackModalController';
+import { TrackModalController } from './track-modal-controller.service';
 import { Track } from 'src/app/models/track.model';
 import { ManagerService } from '../../providers/manager.service';
 import { Artist } from 'src/app/models/artist.model';

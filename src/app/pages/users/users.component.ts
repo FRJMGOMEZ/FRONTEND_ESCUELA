@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { UserServices } from '../../providers/user.service';
-import { UploadFilesModalController } from '../../modals/upload-files-modal/uploadFilesModalController';
+import { UploadFilesModalController } from '../../modals/upload-files-modal/upload-files-modal-controller.service';
 import { Subscription } from 'rxjs';
 import { SwalService } from '../../providers/swal.service';
 import { FilesServices } from '../../providers/files.service';

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SubjectModalController } from '../../../modals/subject-modal/subjectModalController';
+import { SubjectModalController } from '../../../modals/subject-modal/subject-modal-controller';
 import { SubjectServices } from '../../../providers/subject.service';
 import { SubjectModel } from 'src/app/models/subject.model';
-import { AlumnniModalController } from '../../../modals/alumni-modal/alumniModal.controller';
-import { ProfessorModalController } from '../../../modals/professor-modal/professorModalController';
+import { AlumnniModalController } from '../../../modals/alumni-modal/alumni-modal-controller.service';
+import { ProfessorModalController } from '../../../modals/professor-modal/professor-modal-controller';
 import { SwalService } from '../../../providers/swal.service';
 
 @Component({

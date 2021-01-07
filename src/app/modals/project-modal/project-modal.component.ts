@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectModalController } from './projectModalController';
+import { ProjectModalController } from './project-modal-controller.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Project} from '../../models/project.model';
 import { ProjectServices } from '../../providers/project.service';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubjectModalController } from './subjectModalController';
+import { SubjectModalController } from './subject-modal-controller';
 import { SubjectModel } from '../../models/subject.model';
 import { SubjectServices } from '../../providers/subject.service';
 import { NgForm } from '@angular/forms';

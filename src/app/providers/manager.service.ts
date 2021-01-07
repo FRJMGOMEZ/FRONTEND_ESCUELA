@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
 import { ErrorHandlerService } from './error-handler.service';
 import { Router } from '@angular/router';
-import { TrackModalController } from '../modals/track-modal/trackModalController';
+import { TrackModalController } from '../modals/track-modal/track-modal-controller.service';
 
 @Injectable({
   providedIn: 'root'

@@ -7,7 +7,7 @@ export class AlbumModalController {
     public hidden: string = "hidden";
     public id: string
     public notification = new EventEmitter<any>();
-
+k
 
     constructor() { }
 

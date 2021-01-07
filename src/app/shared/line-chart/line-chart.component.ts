@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import { Chart } from 'chart.js';
-import { DataLabelSet } from '../../models/chartDataSet.model';
+import { DataLabelSet } from '../../models/chart-dataset.model';
 
 @Component({
   selector: 'app-line-chart',

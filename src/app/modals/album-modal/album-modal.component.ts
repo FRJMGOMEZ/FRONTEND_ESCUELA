@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlbumModalController } from './albumModalController';
+import { AlbumModalController } from './album-modal-controller.service';
 import { ManagerService } from '../../providers/manager.service';
 import { Album } from 'src/app/models/album.models';
 import { Router } from '@angular/router';

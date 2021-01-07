@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FacilitiesService } from '../../providers/facilities.service';
 import { Facilitie } from '../../models/facilitie.model';
-import { FacilitiesModalController } from '../../modals/facilities-modal/facilities-modalController';
+import { FacilitiesModalController } from '../../modals/facilities-modal/facilities-modal-controller.service';
 import { SwalService } from '../../providers/swal.service';
 import { Subscription } from 'rxjs';
 
