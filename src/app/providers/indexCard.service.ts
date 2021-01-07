@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { Indexcard } from '../models/indexcard.model';
+
 import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
 import { ErrorHandlerService } from './error-handler.service';
+import { Indexcard } from 'src/app/models/indexcard.model';
 
 @Injectable({
   providedIn: 'root'

@@ -21,7 +21,6 @@ import { MatButtonModule } from '@angular/material';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from './pipes/pipes.module';
 import { RoleDirective } from './directives/role.directive';
-import localeEs from '@angular/common/locales/Es';
 import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData('ESP');
