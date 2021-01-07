@@ -9,8 +9,9 @@ import { Artist } from '../../models/artist.model';
 import { UserServices } from 'src/app/providers/user.service';
 import { ManagerService } from '../../providers/manager.service';
 import { SwalService } from 'src/app/providers/swal.service';
-import { IndexcardServices } from 'src/app/providers/indexcard.service';
+
 import { Indexcard } from 'src/app/models/indexcard.model';
+import { IndexcardService } from '../../providers/indexcards.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class IndexcardModalComponent implements OnInit {
 
   constructor(
     public _modalController: IndexcardModalController,
-    private _indexcardServices: IndexcardServices,
+    private _indexcardServices: IndexcardService,
     private _alumniServices: AlumniServices,
     private _professorServices: ProfessorsServices,
     public _userServices:UserServices,
