@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef,ViewChild, Renderer2} from '@angular/core
 import { ActivatedRoute } from '@angular/router';
 import { ManagerService } from '../../../providers/manager.service';
 import { AlbumModalController } from 'src/app/modals/album-modal/albumModalController';
-import { IndexcardModalController } from '../../../modals/index-card-modal/indexcardModalController';
+import { IndexcardModalController } from '../../../modals/index-card-modal/indexcard-modal-controller';
 import { DemoService } from '../../../providers/demo.service';
 
 @Component({

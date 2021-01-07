@@ -1,6 +1,6 @@
 import { Component,ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { SubjectModalController } from 'src/app/modals/subject-modal/subjectModalController';
-import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
+import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcard-modal-controller';
 import { ProfessorsServices } from '../../../providers/professor.service';
 import { UserServices } from '../../../providers/user.service';
 import { SubjectServices } from '../../../providers/subject.service';

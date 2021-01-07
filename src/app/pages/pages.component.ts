@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { UserServices } from '../providers/user.service';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { AlumnniModalController } from '../modals/alumni-modal/alumniModal.contr
 import { CalendarModalController } from '../modals/calendar-modal/calendar-modal.controller';
 import { EventModalController } from '../modals/events-modal/eventsModal.controller';
 import { FacilitiesModalController } from '../modals/facilities-modal/facilities-modalController';
-import { IndexcardModalController } from '../modals/index-card-modal/indexcardModalController';
+import { IndexcardModalController } from '../modals/index-card-modal/indexcard-modal-controller';
 import { PasswordModalController } from '../modals/password-modal/passwordModalController.service';
 import { ProfessorModalController } from '../modals/professor-modal/professorModalController';
 import { ProjectModalController } from '../modals/project-modal/projectModalController';

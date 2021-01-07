@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ManagerService } from '../../../../providers/manager.service';
 import { TrackModalController } from '../../../../modals/track-modal/trackModalController';
-import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcardModalController';
+import { IndexcardModalController } from 'src/app/modals/index-card-modal/indexcard-modal-controller';
 import { SwalService } from 'src/app/providers/swal.service';
 import { OverviewComponent } from '../overview.component';
 

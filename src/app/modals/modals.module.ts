@@ -31,7 +31,7 @@ import { AssignationsModalComponent } from './assignations-modal/assignations-mo
 import { CalendarModalComponent } from "./calendar-modal/calendar-modal.component";
 import { AlumnniModalController } from './alumni-modal/alumniModal.controller';
 import { ProfessorModalController } from "./professor-modal/professorModalController";
-import { IndexcardModalController } from "./index-card-modal/indexcardModalController";
+import { IndexcardModalController } from "./index-card-modal/indexcard-modal-controller";
 import { ProjectModalController } from './project-modal/projectModalController';
 import { SubjectModalController } from './subject-modal/subjectModalController';
 import { UploadFilesModalController } from "./upload-files-modal/uploadFilesModalController";

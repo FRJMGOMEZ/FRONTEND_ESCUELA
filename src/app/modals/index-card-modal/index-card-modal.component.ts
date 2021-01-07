@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IndexcardModalController } from './indexcardModalController';
+import { IndexcardModalController } from './indexcard-modal-controller';
 import { IndexcardServices } from '../../providers/indexcard.service';
 import { Indexcard } from '../../models/indexcard.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
