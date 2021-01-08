@@ -1,0 +1,9 @@
+{
+    "/api": {
+        "target": "https://cargomusicadm.herokuapp.com",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "ws": true
+    }
+}

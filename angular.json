@@ -55,11 +55,13 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "FRONTEND_ESCUELA:build"
+            "browserTarget": "FRONTEND_ESCUELA:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
-              "browserTarget": "FRONTEND_ESCUELA:build:production"
+              "browserTarget": "FRONTEND_ESCUELA:build:production",
+              "proxyConfig": "src/proxy.conf.json"
             }
           }
         },
