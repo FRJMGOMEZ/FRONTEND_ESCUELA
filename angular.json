@@ -48,7 +48,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "proxyConfig": "src/proxy.conf.json"
             }
           }
         },
