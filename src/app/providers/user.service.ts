@@ -32,6 +32,10 @@ export class UserServices {
         this.uploadFromStorage();
     }
 
+    getStarwarsCharacters() {
+       return this.http.get('https://swapi.dev/api/people/1').pipe(tap(() => { console.log('OK') }))
+    }
+
     postUser(user: User) {
         let url = `${URL_SERVICES}user`;
         return this.http.post(url, user).pipe(map((res:any)=>{

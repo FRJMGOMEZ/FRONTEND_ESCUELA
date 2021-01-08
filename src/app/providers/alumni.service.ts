@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { Alumni} from '../models/alumni.model';
 import { URL_SERVICES } from '../config/config';
 import { UserServices } from './user.service';
@@ -27,6 +27,7 @@ export class AlumniServices {
       this.alumnis = res.alumnis;
     }))
   }
+
 
   postAlumni(alumni:Alumni){
     let url = `${URL_SERVICES}alumni`
