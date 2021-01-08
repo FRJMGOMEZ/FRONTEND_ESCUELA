@@ -7,7 +7,7 @@ import { URL_SERVICES } from '../config/config';
 export class FrontImgPipe implements PipeTransform {
   transform(img:string): any {
     let url;
-    url = `${URL_SERVICES}files/front/${img}`;
+    url = `${URL_SERVICES}/files/front/${img}`;
     return url
   }
 }
