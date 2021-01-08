@@ -48,21 +48,18 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "proxyConfig": "src/proxy.conf.json"
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "FRONTEND_ESCUELA:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "browserTarget": "FRONTEND_ESCUELA:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "FRONTEND_ESCUELA:build:production",
-              "proxyConfig": "src/proxy.conf.json"
+              "browserTarget": "FRONTEND_ESCUELA:build:production"
             }
           }
         },
