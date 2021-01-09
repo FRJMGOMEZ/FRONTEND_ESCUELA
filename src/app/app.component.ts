@@ -6,13 +6,8 @@ import { UserServices } from './providers/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-
-
-    constructor(private userService:UserServices){
+export class AppComponent {    
+  constructor(private userService:UserServices){
       this.userService.getStarwarsCharacters().subscribe()
     }
-
-      
-  
 }

@@ -48,7 +48,7 @@ export class PagesComponent implements OnInit {
 
   ngOnInit() {
 
-    this._userServices.getStarwarsCharacters().subscribe()
+
     this.socket.on('connect', () => {
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
