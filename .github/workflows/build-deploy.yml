@@ -1,5 +1,7 @@
 name: Build and Deploy
 
+future: true 
+timezone:  europe/brussels
 on:
   push:
     branches:
@@ -23,3 +25,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: production
         FOLDER: dist/FRONTEND_ESCUELA
+      
