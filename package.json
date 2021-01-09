@@ -1,6 +1,6 @@
 {
   "name": "frontend-escuela",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build  --base-href=/FRONTEND_ESCUELA/"
+    "deploy": "ng build --prod --base-href=/FRONTEND_ESCUELA/"
   },
   "private": true,
   "dependencies": {
