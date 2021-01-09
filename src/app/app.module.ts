@@ -22,8 +22,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipesModule } from './pipes/pipes.module';
 import { RoleDirective } from './directives/role.directive';
 import { HttpClientModule } from '@angular/common/http';
+import localeEs from '@angular/common/locales/es';
 
-registerLocaleData('ESP');
+registerLocaleData(localeEs);
 
 const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
 
