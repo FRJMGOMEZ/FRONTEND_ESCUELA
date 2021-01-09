@@ -7,9 +7,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    encoding: UTF-8
-    future: true 
-    timezone:  europe/brussels
     steps:
     - name: Checkout
       uses: actions/checkout@v1
@@ -21,6 +18,9 @@ jobs:
         npm install
         npm run-script deploy
     - name: Deploy
+      encoding: UTF-8
+      future: true 
+      timezone:  europe/brussels
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
