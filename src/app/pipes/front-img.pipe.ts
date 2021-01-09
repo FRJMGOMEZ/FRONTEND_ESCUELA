@@ -7,7 +7,7 @@ import { URL_SERVICES } from '../config/config';
 export class FrontImgPipe implements PipeTransform {
   transform(img:string): any {
     let url;
-    url = `https://cargomusicadm.herokuapp.com/api/files/front/${img}`;
+    url = `https://cargomusicadm.herokuapp.com/api/files/front/lñkjñlklñklñlñkklñ/${img}`;
     return url
   }
 }
