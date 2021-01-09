@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "FRONTEND_ESCUELA": {
+    "FRONTEND-ESCUELA": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -101,7 +101,7 @@
         }
       }
     },
-    "FRONTEND_ESCUELA-e2e": {
+    "FRONTEND-ESCUELA-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
