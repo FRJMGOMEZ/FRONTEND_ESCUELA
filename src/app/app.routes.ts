@@ -24,6 +24,4 @@ const ROUTES: Routes = [
   { path: "**", component: PageNotFoundComponent }
 ];
 
-
-/* export const APPROUTES = RouterModule.forRoot(ROUTES, {initialNavigation: 'enabled',paramsInheritanceStrategy: 'always'}); */
-export const APPROUTES = RouterModule.forRoot(ROUTES);
+export const APPROUTES = RouterModule.forRoot(ROUTES, {initialNavigation: 'enabled',paramsInheritanceStrategy: 'always'});

@@ -54,7 +54,9 @@ const config: SocketIoConfig = { url: URL_SERVICES, options: {} };
     FormsModule,
     HttpClientModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es-ES' },
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es-ES' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     DemoService],
   bootstrap: [AppComponent],
 })
