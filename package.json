@@ -3,13 +3,14 @@
   "version": "2.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy": "ng build --prod --base-href=/FRONTEND_ESCUELA/"
   },
+  "heroku-postbuild": "ng build --prod",
   "private": true,
   "dependencies": {
     "@angular/animations": "^7.2.15",
@@ -79,5 +80,9 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://github.com/FRJMGOMEZ/FRONTEND-ESCUELA#readme"
+  "homepage": "https://github.com/FRJMGOMEZ/FRONTEND-ESCUELA#readme",
+  "engines": {
+    "node": "10.22.0",
+    "npm": "6.14.6"
+  }
 }
