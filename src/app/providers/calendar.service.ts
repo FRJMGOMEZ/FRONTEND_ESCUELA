@@ -229,7 +229,8 @@ export class CalendarService {
     return new Promise((resolve, reject) => {
       let payload = { user: this._userServices.userOnline._id, room: this.currentDay._id }
       this.socket.emit('userIn', payload, () => {
-        resolve()
+        console.log('userin')
+        resolve(true)
       })
     })
   }
@@ -237,7 +238,7 @@ export class CalendarService {
     return new Promise((resolve, reject) => {
       let payload = { user: JSON.parse(localStorage.getItem('user'))._id, room: this.currentDay._id }
       this.socket.emit('userOut', payload)
-      resolve()
+      resolve(true)
     })
   }
 
