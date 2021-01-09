@@ -26,7 +26,7 @@ import localeEs from '@angular/common/locales/es';
 
 registerLocaleData(localeEs);
 
-const config: SocketIoConfig = { url: URL_SERVICES.split('api')[0], options: {} };
+const config: SocketIoConfig = { url: URL_SERVICES.split('/api/')[0], options: {} };
 
 @NgModule({
   declarations: [

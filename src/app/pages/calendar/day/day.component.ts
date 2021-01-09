@@ -103,6 +103,7 @@ export class DayComponent implements OnInit, OnDestroy {
     })
      ////////////////////////////////////////////////////////
     this.facilitiesSocket = this._facilitieServices.facililiteSocket().subscribe(() => {
+      console.log('here')
       this.inProgress = true;
       setTimeout(() => {
         this.resetEventRenderValues()
@@ -169,6 +170,8 @@ export class DayComponent implements OnInit, OnDestroy {
   ////////// Init /////////
   init() {
     this._calendarServices.userIn().then(()=>{
+
+      console.log('user in')
     this.resetEventRenderValues();
     this.getWeeksAroundDates()});
   }

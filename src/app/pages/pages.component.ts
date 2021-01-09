@@ -44,12 +44,14 @@ export class PagesComponent implements OnInit {
               private _incomesModalController:IncomeModalController,
               private _paymentModalController:PaymentModalController,
               public _spinnerServices:SpinnerService
-              ) { }
+              ) {
+
+                
+              }
 
   ngOnInit() {
-
-
     this.socket.on('connect', () => {
+      console.log('socket connected')
       this._userServices.socketOn = true;
       this.router.navigate(['/dashboard'])
       Swal.fire({
