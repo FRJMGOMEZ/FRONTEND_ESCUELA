@@ -3,14 +3,13 @@
   "version": "2.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --prod --base-href=https://frjmgomez.github.io/FRONTEND_ESCUELA/"
+    "deploy": "ng build --prod --base-href=/FRONTEND_ESCUELA/"
   },
-  "heroku-postbuild": "ng build --prod",
   "private": true,
   "dependencies": {
     "@angular/animations": "^7.2.15",
@@ -60,7 +59,6 @@
     "@types/node": "~8.9.4",
     "angular-cli-ghpages": "^1.0.0-rc.1",
     "codelyzer": "~4.3.0",
-    "enhanced-resolve": "^3.3.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^4.3.0",
@@ -81,9 +79,5 @@
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://github.com/FRJMGOMEZ/FRONTEND-ESCUELA#readme",
-  "engines": {
-    "node": "10.22.0",
-    "npm": "6.14.6"
-  }
+  "homepage": "https://github.com/FRJMGOMEZ/FRONTEND-ESCUELA#readme"
 }
