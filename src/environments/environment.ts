@@ -6,7 +6,8 @@ export const environment = {
   production: false,
 /*   baseUrl: "/api/", */
   /* baseUrl:"http://localhost:3000/api/" */
-  baseUrl: 'https://cargomusicadm.herokuapp.com/api/'
+  baseUrl: "http://localhost:3000/api/" ,
+  socketConnectionUrl: "http://localhost:3000" 
 };
 
 /*

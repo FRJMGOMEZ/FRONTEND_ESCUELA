@@ -23,17 +23,15 @@ import { PipesModule } from './pipes/pipes.module';
 import { RoleDirective } from './directives/role.directive';
 import { HttpClientModule } from '@angular/common/http';
 import localeEs from '@angular/common/locales/es';
+import { environment } from '../environments/environment.prod';
 
 registerLocaleData(localeEs);
-
-
-
 
 ()=>{
   console.log(URL_SERVICES.split('/api/')[0])
 }
 
-const config: SocketIoConfig = { url: URL_SERVICES.split('/api/')[0], options: {} };
+const config: SocketIoConfig = { url: environment.socketConnectionUrl, options: {} };
 
 @NgModule({
   declarations: [
